@@ -18,7 +18,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.ricointeractive.common.CommonUtil;
+import com.ricointeractive.main.LeakCanaryApplication;
 import com.ricointeractive.subwaydemosinchonstationmap.R;
+import com.squareup.leakcanary.RefWatcher;
 
 public class HoodFragment4 extends Fragment {
     private ImageView mImg_Main;
@@ -289,5 +291,12 @@ public class HoodFragment4 extends Fragment {
     }
 
 //    ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = LeakCanaryApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
+    }
 
 }

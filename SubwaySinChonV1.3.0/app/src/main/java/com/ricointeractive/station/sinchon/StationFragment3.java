@@ -15,7 +15,9 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.ricointeractive.common.CommonUtil;
+import com.ricointeractive.main.LeakCanaryApplication;
 import com.ricointeractive.subwaydemosinchonstationmap.R;
+import com.squareup.leakcanary.RefWatcher;
 
 
 /**
@@ -171,5 +173,12 @@ public class StationFragment3 extends Fragment {
             if (gridview.getVisibility() == View.GONE)
                 gridview.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = LeakCanaryApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 }

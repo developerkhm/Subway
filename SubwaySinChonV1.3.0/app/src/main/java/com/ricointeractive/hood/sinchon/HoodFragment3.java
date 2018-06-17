@@ -12,7 +12,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.ricointeractive.common.CommonUtil;
+import com.ricointeractive.main.LeakCanaryApplication;
 import com.ricointeractive.subwaydemosinchonstationmap.R;
+import com.squareup.leakcanary.RefWatcher;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -183,5 +185,11 @@ public class HoodFragment3 extends Fragment {
 //            mLine[i].setBackgroundResource(mLine_Resource[i]);
             CommonUtil.getInstance().loadImage(getActivity(), mLine_Resource[i], mLine[i]);
         }
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = LeakCanaryApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 }

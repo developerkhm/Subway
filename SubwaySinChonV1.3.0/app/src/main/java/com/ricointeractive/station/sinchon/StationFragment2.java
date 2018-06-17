@@ -16,7 +16,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.ricointeractive.common.CommonUtil;
+import com.ricointeractive.main.LeakCanaryApplication;
 import com.ricointeractive.subwaydemosinchonstationmap.R;
+import com.squareup.leakcanary.RefWatcher;
 
 
 /**
@@ -105,5 +107,12 @@ public class StationFragment2 extends Fragment {
         mBtn1.setBackgroundResource(R.drawable.station_main_2_time_btn_1);
         mBtn2.setBackgroundResource(R.drawable.station_main_2_time_btn_2);
         mBtn3.setBackgroundResource(R.drawable.station_main_2_time_btn_3);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = LeakCanaryApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 }

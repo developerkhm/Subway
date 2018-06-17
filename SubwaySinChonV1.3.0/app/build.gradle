@@ -33,4 +33,7 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:27.0.2'
     implementation 'log4j:log4j:1.2+'
     implementation 'de.mindpipe.android:android-logging-log4j:1.0.3'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 }

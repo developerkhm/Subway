@@ -15,7 +15,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.ricointeractive.common.CommonUtil;
+import com.ricointeractive.main.LeakCanaryApplication;
 import com.ricointeractive.subwaydemosinchonstationmap.R;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 
@@ -150,5 +152,12 @@ public class ExitFragment4 extends Fragment {
             super(itemView);
             mRes = (ImageView) itemView.findViewById(R.id.index);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = LeakCanaryApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 }

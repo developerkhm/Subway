@@ -10,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.ZoomControls;
 
 import com.ricointeractive.common.CommonUtil;
+import com.ricointeractive.main.LeakCanaryApplication;
 import com.ricointeractive.subwaydemosinchonstationmap.R;
+import com.squareup.leakcanary.RefWatcher;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -61,5 +63,12 @@ public class HoodFragment1 extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = LeakCanaryApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 }
