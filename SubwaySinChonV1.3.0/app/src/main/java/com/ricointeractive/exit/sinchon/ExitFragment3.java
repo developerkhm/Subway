@@ -21,8 +21,8 @@ import com.squareup.leakcanary.RefWatcher;
  * A simple {@link Fragment} subclass.
  */
 public class ExitFragment3 extends Fragment {
+
     private ImageView mImg_Title, mImg_Main, mImg_temp;
-    public int mImg_res;
 
     private final int MAX_TITLE_IMG_W = 2160;
     private final int MAX_TITLEIMG_H = 798;
@@ -54,15 +54,6 @@ public class ExitFragment3 extends Fragment {
         CommonUtil.getInstance().loadImage(getActivity(), R.drawable.exit_main_3_ad_sample, mImg_temp);
 
         return view;
-    }
-
-    public void testAdOnoff() {
-        if (mImg_temp != null) {
-            if (mImg_temp.getVisibility() == View.VISIBLE)
-                mImg_temp.setVisibility(View.GONE);
-            else
-                mImg_temp.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
