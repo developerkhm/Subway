@@ -24,7 +24,6 @@ public class HoodFragment3 extends Fragment {
     private ImageView mHead, mLineTitle, mImg_Main;
     public int mImg_res;
     private ImageView mLine_1, mLine_2, mLine_3, mLine_4, mLine_5, mLine_6, mLine_7, mLine_8, mLine_9, mLine_10;
-    private int mLineRes_1, mLineRes_2, mLineRes_3, mLineRes_4, mLineRes_5, mLineRes_6, mLineRes_7, mLineRes_8, mLineRes_9;
     private ImageView[] mLine;
     private int[] mImg_LineRes;
 

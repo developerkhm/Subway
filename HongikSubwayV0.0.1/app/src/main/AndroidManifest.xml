@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
         <activity android:name="com.subway.rico.hongiksubway.MainActivity"
             android:launchMode="singleTask"
-            android:clearTaskOnLaunch="true">>
+            android:clearTaskOnLaunch="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

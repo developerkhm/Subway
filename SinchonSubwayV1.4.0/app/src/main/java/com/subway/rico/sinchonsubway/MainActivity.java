@@ -211,7 +211,6 @@ public class MainActivity extends AppCompatActivity {
                     android.os.Process.killProcess(pid);
 
 //                    Log.d(TAG, "Permission always deny");
-
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
