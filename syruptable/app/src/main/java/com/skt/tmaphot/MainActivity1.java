@@ -1,16 +1,19 @@
 package com.skt.tmaphot;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -32,8 +35,9 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import java.net.URISyntaxException;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity1 extends AppCompatActivity {
 
     private WebView mWebView;
     private static final String ENTRY_URL = "https://shop.ordertable.co.kr/intro";
@@ -55,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     private BackPressCloseHandler backPressCloseHandler;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 // 여기서 WebView의 데이터를 가져오는 작업을 한다.
                 if (url.equals(ENTRY_URL)) {
                     TelephonyManager mgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-                    String userPhone = mgr.getLine1Number();
+                    @SuppressLint("MissingPermission") String userPhone = mgr.getLine1Number();
 
                     String script = "javascript:function afterLoad() {"
                             + "document.getElementById('userPhone').value = '" + userPhone + "';"
@@ -135,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
+            @SuppressLint("MissingPermission")
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
@@ -275,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // For Android 5.0+
-            public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams){
+            public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams){
                 Log.d("MainActivity", "5.0+");
                 if(filePathCallbackLollipop != null){
                     filePathCallbackLollipop.onReceiveValue(null);
@@ -318,21 +324,21 @@ public class MainActivity extends AppCompatActivity {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE)) {
                     // 권한 설명하는 영역
                     //Toast.makeText(getApplicationContext(), "설명전", Toast.LENGTH_LONG);
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity1.this);
 
                     dialog.setTitle("단말기 전화번호에 접근권한이 필요합니다.")
                             .setMessage("이 앱을 사용하기 위해서는 단말기의 \"전화번호확인\" 권한이 필요합니다. 계속하시겠습니까?")
                             .setPositiveButton("네", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE},1);
+                                    ActivityCompat.requestPermissions(MainActivity1.this, new String[]{Manifest.permission.READ_PHONE_STATE},1);
                                 }
                             })
 
                             .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(MainActivity.this, "접근권한을 허용하지 않았습니다.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainActivity1.this, "접근권한을 허용하지 않았습니다.", Toast.LENGTH_SHORT).show();
                                     mWebView.loadUrl("https://shop.ordertable.co.kr/app_android/err_appChecker.html");
                                 }
                             })
@@ -366,6 +372,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent){
         if(requestCode == FILECHOOSER_RESULTCODE){
@@ -490,8 +497,39 @@ public class MainActivity extends AppCompatActivity {
                     minDistance,
                     gpsListener);
 
+            /** 현재 사용가능한 위치 정보 장치 검색*/
+
+
+            //위치정보 하드웨어 목록
+            Criteria criteria = new Criteria();
+            criteria.setAccuracy(Criteria.ACCURACY_FINE); //정확도(ACCURACY_COARSE :네트웍, ACCURACY_FINE :GPS)
+            criteria.setAltitudeRequired(false);//고도
+            criteria.setBearingRequired(false);	//방위, 방향
+            criteria.setCostAllowed(true);	//과금여부
+            criteria.setPowerRequirement(Criteria.POWER_HIGH);	//전력사용:GPS는 전력사용량이 많다.
+            //최적의 하드웨어 이름을 리턴받는다.
+            String provider = manager.getBestProvider(criteria, true);
+            // 최적의 값이 없거나, 해당 장치가 사용가능한 상태가 아니라면,
+            //모든 장치 리스트에서 사용가능한 항목 얻기
+            if(provider == null || !manager.isProviderEnabled(provider)){
+                // 모든 장치 목록
+                List<String> list = manager.getAllProviders();
+
+                for(int i = 0; i < list.size(); i++){
+                    //장치 이름 하나 얻기
+                    String temp = list.get(i);
+
+                    //사용 가능 여부 검사
+                    if(manager.isProviderEnabled(temp)){
+                        provider = temp;
+                        break;
+                    }
+                }
+            }// (end if)위치정보 검색 끝
+
+            /**마지막으로  조회했던 위치 얻기*/
             // 위치 확인이 안되는 경우에도 최근에 확인된 위치 정보 먼저 확인
-            Location lastLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            Location lastLocation = manager.getLastKnownLocation(provider);
             if (lastLocation != null) {
                 Double latitude = lastLocation.getLatitude();
                 Double longitude = lastLocation.getLongitude();
@@ -556,7 +594,7 @@ public class MainActivity extends AppCompatActivity {
         @JavascriptInterface
         public String getPhoneNumber(){
             TelephonyManager mgr2 = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-            String userPhone2 = mgr2.getLine1Number();
+            @SuppressLint("MissingPermission") String userPhone2 = mgr2.getLine1Number();
             return userPhone2 ;
         }
     }
@@ -582,7 +620,7 @@ public class MainActivity extends AppCompatActivity {
             if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
                 toast.cancel();
 
-                Intent t = new Intent(activity, MainActivity.class);
+                Intent t = new Intent(activity, MainActivity1.class);
                 activity.startActivity(t);
 
                 activity.moveTaskToBack(true);

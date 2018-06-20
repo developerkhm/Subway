@@ -1,6 +1,7 @@
 package com.skt.tmaphot;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,11 +12,14 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -32,8 +36,10 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity3 extends AppCompatActivity {
 
     private WebView mWebView;
     private static final String ENTRY_URL = "https://shop.ordertable.co.kr/intro";
@@ -55,6 +61,16 @@ public class MainActivity extends AppCompatActivity {
 
     private BackPressCloseHandler backPressCloseHandler;
 
+    // GPSTracker class
+    GPSTracker gps = null;
+
+    public Handler mHandler;
+
+    public static int RENEW_GPS = 1;
+    public static int SEND_PRINT = 2;
+
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
                 // 여기서 WebView의 데이터를 가져오는 작업을 한다.
                 if (url.equals(ENTRY_URL)) {
                     TelephonyManager mgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-                    String userPhone = mgr.getLine1Number();
+                    @SuppressLint("MissingPermission") String userPhone = mgr.getLine1Number();
 
                     String script = "javascript:function afterLoad() {"
                             + "document.getElementById('userPhone').value = '" + userPhone + "';"
@@ -135,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
+            @SuppressLint("MissingPermission")
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
@@ -318,21 +335,21 @@ public class MainActivity extends AppCompatActivity {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE)) {
                     // 권한 설명하는 영역
                     //Toast.makeText(getApplicationContext(), "설명전", Toast.LENGTH_LONG);
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity3.this);
 
                     dialog.setTitle("단말기 전화번호에 접근권한이 필요합니다.")
                             .setMessage("이 앱을 사용하기 위해서는 단말기의 \"전화번호확인\" 권한이 필요합니다. 계속하시겠습니까?")
                             .setPositiveButton("네", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE},1);
+                                    ActivityCompat.requestPermissions(MainActivity3.this, new String[]{Manifest.permission.READ_PHONE_STATE},1);
                                 }
                             })
 
                             .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(MainActivity.this, "접근권한을 허용하지 않았습니다.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainActivity3.this, "접근권한을 허용하지 않았습니다.", Toast.LENGTH_SHORT).show();
                                     mWebView.loadUrl("https://shop.ordertable.co.kr/app_android/err_appChecker.html");
                                 }
                             })
@@ -366,6 +383,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent){
         if(requestCode == FILECHOOSER_RESULTCODE){
@@ -467,78 +485,59 @@ public class MainActivity extends AppCompatActivity {
      * 위치 정보 확인을 위해 정의한 메소드
      */
     private void startLocationService() {
-        // 위치 관리자 객체 참조
-        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        // 위치 정보를 받을 리스너 생성
-        GPSListener gpsListener = new GPSListener();
-        long minTime = 0;
-        float minDistance = 0;
-
-        try {
-            // GPS를 이용한 위치 요청
-            manager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER,
-                    minTime,
-                    minDistance,
-                    gpsListener);
-
-            // 네트워크를 이용한 위치 요청
-            manager.requestLocationUpdates(
-                    LocationManager.NETWORK_PROVIDER,
-                    minTime,
-                    minDistance,
-                    gpsListener);
-
-            // 위치 확인이 안되는 경우에도 최근에 확인된 위치 정보 먼저 확인
-            Location lastLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (lastLocation != null) {
-                Double latitude = lastLocation.getLatitude();
-                Double longitude = lastLocation.getLongitude();
-
-                dLatitude = lastLocation.getLatitude();
-                dLongitude = lastLocation.getLongitude();
-
-                //textView.setText("내 위치 : " + latitude + ", " + longitude);
-                //Toast.makeText(getApplicationContext(), "Last Known Location : " + "Latitude : " + latitude + "\nLongitude:" + longitude, Toast.LENGTH_LONG).show();
+        mHandler = new Handler(){
+            @Override
+            public void handleMessage(Message msg){
+                if(msg.what==RENEW_GPS){
+                    makeNewGpsService();
+                }
+                if(msg.what==SEND_PRINT){
+                    logPrint((String)msg.obj);
+                }
             }
-        } catch(SecurityException ex) {
-            ex.printStackTrace();
+        };
+
+        // create class object
+        if(gps == null) {
+            gps = new GPSTracker(MainActivity3.this,mHandler);
+        }else{
+            gps.Update();
+        }
+
+        // check if GPS enabled
+        if(gps.canGetLocation()){
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+            dLatitude = latitude;
+            dLongitude = longitude;
+            // \n is for new line
+//            Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+        }else{
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+//            gps.showSettingsAlert();
         }
 
     }
 
-
-    /**
-     * 리스너 클래스 정의
-     */
-    private class GPSListener implements LocationListener {
-        /**
-         * 위치 정보가 확인될 때 자동 호출되는 메소드
-         */
-        public void onLocationChanged(Location location) {
-            Double latitude = location.getLatitude();
-            Double longitude = location.getLongitude();
-
-            dLatitude = latitude;
-            dLongitude = longitude;
-
-            //String msg = "Latitude : "+ latitude + "\nLongitude:"+ longitude;
-            //Log.i("GPSListener", msg);
-
-            //textView.setText("내 위치 : " + latitude + ", " + longitude);
-            //Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+    public void makeNewGpsService(){
+        if(gps == null) {
+            gps = new GPSTracker(MainActivity3.this,mHandler);
+        }else{
+            gps.Update();
         }
 
-        public void onProviderDisabled(String provider) {
-        }
+    }
+    public void logPrint(String str){
+//        editText.append(getTimeStr()+" "+str+"\n");
+    }
 
-        public void onProviderEnabled(String provider) {
-        }
-
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-        }
-
+    public String getTimeStr(){
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
+        SimpleDateFormat sdfNow = new SimpleDateFormat("MM/dd HH:mm:ss");
+        return sdfNow.format(date);
     }
 
     private class AndroidBridge {
@@ -556,11 +555,10 @@ public class MainActivity extends AppCompatActivity {
         @JavascriptInterface
         public String getPhoneNumber(){
             TelephonyManager mgr2 = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-            String userPhone2 = mgr2.getLine1Number();
+            @SuppressLint("MissingPermission") String userPhone2 = mgr2.getLine1Number();
             return userPhone2 ;
         }
     }
-
 
     public class BackPressCloseHandler {
         private long backKeyPressedTime = 0;
@@ -582,7 +580,7 @@ public class MainActivity extends AppCompatActivity {
             if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
                 toast.cancel();
 
-                Intent t = new Intent(activity, MainActivity.class);
+                Intent t = new Intent(activity, MainActivity3.class);
                 activity.startActivity(t);
 
                 activity.moveTaskToBack(true);
@@ -598,5 +596,4 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
 }

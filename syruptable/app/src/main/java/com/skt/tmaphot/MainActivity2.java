@@ -529,7 +529,6 @@ public class MainActivity2 extends AppCompatActivity {
                 public void run() {
 
                     if (currentLocation == null) {
-                        Log.d("syrup","test~~~~~~~~~~~~~~~~~~~~~~");
                         if (isGPSEnabled) {
                             currentLocation = manager
                                     .getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -543,7 +542,6 @@ public class MainActivity2 extends AppCompatActivity {
                             manager.removeUpdates(networkLocationListener);
                         }
                     }else{
-                        Log.d("syrup","test~~~~shutdown~~~~~~~~~~~");
                         se.shutdown();
                     }
 
