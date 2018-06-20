@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    tools:context="com.subway.rico.sinchonsubway.ExitActivity">
+    tools:context="com.subway.rico.sinchonsubway.exit.ExitActivity">
 
     <FrameLayout
         android:id="@+id/screen_frame"
@@ -34,7 +34,7 @@
 
             <fragment
                 android:id="@+id/content_fragment"
-                android:name="com.subway.rico.sinchonsubway.ExitFragment1"
+                android:name="com.subway.rico.sinchonsubway.exit.ExitFragment1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>

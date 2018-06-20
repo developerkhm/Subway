@@ -19,9 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.subway.rico.sinchonsubway.StationActivity" />
-        <activity android:name="com.subway.rico.sinchonsubway.HoodActivity" />
-        <activity android:name="com.subway.rico.sinchonsubway.ExitActivity" />
+        <activity android:name="com.subway.rico.sinchonsubway.station.StationActivity" />
+        <activity android:name="com.subway.rico.sinchonsubway.hood.HoodActivity" />
+        <activity android:name="com.subway.rico.sinchonsubway.exit.ExitActivity" />
     </application>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>

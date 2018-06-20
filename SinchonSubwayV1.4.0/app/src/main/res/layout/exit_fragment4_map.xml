@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000"
-    tools:context="com.subway.rico.sinchonsubway.ExitFragment4">
+    tools:context="com.subway.rico.sinchonsubway.exit.ExitFragment4">
 
 
     <ImageView

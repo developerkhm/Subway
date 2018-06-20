@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    tools:context="com.subway.rico.sinchonsubway.HoodActivity">
+    tools:context="com.subway.rico.sinchonsubway.hood.HoodActivity">
 
     <FrameLayout
         android:id="@+id/screen_frame"
@@ -34,7 +34,7 @@
 
             <fragment
                 android:id="@+id/content_fragment"
-                android:name="com.ricointeractive.hood.sinchon.HoodFragment1"
+                android:name="com.subway.rico.sinchonsubway.hood.HoodFragment1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
