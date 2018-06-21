@@ -20,7 +20,10 @@ public class AutoRun extends BroadcastReceiver{
 
         String action = intent.getAction();
         if(action.equals("android.intent.action.BOOT_COMPLETED")){
-            context.startActivity(new Intent(context, MainActivity.class));
+            Intent intent1 = new Intent(context, MainActivity.class);
+            intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            context.startActivity(intent1);
         }
 ////        if(action.equals("android.intent.action.QUICKBOOT_POWERON")){
 ////            context.startActivity(new Intent(context, MainActivity.class));
