@@ -45,40 +45,6 @@
                 android:scaleType="fitStart" /-->
         </LinearLayout>
 
-        <!-- 공사중 배경 -->
-        <LinearLayout
-            android:id="@+id/underconstruction_bg"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#000000"
-            android:orientation="vertical"
-            android:visibility="gone"></LinearLayout>
-        <!-- 공사중 -->
-        <ImageView
-            android:id="@+id/underconstruction"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_gravity="right"
-            android:visibility="gone" />
-        <!-- 마커 - exit쪽 -->
-        <ImageView
-            android:id="@+id/marker_exit"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_gravity="center_horizontal|top"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:visibility="gone" />
-        <!-- 음식점 -->
-        <ImageView
-            android:id="@+id/food"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_gravity="top|right"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="50dp"
-            android:visibility="gone" />
-
         <ImageView
             android:id="@+id/img_title"
             android:layout_width="wrap_content"

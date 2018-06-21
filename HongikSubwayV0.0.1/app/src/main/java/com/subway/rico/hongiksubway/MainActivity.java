@@ -28,9 +28,14 @@ import de.mindpipe.android.logging.log4j.LogConfigurator;
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_WRITE_STORAGE_REQUEST_CODE = 112;
+
+    public  static int HOIKMAIN_FLAG = 2;
     private boolean isAuto = true;
     private LogConfigurator logConfigurator;
     private Handler mHandler = new Handler();
+
+
+
 
     @Override
     protected void onStart() {
@@ -52,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         Button btn1 = (Button) findViewById(com.subway.rico.hongiksubway.R.id.st_button1);
         Button btn2 = (Button) findViewById(com.subway.rico.hongiksubway.R.id.st_button2);
         Button btn3 = (Button) findViewById(com.subway.rico.hongiksubway.R.id.st_button3);
+        Button btn4 = (Button) findViewById(com.subway.rico.hongiksubway.R.id.st_button4);
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,13 +77,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 isAuto = false;
+                HOIKMAIN_FLAG = 2;
                 savePreferences(2);
-
                 Intent intent = new Intent(MainActivity.this, HoodActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_CLEAR_TOP
                         | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
                 startActivity(intent);
             }
         });
@@ -86,8 +91,20 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 isAuto = false;
                 savePreferences(3);
-
                 Intent intent = new Intent(MainActivity.this, ExitActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+            }
+        });
+        btn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isAuto = false;
+                HOIKMAIN_FLAG = 4;
+                savePreferences(4);
+                Intent intent = new Intent(MainActivity.this, HoodActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_CLEAR_TOP
                         | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -247,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
                         intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                                 | Intent.FLAG_ACTIVITY_CLEAR_TOP
                                 | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
+                        HOIKMAIN_FLAG = 2;
                         startActivity(intent2);
                         break;
                     case 3:
@@ -256,6 +273,14 @@ public class MainActivity extends AppCompatActivity {
                                 | Intent.FLAG_ACTIVITY_CLEAR_TOP
                                 | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         startActivity(intent3);
+                        break;
+                    case 4:
+                        Intent intent4 = new Intent(MainActivity.this, HoodActivity.class);
+                        intent4.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        HOIKMAIN_FLAG = 4;
+                        startActivity(intent4);
                         break;
                     default:
                 }

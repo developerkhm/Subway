@@ -27,9 +27,17 @@
         android:id="@+id/st_button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="2.Neighborhood"
+        android:text="2.Neighborhood-1"
         tools:layout_editor_absoluteX="68dp"
         tools:layout_editor_absoluteY="199dp" />
+
+    <Button
+        android:id="@+id/st_button4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2.Neighborhood-2"
+        tools:layout_editor_absoluteX="67dp"
+        tools:layout_editor_absoluteY="247dp" />
 
     <Button
         android:id="@+id/st_button3"
@@ -38,6 +46,8 @@
         android:text="3.Exit"
         tools:layout_editor_absoluteX="67dp"
         tools:layout_editor_absoluteY="247dp" />
+
+
 
     <TextView
         android:id="@+id/textView2"

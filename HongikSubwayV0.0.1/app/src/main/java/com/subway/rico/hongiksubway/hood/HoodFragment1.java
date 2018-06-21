@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ZoomControls;
 
+import com.subway.rico.hongiksubway.MainActivity;
 import com.subway.rico.hongiksubway.common.CommonUtil;
 import com.subway.rico.hongiksubway.R;
 
@@ -38,7 +39,11 @@ public class HoodFragment1 extends Fragment {
         View view = inflater.inflate(R.layout.hood_fragment1, container, false);
         mImg_Main = (ImageView) view.findViewById(R.id.img_main);
 
-        mImg_res = R.drawable.hood_main_1;
+        if(MainActivity.HOIKMAIN_FLAG == 2)
+            mImg_res = R.drawable.hood_main_1;
+        if(MainActivity.HOIKMAIN_FLAG == 4)
+            mImg_res = R.drawable.hood_main_1_1;
+
 
         mAttacher = new PhotoViewAttacher(mImg_Main);
         mAttacher.setScaleType(ImageView.ScaleType.FIT_START);

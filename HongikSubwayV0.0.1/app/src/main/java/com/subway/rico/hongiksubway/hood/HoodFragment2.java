@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 
+import com.subway.rico.hongiksubway.MainActivity;
 import com.subway.rico.hongiksubway.common.CommonUtil;
 import com.subway.rico.hongiksubway.R;
 
@@ -49,10 +50,18 @@ public class HoodFragment2 extends Fragment {
 
         mContext = getActivity();
 
-        mImg_Main = (ImageView) view.findViewById(R.id.img_main); //실제 이미지 사이즈 2152 작아서 임시 fitCenter
+        mImg_Main = (ImageView) view.findViewById(R.id.img_main);
         mImg_Main.getLayoutParams().width = CommonUtil.getInstance().utilGetViewWidthPx(MAX_MAIN_IMG_W);
         mImg_Main.getLayoutParams().height = CommonUtil.getInstance().utilGetViewWidthPx(MAX_MAIN_IMG_H);
-        mImg_res = R.drawable.hood_main_2;
+
+        if(MainActivity.HOIKMAIN_FLAG == 2)
+            mImg_res = R.drawable.hood_main_2;
+        if(MainActivity.HOIKMAIN_FLAG == 4)
+            mImg_res = R.drawable.hood_main_2_1;
+
+
+
+
         CommonUtil.getInstance().loadImage(mContext, mImg_res, mImg_Main);
 
         mExit_Res = new int[]{

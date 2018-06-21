@@ -2,6 +2,7 @@ package com.subway.rico.sinchonsubway;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private LogConfigurator logConfigurator;
     private Handler mHandler = new Handler();
 
+    private AutoRun mAutorun;
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(com.subway.rico.sinchonsubway.R.layout.main_activity);
         checkPermission();
+        setReceiver();
         initStart();
     }
 
@@ -222,6 +226,8 @@ public class MainActivity extends AppCompatActivity {
         logConfigurator = new LogConfigurator();
         logConfigurator.setFileName(Environment.getExternalStorageDirectory() + "/Subway/Logs/logFile.log");
         logConfigurator.configure();
+        Logger logger = Logger.getLogger(MainActivity.class.getSimpleName());
+        logger.info("MainActivity start");
     }
 
     private void autoStart(){
@@ -259,5 +265,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }, 4000);
+    }
+
+    private void setReceiver(){
+        mAutorun = new AutoRun();
+        IntentFilter filter = new IntentFilter(Intent.ACTION_BOOT_COMPLETED);
+        this.registerReceiver(mAutorun, filter);
     }
 }

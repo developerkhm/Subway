@@ -17,6 +17,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.subway.rico.hongiksubway.MainActivity;
 import com.subway.rico.hongiksubway.common.CommonUtil;
 import com.subway.rico.hongiksubway.R;
 
@@ -99,7 +100,12 @@ public class HoodFragment4 extends Fragment {
                     mKeyboard.setVisibility(View.GONE);
             }
         });
-        mImg_res = R.drawable.hood_main_1;
+
+        if(MainActivity.HOIKMAIN_FLAG == 2)
+            mImg_res = R.drawable.hood_main_1;
+        if(MainActivity.HOIKMAIN_FLAG == 4)
+            mImg_res = R.drawable.hood_main_1_1;
+
         CommonUtil.getInstance().loadImage(getActivity(), mImg_res, mImg_Main);
 
         mThumbIds = new int[]{

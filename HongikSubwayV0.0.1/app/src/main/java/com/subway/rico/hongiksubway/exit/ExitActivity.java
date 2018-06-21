@@ -28,6 +28,7 @@ public class ExitActivity extends AppCompatActivity {
     private Button[] mBtnArray;
     private ImageView mBtn_Language;
     private LinearLayout mImg;
+    private ImageView mHead;
 
     private FragmentManager mFragmentManager;
     private ExitFragment1 mContentFragment1;
@@ -44,6 +45,9 @@ public class ExitActivity extends AppCompatActivity {
 
 
     public int mScreenY = 0; //메인 스크린에 들어가는 큰 이미지의 높이
+
+    private final int MAX_HEAD_IMG_W = 2160;
+    private final int MAX_HEAD_IMG_H = 798;
 
     private Thread.UncaughtExceptionHandler mUncaughtExceptionHandler;
 
@@ -119,6 +123,12 @@ public class ExitActivity extends AppCompatActivity {
         mScreenY = CommonUtil.getInstance().getScreenImageHeightPx();              // 메인 스크린에 들어가는 큰 이미지의 높이 구하기
         mImg = (LinearLayout) findViewById(R.id.img);     // 구하고 나서 이미지 참조하고
         mImg.getLayoutParams().height = mScreenY;         // 거기에 높이를 적용
+
+        mHead = (ImageView) findViewById(R.id.img_title);
+        mHead.getLayoutParams().width = CommonUtil.getInstance().utilGetViewWidthPx(MAX_HEAD_IMG_W);
+        mHead.getLayoutParams().height = CommonUtil.getInstance().utilGetViewWidthPx(MAX_HEAD_IMG_H);
+        CommonUtil.getInstance().loadImage(this, R.drawable.exit_head, mHead);
+
 
 
         mBtn1 = (Button) findViewById(R.id.button1);

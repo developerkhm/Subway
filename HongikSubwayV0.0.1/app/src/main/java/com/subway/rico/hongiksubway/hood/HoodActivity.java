@@ -1,5 +1,6 @@
 package com.subway.rico.hongiksubway.hood;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
@@ -42,6 +43,7 @@ public class HoodActivity extends AppCompatActivity {
 
     private FrameLayout mFrame;
     private int mScrollY;
+    private int mStart;
 
     private final Handler handler = new Handler();
 
@@ -60,6 +62,7 @@ public class HoodActivity extends AppCompatActivity {
         Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler());
 
         setContentView(R.layout.hood_main);
+
         initView();
         btnsSet();
     }
