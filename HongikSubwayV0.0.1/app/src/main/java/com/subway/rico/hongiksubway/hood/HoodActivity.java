@@ -1,10 +1,14 @@
 package com.subway.rico.hongiksubway.hood;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
+import com.subway.rico.hongiksubway.MainActivity;
 import com.subway.rico.hongiksubway.common.CommonUtil;
 import com.subway.rico.hongiksubway.R;
 
@@ -183,15 +188,23 @@ public class HoodActivity extends AppCompatActivity {
     private class UncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
         @Override
         public void uncaughtException(Thread t, Throwable e) {
-            // Try everything to make sure this process goes away.
-            // android.os.Process.killProcess(android.os.Process.myPid());
-            // System.exit(10);
-            // Intent restartIntent = new Intent(getApplicationContext(), MainActivity.class);
-            // PendingIntent runner = PendingIntent.getActivity(getApplicationContext(), 99, restartIntent, PendingIntent.FLAG_ONE_SHOT);
-            // AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE); am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 5000, runner);
 
-            Logger logger = Logger.getLogger(HoodActivity.class.getSimpleName());
-            logger.info(e.getMessage());
+            Log.e(HoodActivity.class.getSimpleName(), e.getMessage());
+
+            try {
+                Logger logger = Logger.getLogger(HoodActivity.class.getSimpleName());
+                logger.info(e.getMessage());
+            } catch (Exception ex) {
+                Log.e(HoodActivity.class.getSimpleName(), e.getMessage());
+            }
+
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(10);
+
+            Intent restartIntent = new Intent(getApplicationContext(), MainActivity.class);
+            PendingIntent runner = PendingIntent.getActivity(getApplicationContext(), 99, restartIntent, PendingIntent.FLAG_ONE_SHOT);
+            AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 5000, runner);
 
             mDefaultUncaughtExceptionHandler.uncaughtException(t, e);
         }

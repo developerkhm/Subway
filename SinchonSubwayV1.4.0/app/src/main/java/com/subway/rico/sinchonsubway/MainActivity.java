@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -44,12 +45,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(com.subway.rico.sinchonsubway.R.layout.main_activity);
         checkPermission();
-        setReceiver();
+//        setReceiver();
         initStart();
     }
 
     private void initStart() {
-        Logger logger = Logger.getLogger(MainActivity.class.getSimpleName());
         CommonUtil.getInstance().MainActivity = MainActivity.this;
 
         Button btn1 = (Button) findViewById(com.subway.rico.sinchonsubway.R.id.st_button1);
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                         | Intent.FLAG_ACTIVITY_CLEAR_TOP
                         | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-                startActivity(new Intent(MainActivity.this, StationActivity.class));
+                startActivity(intent);
             }
         });
 
@@ -223,14 +223,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initLogwite() {
-        logConfigurator = new LogConfigurator();
-        logConfigurator.setFileName(Environment.getExternalStorageDirectory() + "/Subway/Logs/logFile.log");
-        logConfigurator.configure();
-        Logger logger = Logger.getLogger(MainActivity.class.getSimpleName());
-        logger.info("MainActivity start");
+        try {
+            logConfigurator = new LogConfigurator();
+            logConfigurator.setFileName(Environment.getExternalStorageDirectory() + "/Subway/Logs/logFile.log");
+            logConfigurator.configure();
+        } catch (Exception e) {
+            Log.e("error", e.getMessage());
+        }
     }
 
-    private void autoStart(){
+    private void autoStart() {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -264,12 +266,19 @@ public class MainActivity extends AppCompatActivity {
                     default:
                 }
             }
-        }, 4000);
+        }, 5000);
     }
 
-    private void setReceiver(){
-        mAutorun = new AutoRun();
-        IntentFilter filter = new IntentFilter(Intent.ACTION_BOOT_COMPLETED);
-        this.registerReceiver(mAutorun, filter);
+//    private void setReceiver() {
+//        mAutorun = new AutoRun();
+//        IntentFilter filter = new IntentFilter(Intent.ACTION_BOOT_COMPLETED);
+//        this.registerReceiver(mAutorun, filter);
+//    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        isAuto = true;
+        autoStart();
     }
 }

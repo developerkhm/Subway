@@ -14,8 +14,7 @@
             android:name=".AutoRun"
             android:enabled="true"
             android:exported="true"
-            android:label="Starter"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            android:label="Starter">
             <intent-filter android:priority="9999">
                 <category android:name="android.intent.category.DEFAULT"/>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>

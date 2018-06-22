@@ -43,11 +43,17 @@
         android:id="@+id/st_button3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="3.Exit"
+        android:text="3.Exit-1"
         tools:layout_editor_absoluteX="67dp"
         tools:layout_editor_absoluteY="247dp" />
 
-
+    <Button
+        android:id="@+id/st_button5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="3.Exit-2"
+        tools:layout_editor_absoluteX="67dp"
+        tools:layout_editor_absoluteY="247dp" />
 
     <TextView
         android:id="@+id/textView2"

@@ -57,7 +57,7 @@ public class ExitFragment4Retrofit extends Fragment {
         mImg_Title.getLayoutParams().height = CommonUtil.getInstance().utilGetViewWidthPx(MAX_TITLEIMG_H);
         CommonUtil.getInstance().loadImage(getActivity(), R.drawable.exit_head, mImg_Title);
 
-        mImg_res = R.drawable.exit_main_3;
+        mImg_res = R.drawable.exit_main_3_1;
         mImg_Main = (ImageView) view.findViewById(R.id.img_main);
         mImg_Main.getLayoutParams().width = CommonUtil.getInstance().utilGetViewWidthPx(MAX_MAIN_W);
         mImg_Main.getLayoutParams().height = CommonUtil.getInstance().utilGetViewWidthPx(MAX_MAIN_H);

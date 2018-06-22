@@ -29,12 +29,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_WRITE_STORAGE_REQUEST_CODE = 112;
 
-    public  static int HOIKMAIN_FLAG = 2;
+    public static int HOIKMAIN_FLAG = 2;
     private boolean isAuto = true;
     private LogConfigurator logConfigurator;
     private Handler mHandler = new Handler();
-
-
 
 
     @Override
@@ -51,25 +49,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initStart() {
-        Logger logger = Logger.getLogger(MainActivity.class.getSimpleName());
         CommonUtil.getInstance().MainActivity = MainActivity.this;
 
         Button btn1 = (Button) findViewById(com.subway.rico.hongiksubway.R.id.st_button1);
         Button btn2 = (Button) findViewById(com.subway.rico.hongiksubway.R.id.st_button2);
         Button btn3 = (Button) findViewById(com.subway.rico.hongiksubway.R.id.st_button3);
         Button btn4 = (Button) findViewById(com.subway.rico.hongiksubway.R.id.st_button4);
+        Button btn5 = (Button) findViewById(com.subway.rico.hongiksubway.R.id.st_button5);
+
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 isAuto = false;
                 savePreferences(1);
-
                 Intent intent = new Intent(MainActivity.this, StationActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_CLEAR_TOP
                         | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-                startActivity(new Intent(MainActivity.this, StationActivity.class));
+                startActivity(intent);
             }
         });
 
@@ -91,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 isAuto = false;
                 savePreferences(3);
+                HOIKMAIN_FLAG = 3;
                 Intent intent = new Intent(MainActivity.this, ExitActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -105,6 +104,19 @@ public class MainActivity extends AppCompatActivity {
                 HOIKMAIN_FLAG = 4;
                 savePreferences(4);
                 Intent intent = new Intent(MainActivity.this, HoodActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+            }
+        });
+        btn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isAuto = false;
+                HOIKMAIN_FLAG = 5;
+                savePreferences(5);
+                Intent intent = new Intent(MainActivity.this, ExitActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_CLEAR_TOP
                         | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -148,7 +160,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    private void requestAppPermissions() {
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        isAuto = true;
+        autoStart();
+    }
+
+    //    private void requestAppPermissions() {
 //        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
 //            return;
 //        }
@@ -238,12 +257,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initLogwite() {
-        logConfigurator = new LogConfigurator();
-        logConfigurator.setFileName(Environment.getExternalStorageDirectory() + "/Subway/Logs/logFile.log");
-        logConfigurator.configure();
+        try {
+            logConfigurator = new LogConfigurator();
+            logConfigurator.setFileName(Environment.getExternalStorageDirectory() + "/Subway/Logs/logFile.log");
+            logConfigurator.configure();
+        } catch (Exception e) {
+            Log.e("error", e.getMessage());
+        }
     }
 
-    private void autoStart(){
+    private void autoStart() {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -272,6 +295,7 @@ public class MainActivity extends AppCompatActivity {
                         intent3.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                                 | Intent.FLAG_ACTIVITY_CLEAR_TOP
                                 | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        HOIKMAIN_FLAG = 3;
                         startActivity(intent3);
                         break;
                     case 4:
@@ -282,9 +306,17 @@ public class MainActivity extends AppCompatActivity {
                         HOIKMAIN_FLAG = 4;
                         startActivity(intent4);
                         break;
+                    case 5:
+                        Intent intent5 = new Intent(MainActivity.this, ExitActivity.class);
+                        intent5.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        HOIKMAIN_FLAG = 5;
+                        startActivity(intent5);
+                        break;
                     default:
                 }
             }
-        }, 4000);
+        }, 5000);
     }
 }

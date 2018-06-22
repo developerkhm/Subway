@@ -13,16 +13,10 @@ public class AutoRun extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
 
-
-        Logger logger = Logger.getLogger(AutoRun.class.getSimpleName());
-        logger.info("AutoRun test");
-
-
         String action = intent.getAction();
         if(action.equals("android.intent.action.BOOT_COMPLETED")){
             Intent intent1 = new Intent(context, MainActivity.class);
             intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
             context.startActivity(intent1);
         }
 ////        if(action.equals("android.intent.action.QUICKBOOT_POWERON")){

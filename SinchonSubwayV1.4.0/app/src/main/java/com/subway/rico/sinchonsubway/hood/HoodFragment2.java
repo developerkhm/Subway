@@ -30,6 +30,7 @@ public class HoodFragment2 extends Fragment {
 
     private final int MAX_MAIN_IMG_W = 2160;
     private final int MAX_MAIN_IMG_H = 1146;
+
     private final int MAX_MAIN_LIST_TITLE_W = 2160;
     private final int MAX_MAIN_LIST_TITLE_H = 161;
     private final int MAX_MAIN_LIST_W = 2160;

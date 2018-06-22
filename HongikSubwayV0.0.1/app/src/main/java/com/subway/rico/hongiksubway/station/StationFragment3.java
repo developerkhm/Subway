@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.subway.rico.hongiksubway.common.CommonUtil;
 import com.subway.rico.hongiksubway.R;
@@ -20,15 +21,21 @@ import com.subway.rico.hongiksubway.R;
  * A simple {@link Fragment} subclass.
  */
 public class StationFragment3 extends Fragment {
-    private ImageView mHead, mImg_Main;
+
+    private LinearLayout mFrame;
+    private ImageView mHead, mImg_Head, mImg_Main, mImg_Foot;
     private int mImg_res;
     private int[] mThumbIds;
     private GridView gridview;
 
     private final int MAX_HEAD_IMG_W = 2160;
     private final int MAX_HEAD_IMG_H = 798;
+    private final int MAX_MAIN_HEAD_IMG_W = 2160;
+    private final int MAX_MAIN_HEAD_IMG_H = 633;
     private final int MAX_MAIN_IMG_W = 2160;
-    private final int MAX_MAIN_IMG_H = 2482;
+    private final int MAX_MAIN_IMG_H = 1045;
+    private final int MAX_MAIN_FOOT_IMG_W = 2160;
+    private final int MAX_MAIN_FOOT_IMG_H = 804;
     private final int MAX_GRID_ITEM_W = 442;
     private final int MAX_GRID_ITEM_H = 474;
     private final int MAX_GRID_MARGIN_W = 100;
@@ -48,13 +55,26 @@ public class StationFragment3 extends Fragment {
         mHead.getLayoutParams().width = CommonUtil.getInstance().utilGetViewWidthPx(MAX_HEAD_IMG_W);
         mHead.getLayoutParams().height = CommonUtil.getInstance().utilGetViewWidthPx(MAX_HEAD_IMG_H);
 
+        mImg_Head = (ImageView) view.findViewById(R.id.img_main_head);
+        mImg_Head.getLayoutParams().width = CommonUtil.getInstance().utilGetViewWidthPx(MAX_MAIN_HEAD_IMG_W);
+        mImg_Head.getLayoutParams().height = CommonUtil.getInstance().utilGetViewWidthPx(MAX_MAIN_HEAD_IMG_H);
+        CommonUtil.getInstance().loadImage(getActivity(), R.drawable.station_main_3_head, mImg_Head);
+
         mImg_Main = (ImageView) view.findViewById(R.id.img_main);
         mImg_Main.getLayoutParams().width = CommonUtil.getInstance().utilGetViewWidthPx(MAX_MAIN_IMG_W);
         mImg_Main.getLayoutParams().height = CommonUtil.getInstance().utilGetViewWidthPx(MAX_MAIN_IMG_H);
-        mImg_res = R.drawable.station_main_1;
+        mImg_res = R.drawable.station_main_3_location;
         CommonUtil.getInstance().loadImage(getActivity(), mImg_res, mImg_Main);
 
-        mImg_Main.setOnClickListener(new View.OnClickListener() {
+
+        mImg_Foot = (ImageView) view.findViewById(R.id.img_main_foot);
+        mImg_Foot.getLayoutParams().width = CommonUtil.getInstance().utilGetViewWidthPx(MAX_MAIN_FOOT_IMG_W);
+        mImg_Foot.getLayoutParams().height = CommonUtil.getInstance().utilGetViewWidthPx(MAX_MAIN_FOOT_IMG_H);
+        CommonUtil.getInstance().loadImage(getActivity(), R.drawable.station_main_3_foot, mImg_Foot);
+
+
+        mFrame = (LinearLayout) view.findViewById(R.id.main_frame);
+        mFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (gridview.getVisibility() == View.VISIBLE) {
@@ -76,7 +96,7 @@ public class StationFragment3 extends Fragment {
 //                R.drawable.grid_btn08,
                 R.drawable.station_main_3_grid_9,
                 R.drawable.station_main_3_grid_10,
-                R.drawable.station_main_3_grid_11,
+//                R.drawable.station_main_3_grid_11,
                 R.drawable.station_main_3_grid_12
         };
 
@@ -96,28 +116,25 @@ public class StationFragment3 extends Fragment {
                         CommonUtil.getInstance().loadImage(getActivity(), R.drawable.station_main_3_location_2, mImg_Main);
                         break;
                     case 2:
-                        CommonUtil.getInstance().loadImage(getActivity(), R.drawable.station_main_3_location_3, mImg_Main);
-                        break;
-                    case 3:
                         CommonUtil.getInstance().loadImage(getActivity(), R.drawable.station_main_3_location_4, mImg_Main);
                         break;
-                    case 4:
+                    case 3:
                         CommonUtil.getInstance().loadImage(getActivity(), R.drawable.station_main_3_location_5, mImg_Main);
                         break;
-                    case 5:
+                    case 4:
                         CommonUtil.getInstance().loadImage(getActivity(), R.drawable.station_main_3_location_6, mImg_Main);
                         break;
-                    case 6:
+                    case 5:
                         CommonUtil.getInstance().loadImage(getActivity(), R.drawable.station_main_3_location_7, mImg_Main);
                         break;
-                    case 7:
-                        CommonUtil.getInstance().loadImage(getActivity(), R.drawable.station_main_3_location_8, mImg_Main);
-                        break;
-                    case 8:
+                    case 6:
                         CommonUtil.getInstance().loadImage(getActivity(), R.drawable.station_main_3_location_9, mImg_Main);
                         break;
-                    case 9:
+                    case 7:
                         CommonUtil.getInstance().loadImage(getActivity(), R.drawable.station_main_3_location_10, mImg_Main);
+                        break;
+                    case 8:
+                        CommonUtil.getInstance().loadImage(getActivity(), R.drawable.station_main_3_location_12, mImg_Main);
                         break;
                 }
             }

@@ -5,6 +5,7 @@
     tools:context="com.subway.rico.hongiksubway.station.StationFragment3">
 
     <LinearLayout
+        android:id="@+id/main_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -17,7 +18,19 @@
             android:scaleType="fitStart" />
 
         <ImageView
+            android:id="@+id/img_main_head"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitStart" />
+
+        <ImageView
             android:id="@+id/img_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitStart" />
+
+        <ImageView
+            android:id="@+id/img_main_foot"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitStart" />

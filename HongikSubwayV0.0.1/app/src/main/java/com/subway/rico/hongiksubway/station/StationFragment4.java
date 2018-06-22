@@ -38,7 +38,7 @@ public class StationFragment4 extends Fragment {
         mImg_Main.getLayoutParams().height = CommonUtil.getInstance().utilGetViewWidthPx(MAX_MAIN_IMG_H);
         mImg_res = R.drawable.station_main_4;
         mAttacher = new PhotoViewAttacher(mImg_Main);
-        mAttacher.setScaleType(ImageView.ScaleType.FIT_XY);
+        mAttacher.setScaleType(ImageView.ScaleType.FIT_START);
         CommonUtil.getInstance().loadImage(getActivity(), mImg_res, mImg_Main);
         return view;
     }

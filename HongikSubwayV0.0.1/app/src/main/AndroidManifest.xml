@@ -10,7 +10,17 @@
         android:supportsRtl="true"
         android:largeHeap="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.subway.rico.hongiksubway.MainActivity"
+        <receiver
+            android:name=".AutoRun"
+            android:enabled="true"
+            android:exported="true"
+            android:label="Starter">
+            <intent-filter android:priority="9999">
+                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+        <activity android:name=".MainActivity"
             android:launchMode="singleTask"
             android:clearTaskOnLaunch="true">
             <intent-filter>
@@ -23,6 +33,7 @@
         <activity android:name="com.subway.rico.hongiksubway.exit.ExitActivity" />
     </application>
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET" />

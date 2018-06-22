@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.subway.rico.hongiksubway.MainActivity;
 import com.subway.rico.hongiksubway.common.CommonUtil;
 import com.subway.rico.hongiksubway.R;
 
@@ -43,12 +44,17 @@ public class ExitFragment4 extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.exit_fragment4, container, false);
 
+        if (MainActivity.HOIKMAIN_FLAG == 3)    // Fragment3 이미지 동일
+            mImg_res = R.drawable.exit_main_3_1;
+        if (MainActivity.HOIKMAIN_FLAG == 5)
+            mImg_res = R.drawable.exit_main_3_2;
+
+
         mImg_Title = (ImageView) view.findViewById(R.id.img_title);
         mImg_Title.getLayoutParams().width = CommonUtil.getInstance().utilGetViewWidthPx(MAX_TITLE_IMG_W);
         mImg_Title.getLayoutParams().height = CommonUtil.getInstance().utilGetViewWidthPx(MAX_TITLEIMG_H);
         CommonUtil.getInstance().loadImage(getActivity(), R.drawable.exit_head, mImg_Title);
 
-        mImg_res = R.drawable.exit_main_3;
         mImg_Main = (ImageView) view.findViewById(R.id.img_main);
         mImg_Main.getLayoutParams().width = CommonUtil.getInstance().utilGetViewWidthPx(MAX_MAIN_W);
         mImg_Main.getLayoutParams().height = CommonUtil.getInstance().utilGetViewWidthPx(MAX_MAIN_H);

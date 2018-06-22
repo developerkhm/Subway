@@ -71,8 +71,8 @@ public class CommonUtil {
                             logger.info(e.getLocalizedMessage());
                         }
 
-                        Glide.with(context).load(model).into(target);
-                        return true; //return false;
+//                        Glide.with(context).load(model).into(target);
+                       return false;
                     }
 
                     @Override
