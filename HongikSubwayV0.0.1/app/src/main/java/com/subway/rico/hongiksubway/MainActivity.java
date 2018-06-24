@@ -1,6 +1,8 @@
 package com.subway.rico.hongiksubway;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isAuto = true;
     private LogConfigurator logConfigurator;
     private Handler mHandler = new Handler();
+    private String mServicePackageName = "com.subway.rico.hongiksubway.LauncherService";
 
 
     @Override
@@ -223,10 +226,12 @@ public class MainActivity extends AppCompatActivity {
                 // 다음 부분은 항상 허용일 경우에 해당이 됩니다.
                 initLogwite();
                 autoStart();
+                startService();
             }
         } else {
             initLogwite();
             autoStart();
+            startService();
         }
     }
 
@@ -239,16 +244,13 @@ public class MainActivity extends AppCompatActivity {
 
                     initLogwite();
                     autoStart();
-
+                    startService();
                     // permission was granted, yay! do the
                     // calendar task you need to do.
-
                 } else {
                     int pid = android.os.Process.myPid();
                     android.os.Process.killProcess(pid);
-
 //                    Log.d(TAG, "Permission always deny");
-
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
@@ -318,5 +320,32 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }, 5000);
+    }
+
+    private void startService() {
+        // 서비스 시작하기
+        Log.d("subway-service", "Service Start call");
+        if (!isServiceRunningCheck()) {
+            startService(new Intent(getApplicationContext(), LauncherService.class));
+        }
+    }
+
+    private void stopService() {
+        // 서비스 종료하기
+        Log.d("subway-service", "Service Stop call");
+        Intent intent = new Intent(getApplicationContext(), LauncherService.class);
+        stopService(intent);
+    }
+
+    public boolean isServiceRunningCheck() {
+        ActivityManager manager = (ActivityManager) this.getSystemService(Activity.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (mServicePackageName.equals(service.service.getClassName())) {
+                Log.d("subway-service", "Service Already Running");
+                return true;
+            }
+        }
+        Log.d("subway-service", "Service Not Running");
+        return false;
     }
 }
