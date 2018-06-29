@@ -26,6 +26,9 @@ import com.subway.rico.sinchonsubway.station.StationActivity;
 
 import org.apache.log4j.Logger;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.mindpipe.android.logging.log4j.LogConfigurator;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,6 +40,13 @@ public class MainActivity extends AppCompatActivity {
     private String mServicePackageName = "com.subway.rico.sinchonsubway.LauncherService";
 
     private AutoRun mAutorun;
+
+    @BindView(R.id.st_button1)
+    Button btn1;
+    @BindView(R.id.st_button2)
+    Button btn2;
+    @BindView(R.id.st_button3)
+    Button btn3;
 
     @Override
     protected void onStart() {
@@ -55,51 +65,51 @@ public class MainActivity extends AppCompatActivity {
     private void initStart() {
         CommonUtil.getInstance().MainActivity = MainActivity.this;
 
-        Button btn1 = (Button) findViewById(com.subway.rico.sinchonsubway.R.id.st_button1);
-        Button btn2 = (Button) findViewById(com.subway.rico.sinchonsubway.R.id.st_button2);
-        Button btn3 = (Button) findViewById(com.subway.rico.sinchonsubway.R.id.st_button3);
-        btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isAuto = false;
-                savePreferences(1);
+        ButterKnife.bind(this);
 
-                Intent intent = new Intent(MainActivity.this, StationActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_CLEAR_TOP
-                        | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-                startActivity(intent);
-            }
-        });
-
-        btn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isAuto = false;
-                savePreferences(2);
-
-                Intent intent = new Intent(MainActivity.this, HoodActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_CLEAR_TOP
-                        | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-                startActivity(intent);
-            }
-        });
-        btn3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isAuto = false;
-                savePreferences(3);
-
-                Intent intent = new Intent(MainActivity.this, ExitActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_CLEAR_TOP
-                        | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-            }
-        });
+//        btn1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                isAuto = false;
+//                savePreferences(1);
+//
+//                Intent intent = new Intent(MainActivity.this, StationActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+//                        | Intent.FLAG_ACTIVITY_CLEAR_TOP
+//                        | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//
+//                startActivity(intent);
+//            }
+//        });
+//
+//        btn2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                isAuto = false;
+//                savePreferences(2);
+//
+//                Intent intent = new Intent(MainActivity.this, HoodActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+//                        | Intent.FLAG_ACTIVITY_CLEAR_TOP
+//                        | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//
+//                startActivity(intent);
+//            }
+//        });
+//        btn3.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                isAuto = false;
+//                savePreferences(3);
+//
+//                Intent intent = new Intent(MainActivity.this, ExitActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+//                        | Intent.FLAG_ACTIVITY_CLEAR_TOP
+//                        | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//                startActivity(intent);
+//            }
+//        });
     }
 
     // 값 불러오기
@@ -313,4 +323,32 @@ public class MainActivity extends AppCompatActivity {
         isAuto = true;
         autoStart();
     }
+
+    @OnClick({R.id.st_button1, R.id.st_button2, R.id.st_button3})
+    public void onClick(View v) {
+        Class startClass = null;
+        switch(v.getId()) {
+            case R.id.st_button1:
+                startClass = StationActivity.class;
+                break;
+            case R.id.st_button2:
+                startClass = HoodActivity.class;
+                break;
+            case R.id.st_button3:
+                startClass = ExitActivity.class;
+                break;
+
+        }
+
+        Intent intent = new Intent(MainActivity.this, startClass);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+    }
+
+
+   
+
+   
 }

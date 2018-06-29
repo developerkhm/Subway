@@ -25,3 +25,9 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext{
+    android_support_lib_version="26.1.0"
+    retrofit_version = "2.3.0"
+    glide_version = "4.3.1"
+}
