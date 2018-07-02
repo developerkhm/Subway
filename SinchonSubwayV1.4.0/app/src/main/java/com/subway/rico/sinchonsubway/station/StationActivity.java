@@ -1,6 +1,7 @@
 package com.subway.rico.sinchonsubway.station;
 
 import android.app.AlarmManager;
+import android.app.Fragment;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,8 @@ import com.subway.rico.sinchonsubway.R;
 import com.subway.rico.sinchonsubway.exit.ExitActivity;
 
 import org.apache.log4j.Logger;
+
+import java.util.List;
 
 public class StationActivity extends AppCompatActivity {
 
@@ -136,8 +139,6 @@ public class StationActivity extends AppCompatActivity {
 //                transaction.replace(R.id.content_fragment, mContentFragment4);
 //                transaction.addToBackStack(null);
 //                transaction.commit();
-
-
                 return false;
             }
         });

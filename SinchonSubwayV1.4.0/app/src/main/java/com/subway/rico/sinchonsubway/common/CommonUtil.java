@@ -2,6 +2,7 @@ package com.subway.rico.sinchonsubway.common;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
@@ -187,6 +188,40 @@ public class CommonUtil {
         newUiOptions ^= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         activity.getWindow().getDecorView().setSystemUiVisibility(newUiOptions);
     }
+
+
+
+    // 값 불러오기
+    public int getPreferences() {
+        SharedPreferences pref = MainActivity.getSharedPreferences("pref", MainActivity.MODE_PRIVATE);
+        return pref.getInt("state", 1);
+    }
+
+    // 값 저장하기
+    public void savePreferences(int state) {
+        SharedPreferences pref = MainActivity.getSharedPreferences("pref", MainActivity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("state", state);
+        editor.commit();
+    }
+
+    // 값(Key Data) 삭제하기
+    public void removePreferences() {
+        SharedPreferences pref = MainActivity.getSharedPreferences("pref", MainActivity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.remove("state");
+        editor.commit();
+    }
+
+    // 값(ALL Data) 삭제하기
+    public void removeAllPreferences() {
+        SharedPreferences pref = MainActivity.getSharedPreferences("pref", MainActivity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.clear();
+        editor.commit();
+    }
+
+
 }
 
 //    public void markerOn(ImageView view, int offSetTop, int offSetLeft) {

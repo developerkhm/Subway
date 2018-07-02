@@ -42,9 +42,6 @@ public class ExitActivity extends AppCompatActivity {
     private ExitFragment3 mContentFragment3;
     private ExitFragment4 mContentFragment4;
 
-
-
-
     private FrameLayout mFrame;
     private int mFullScreenY;
 
@@ -174,9 +171,6 @@ public class ExitActivity extends AppCompatActivity {
 
         btnReset(); // 메뉴버튼 초기화
     }
-
-
-
 
     private void btnReset() {
         for (int i = 0; i < mMenu_Resource.length; i++) {

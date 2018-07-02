@@ -171,7 +171,6 @@ public class ExitFragment2 extends Fragment {
                     CommonUtil.getInstance().loadImage(mContext, mImg_res, mImg_Main);
                     CommonUtil.getInstance().callToast(getActivity());
                     break;
-
             }
         }
     }

@@ -3,27 +3,30 @@
     package="com.subway.rico.sinchonsubway">
 
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:largeHeap="true"
         android:theme="@style/AppTheme">
-        <service android:name=".LauncherService"></service>
+        <service android:name=".LauncherService" />
         <receiver
             android:name=".AutoRun"
             android:enabled="true"
             android:exported="true"
             android:label="Starter">
             <intent-filter android:priority="9999">
-                <category android:name="android.intent.category.DEFAULT"/>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <activity android:name=".MainActivity"
-            android:launchMode="singleTask"
-            android:clearTaskOnLaunch="true">
+
+        <activity
+            android:name=".MainActivity"
+            android:clearTaskOnLaunch="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -34,11 +37,11 @@
         <activity android:name="com.subway.rico.sinchonsubway.exit.ExitActivity" />
     </application>
 
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 </manifest>
