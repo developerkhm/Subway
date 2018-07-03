@@ -62,7 +62,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
 //        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 //        actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -114,11 +116,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+//
+//        if (id== R.id.action_cart    ){
+//
+//            return true;
+//        }
+//
+//        if(){
+//
+//        }
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -184,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             WebSettings webSettings = mWebView.getSettings();
 
             // 웹뷰가 캐시를 사용하지 않도록 설정
-            webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+//            webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
             // javascript를 실행할 수 있도록 설정
             webSettings.setJavaScriptEnabled(true);
@@ -229,6 +240,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mWebView.addJavascriptInterface(androidBridge, "MyApp");
 
             //==============================================//
+            webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+            webSettings.setEnableSmoothTransition(true);
+            webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+            webSettings.setAppCacheEnabled(true);
+
 
 
             webSettings.setBuiltInZoomControls(false);
