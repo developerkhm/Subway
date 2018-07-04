@@ -13,15 +13,18 @@ import android.webkit.CookieSyncManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.skt.tmaphot.client.SyrupWebChromeClient;
 import com.skt.tmaphot.client.SyrupWebViewClient;
 import com.skt.tmaphot.common.AndroidBridge;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
 
-    public WebView mWebView;
     public static MainActivity mContext;
     public static final String ENTRY_URL = "https://shop.ordertable.co.kr/intro";
 
@@ -44,24 +47,24 @@ public class MainActivity extends AppCompatActivity {
     public SyrupWebViewClient syrupWebViewClient;
     public BackPressCloseHandler backPressCloseHandler;
 
+    @BindView(R.id.activity_main_webview)
+    WebView mWebView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        mWebView = (WebView) findViewById(R.id.activity_main_webview);
         mWebView.setWebViewClient(new SyrupWebViewClient(this, mWebView));
         mWebView.setWebChromeClient(new SyrupWebChromeClient(this, mWebView));
         mWebView.addJavascriptInterface(new AndroidBridge(), "MyApp");
 
-
         Uri uri = getIntent().getData();
-
         if (uri != null) {
             OResultPage(uri);
         } else {
             mWebView.loadUrl(HOTPLACE_URL);
-
         }
         // 뒤로가기 핸들러
         backPressCloseHandler = new BackPressCloseHandler(this);
@@ -110,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
 
             mWebView.clearHistory();
             mWebView.postUrl(url, Base64.encodeToString(postData.getBytes(), Base64.DEFAULT).getBytes());
-
         }
     }
 

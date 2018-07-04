@@ -81,7 +81,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        startMainActivity(0);
+        initStart(0);
     }
 
     public void startMainActivity(int delayTime) {

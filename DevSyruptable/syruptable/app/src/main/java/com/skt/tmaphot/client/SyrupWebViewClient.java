@@ -187,7 +187,6 @@ public class SyrupWebViewClient extends WebViewClient {
             case ERROR_UNSUPPORTED_SCHEME:
                 break;          // URI가 지원되지 않는 방식
         }
-
     }
 
     // http 인증 요청이 있는 경우, 기본 동작은 요청 취소
