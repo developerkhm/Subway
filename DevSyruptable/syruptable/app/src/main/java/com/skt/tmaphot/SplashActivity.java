@@ -41,9 +41,6 @@ public class SplashActivity extends AppCompatActivity {
     public static int RENEW_GPS = 1;
     public static int SEND_PRINT = 2;
 
-    public static Double dLatitude;  // 현재위치 경도
-    public static Double dLongitude; // 현재위치 위도
-
     private String TAG = "gps";
 
     @BindView(R.id.splash_img)
@@ -114,7 +111,7 @@ public class SplashActivity extends AppCompatActivity {
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(
-                    "Your GPS module is disabled. Would you like to enable it ?")
+                    "정확한 위치를 위해 GPS 활성화가 필요합니다.")
                     .setCancelable(false)
                     .setPositiveButton("Yes",
                             new DialogInterface.OnClickListener() {

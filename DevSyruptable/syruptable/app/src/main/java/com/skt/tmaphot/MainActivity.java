@@ -1,6 +1,6 @@
 package com.skt.tmaphot;
 
-import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,22 +9,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.KeyEvent;
-import android.view.View;
-import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Toast;
 
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
 import com.skt.tmaphot.client.SyrupWebChromeClient;
 import com.skt.tmaphot.client.SyrupWebViewClient;
 import com.skt.tmaphot.common.AndroidBridge;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,67 +44,16 @@ public class MainActivity extends AppCompatActivity {
     public SyrupWebViewClient syrupWebViewClient;
     public BackPressCloseHandler backPressCloseHandler;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         mWebView = (WebView) findViewById(R.id.activity_main_webview);
-        mWebView.addJavascriptInterface(new AndroidBridge(), "MyApp");
         mWebView.setWebViewClient(new SyrupWebViewClient(this, mWebView));
         mWebView.setWebChromeClient(new SyrupWebChromeClient(this, mWebView));
+        mWebView.addJavascriptInterface(new AndroidBridge(), "MyApp");
 
-        WebSettings webSettings = mWebView.getSettings();
-        // 웹뷰가 캐시를 사용하지 않도록 설정
-        // javascript를 실행할 수 있도록 설정
-        webSettings.setJavaScriptEnabled(true);
-        // 화면에 문서 전체가 보이게 설정
-        webSettings.setUseWideViewPort(true);
-        webSettings.setLoadWithOverviewMode(true);
-        // 확대,축소 기능을 사용할 수 있도록 설정
-        webSettings.setSupportZoom(false);
-        // 웹뷰 텍스트 고정
-        webSettings.setTextZoom(100);
-        // 쿠키
-        CookieSyncManager.createInstance(this);
-        // 마쉬멜로우 버젼 이상일 경우
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
-            // 웹뷰내 https 이미지 나오게 처리 ( 혼합 콘텐츠가 타사 쿠키를 차단할 때 생기는 오류 처리 )
-            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-            CookieManager cookieManager = CookieManager.getInstance();
-            cookieManager.setAcceptCookie(true);
-            cookieManager.setAcceptThirdPartyCookies(mWebView, true);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WebView.setWebContentsDebuggingEnabled(true);
-        }
-        //자바스크립트의 window.open 허용
-        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        // 여러개의 윈도우를 사용할 수 있도록 설정
-        webSettings.setSupportMultipleWindows(false);
-        // 웹뷰내의 localStorage 사용여부
-        webSettings.setDomStorageEnabled(true);
-        // 웹뷰내의 위치정보 사용여부
-        webSettings.setGeolocationEnabled(true);
-
-        //============================ 임시 추가 및 변경 사항 ========================//
-//        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
-        webSettings.setEnableSmoothTransition(true);
-        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        webSettings.setAppCacheEnabled(true);
-        webSettings.setBuiltInZoomControls(false);
-        mWebView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-        mWebView.setScrollbarFadingEnabled(true);
-        mWebView.getSettings().setUseWideViewPort(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mWebView.getSettings().setLoadWithOverviewMode(true);
-            mWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        } else {
-            mWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        }
 
         Uri uri = getIntent().getData();
 
@@ -142,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("NewApi")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
@@ -241,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
                 activity.finish();
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
-
         }
 
         public void showGuide() {

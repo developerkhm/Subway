@@ -33,7 +33,6 @@ public class RealPathUtil {
         else {
             realPath = RealPathUtil.getRealPathFromURI_API19(context, uri);
         }
-
         return realPath;
     }
 
