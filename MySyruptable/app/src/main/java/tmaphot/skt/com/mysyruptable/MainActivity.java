@@ -249,7 +249,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             webSettings.setBuiltInZoomControls(false);
 
-            webSettings.setDomStorageEnabled(true);
             mWebView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
             mWebView.setScrollbarFadingEnabled(true);
 

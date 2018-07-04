@@ -2,9 +2,11 @@ package tmaphot.skt.com.mysyruptable;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.telephony.TelephonyManager;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
@@ -133,15 +135,15 @@ public class SyrupWebViewClient extends WebViewClient {
 
             // 여기서 WebView의 데이터를 가져오는 작업을 한다.
             if (url.equals(MainActivity.ENTRY_URL)) {
-//                TelephonyManager mgr = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
-//                String userPhone = mgr.getLine1Number();
-//
-//                String script = "javascript:function afterLoad() {"
-//                        + "document.getElementById('userPhone').value = '" + userPhone + "';"
-//                        + "};";
-//                //+ "afterLoad();"
-//                //+ "__init();";
-//                view.loadUrl(script);
+                TelephonyManager mgr = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
+                String userPhone = mgr.getLine1Number();
+
+                String script = "javascript:function afterLoad() {"
+                        + "document.getElementById('userPhone').value = '" + userPhone + "';"
+                        + "};";
+                //+ "afterLoad();"
+                //+ "__init();";
+                view.loadUrl(script);
             }
         }catch(Exception e){}
     }
