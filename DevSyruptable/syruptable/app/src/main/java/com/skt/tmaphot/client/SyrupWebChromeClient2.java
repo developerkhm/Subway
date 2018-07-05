@@ -13,22 +13,21 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import com.skt.tmaphot.MainActivity;
-import com.skt.tmaphot.SyrupMainActivity;
 
 import static com.skt.tmaphot.MainActivity.FILECHOOSER_LOLLIPOP_REQ_CODE;
 import static com.skt.tmaphot.MainActivity.FILECHOOSER_RESULTCODE;
+import static com.skt.tmaphot.SyrupMainActivity.placeholderFragment;
 
 /**
  * Created by home on 2018-05-26.
  */
 
-public class SyrupWebChromeClient extends WebChromeClient {
+public class SyrupWebChromeClient2 extends WebChromeClient {
 
-    private MainActivity activity;
-    private Activity sactivity;
+    private Activity activity;
     private WebView target;
 
-    public SyrupWebChromeClient(MainActivity activity, WebView target) {
+    public SyrupWebChromeClient2(Activity activity, WebView target) {
         this.activity = activity;
         this.target = target;
     }
@@ -83,7 +82,7 @@ public class SyrupWebChromeClient extends WebChromeClient {
     // For Android 3.0-
     @SuppressWarnings("unused")
     public void openFileChooser(ValueCallback<Uri> uploadMsg){
-        activity.mUploadMessage = uploadMsg;
+        placeholderFragment.mUploadMessage = uploadMsg;
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType("*/*");
@@ -93,7 +92,7 @@ public class SyrupWebChromeClient extends WebChromeClient {
     // For Android 3.0+
     @SuppressWarnings("unused")
     public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType){
-        activity.mUploadMessage = uploadMsg;
+        placeholderFragment.mUploadMessage = uploadMsg;
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType("*/*");
@@ -103,7 +102,7 @@ public class SyrupWebChromeClient extends WebChromeClient {
     // For Android 4.1+
     @SuppressWarnings("unused")
     public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture){
-        activity.mUploadMessage = uploadMsg;
+        placeholderFragment.mUploadMessage = uploadMsg;
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType("*/*");
@@ -111,14 +110,14 @@ public class SyrupWebChromeClient extends WebChromeClient {
     }
 
     // For Android 5.0+
-    public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams){
+    public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams){
         Log.d("MainActivity", "5.0+");
-        if(activity.filePathCallbackLollipop != null){
-            activity.filePathCallbackLollipop.onReceiveValue(null);
-            activity.filePathCallbackLollipop = null;
+        if(placeholderFragment.filePathCallbackLollipop != null){
+            placeholderFragment.filePathCallbackLollipop.onReceiveValue(null);
+            placeholderFragment.filePathCallbackLollipop = null;
         }
 
-        activity.filePathCallbackLollipop = filePathCallback ;
+        placeholderFragment.filePathCallbackLollipop = filePathCallback ;
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType("image/*");

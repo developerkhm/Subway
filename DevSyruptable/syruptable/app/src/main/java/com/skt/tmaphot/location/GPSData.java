@@ -1,6 +1,8 @@
 package com.skt.tmaphot.location;
 
 public class GPSData {
+    public static double latitude;
+    public static double longitude;
 
     public GPSData(double latitude_, double longitude_) {
         this.latitude = latitude_;
@@ -14,7 +16,4 @@ public class GPSData {
     public double getLongitude() {
         return longitude;
     }
-
-    public static double latitude;
-    public static double longitude;
 }

@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.skt.tmaphot.common.CommonUtil;
 import com.skt.tmaphot.common.PermissionList;
@@ -86,7 +87,8 @@ public class SplashActivity extends AppCompatActivity {
 
     public void startMainActivity(int delayTime) {
         makeNewGpsService();
-        final Intent intent = new Intent(this, MainActivity.class);
+//        final Intent intent = new Intent(this, MainActivity.class);
+        final Intent intent = new Intent(this, SyrupMainActivity.class);
         // 현재 스플래쉬가 view 방식으로 되어있어 임시 구현
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -128,7 +130,9 @@ public class SplashActivity extends AppCompatActivity {
 
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();
-                                    //종료 처리 해야됨
+                                    startMainActivity(0);
+                                    Toast.makeText(SplashActivity.this, "위치 정보를 가져오는데 실패 하였습니다.", Toast.LENGTH_SHORT).show();
+
                                 }
                             });
             AlertDialog alert = builder.create();
@@ -136,11 +140,8 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-    private void appStop() {
-
-    }
-
     public void makeNewGpsService() {
+        Log.d("getgps", "makeNewGpsService");
         if (gps == null) {
             gps = new GPSTracker(this, mHandler);
         } else {
@@ -149,17 +150,8 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void logPrint(GPSData gps) {
-        //androidBridge.setMessage(str);
-        //mWebView.loadUrl("javascript:setLocation('"+str+"')");
-
         GPSData.latitude = gps.getLatitude();
         GPSData.longitude = gps.getLongitude();
-
-        Log.d("gps", "위도: " + GPSData.latitude);
-        Log.d("gps", "경도: " + GPSData.longitude);
-
-        //String str = this.dLatitude.toString()+":"+this.dLongitude.toString();
-        //Toast.makeText(MainActivity.this, str, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -192,8 +184,9 @@ public class SplashActivity extends AppCompatActivity {
             listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         }
 
-        if (!listPermissionsNeeded.isEmpty()) { ActivityCompat.requestPermissions(this,
-                listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_ID_MULTIPLE_PERMISSIONS);
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this,
+                    listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_ID_MULTIPLE_PERMISSIONS);
             return false;
         }
         return true;
@@ -201,19 +194,23 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        Log.d("TEST", "'onRequestPermissionsResult");
         switch (requestCode) {
             case REQUEST_ID_MULTIPLE_PERMISSIONS:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //Permission Granted Successfully. Write working code here.
-                    Log.d("TEST", "'Loggggg");
                     initStart(0);
                 } else {
                     //You did not accept the request can not use the functionality.
-                    int pid = android.os.Process.myPid();
-                    android.os.Process.killProcess(pid);
+                    Toast.makeText(this, "권한 정보 동의에 실패하여 3초 후에 앱을 종료합니다.", Toast.LENGTH_SHORT).show();
+                    appKill();
                 }
                 break;
         }
+    }
+
+    private void appKill() {
+        this.finish();
+        android.os.Process.killProcess(android.os.Process.myPid());
+
     }
 }

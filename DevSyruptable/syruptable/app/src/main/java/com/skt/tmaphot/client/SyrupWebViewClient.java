@@ -1,5 +1,6 @@
 package com.skt.tmaphot.client;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -27,14 +29,14 @@ import java.net.URISyntaxException;
  */
 
 public class SyrupWebViewClient extends WebViewClient {
-    private MainActivity activity;
+    private Activity activity;
     private WebView target;
-    private final String TAG = "syrup";
+    private final String LOG_TAG = "client";
     public String mCallbackparam1, mCallbackparam2, mCallbackparam3;
     private String mRequestUrl = null;
     public final int REQ_KFTC = 1;
 
-    public SyrupWebViewClient(MainActivity activity, WebView target) {
+    public SyrupWebViewClient(Activity activity, WebView target) {
         this.activity = activity;
         this.target = target;
         init();
@@ -130,6 +132,8 @@ public class SyrupWebViewClient extends WebViewClient {
     // 로딩이 완료됬을 때 한번 호출
     @Override
     public void onPageFinished(WebView view, String url) {
+        Log.d(LOG_TAG, "onPageFinished : " + url);
+
 
         try {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
@@ -154,7 +158,7 @@ public class SyrupWebViewClient extends WebViewClient {
     @Override
     public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
         super.onReceivedError(view, errorCode, description, failingUrl);
-
+        Log.d(LOG_TAG, "onReceivedError : " + errorCode + "failingUrl : " + failingUrl);
         switch (errorCode) {
             case ERROR_AUTHENTICATION:
                 break;               // 서버에서 사용자 인증 실패
@@ -210,7 +214,7 @@ public class SyrupWebViewClient extends WebViewClient {
     // 새로운 URL이 webview에 로드되려 할 경우 컨트롤을 대신할 기회를 줌
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
+        Log.d(LOG_TAG, "shouldOverrideUrlLoading : " + url);
         //url="intent://TID=moncube20180531011257#Intent;scheme=ispmobile;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;package=kvp.jjy.MispAndroid320;end";
         //Log.d("shouldOverrid",url);
 

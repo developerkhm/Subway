@@ -33,9 +33,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="syruptable" />
+            </intent-filter>
+        </activity>
 
         <!-- TEST ING -->
         <activity android:name=".SyrupMainActivity" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="762f7f379ff2a9d0c204987f64d582adb4d197b7" />
     </application>
 </manifest>

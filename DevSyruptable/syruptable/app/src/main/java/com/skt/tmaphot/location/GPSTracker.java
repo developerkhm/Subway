@@ -1,5 +1,6 @@
 package com.skt.tmaphot.location;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
@@ -23,18 +24,16 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.skt.tmaphot.MainActivity;
 import com.skt.tmaphot.SplashActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 
-import static android.content.ContentValues.TAG;
 
+public class GPSTracker implements LocationListener {
 
-public class GPSTracker extends Service implements LocationListener {
-
+    private final String LOG_TAG = "getgps";
     private final Context mContext;
 
     // flag for GPS status
@@ -50,102 +49,122 @@ public class GPSTracker extends Service implements LocationListener {
     double latitude; // latitude
     double longitude; // longitude
 
+    private final double  default_latitude = 37.540705;
+    private double  default_longitude = 126.956764;
+
+
     // The minimum distance to change Updates in meters
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1; // 1 미터
-
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000*2; // 5초
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 2; // 5초
 
     // Declaring a Location Manager
     protected LocationManager locationManager;
-
+    private FusedLocationProviderClient mFusedLocationClient;
     private Handler mHandler;
 
-    private FusedLocationProviderClient mFusedLocationClient;
-
     public GPSTracker(Context context, Handler handler) {
+        Log.d(LOG_TAG, "new GPSTracker");
         this.mContext = context;
         this.mHandler = handler;
-        getLocation();
-        getCurrentLocation();
+        startGetLocation();
     }
 
     public void Update() {
-        getCurrentLocation();
-        getLocation();
+        Log.d(LOG_TAG, "update GPSTracker");
+        startGetLocation();
     }
 
-    public Location getLocation() {
-
-        if (Build.VERSION.SDK_INT >= 23 &&
-                ContextCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return null;
+    private void startGetLocation() {
+        if (getLocation() == null) {
+            canGetLocation = false;
+            getGoogleClientLocation();
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    public Location getLocation() {
         try {
-
-            locationManager = (LocationManager) mContext
-                    .getSystemService(LOCATION_SERVICE);
-
+            locationManager = (LocationManager) mContext.getSystemService(mContext.LOCATION_SERVICE);
             // getting GPS status
-            isGPSEnabled = locationManager
-                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
+            isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
             // getting network status
-            isNetworkEnabled = locationManager
-                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-            Log.d("getLocation", "isGPSEnabled=" + isGPSEnabled);
-            Log.d("getLocation", "isNetworkEnabled=" + isNetworkEnabled);
+            Log.d(LOG_TAG, "getLocation() isGPSEnabled=" + isGPSEnabled + " isNetworkEnabled=" + isNetworkEnabled);
 
             if (!isGPSEnabled && !isNetworkEnabled) {
+                Log.d(LOG_TAG, "GPS [================Disabled================]");
+                // gps가 사용처리 못햇을때 처리 해야됨
                 // no network provider is enabled
+
+
             } else {
                 this.canGetLocation = true;
-
+                Log.d(LOG_TAG, "[================GPS Enabled===================]");
                 // if GPS Enabled get lat/long using GPS Services
                 if (isGPSEnabled) {
                     if (location == null) {
-                        locationManager.requestLocationUpdates(
-                                LocationManager.GPS_PROVIDER,
-                                MIN_TIME_BW_UPDATES,
-                                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                        Log.d("GPS Enabled", "GPS Enabled");
+                        Log.d(LOG_TAG, "Call GPS_PROVIDER");
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                         if (locationManager != null) {
-                            location = locationManager
-                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                             if (location != null) {
                                 latitude = location.getLatitude();
                                 longitude = location.getLongitude();
+                                Log.d(LOG_TAG, "GPS latitude: " + latitude + " GPS longitude: " + longitude);
+                                sendLocation(latitude, longitude);
                             }
                         }
                     }
                 }
-
                 // First get location from Network Provider
-                if (isNetworkEnabled) {
-                    if (location == null) {
-                        locationManager.requestLocationUpdates(
-                                LocationManager.NETWORK_PROVIDER,
-                                MIN_TIME_BW_UPDATES,
-                                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                        Log.d("Network", "Network");
-                        if (locationManager != null) {
-                            location = locationManager
-                                    .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                            if (location != null) {
-                                latitude = location.getLatitude();
-                                longitude = location.getLongitude();
-                            }
+                if (location == null && isNetworkEnabled) {
+                    Log.d(LOG_TAG, "Call NETWORK_PROVIDER");
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                    if (locationManager != null) {
+                        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        if (location != null) {
+                            latitude = location.getLatitude();
+                            longitude = location.getLongitude();
+                            Log.d(LOG_TAG, "NETWORK latitude: " + latitude + " NETWORK longitude: " + longitude);
+                            sendLocation(latitude, longitude);
                         }
                     }
                 }
             }
-
         } catch (Exception e) {
+            Log.d(LOG_TAG, "getLocation:Exception: " + e.getMessage());
             e.printStackTrace();
         }
-
         return location;
+    }
+
+    @SuppressWarnings("MissingPermission")
+    public void getGoogleClientLocation() {
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext);
+        OnCompleteListener<Location> mCompleteListener = new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                if (task.isSuccessful() && task.getResult() != null) {
+                    canGetLocation = true;
+                    location = task.getResult();
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    Log.d(LOG_TAG, "GoogleClient: " + latitude + "longitude: " + longitude);
+                    sendLocation(latitude, longitude);
+                } else {
+                    canGetLocation = false;
+                    sendLocation(default_latitude, default_longitude);    // 임시
+                    Log.d(LOG_TAG, "[FAIL]getGoogleClientLocation:default_GSP setting");
+                    Log.w(LOG_TAG, "getGoogleClientLocation:exception ", task.getException());
+
+                }
+            }
+        };
+
+        mFusedLocationClient.getLastLocation().addOnCompleteListener(mCompleteListener);
     }
 
     /**
@@ -157,74 +176,28 @@ public class GPSTracker extends Service implements LocationListener {
                 ContextCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+
         if (locationManager != null) {
             locationManager.removeUpdates(GPSTracker.this);
         }
     }
 
-    /**
-     * Function to get latitude
-     */
     public double getLatitude() {
         if (location != null) {
             latitude = location.getLatitude();
         }
-
-        // return latitude
         return latitude;
     }
 
-    /**
-     * Function to get longitude
-     */
     public double getLongitude() {
         if (location != null) {
             longitude = location.getLongitude();
         }
-
-        // return longitude
         return longitude;
     }
 
-    /**
-     * Function to check GPS/wifi enabled
-     *
-     * @return boolean
-     */
     public boolean canGetLocation() {
         return this.canGetLocation;
-    }
-
-    /**
-     * Function to show settings alert dialog
-     * On pressing Settings button will lauch Settings Options
-     */
-    public void showSettingsAlert() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
-
-        // Setting Dialog Title
-        alertDialog.setTitle("GPS 셋팅");
-
-        // Setting Dialog Message
-        alertDialog.setMessage("GPS가 활성화되어 있지 않습니다. 설정 메뉴로 이동 하시겠습니까?");
-
-        // On pressing Settings button
-        alertDialog.setPositiveButton("설정", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                mContext.startActivity(intent);
-            }
-        });
-
-        // on pressing cancel button
-        alertDialog.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        // Showing Alert Message
-        alertDialog.show();
     }
 
     @Override
@@ -232,9 +205,8 @@ public class GPSTracker extends Service implements LocationListener {
         if (location != null) {
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
-            //Toast.makeText(mContext, "onLocationChanged is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_SHORT).show();
-            //sendString("시간:" + getTimeStr() + "<br>\nLat: " + latitude + "<br>\nLong: " + longitude + "<br> provider:" + location.getProvider() + " mock:" + location.isFromMockProvider());
-            sendLocation(latitude,longitude);
+            sendLocation(latitude, longitude);
+            Log.d("onLocationChanged", "latitude: " + latitude + "longitude: " + longitude);
         }
     }
 
@@ -242,48 +214,27 @@ public class GPSTracker extends Service implements LocationListener {
     public void onProviderDisabled(String provider) {
         //Toast.makeText(mContext, "onProviderDisabled " + provider, Toast.LENGTH_SHORT).show();
         mHandler.sendEmptyMessage(SplashActivity.RENEW_GPS);
-        //sendString("onProviderDisabled " + provider);
     }
 
     @Override
     public void onProviderEnabled(String provider) {
         //Toast.makeText(mContext, "onProviderEnabled " + provider, Toast.LENGTH_SHORT).show();
         mHandler.sendEmptyMessage(SplashActivity.RENEW_GPS);
-        //sendString("onProviderEnabled " + provider);
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         //Toast.makeText(mContext, "onStatusChanged " + provider + " : " + status, Toast.LENGTH_SHORT).show();
         mHandler.sendEmptyMessage(SplashActivity.RENEW_GPS);
-        //sendString("onStatusChanged " + provider + " : " + status + ":" + printBundle(extras));
     }
 
-    @Override
-    public IBinder onBind(Intent arg0) {
-        return null;
-    }
-
-    private void sendString(String str) {
+    private void sendLocation(double latitude, double longitude) {
+        Log.d(LOG_TAG, "sendLocation latitude: " + latitude + " longitude: " + longitude);
         Message msg = mHandler.obtainMessage();
         msg.what = SplashActivity.SEND_PRINT;
-        msg.obj = new String(str);
+        msg.obj = new GPSData(latitude, longitude);
         mHandler.sendMessage(msg);
     }
-
-    private void sendLocation(double latitude,double longitude) {
-
-        //Log.d("latitude",String.valueOf(latitude));
-        //Log.d("longitude",String.valueOf(longitude));
-
-        Message msg = mHandler.obtainMessage();
-        msg.what = SplashActivity.SEND_PRINT;
-        msg.obj = new GPSData(latitude,longitude);
-
-        mHandler.sendMessage(msg);
-    }
-
-
 
     public static String printBundle(Bundle extras) {
         StringBuilder sb = new StringBuilder();
@@ -307,38 +258,4 @@ public class GPSTracker extends Service implements LocationListener {
         }
         return sb.toString();
     }
-
-    @SuppressWarnings("MissingPermission")
-    public void getCurrentLocation() {
-
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext);
-
-        OnCompleteListener<Location> mCompleteListener = new OnCompleteListener<Location>() {
-            @Override
-            public void onComplete(@NonNull Task<Location> task) {
-                if (task.isSuccessful() && task.getResult() != null) {
-                    location = task.getResult();
-
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-                    //sendString("시간:" + getTimeStr() + "<br>\nLat: " + latitude + "<br>\nLong: " + longitude + "<br> provider:" + location.getProvider() );
-                    sendLocation(latitude,longitude);
-                } else {
-
-                    Log.w(TAG, "getLastLocation:exception", task.getException());
-
-                }
-            }
-        };
-        mFusedLocationClient.getLastLocation().addOnCompleteListener(mCompleteListener);
-
-    }
-
-    public String getTimeStr() {
-        long now = System.currentTimeMillis();
-        Date date = new Date(now);
-        SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return sdfNow.format(date);
-    }
-
 }
