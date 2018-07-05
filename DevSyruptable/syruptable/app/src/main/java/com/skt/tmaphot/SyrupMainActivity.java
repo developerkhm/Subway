@@ -2,6 +2,7 @@ package com.skt.tmaphot;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -26,6 +27,7 @@ import android.view.ViewGroup;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.skt.tmaphot.client.SyrupWebChromeClient2;
@@ -58,9 +60,14 @@ public class SyrupMainActivity extends AppCompatActivity
         setContentView(R.layout.activity_syrup_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+//        toolbar.setLogo(R.drawable.logo);
+        ImageView logo = (ImageView)findViewById(R.id.toolbar_logo);
+        logo.setImageResource(R.drawable.logo);
+
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
+//        actionBar.setDisplayHomeAsUpEnabled(true);
 //        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 //        actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -133,7 +140,13 @@ public class SyrupMainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_cart) {
+            placeholderFragment.setLoadUrl(PlaceholderFragment.CART_URL);
+            return true;
+        }
+
+        if (id == R.id.action_user) {
+            placeholderFragment.setLoadUrl(PlaceholderFragment.LOGIN_URL);
             return true;
         }
 
@@ -175,6 +188,9 @@ public class SyrupMainActivity extends AppCompatActivity
         public static final String SHOP_URL = "https://shop.ordertable.co.kr/";
         public static final String SHARE_URL = "https://shop.ordertable.co.kr/share";
         public static final String DELIVERY_URL = "https://shop.ordertable.co.kr/delivery365";
+
+        public static final String CART_URL = "https://shop.ordertable.co.kr/mypage/cart";
+        public static final String LOGIN_URL = "https://shop.ordertable.co.kr/member/login";
 
         //ISP앱으로 부터 Call Back을 받기 위한 App스키마
         private final String APP_SCHEMA_URI = "syruptable://";
@@ -265,6 +281,11 @@ public class SyrupMainActivity extends AppCompatActivity
                 }
             }
             return rootView;
+        }
+
+        public void setLoadUrl(String urlstr){
+            mWebView.loadUrl(urlstr);
+            mWebView.reload();
         }
 
         public void setIntent(Intent intent) {
