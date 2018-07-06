@@ -2,7 +2,6 @@ package com.skt.tmaphot;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -18,6 +17,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -49,10 +49,8 @@ public class SyrupMainActivity extends AppCompatActivity
     public static PlaceholderFragment placeholderFragment;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +58,9 @@ public class SyrupMainActivity extends AppCompatActivity
         setContentView(R.layout.activity_syrup_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        toolbar.setLogo(R.drawable.logo);
-        ImageView logo = (ImageView)findViewById(R.id.toolbar_logo);
+//      toolbar.setLogo(R.drawable.logo);
+        ImageView logo = (ImageView) findViewById(R.id.toolbar_logo);
         logo.setImageResource(R.drawable.logo);
-
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
@@ -101,7 +98,6 @@ public class SyrupMainActivity extends AppCompatActivity
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
     }
 
     @Override
@@ -141,12 +137,12 @@ public class SyrupMainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_cart) {
-            placeholderFragment.setLoadUrl(PlaceholderFragment.CART_URL);
+            placeholderFragment.setLoadUrl(PlaceholderFragment.CART_URL, mViewPager.getCurrentItem() + 1);
             return true;
         }
 
         if (id == R.id.action_user) {
-            placeholderFragment.setLoadUrl(PlaceholderFragment.LOGIN_URL);
+            placeholderFragment.setLoadUrl(PlaceholderFragment.LOGIN_URL, mViewPager.getCurrentItem() + 1);
             return true;
         }
 
@@ -206,6 +202,7 @@ public class SyrupMainActivity extends AppCompatActivity
         public ValueCallback<Uri[]> filePathCallbackLollipop;
 
         private static final String ARG_SECTION_NUMBER = "section_number";
+        public static WebView mWebView_1, mWebView_2, mWebView_3, mWebView_4;
         public WebView mWebView;
         private Intent intent;
         public SyrupWebViewClient syrupWebViewClient;
@@ -232,6 +229,7 @@ public class SyrupMainActivity extends AppCompatActivity
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+            Log.d("TT", "onCreateView");
             mWebView = (WebView) rootView.findViewById(R.id.main_webview);
 
             syrupWebViewClient = new SyrupWebViewClient(getActivity(), mWebView);
@@ -263,29 +261,65 @@ public class SyrupMainActivity extends AppCompatActivity
 
             Uri uri = intent.getData(); //main에서 받으 intent; ISP 인증 여부???
             if (uri != null) {
+                Log.d("TT", "OResultPage");
                 OResultPage(uri);
             } else {
+
+                Log.d("TT", "DDDDDD: " + getArguments().getInt(ARG_SECTION_NUMBER));
                 switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
+
                     case 1:
+                        Log.d("TT", "1===========");
+
+                        mWebView_1 = mWebView;
                         mWebView.loadUrl(HOTPLACE_URL);
                         break;
                     case 2:
+                        Log.d("TT", "2===========");
+                        mWebView_2 = mWebView;
                         mWebView.loadUrl(SHOP_URL);
                         break;
                     case 3:
+                        Log.d("TT", "3===========");
+                        mWebView_3 = mWebView;
                         mWebView.loadUrl(SHARE_URL);
                         break;
                     case 4:
+                        Log.d("TT", "4===========");
+                        mWebView_4 = mWebView;
                         mWebView.loadUrl(DELIVERY_URL);
+                        break;
+                    default:
+                        Log.d("TT", "default===========");
                         break;
                 }
             }
             return rootView;
         }
 
-        public void setLoadUrl(String urlstr){
-            mWebView.loadUrl(urlstr);
-            mWebView.reload();
+        public void setLoadUrl(String urlstr, int curruntPosition) {
+            WebView webview = null;
+
+//            String ttt = "javascript:window.location.href=\"https://shop.ordertable.co.kr/mypage/cart\";";
+//            String ttt1 = "window.location.href=\"https://shop.ordertable.co.kr/mypage/cart\";";
+            switch (curruntPosition) {
+
+                case 1:
+                    webview = mWebView_1;
+                    break;
+                case 2:
+                    webview = mWebView_2;
+                    break;
+                case 3:
+                    webview = mWebView_3;
+                    break;
+                case 4:
+                    webview = mWebView_4;
+                    break;
+                default:
+                    break;
+            }
+            webview.loadUrl(urlstr);
         }
 
         public void setIntent(Intent intent) {
@@ -364,6 +398,7 @@ public class SyrupMainActivity extends AppCompatActivity
             // Show 3 total pages.
             return 4;
         }
+
     }
 
     @SuppressLint("NewApi")

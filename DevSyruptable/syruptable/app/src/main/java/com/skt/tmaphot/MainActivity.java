@@ -179,10 +179,10 @@ public class MainActivity extends AppCompatActivity {
             if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
                 toast.cancel();
 
-                Intent t = new Intent(activity, MainActivity.class);
-                activity.startActivity(t);
-
-                activity.moveTaskToBack(true);
+//                Intent t = new Intent(activity, MainActivity.class);
+//                activity.startActivity(t);
+//
+//                activity.moveTaskToBack(true);
                 activity.finish();
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
