@@ -6,9 +6,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.CookieSyncManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -42,10 +45,13 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int FILECHOOSER_RESULTCODE = 1;
     public final static int FILECHOOSER_LOLLIPOP_REQ_CODE = 2;
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
+
     public ValueCallback<Uri> mUploadMessage = null;
     public ValueCallback<Uri[]> filePathCallbackLollipop;
     public SyrupWebViewClient syrupWebViewClient;
-    public BackPressCloseHandler backPressCloseHandler;
+
 
     @BindView(R.id.activity_main_webview)
     WebView mWebView;
@@ -60,14 +66,29 @@ public class MainActivity extends AppCompatActivity {
         mWebView.setWebChromeClient(new SyrupWebChromeClient(this, mWebView));
         mWebView.addJavascriptInterface(new AndroidBridge(), "MyApp");
 
+        mWebView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() != KeyEvent.ACTION_DOWN)
+                    return true;
+
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    if (mWebView.canGoBack()) {
+                        mWebView.goBack();
+                    } else {
+                        (MainActivity.this).onBackPressed();
+                    }
+                }
+                return false;
+            }
+        });
+
         Uri uri = getIntent().getData();
         if (uri != null) {
             OResultPage(uri);
         } else {
             mWebView.loadUrl(HOTPLACE_URL);
         }
-        // 뒤로가기 핸들러
-        backPressCloseHandler = new BackPressCloseHandler(this);
     }
 
     /**
@@ -118,10 +139,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        try {
-            backPressCloseHandler.onBackPressed();
-        } catch (Exception e) {
-            super.onBackPressed();
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            long tempTime = System.currentTimeMillis();
+            long intervalTime = tempTime - backPressedTime;
+
+            if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
+                finish();
+                android.os.Process.killProcess(android.os.Process.myPid());
+            } else {
+                backPressedTime = tempTime;
+                Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -140,57 +172,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // 디바이스 기기의 back 버튼 인식
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        try {
-            if (mWebView.getUrl().equals(HOTPLACE_URL) || mWebView.getUrl().equals(SHOP_URL) || mWebView.getUrl().equals(SHARE_URL) || mWebView.getUrl().equals(DELIVERY_URL)) {
-                backPressCloseHandler.onBackPressed();
-                return false;
-            }
-            if ((keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()) {
-                mWebView.goBack();
-                return false;
-            }
-        } catch (Exception ex) {
-
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    public class BackPressCloseHandler {
-        private long backKeyPressedTime = 0;
-        private Toast toast;
-
-        private Activity activity;
-
-        public BackPressCloseHandler(Activity context) {
-            this.activity = context;
-        }
-
-        public void onBackPressed() {
-            if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
-                backKeyPressedTime = System.currentTimeMillis();
-                showGuide();
-                return;
-            }
-
-            if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
-                toast.cancel();
-
-//                Intent t = new Intent(activity, MainActivity.class);
-//                activity.startActivity(t);
-//
-//                activity.moveTaskToBack(true);
-                activity.finish();
-                android.os.Process.killProcess(android.os.Process.myPid());
-            }
-        }
-
-        public void showGuide() {
-            toast = Toast.makeText(activity, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-    }
 }

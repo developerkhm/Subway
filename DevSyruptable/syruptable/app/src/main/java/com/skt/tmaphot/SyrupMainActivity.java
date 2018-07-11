@@ -30,6 +30,7 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.skt.tmaphot.activity.StoreInfoActivity;
 import com.skt.tmaphot.client.SyrupWebChromeClient2;
 import com.skt.tmaphot.client.SyrupWebViewClient;
 import com.skt.tmaphot.common.AndroidBridge;
@@ -61,6 +62,15 @@ public class SyrupMainActivity extends AppCompatActivity
 //      toolbar.setLogo(R.drawable.logo);
         ImageView logo = (ImageView) findViewById(R.id.toolbar_logo);
         logo.setImageResource(R.drawable.logo);
+        logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SyrupMainActivity.this, StoreInfoActivity.class));
+//                overridePendingTransition(R.anim.anim_slide_out_right, R.anim.anim_slide_in_left);
+//                finish();
+            }
+        });
+
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
@@ -102,7 +112,6 @@ public class SyrupMainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        long backKeyPressedTime = 0;
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -155,18 +164,33 @@ public class SyrupMainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        switch (id) {
 
-        } else if (id == R.id.nav_slideshow) {
+            case R.id.nav_home:
 
-        } else if (id == R.id.nav_manage) {
+                break;
+            case R.id.nav_login:
 
-        } else if (id == R.id.nav_share) {
+                break;
+            case R.id.nav_mypage:
 
-        } else if (id == R.id.nav_send) {
+                break;
+            case R.id.nav_cart:
 
+                break;
+
+            case R.id.nav_noti:
+
+                break;
+            case R.id.nav_board:
+
+                break;
+            case R.id.nav_review:
+
+                break;
+
+            default:
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -259,38 +283,29 @@ public class SyrupMainActivity extends AppCompatActivity
             });
 
 
-            Uri uri = intent.getData(); //main에서 받으 intent; ISP 인증 여부???
+            Uri uri = intent.getData();     //main에서 받으 intent; ISP 인증 여부???
             if (uri != null) {
-                Log.d("TT", "OResultPage");
                 OResultPage(uri);
             } else {
-
-                Log.d("TT", "DDDDDD: " + getArguments().getInt(ARG_SECTION_NUMBER));
                 switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
 
                     case 1:
-                        Log.d("TT", "1===========");
-
                         mWebView_1 = mWebView;
                         mWebView.loadUrl(HOTPLACE_URL);
                         break;
                     case 2:
-                        Log.d("TT", "2===========");
                         mWebView_2 = mWebView;
                         mWebView.loadUrl(SHOP_URL);
                         break;
                     case 3:
-                        Log.d("TT", "3===========");
                         mWebView_3 = mWebView;
                         mWebView.loadUrl(SHARE_URL);
                         break;
                     case 4:
-                        Log.d("TT", "4===========");
                         mWebView_4 = mWebView;
                         mWebView.loadUrl(DELIVERY_URL);
                         break;
                     default:
-                        Log.d("TT", "default===========");
                         break;
                 }
             }

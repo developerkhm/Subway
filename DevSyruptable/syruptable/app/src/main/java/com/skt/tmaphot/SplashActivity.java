@@ -43,18 +43,18 @@ public class SplashActivity extends AppCompatActivity {
     public static int SEND_PRINT = 2;
 
     private String TAG = "gps";
-
-    @BindView(R.id.splash_img)
-    ImageView mainImage;
+//
+//    @BindView(R.id.splash_img)
+//    ImageView mainImage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.splash_main);
-        ButterKnife.bind(this);
+//        setContentView(R.layout.splash_main);
+//        ButterKnife.bind(this);
         // 이미지없어서 임시, View로 처리, 나중에 Style 처리, 그래서 임시로 딜레이 시작 페이지
-        CommonUtil.getInstance().mainContex = this;
-        CommonUtil.getInstance().loadImage(this, R.drawable.splash_background, mainImage);
+//        CommonUtil.getInstance().mainContex = this;
+//        CommonUtil.getInstance().loadImage(this, R.drawable.img_splash_logo, mainImage);
 
         mHandler = new Handler() {
             @Override
@@ -101,11 +101,10 @@ public class SplashActivity extends AppCompatActivity {
 
     public void initStart(int delayTime) {
         try {
-            Log.d("TEST", "'initStart");
             locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
             isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         } catch (Exception ex) {
-
+            isGPSEnabled = false;
         }
 
         if (isGPSEnabled) {

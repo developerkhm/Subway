@@ -9,9 +9,10 @@
     tools:context="com.skt.tmaphot.SplashActivity">
 
 
-    <ImageView
+    <!--ImageView
         android:id="@+id/splash_img"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitCenter" />
+        android:scaleType="fitCenter" /-->
 </RelativeLayout>

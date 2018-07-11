@@ -95,13 +95,14 @@ public class GPSTracker implements LocationListener {
             Log.d(LOG_TAG, "getLocation() isGPSEnabled=" + isGPSEnabled + " isNetworkEnabled=" + isNetworkEnabled);
 
             if (!isGPSEnabled && !isNetworkEnabled) {
+                this.canGetLocation = false;
                 Log.d(LOG_TAG, "GPS [================Disabled================]");
                 // gps가 사용처리 못햇을때 처리 해야됨
                 // no network provider is enabled
 
 
             } else {
-                this.canGetLocation = true;
+
                 Log.d(LOG_TAG, "[================GPS Enabled===================]");
                 // if GPS Enabled get lat/long using GPS Services
                 if (isGPSEnabled) {
@@ -115,6 +116,7 @@ public class GPSTracker implements LocationListener {
                                 longitude = location.getLongitude();
                                 Log.d(LOG_TAG, "GPS latitude: " + latitude + " GPS longitude: " + longitude);
                                 sendLocation(latitude, longitude);
+                                this.canGetLocation = true;
                             }
                         }
                     }
@@ -130,6 +132,7 @@ public class GPSTracker implements LocationListener {
                             longitude = location.getLongitude();
                             Log.d(LOG_TAG, "NETWORK latitude: " + latitude + " NETWORK longitude: " + longitude);
                             sendLocation(latitude, longitude);
+                            this.canGetLocation = true;
                         }
                     }
                 }
@@ -148,18 +151,17 @@ public class GPSTracker implements LocationListener {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
                 if (task.isSuccessful() && task.getResult() != null) {
-                    canGetLocation = true;
                     location = task.getResult();
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
                     Log.d(LOG_TAG, "GoogleClient: " + latitude + "longitude: " + longitude);
                     sendLocation(latitude, longitude);
+                    canGetLocation = true;
                 } else {
-                    canGetLocation = false;
                     sendLocation(default_latitude, default_longitude);    // 임시
                     Log.d(LOG_TAG, "[FAIL]getGoogleClientLocation:default_GSP setting");
                     Log.w(LOG_TAG, "getGoogleClientLocation:exception ", task.getException());
-
+                    canGetLocation = false;
                 }
             }
         };

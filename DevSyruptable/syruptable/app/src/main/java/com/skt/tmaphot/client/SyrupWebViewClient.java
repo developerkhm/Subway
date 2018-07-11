@@ -44,7 +44,6 @@ public class SyrupWebViewClient extends WebViewClient {
 
     private void init(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            //android:hardwareAccelerated="true"
             //평균적으로 킷캣 이상에서는 하드웨어 가속이 성능이 좋음.
             target.setLayerType(View.LAYER_TYPE_HARDWARE, null);
             //원격디버깅
@@ -76,9 +75,15 @@ public class SyrupWebViewClient extends WebViewClient {
             settings.setEnableSmoothTransition(true);
         }
 
-        //캐쉬 사용
-        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        settings.setAppCacheEnabled(true);
+        //앱 캐쉬 사용
+        //settings.setAppCacheEnabled(true); setAppCachePath
+        //Cache를 사용하는 mode 설정
+        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+
+        // 네트워크의 이미지의 리소스를 로드하지않음 기본값 FALSE
+        settings.setBlockNetworkImage(false);
+        // 웹뷰가 앱에 등록되어 있는 이미지 리소스를 자동으로 로드하도록 설정
+        settings.setLoadsImagesAutomatically(true);
 
         // javascript를 실행할 수 있도록 설정
         settings.setJavaScriptEnabled(true);
