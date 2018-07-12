@@ -17,6 +17,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.skt.tmaphot.activity.StoreInfoActivity;
@@ -51,6 +53,7 @@ public class SyrupMainActivity extends AppCompatActivity
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private TabLayout tabLayout;
+
 
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
@@ -100,16 +103,69 @@ public class SyrupMainActivity extends AppCompatActivity
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), getIntent());
+
+
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.addTab(tabLayout.newTab().setText("13434TAB"));
+        tabLayout.addTab(tabLayout.newTab().setText("TAB23453"));
+        tabLayout.addTab(tabLayout.newTab().setText("TAB3f"));
+        tabLayout.addTab(tabLayout.newTab().setText("TAB4"));
+        tabLayout.addTab(tabLayout.newTab().setText("TAB4dfg"));
+        tabLayout.addTab(tabLayout.newTab().setText("TAB4"));
+        tabLayout.addTab(tabLayout.newTab().setText("fgTAB4d"));
+        tabLayout.addTab(tabLayout.newTab().setText("4fTAB"));
+//        tabLayout.addTab(tabLayout.newTab().setText("TAB4d"));
+
+
+
+
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), getIntent(), tabLayout.getTabCount());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+        tabLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                if(tabLayout.getTabCount() <= 4)
+                {
+                    tabLayout.setTabMode(TabLayout.MODE_FIXED);
+//                    ViewGroup.LayoutParams mParams = tabLayout.getLayoutParams();
+//                    mParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+//                    tabLayout.setLayoutParams(mParams);
+
+                }
+                else
+                {
+
+                    DisplayMetrics displaymetrics = new DisplayMetrics();
+
+                    getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+                    int width= displaymetrics.widthPixels /5;
+
+                    int widthOtherThanFirst= (int) ((float)width*(8.80f/10f));
+                    int allOther=widthOtherThanFirst/2;
+
+
+                    for (int i=0; i<tabLayout.getTabCount(); i++)
+                    {
+                        LinearLayout layout1 = ((LinearLayout) ((LinearLayout)tabLayout.getChildAt(0)).getChildAt(i));
+                        LinearLayout.LayoutParams layoutParams1 = (LinearLayout.LayoutParams) layout1.getLayoutParams();
+//                        layoutParams1.width = width-widthOtherThanFirst;
+                        layoutParams1.width = width;
+//                        layout1.setPadding(0,0,0,0);
+                        layout1.setLayoutParams(layoutParams1);
+                    }
+
+                    tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+                    tabLayout.invalidate();
+                }
+            }
+        });
     }
 
     @Override
@@ -148,12 +204,12 @@ public class SyrupMainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_cart) {
-            placeholderFragment.setLoadUrl(PlaceholderFragment.CART_URL, mViewPager.getCurrentItem() + 1);
+            placeholderFragment.setLoadUrl(PlaceholderFragment.CART_URL, mViewPager.getCurrentItem());
             return true;
         }
 
         if (id == R.id.action_user) {
-            placeholderFragment.setLoadUrl(PlaceholderFragment.LOGIN_URL, mViewPager.getCurrentItem() + 1);
+            placeholderFragment.setLoadUrl(PlaceholderFragment.LOGIN_URL, mViewPager.getCurrentItem());
             return true;
         }
 
@@ -206,10 +262,18 @@ public class SyrupMainActivity extends AppCompatActivity
          * fragment.
          */
 
-        public static final String HOTPLACE_URL = "https://shop.ordertable.co.kr/hotplace";
+//        public static final String HOTPLACE_URL = "https://shop.ordertable.co.kr/hotplace";
+        public static final String HOTPLACE_URL = "http://dev.ordertable.co.kr/";
         public static final String SHOP_URL = "https://shop.ordertable.co.kr/";
         public static final String SHARE_URL = "https://shop.ordertable.co.kr/share";
         public static final String DELIVERY_URL = "https://shop.ordertable.co.kr/delivery365";
+        public static final String[] URL_LIST = new String[]{
+                "http://dev.ordertable.co.kr/",
+                "https://shop.ordertable.co.kr/",
+                "https://shop.ordertable.co.kr/share",
+                "https://shop.ordertable.co.kr/delivery365"
+        };
+
 
         public static final String CART_URL = "https://shop.ordertable.co.kr/mypage/cart";
         public static final String LOGIN_URL = "https://shop.ordertable.co.kr/member/login";
@@ -228,9 +292,10 @@ public class SyrupMainActivity extends AppCompatActivity
         public ValueCallback<Uri[]> filePathCallbackLollipop;
 
         private static final String ARG_SECTION_NUMBER = "section_number";
-        public static WebView mWebView_1, mWebView_2, mWebView_3, mWebView_4;
+        public static WebView[] WebViewTab;
         public WebView mWebView;
         private Intent intent;
+        private int mNumOfTabs;
         public SyrupWebViewClient syrupWebViewClient;
         public SyrupWebChromeClient2 syrupWebChromeClient;
 
@@ -241,9 +306,10 @@ public class SyrupMainActivity extends AppCompatActivity
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber, Intent intent) {
+        public static PlaceholderFragment newInstance(int sectionNumber, Intent intent, int NumOfTabs) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             fragment.setIntent(intent);
+            fragment.setNumOfTabs(NumOfTabs);
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
@@ -254,6 +320,8 @@ public class SyrupMainActivity extends AppCompatActivity
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+            WebViewTab = new WebView[mNumOfTabs];
 
             mWebView = (WebView) rootView.findViewById(R.id.main_webview);
 
@@ -288,58 +356,71 @@ public class SyrupMainActivity extends AppCompatActivity
             if (uri != null) {
                 OResultPage(uri);
             } else {
-                switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
 
-                    case 1:
-                        mWebView_1 = mWebView;
-                        mWebView.loadUrl(HOTPLACE_URL);
-                        break;
-                    case 2:
-                        mWebView_2 = mWebView;
-                        mWebView.loadUrl(SHOP_URL);
-                        break;
-                    case 3:
-                        mWebView_3 = mWebView;
-                        mWebView.loadUrl(SHARE_URL);
-                        break;
-                    case 4:
-                        mWebView_4 = mWebView;
-                        mWebView.loadUrl(DELIVERY_URL);
-                        break;
-                    default:
-                        break;
-                }
+                WebViewTab[getArguments().getInt(ARG_SECTION_NUMBER)] = mWebView;
+                mWebView.loadUrl(URL_LIST[getArguments().getInt(ARG_SECTION_NUMBER)]);
+//                mWebView.loadUrl(SHOP_URL);
+//                switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
+
+
+
+//                    case 1:
+//                        mWebView_1 = mWebView;
+//                        mWebView.loadUrl(HOTPLACE_URL);
+//                        break;
+//                    case 2:
+//                        mWebView_2 = mWebView;
+//                        mWebView.loadUrl(SHOP_URL);
+//                        break;
+//                    case 3:
+//                        mWebView_3 = mWebView;
+//                        mWebView.loadUrl(SHARE_URL);
+//                        break;
+//                    case 4:
+//                        mWebView_4 = mWebView;
+//                        mWebView.loadUrl(DELIVERY_URL);
+//                        break;
+//                    default:
+//                        break;
+//                }
             }
             return rootView;
         }
 
         public void setLoadUrl(String urlstr, int curruntPosition) {
-            WebView webview = null;
+//            WebView webview = null;
 
 //            String ttt = "javascript:window.location.href=\"https://shop.ordertable.co.kr/mypage/cart\";";
 //            String ttt1 = "window.location.href=\"https://shop.ordertable.co.kr/mypage/cart\";";
-            switch (curruntPosition) {
+//            switch (curruntPosition) {
+//
+//                case 1:
+//                    webview = mWebView_1;
+//                    break;
+//                case 2:
+//                    webview = mWebView_2;
+//                    break;
+//                case 3:
+//                    webview = mWebView_3;
+//                    break;
+//                case 4:
+//                    webview = mWebView_4;
+//                    break;
+//                default:
+//                    break;
+//            }
 
-                case 1:
-                    webview = mWebView_1;
-                    break;
-                case 2:
-                    webview = mWebView_2;
-                    break;
-                case 3:
-                    webview = mWebView_3;
-                    break;
-                case 4:
-                    webview = mWebView_4;
-                    break;
-                default:
-                    break;
-            }
-            webview.loadUrl(urlstr);
+            WebViewTab[curruntPosition].loadUrl(urlstr);
+
+//            webview.loadUrl(urlstr);
         }
 
         public void setIntent(Intent intent) {
             this.intent = intent;
+        }
+
+        public void setNumOfTabs(int NumOfTabs) {
+            this.mNumOfTabs = NumOfTabs;
         }
 
         /**
@@ -395,24 +476,32 @@ public class SyrupMainActivity extends AppCompatActivity
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         private Intent intent;
+        private int mNumOfTabs;
 
-        public SectionsPagerAdapter(FragmentManager fm, Intent intent) {
+        public SectionsPagerAdapter(FragmentManager fm, Intent intent, int NumOfTabs) {
             super(fm);
             this.intent = intent;
+            this.mNumOfTabs = NumOfTabs;
+
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            placeholderFragment = PlaceholderFragment.newInstance(position + 1, intent);
+            placeholderFragment = PlaceholderFragment.newInstance(position, intent, mNumOfTabs);
             return placeholderFragment;
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 4;
+            return mNumOfTabs;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return super.getPageTitle(position);
         }
     }
 
