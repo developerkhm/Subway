@@ -1,4 +1,4 @@
-package com.skt.tmaphot;
+package com.skt.tmaphot.activity;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -16,20 +16,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.skt.tmaphot.common.CommonUtil;
-import com.skt.tmaphot.common.PermissionList;
 import com.skt.tmaphot.location.GPSData;
 import com.skt.tmaphot.location.GPSTracker;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -210,6 +203,5 @@ public class SplashActivity extends AppCompatActivity {
     private void appKill() {
         this.finish();
         android.os.Process.killProcess(android.os.Process.myPid());
-
     }
 }

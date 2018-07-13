@@ -8,12 +8,6 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
-import com.skt.tmaphot.MainActivity;
-import com.skt.tmaphot.SyrupMainActivity;
-
-import static com.skt.tmaphot.MainActivity.FILECHOOSER_LOLLIPOP_REQ_CODE;
-import static com.skt.tmaphot.MainActivity.FILECHOOSER_RESULTCODE;
-
 public class PaymentClient {
 
     private Activity activity;

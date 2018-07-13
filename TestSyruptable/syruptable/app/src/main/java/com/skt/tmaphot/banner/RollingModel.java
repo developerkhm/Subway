@@ -1,4 +1,4 @@
-package com.skt.tmaphot.activity;
+package com.skt.tmaphot.banner;
 
 public class RollingModel {
 

@@ -12,11 +12,9 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
-import com.skt.tmaphot.MainActivity;
-
 import static com.skt.tmaphot.MainActivity.FILECHOOSER_LOLLIPOP_REQ_CODE;
 import static com.skt.tmaphot.MainActivity.FILECHOOSER_RESULTCODE;
-import static com.skt.tmaphot.SyrupMainActivity.placeholderFragment;
+import static com.skt.tmaphot.activity.SyrupMainActivity.placeholderFragment;
 
 /**
  * Created by home on 2018-05-26.

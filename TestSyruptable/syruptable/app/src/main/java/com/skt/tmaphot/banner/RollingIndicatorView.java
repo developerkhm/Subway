@@ -1,4 +1,4 @@
-package com.skt.tmaphot.activity;
+package com.skt.tmaphot.banner;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.skt.tmaphot.R;
 
-public class IndicatorView extends View {
+public class RollingIndicatorView extends View {
 
     private int count = 0;
     private ViewPager viewPager = null;
@@ -25,16 +25,16 @@ public class IndicatorView extends View {
     private int indicatorWidth = -1;
     private int radius = -1;
 
-    public IndicatorView(Context context) {
+    public RollingIndicatorView(Context context) {
         this(context, null);
     }
 
-    public IndicatorView(Context context, AttributeSet attrs) {
+    public RollingIndicatorView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
 
-    public IndicatorView(Context context, AttributeSet attrs, int defStyle) {
+    public RollingIndicatorView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
         circlePaint = new Paint();

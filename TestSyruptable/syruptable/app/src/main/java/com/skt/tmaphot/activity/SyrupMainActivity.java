@@ -1,4 +1,4 @@
-package com.skt.tmaphot;
+package com.skt.tmaphot.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -17,8 +17,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,10 +27,9 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.skt.tmaphot.activity.StoreInfoActivity;
+import com.skt.tmaphot.R;
 import com.skt.tmaphot.client.SyrupWebChromeClient2;
 import com.skt.tmaphot.client.SyrupWebViewClient;
 import com.skt.tmaphot.common.AndroidBridge;
@@ -131,38 +128,24 @@ public class SyrupMainActivity extends AppCompatActivity
         tabLayout.post(new Runnable() {
             @Override
             public void run() {
-                if(tabLayout.getTabCount() <= 4)
+
+//                LinearLayout layout = ((LinearLayout) ((LinearLayout) tabLayout.getChildAt(0)).getChildAt(0));
+//                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) layout.getLayoutParams();
+//
+//                layout.setLayoutParams(layoutParams);
+//
+//                Log.d("TABS", String.valueOf(layoutParams.width));
+
+                // 디바이스 가로길이 나누기 4하면 될듯
+
+
+                if(tabLayout.getTabCount() <= 5)
                 {
                     tabLayout.setTabMode(TabLayout.MODE_FIXED);
-//                    ViewGroup.LayoutParams mParams = tabLayout.getLayoutParams();
-//                    mParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-//                    tabLayout.setLayoutParams(mParams);
-
                 }
                 else
                 {
-
-                    DisplayMetrics displaymetrics = new DisplayMetrics();
-
-                    getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-                    int width= displaymetrics.widthPixels /5;
-
-                    int widthOtherThanFirst= (int) ((float)width*(8.80f/10f));
-                    int allOther=widthOtherThanFirst/2;
-
-
-                    for (int i=0; i<tabLayout.getTabCount(); i++)
-                    {
-                        LinearLayout layout1 = ((LinearLayout) ((LinearLayout)tabLayout.getChildAt(0)).getChildAt(i));
-                        LinearLayout.LayoutParams layoutParams1 = (LinearLayout.LayoutParams) layout1.getLayoutParams();
-//                        layoutParams1.width = width-widthOtherThanFirst;
-                        layoutParams1.width = width;
-//                        layout1.setPadding(0,0,0,0);
-                        layout1.setLayoutParams(layoutParams1);
-                    }
-
                     tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-                    tabLayout.invalidate();
                 }
             }
         });
@@ -509,5 +492,11 @@ public class SyrupMainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         placeholderFragment.onFragmentResult(requestCode, resultCode, intent);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
     }
 }

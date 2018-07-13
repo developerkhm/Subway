@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="0dp"
     android:background="@color/colorGreen"
-    tools:context="com.skt.tmaphot.SplashActivity">
+    tools:context="com.skt.tmaphot.activity.SplashActivity">
 
 
     <!--ImageView

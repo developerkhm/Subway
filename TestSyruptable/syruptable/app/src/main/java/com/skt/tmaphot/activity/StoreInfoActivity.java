@@ -1,28 +1,25 @@
 package com.skt.tmaphot.activity;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.PagerAdapter;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.skt.tmaphot.MainActivity;
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.banner.RollingAdapter;
+import com.skt.tmaphot.banner.RollingAutoManager;
+import com.skt.tmaphot.banner.RollingIndicatorView;
+import com.skt.tmaphot.banner.RollingModel;
 import com.skt.tmaphot.recycle.RecyclerViewDataAdapter;
 import com.skt.tmaphot.recycle.SectionDataModel;
 import com.skt.tmaphot.recycle.SingleItemModel;
@@ -34,8 +31,10 @@ public class StoreInfoActivity extends AppCompatActivity {
 
     private ViewPager mViewPager = null;
     private RollingAdapter mAdapter = null;
-    private IndicatorView mIndicatorView = null;
-    private AutoRollingManager mAutoRollingManager = null;
+    private RollingIndicatorView mIndicatorView = null;
+    private RollingAutoManager mAutoRollingManager = null;
+    RecyclerView my_recycler_view;
+
 
     ArrayList<SectionDataModel> allSampleData;
 //    LinearLayout sliderDotspanel;
@@ -65,7 +64,7 @@ public class StoreInfoActivity extends AppCompatActivity {
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
 
-        mIndicatorView = (IndicatorView) findViewById(R.id.indicator_view);
+        mIndicatorView = (RollingIndicatorView) findViewById(R.id.indicator_view);
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
 
         mAdapter = new RollingAdapter(StoreInfoActivity.this, getData(), new RollingAdapter.OnAdapterItemClickListener() {
@@ -76,18 +75,105 @@ public class StoreInfoActivity extends AppCompatActivity {
         });
         mViewPager.setAdapter(mAdapter);
         mIndicatorView.setViewPager(mViewPager);
-        mAutoRollingManager = new AutoRollingManager(mViewPager, mAdapter, mIndicatorView);
+        mAutoRollingManager = new RollingAutoManager(mViewPager, mAdapter, mIndicatorView);
         mAutoRollingManager.setRollingTime(5500);
 
         allSampleData = new ArrayList<SectionDataModel>();
 
         createDummyData();
 
-        RecyclerView my_recycler_view = (RecyclerView) findViewById(R.id.my_recycler_view);
-        my_recycler_view.setHasFixedSize(true);
+        my_recycler_view = (RecyclerView) findViewById(R.id.my_recycler_view);
+
+        my_recycler_view.setHasFixedSize(false);
+        my_recycler_view.setNestedScrollingEnabled(false);
+
+
         RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(this, allSampleData);
         my_recycler_view.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        my_recycler_view.getLayoutManager().setAutoMeasureEnabled(true);
+
         my_recycler_view.setAdapter(adapter);
+        my_recycler_view.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                Log.d("TRECYCLER", "newState : " + newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                Log.d("TRECYCLER", "onScrolled dx: " + dx);
+                Log.d("TRECYCLER", "onScrolled dy: " + dy);
+
+                                LinearLayoutManager mLayoutManager = (LinearLayoutManager) my_recycler_view
+                        .getLayoutManager();
+
+                int visibleItemCount = my_recycler_view.getChildCount();
+                int totalItemCount = mLayoutManager.getItemCount();
+                int firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition();
+
+                Log.d("TRECYCLER", "visibleItemCount: " + String.valueOf(visibleItemCount));
+                Log.d("TRECYCLER", "totalItemCount: " + String.valueOf(totalItemCount));
+                Log.d("TRECYCLER", "firstVisibleItem: " + String.valueOf(firstVisibleItem));
+            }
+        });
+
+
+        NestedScrollView ns = (NestedScrollView) findViewById(R.id.scroll_view);
+        ns.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView nestedScrollView, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+
+                Log.d("RECYCLER", "NestedScrollView scrollX: " + scrollX);
+                Log.d("RECYCLER", "NestedScrollView scrollY: " + scrollY);
+                Log.d("RECYCLER", "NestedScrollView oldScrollX: " + oldScrollX);
+                Log.d("RECYCLER", "NestedScrollView oldScrollY: " + oldScrollY);
+
+
+                Log.d("RECYCLER", "NestedScrollView nestedScrollView.getChildCount() - 1: " + String.valueOf(nestedScrollView.getChildCount() - 1));
+                Log.d("RECYCLER", "NestedScrollView nestedScrollView.getChildCount: " + String.valueOf(nestedScrollView.getChildCount()));
+
+
+//                LinearLayoutManager mLayoutManager = (LinearLayoutManager) my_recycler_view
+//                        .getLayoutManager();
+
+//                int visibleItemCount = my_recycler_view.getChildCount();
+//                int totalItemCount = mLayoutManager.getItemCount();
+//                int firstVisibleItem = mLayoutManager.findFirstVisibleItemPosition();
+//
+//                Log.d("RECYCLERTT", "visibleItemCount: " + String.valueOf(visibleItemCount));
+//                Log.d("RECYCLERTT", "totalItemCount: " + String.valueOf(totalItemCount));
+//                Log.d("RECYCLERTT", "firstVisibleItem: " + String.valueOf(firstVisibleItem));
+
+                // init
+//                RecyclerView.LayoutManager layoutManager = my_recycler_view.getLayoutManager();
+//                RecyclerView.Adapter adapter = my_recycler_view.getAdapter();
+//
+//                if (layoutManager.getChildCount() > 0) {
+//                    // Calculations..
+//                    int indexOfLastItemViewVisible = layoutManager.getChildCount() - 1;
+//                    View lastItemViewVisible = layoutManager.getChildAt(indexOfLastItemViewVisible);
+//                    int adapterPosition = layoutManager.getPosition(lastItemViewVisible);
+//                    boolean isLastItemVisible = (adapterPosition == adapter.getItemCount() - 1);
+
+                    // check
+//                    if (isLastItemVisible)
+//                        onLastItemVisible(); // callback
+//                }
+
+
+                if (nestedScrollView.getChildAt(nestedScrollView.getChildCount() - 1) != null) {
+                    if (((scrollY >= (nestedScrollView.getChildAt(nestedScrollView.getChildCount() - 1).getMeasuredHeight() - nestedScrollView.getMeasuredHeight())) && scrollY > oldScrollY)) {
+                        //code to fetch more data for endless scrolling
+
+                        Log.d("RECYCLER", "NestedScrollViewCALL if: ");
+                    }
+                }
+                // v.getChildCount() -1 should give you the recycler view for which you be implementing endless scrolling.
+                // scrollY > oldScrollY confirms that the page is being scrolled down.
+            }
+        });
 
 
 //        dotscount = viewPagerAdapter.getCount();

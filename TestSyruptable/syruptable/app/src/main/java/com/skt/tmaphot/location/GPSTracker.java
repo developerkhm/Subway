@@ -1,11 +1,7 @@
 package com.skt.tmaphot.location;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.Service;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -13,9 +9,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -24,10 +18,8 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.skt.tmaphot.SplashActivity;
+import com.skt.tmaphot.activity.SplashActivity;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Set;
 
 

@@ -1,4 +1,4 @@
-package com.skt.tmaphot.activity;
+package com.skt.tmaphot.banner;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.skt.tmaphot.R;
 
-public class StoreViewPagerAdapter extends PagerAdapter {
+public class RollingPagerAdapter extends PagerAdapter {
 
     private Context context;
     private LayoutInflater layoutInflater;
@@ -23,7 +23,7 @@ public class StoreViewPagerAdapter extends PagerAdapter {
             "https://picksell.co.kr/images/product/124369/4d69f008-386e-479f-aa09-a7447301383e.jpg"
     };
 
-    public StoreViewPagerAdapter(Context context) {
+    public RollingPagerAdapter(Context context) {
         this.context = context;
     }
 

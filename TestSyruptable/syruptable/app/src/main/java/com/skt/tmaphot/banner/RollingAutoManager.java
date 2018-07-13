@@ -1,18 +1,18 @@
-package com.skt.tmaphot.activity;
+package com.skt.tmaphot.banner;
 
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 
-public class AutoRollingManager {
+public class RollingAutoManager {
 
     private RollingAdapter mAdapter = null;
     private ViewPager mViewPager = null;
-    private IndicatorView mIndicatorView = null;
+    private RollingIndicatorView mIndicatorView = null;
     private boolean isRollingStart = false;
     private long mRollingTime = 5000;
 
-    public AutoRollingManager(ViewPager viewPager, RollingAdapter adapter, IndicatorView indicatorView){
+    public RollingAutoManager(ViewPager viewPager, RollingAdapter adapter, RollingIndicatorView indicatorView){
         mAdapter = adapter;
         mViewPager = viewPager;
         mIndicatorView = indicatorView;

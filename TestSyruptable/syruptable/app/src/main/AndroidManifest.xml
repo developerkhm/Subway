@@ -27,7 +27,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SplashActivity"
+            android:name=".activity.SplashActivity"
             android:theme="@style/AppTheme.SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,7 +47,7 @@
         </activity>
 
         <!-- TEST ING -->
-        <activity android:name=".SyrupMainActivity" />
+        <activity android:name=".activity.SyrupMainActivity" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
