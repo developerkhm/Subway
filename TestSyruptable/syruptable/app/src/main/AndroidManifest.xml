@@ -48,6 +48,7 @@
 
         <!-- TEST ING -->
         <activity android:name=".activity.SyrupMainActivity" />
+        <activity android:name=".activity.NewSyrupMainActivity" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
