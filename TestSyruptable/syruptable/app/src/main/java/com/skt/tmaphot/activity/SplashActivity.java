@@ -160,6 +160,8 @@ public class SplashActivity extends AppCompatActivity {
         int permissionCallPhone = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE);
         int permissionReadSMS = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS);
         int permissionReadExternalStorage = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        int permissionExternalStroage = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
 
         List<String> listPermissionsNeeded = new ArrayList<>();
 
@@ -178,8 +180,11 @@ public class SplashActivity extends AppCompatActivity {
         if (permissionReadSMS != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_SMS);
         }
-        if (permissionReadExternalStorage != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+//        if (permissionReadExternalStorage != PackageManager.PERMISSION_GRANTED) {
+//            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+//        }
+        if (permissionExternalStroage != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
 
         if (!listPermissionsNeeded.isEmpty()) {

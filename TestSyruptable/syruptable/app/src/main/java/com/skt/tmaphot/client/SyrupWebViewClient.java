@@ -2,12 +2,10 @@ package com.skt.tmaphot.client;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,9 +16,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.skt.tmaphot.MainActivity;
 import com.skt.tmaphot.common.CommonUtil;
-import com.skt.tmaphot.pay.PaymentScheme;
 
 import java.net.URISyntaxException;
 
@@ -296,16 +292,16 @@ public class SyrupWebViewClient extends WebViewClient {
         }
     }
 
-    protected boolean handleNotFoundPaymentScheme(String scheme) {
-        //PG사에서 호출하는 url에 package정보가 없어 ActivityNotFoundException이 난 후 market 실행이 안되는 경우
-        if (PaymentScheme.ISP.equalsIgnoreCase(scheme)) {
-            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + PaymentScheme.PACKAGE_ISP)));
-            return true;
-        } else if (PaymentScheme.BANKPAY.equalsIgnoreCase(scheme)) {
-            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + PaymentScheme.PACKAGE_BANKPAY)));
-            return true;
-        }
-
-        return false;
-    }
+//    protected boolean handleNotFoundPaymentScheme(String scheme) {
+//        //PG사에서 호출하는 url에 package정보가 없어 ActivityNotFoundException이 난 후 market 실행이 안되는 경우
+//        if (PaymentScheme.ISP.equalsIgnoreCase(scheme)) {
+//            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + PaymentScheme.PACKAGE_ISP)));
+//            return true;
+//        } else if (PaymentScheme.BANKPAY.equalsIgnoreCase(scheme)) {
+//            activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + PaymentScheme.PACKAGE_BANKPAY)));
+//            return true;
+//        }
+//
+//        return false;
+//    }
 }

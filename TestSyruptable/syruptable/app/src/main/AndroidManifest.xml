@@ -12,8 +12,13 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-feature android:name="android.hardware.location.gps" />
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-feature android:name="android.hardware.camera2" />
+
+    출처: http://cocomo.tistory.com/415 [Cocomo Coding]
 
     <application
         android:name=".MainApplication"
@@ -49,6 +54,14 @@
         <!-- TEST ING -->
         <activity android:name=".activity.SyrupMainActivity" />
         <activity android:name=".activity.NewSyrupMainActivity" />
+        <activity android:name=".activity.RealReviewActivity"/>
+        <activity android:name=".activity.CouponListActivity"/>
+        <activity android:name=".activity.review.ReviewWriteActivity"/>
+        <activity android:name=".activity.review.ReviewWriteActivity2"/>
+        <activity android:name=".activity.review.ReviewWriteActivity3"/>
+        <activity android:name=".activity.review.multiple.activities.AlbumSelectActivity"/>
+        <activity android:name=".activity.review.multiple.activities.HelperActivity"/>
+        <activity android:name=".activity.review.multiple.activities.ImageSelectActivity"/>
 
         <meta-data
             android:name="io.fabric.ApiKey"
@@ -58,6 +71,19 @@
             android:name=".activity.StoreInfoActivity"
             android:label="@string/title_activity_store_info"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.skt.tmaphot.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+
     </application>
 
 </manifest>

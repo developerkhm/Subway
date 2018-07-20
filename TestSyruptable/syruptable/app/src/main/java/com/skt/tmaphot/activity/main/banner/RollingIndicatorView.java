@@ -1,9 +1,10 @@
-package com.skt.tmaphot.banner;
+package com.skt.tmaphot.activity.main.banner;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
@@ -20,8 +21,8 @@ public class RollingIndicatorView extends View {
 
     private int mPosition = 0;
     private Paint circlePaint = null;
-    private int selColor = Color.BLACK;
-    private int norColor = Color.GRAY;
+    private int selColor = Color.GREEN;
+    private int norColor = Color.WHITE;
     private int indicatorWidth = -1;
     private int radius = -1;
 
@@ -39,7 +40,7 @@ public class RollingIndicatorView extends View {
 
         circlePaint = new Paint();
         circlePaint.setAntiAlias(true);
-        norColor = context.getResources().getColor(R.color.black_40);
+        norColor = context.getResources().getColor(R.color.colorWhite);
 
         indicateSpace = context.getResources().getDimensionPixelOffset(R.dimen.indicator_item_margin);
         indicatorWidth = context.getResources().getDimensionPixelOffset(R.dimen.indicator_item_width);
@@ -63,6 +64,8 @@ public class RollingIndicatorView extends View {
         }
         float left = radius;
         int position = mPosition % count;
+        //test
+        // canvas.drawRoundRect(rect, radius, radius, circlePaint);
         for (int i = 0; i < count; i++) {
             if (i == position) {
                 circlePaint.setColor(selColor);

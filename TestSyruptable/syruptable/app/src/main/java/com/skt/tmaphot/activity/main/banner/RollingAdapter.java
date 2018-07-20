@@ -1,4 +1,4 @@
-package com.skt.tmaphot.banner;
+package com.skt.tmaphot.activity.main.banner;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.skt.tmaphot.R;
 
 import java.util.HashMap;
@@ -66,11 +65,11 @@ public class RollingAdapter extends PagerAdapter {
                     ImageView imageView = (ImageView) layout.findViewById(R.id.image_view1);
 //                    imageView.setImageResource(object.getResId());
 //                    ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
-//                    Glide.with(mContext).load(object.getResId()).into(imageView);
+                    Glide.with(mContext).load(object.getResId()).into(imageView);
 
-                    Glide.with(mContext).load(object.getResId())
-                            .apply(new RequestOptions().circleCrop())
-                            .into(imageView);
+//                    Glide.with(mContext).load(object.getResId())
+//                            .apply(new RequestOptions().circleCrop())
+//                            .into(imageView);
 
                 }
                 return layout;
@@ -86,10 +85,10 @@ public class RollingAdapter extends PagerAdapter {
         layout.addView(imageView, params);
 
         startFadeAnimation(imageView);
-//        Glide.with(mContext).load(object.getResId()).into(imageView);
-        Glide.with(mContext).load(object.getResId())
-                .apply(new RequestOptions().circleCrop())
-                .into(imageView);
+        Glide.with(mContext).load(object.getResId()).into(imageView);
+//        Glide.with(mContext).load(object.getResId())
+//                .apply(new RequestOptions().circleCrop())
+//                .into(imageView);
 //        imageView.setImageResource(object.getResId());
 
 

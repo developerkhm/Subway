@@ -1,4 +1,4 @@
-package com.skt.tmaphot.banner;
+package com.skt.tmaphot.activity.main.banner;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;

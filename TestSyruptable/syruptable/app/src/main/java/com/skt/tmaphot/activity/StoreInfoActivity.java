@@ -12,14 +12,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.skt.tmaphot.R;
-import com.skt.tmaphot.banner.RollingAdapter;
-import com.skt.tmaphot.banner.RollingAutoManager;
-import com.skt.tmaphot.banner.RollingIndicatorView;
-import com.skt.tmaphot.banner.RollingModel;
+import com.skt.tmaphot.activity.main.banner.RollingAdapter;
+import com.skt.tmaphot.activity.main.banner.RollingAutoManager;
+import com.skt.tmaphot.activity.main.banner.RollingIndicatorView;
+import com.skt.tmaphot.activity.main.banner.RollingModel;
 import com.skt.tmaphot.recycle.RecyclerViewDataAdapter;
 import com.skt.tmaphot.recycle.SectionDataModel;
 import com.skt.tmaphot.recycle.SingleItemModel;
@@ -55,6 +54,7 @@ public class StoreInfoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_store_info);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,6 +77,22 @@ public class StoreInfoActivity extends AppCompatActivity {
         mIndicatorView.setViewPager(mViewPager);
         mAutoRollingManager = new RollingAutoManager(mViewPager, mAdapter, mIndicatorView);
         mAutoRollingManager.setRollingTime(5500);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         allSampleData = new ArrayList<SectionDataModel>();
 

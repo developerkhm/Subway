@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#FFFFFF</color>
+    <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#60c701</color>
     <color name="colorControlNormal">#c701c3</color>
 
@@ -12,6 +12,8 @@
     <color name="colorTransparent">#000000</color>
 
     <color name="black_40">#66000000</color>
+
+    <color name="layout_bottom_boder">#ebebeb</color>
 
 
 
@@ -29,5 +31,22 @@
     <color name="teal_a200">#64ffda</color> <!-- Use with black text -->
     <color name="teal_a400">#1de9b6</color> <!-- Use with black text -->
     <color name="teal_a700">#00bfa5</color> <!-- Use with black text -->
+
+
+    <color name="multiple_image_select_primary">#2E7D32</color>
+    <color name="multiple_image_select_primaryDark">#1B5E20</color>
+    <color name="multiple_image_select_primaryLight">#C8E6C9</color>
+    <color name="multiple_image_select_accent">#4CAF50</color>
+
+    <color name="multiple_image_select_primaryText">#212121</color>
+    <color name="multiple_image_select_secondaryText">#727272</color>
+    <color name="multiple_image_select_divider">#B6B6B6</color>
+
+    <color name="multiple_image_select_toolbarPrimaryText">#FFFFFF</color>
+
+    <color name="multiple_image_select_albumTextBackground">#99FFFFFF</color>
+    <color name="multiple_image_select_imageSelectBackground">#000000</color>
+
+    <color name="multiple_image_select_buttonText">#FFFFFF</color>
 
 </resources>

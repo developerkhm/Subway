@@ -64,6 +64,8 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0' //http 통신 내용 log로 확인할 수 있는 interceptor 제공 패키지
 
 
+
+
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
         transitive = true;
     }
