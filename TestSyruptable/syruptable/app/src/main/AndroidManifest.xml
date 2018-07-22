@@ -3,6 +3,8 @@
     package="com.skt.tmaphot">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!--WIFI 상태활용시 추가--><uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!--WIFI 상태활용시 추가--><uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
 
     <!-- Dangerous Permmisions 6.0 up -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -62,6 +64,8 @@
         <activity android:name=".activity.review.multiple.activities.AlbumSelectActivity"/>
         <activity android:name=".activity.review.multiple.activities.HelperActivity"/>
         <activity android:name=".activity.review.multiple.activities.ImageSelectActivity"/>
+
+        <activity android:name=".activity.MapTest" />
 
         <meta-data
             android:name="io.fabric.ApiKey"

@@ -19,7 +19,7 @@
         app:menu="@menu/activity_syrup_main_drawer" />
 
     <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/scroll_view"
+        android:id="@+id/main_nestedscrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
@@ -216,7 +216,6 @@
 
                         <ImageView
                             android:id="@+id/main_img_menu_3"
-
                             android:layout_width="82dp"
                             android:layout_height="90dp" />
 
@@ -248,6 +247,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/main_txt_coupon_more"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end|center_vertical"
@@ -328,16 +328,12 @@
                         android:id="@+id/hotplace_gridview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:horizontalSpacing="4dp"
+                        android:gravity="center"
+
                         android:isScrollContainer="false"
                         android:numColumns="2"
-                        android:verticalSpacing="2dp" />
-
-
+                         />
                 </LinearLayout>
-
-
             </LinearLayout>
 
         </LinearLayout>

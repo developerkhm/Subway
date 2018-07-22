@@ -1,6 +1,9 @@
 package com.skt.tmaphot.activity.main.hotplace;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +47,7 @@ public class HotplaceGridAdapter extends BaseAdapter {
         return position;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
@@ -58,7 +62,13 @@ public class HotplaceGridAdapter extends BaseAdapter {
         TextView ReviewtextView = (TextView) convertView.findViewById(R.id.main_grid_hotplace_txt_review);
 
 
+        GradientDrawable drawable=
+                (GradientDrawable) mContext.getDrawable(R.drawable.round_main_grid_hotplace_item);
+        imageView.setBackground(drawable);
+        imageView.setClipToOutline(true);
+
         MainApplication.loadUrlImage(mContext,hotplaceGridViewItemsList.get(position).getUrl(), imageView);
+
 
         TitletextView.setText(hotplaceGridViewItemsList.get(position).getTitle());
         MenutextView.setText(hotplaceGridViewItemsList.get(position).getMenu());

@@ -12,6 +12,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +27,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -67,6 +67,7 @@ public class NewSyrupMainActivity extends AppCompatActivity
     private String MESSAGE_REVIEW_NEW_ITEM_INDEX = "KEY";
     private String MESSAGE_COUPON_NEW_ITEM_INDEX = "KEY";
     private Handler Handler;
+    private NestedScrollView nestedScrollView;
 
     //////////////리싸이클 뷰//////////////////
     // 리얼리뷰
@@ -102,6 +103,8 @@ public class NewSyrupMainActivity extends AppCompatActivity
     private RollingIndicatorView rollingIndicatorView;
     private TextView rollingTextView;
     private ImageView searchbarImgView, menu1ImgView, menu2ImgView, menu3ImgView, menu4ImgView;
+
+    private TextView couponMoreTextview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -723,6 +726,31 @@ public class NewSyrupMainActivity extends AppCompatActivity
     }
 
     private void initView() {
+
+        nestedScrollView = (NestedScrollView)findViewById(R.id.main_nestedscrollview);
+
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+
+                if (scrollY > oldScrollY) {
+                    Log.i("TAAA", "Scroll DOWN");
+                }
+                if (scrollY < oldScrollY) {
+                    Log.i("TAAA", "Scroll UP");
+                }
+
+                if (scrollY == 0) {
+                    Log.i("TAAA", "TOP SCROLL");
+                }
+
+                if (scrollY == ( v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight() )) {
+                    Log.i("TAAA", "BOTTOM SCROLL");
+                    loadGridItem();
+                }
+            }
+        });
+
         // 아직 할지 말지 모름 여기는 text 서버에서 받아오는건지.. 임시
         rollingTextView = (TextView) findViewById(R.id.main_text_banner);
         rollingIndicatorView = (RollingIndicatorView) findViewById(R.id.indicator_view);
@@ -746,6 +774,14 @@ public class NewSyrupMainActivity extends AppCompatActivity
 
 
         hotplaceGridview = (ExpandableHeightGridView)findViewById(R.id.hotplace_gridview);
+
+        couponMoreTextview = (TextView)findViewById(R.id.main_txt_coupon_more);
+        couponMoreTextview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(NewSyrupMainActivity.this,MapTest.class));
+            }
+        });
 
     }
 
@@ -829,5 +865,8 @@ public class NewSyrupMainActivity extends AppCompatActivity
             }
         }).start();
     }
+
+
+
 
 }
