@@ -1,25 +1,17 @@
 package com.skt.tmaphot.activity;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.main.banner.RollingAdapter;
 import com.skt.tmaphot.activity.main.banner.RollingAutoManager;
 import com.skt.tmaphot.activity.main.banner.RollingIndicatorView;
 import com.skt.tmaphot.activity.main.banner.RollingModel;
-import com.skt.tmaphot.recycle.RecyclerViewDataAdapter;
 import com.skt.tmaphot.recycle.SectionDataModel;
 import com.skt.tmaphot.recycle.SingleItemModel;
 
@@ -55,7 +47,7 @@ public class TestStoreInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_store_info);
+        setContentView(R.layout.activity_storeinfo_layout);
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 //

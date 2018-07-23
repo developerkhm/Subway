@@ -27,7 +27,7 @@ public class CouponRecyclerViewDataAdapter extends RecyclerView.Adapter<CouponRe
         // Get LayoutInflater object.
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         // Inflate the RecyclerView item layout xml.
-        View itemView = layoutInflater.inflate(R.layout.activity_main_recycler_coupon_item, parent, false);
+        View itemView = layoutInflater.inflate(R.layout.coupon_recycler_item, parent, false);
 
         // Create and return our customRecycler View Holder object.
         CouponRecyclerViewHolder ret = new CouponRecyclerViewHolder(itemView);

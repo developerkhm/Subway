@@ -57,7 +57,7 @@ public class AlbumSelectActivity extends HelperActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_album_select);
+        setContentView(R.layout.activity_realreview_album_layout);
         setView(findViewById(R.id.layout_album_select));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

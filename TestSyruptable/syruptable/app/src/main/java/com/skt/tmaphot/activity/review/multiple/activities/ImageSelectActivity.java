@@ -61,7 +61,7 @@ public class ImageSelectActivity extends HelperActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_image_select);
+        setContentView(R.layout.activity_realreview_image_layout);
         setView(findViewById(R.id.layout_image_select));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

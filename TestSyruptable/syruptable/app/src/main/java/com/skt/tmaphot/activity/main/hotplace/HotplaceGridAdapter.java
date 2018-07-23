@@ -8,16 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HotplaceGridAdapter extends BaseAdapter {
@@ -51,7 +47,7 @@ public class HotplaceGridAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.activity_main_grid_hotplace_item, null);
+            convertView = layoutInflater.inflate(R.layout.main_hotplace_grid_item, null);
         }
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.main_grid_hotplace_img_item);

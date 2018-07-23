@@ -1,8 +1,6 @@
 package com.skt.tmaphot.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.widget.LinearLayout;
 
 import com.nhn.android.maps.NMapActivity;
@@ -22,7 +20,7 @@ public class MapTest extends NMapActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_maptest);
+        setContentView(R.layout.activity_maptest_layout);
 
         mMapView = (NMapView)findViewById(R.id.mapTest);
         mMapView.setClientId(CLIENT_ID); // 클라이언트 아이디 값 설정

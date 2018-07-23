@@ -25,7 +25,7 @@ public class CustomImageSelectAdapter extends CustomGenericAdapter<Image> {
         ViewHolder viewHolder;
 
         if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.grid_view_item_image_select, null);
+            convertView = layoutInflater.inflate(R.layout.realreview_image_grid_item, null);
 
             viewHolder = new ViewHolder();
             viewHolder.imageView = (ImageView) convertView.findViewById(R.id.image_view_image_select);

@@ -5,7 +5,6 @@ package com.skt.tmaphot.recycle;
  */
 
 import android.content.Context;
-import android.graphics.drawable.shapes.OvalShape;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.bumptech.glide.Glide;
 import com.skt.tmaphot.R;
 
 import java.util.ArrayList;
@@ -34,7 +32,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
     @Override
     public SingleItemRowHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_single_card, null);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.temp_list_single_card, null);
         SingleItemRowHolder mh = new SingleItemRowHolder(v);
         return mh;
     }

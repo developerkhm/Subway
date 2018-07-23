@@ -113,7 +113,7 @@ public class NewSyrupMainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ButterKnife.bind(this);
+//        ButterKnife.bind(this);
 
         setContentView(R.layout.activity_syrup_main_new);
 
@@ -747,7 +747,7 @@ public class NewSyrupMainActivity extends AppCompatActivity
                     Log.i("TAAA", "TOP SCROLL");
                 }
 
-                if (scrollY == ( v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight() )) {
+                if (scrollY== (( v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight() ))) {
                     Log.i("TAAA", "BOTTOM SCROLL");
                     loadGridItem();
                 }
@@ -809,6 +809,51 @@ public class NewSyrupMainActivity extends AppCompatActivity
                 "황제짜장", "수제피자", "200m", "50%","맛이어요"));
         hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
                 "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+        hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+
 
         hotplaceGridAdapter = new HotplaceGridAdapter(this, hotplaceGridViewItemList);
         hotplaceGridview.setAdapter(hotplaceGridAdapter);
@@ -859,6 +904,36 @@ public class NewSyrupMainActivity extends AppCompatActivity
                         "황제짜장", "수제피자", "200m", "50%","맛이어요"));
                 hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
                         "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+                hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                        "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+                hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                        "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+                hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                        "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+                hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                        "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+                hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                        "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+                hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                        "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+                hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                        "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+                hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                        "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+                hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                        "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+                hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                        "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+                hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                        "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+                hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                        "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+                hotplaceGridViewItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                        "황제짜장", "수제피자", "200m", "50%","맛이어요"));
+
+
+
+
 
                 ishotplaceItemLoad = false;
 

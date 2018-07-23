@@ -1,7 +1,6 @@
 package com.skt.tmaphot;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -16,7 +15,6 @@ import android.webkit.CookieSyncManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.skt.tmaphot.client.SyrupWebChromeClient;
@@ -60,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_layout);
         ButterKnife.bind(this);
 
         mWebView.setWebViewClient(new SyrupWebViewClient(this, mWebView));

@@ -22,7 +22,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.skt.tmaphot.MainActivity;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.review.multiple.activities.AlbumSelectActivity;
 import com.skt.tmaphot.activity.review.multiple.helpers.Constants;
@@ -50,7 +49,7 @@ public class ReviewWriteActivity3 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_review_write);
+        setContentView(R.layout.activity_reviewwrite_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

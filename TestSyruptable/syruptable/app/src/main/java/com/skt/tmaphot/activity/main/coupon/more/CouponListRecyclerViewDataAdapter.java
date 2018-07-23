@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 
 import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
-import com.skt.tmaphot.activity.main.review.RealReviewRecyclerViewHolder;
-import com.skt.tmaphot.activity.main.review.RealReviewRecyclerViewItem;
 
 import java.util.List;
 
@@ -29,7 +27,7 @@ public class CouponListRecyclerViewDataAdapter extends RecyclerView.Adapter<Coup
         // Get LayoutInflater object.
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         // Inflate the RecyclerView item layout xml.
-        View itemView = layoutInflater.inflate(R.layout.activity_main_recycler_coupon_list_item, parent, false);
+        View itemView = layoutInflater.inflate(R.layout.main_coupon_recycler_item, parent, false);
 
         // Create and return our customRecycler View Holder object.
         CouponListRecyclerViewHolder ret = new CouponListRecyclerViewHolder(itemView);

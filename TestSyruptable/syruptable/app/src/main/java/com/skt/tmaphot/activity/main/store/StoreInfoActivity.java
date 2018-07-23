@@ -24,7 +24,6 @@ import com.skt.tmaphot.activity.main.banner.RollingAdapter;
 import com.skt.tmaphot.activity.main.banner.RollingAutoManager;
 import com.skt.tmaphot.activity.main.banner.RollingIndicatorView;
 import com.skt.tmaphot.activity.main.banner.RollingModel;
-import com.skt.tmaphot.recycle.SectionDataModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +67,7 @@ public class StoreInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_store_info);
+        setContentView(R.layout.activity_storeinfo_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -193,7 +192,7 @@ public class StoreInfoActivity extends AppCompatActivity {
             // Get LayoutInflater object.
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             // Inflate the RecyclerView item layout xml.
-            View itemView = layoutInflater.inflate(R.layout.activity_store_recycler_info_review_item, parent, false);
+            View itemView = layoutInflater.inflate(R.layout.storeinfo_review_recycler_item, parent, false);
 
             // Create and return our customRecycler View Holder object.
             StoreInfoItemViewHolder ret = new StoreInfoItemViewHolder(itemView);
@@ -286,7 +285,7 @@ public class StoreInfoActivity extends AppCompatActivity {
         public ReviewRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             mContext = parent.getContext();
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View itemView = layoutInflater.inflate(R.layout.activity_store_recycler_socialreview_list_item, parent, false);
+            View itemView = layoutInflater.inflate(R.layout.storeinfo_socialreview_recycler_item, parent, false);
             ReviewRecyclerViewHolder ret = new ReviewRecyclerViewHolder(itemView);
             return ret;
         }
@@ -370,7 +369,7 @@ public class StoreInfoActivity extends AppCompatActivity {
         public SocialReviewRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             mContext = parent.getContext();
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View itemView = layoutInflater.inflate(R.layout.activity_store_recycler_socialreview_list_item, parent, false);
+            View itemView = layoutInflater.inflate(R.layout.storeinfo_socialreview_recycler_item, parent, false);
             SocialReviewRecyclerViewHolder ret = new SocialReviewRecyclerViewHolder(itemView);
             return ret;
         }

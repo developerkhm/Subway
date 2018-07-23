@@ -58,7 +58,7 @@ public class SyrupMainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_syrup_main);
+        setContentView(R.layout.temp_activity_syrup_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 //      toolbar.setLogo(R.drawable.logo);
@@ -302,7 +302,7 @@ public class SyrupMainActivity extends AppCompatActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            View rootView = inflater.inflate(R.layout.temp_fragment_main, container, false);
 
             WebViewTab = new WebView[mNumOfTabs];
 

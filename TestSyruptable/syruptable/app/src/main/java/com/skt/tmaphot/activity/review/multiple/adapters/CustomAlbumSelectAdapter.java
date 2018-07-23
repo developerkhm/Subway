@@ -26,7 +26,7 @@ public class CustomAlbumSelectAdapter extends CustomGenericAdapter<Album> {
         ViewHolder viewHolder;
 
         if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.grid_view_item_album_select, null);
+            convertView = layoutInflater.inflate(R.layout.realreview_album_grid_item, null);
 
             viewHolder = new ViewHolder();
             viewHolder.imageView = (ImageView) convertView.findViewById(R.id.image_view_album_image);
