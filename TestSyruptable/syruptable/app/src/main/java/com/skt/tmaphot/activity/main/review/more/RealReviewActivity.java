@@ -1,4 +1,4 @@
-package com.skt.tmaphot.activity;
+package com.skt.tmaphot.activity.main.review.more;
 
 import android.content.Context;
 import android.graphics.Point;

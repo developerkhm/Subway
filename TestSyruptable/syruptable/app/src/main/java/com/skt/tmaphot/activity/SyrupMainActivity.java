@@ -67,7 +67,7 @@ public class SyrupMainActivity extends AppCompatActivity
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SyrupMainActivity.this, StoreInfoActivity.class));
+                startActivity(new Intent(SyrupMainActivity.this, TestStoreInfoActivity.class));
 //                overridePendingTransition(R.anim.anim_slide_out_right, R.anim.anim_slide_in_left);
 //                finish();
             }

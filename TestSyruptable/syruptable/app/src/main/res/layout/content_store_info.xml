@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.skt.tmaphot.activity.StoreInfoActivity">
+    tools:context="com.skt.tmaphot.activity.TestStoreInfoActivity">
 
     <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/scroll_view"
@@ -38,7 +38,7 @@
             </FrameLayout>
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/my_recycler_view"
+                android:id="@+id/review_recycler_view"
                 android:nestedScrollingEnabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -139,6 +139,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/main_txt_review_more"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end|center_vertical"
@@ -288,6 +289,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/main_txt_hotdeal_more"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end|center_vertical"

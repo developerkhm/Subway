@@ -8,7 +8,7 @@
     android:layout_marginHorizontal="3dp"
     android:layout_marginTop="5dp"
     android:orientation="vertical"
-    tools:context="com.skt.tmaphot.activity.StoreInfoActivity">
+    tools:context="com.skt.tmaphot.activity.TestStoreInfoActivity">
 
 
 

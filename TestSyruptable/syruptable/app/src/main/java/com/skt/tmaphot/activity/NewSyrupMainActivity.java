@@ -34,19 +34,22 @@ import android.widget.Toast;
 
 import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.activity.main.banner.RollingAdapter;
+import com.skt.tmaphot.activity.main.banner.RollingAutoManager;
+import com.skt.tmaphot.activity.main.banner.RollingIndicatorView;
+import com.skt.tmaphot.activity.main.banner.RollingModel;
 import com.skt.tmaphot.activity.main.coupon.CouponRecyclerViewDataAdapter;
 import com.skt.tmaphot.activity.main.coupon.CouponRecyclerViewItem;
+import com.skt.tmaphot.activity.main.coupon.more.CouponListActivity;
 import com.skt.tmaphot.activity.main.hotdeal.HotdealRecyclerViewDataAdapter;
 import com.skt.tmaphot.activity.main.hotdeal.HotdealRecyclerViewItem;
+import com.skt.tmaphot.activity.main.hotdeal.more.HotdealListActivity;
 import com.skt.tmaphot.activity.main.hotplace.ExpandableHeightGridView;
 import com.skt.tmaphot.activity.main.hotplace.HotplaceGridAdapter;
 import com.skt.tmaphot.activity.main.hotplace.HotplaceGridViewItem;
 import com.skt.tmaphot.activity.main.review.RealReviewRecyclerViewDataAdapter;
 import com.skt.tmaphot.activity.main.review.RealReviewRecyclerViewItem;
-import com.skt.tmaphot.activity.main.banner.RollingAdapter;
-import com.skt.tmaphot.activity.main.banner.RollingAutoManager;
-import com.skt.tmaphot.activity.main.banner.RollingIndicatorView;
-import com.skt.tmaphot.activity.main.banner.RollingModel;
+import com.skt.tmaphot.activity.main.review.more.RealReviewActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -104,7 +107,7 @@ public class NewSyrupMainActivity extends AppCompatActivity
     private TextView rollingTextView;
     private ImageView searchbarImgView, menu1ImgView, menu2ImgView, menu3ImgView, menu4ImgView;
 
-    private TextView couponMoreTextview;
+    private TextView reviewMoreTextView, couponMoreTextview, hotdealMoreTextview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -775,13 +778,15 @@ public class NewSyrupMainActivity extends AppCompatActivity
 
         hotplaceGridview = (ExpandableHeightGridView)findViewById(R.id.hotplace_gridview);
 
+        reviewMoreTextView = (TextView)findViewById(R.id.main_txt_review_more);
+        reviewMoreTextView.setOnClickListener(onClickListener);
+
         couponMoreTextview = (TextView)findViewById(R.id.main_txt_coupon_more);
-        couponMoreTextview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(NewSyrupMainActivity.this,MapTest.class));
-            }
-        });
+        couponMoreTextview.setOnClickListener(onClickListener);
+
+        hotdealMoreTextview = (TextView)findViewById(R.id.main_txt_hotdeal_more);
+        hotdealMoreTextview.setOnClickListener(onClickListener);
+
 
     }
 
@@ -866,7 +871,22 @@ public class NewSyrupMainActivity extends AppCompatActivity
         }).start();
     }
 
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
 
-
-
+            switch (view.getId())
+            {
+                case R.id.main_txt_review_more:
+                    startActivity(new Intent(NewSyrupMainActivity.this, RealReviewActivity.class));
+                    break;
+                case R.id.main_txt_coupon_more:
+                    startActivity(new Intent(NewSyrupMainActivity.this, CouponListActivity.class));
+                    break;
+                case R.id.main_txt_hotdeal_more:
+                    startActivity(new Intent(NewSyrupMainActivity.this, HotdealListActivity.class));
+                    break;
+            }
+        }
+    };
 }
