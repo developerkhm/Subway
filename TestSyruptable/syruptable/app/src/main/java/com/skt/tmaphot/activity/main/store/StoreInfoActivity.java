@@ -1,6 +1,7 @@
 package com.skt.tmaphot.activity.main.store;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -161,7 +162,7 @@ public class StoreInfoActivity extends AppCompatActivity {
             super(itemView);
 
             if (itemView != null) {
-                mImgReview = (ImageView) itemView.findViewById(R.id.main_img_review_item);
+                mImgReview = (ImageView) itemView.findViewById(R.id.realreview_recyler_item_image);
                 itemView.setOnClickListener(this);
             }
         }
@@ -176,7 +177,7 @@ public class StoreInfoActivity extends AppCompatActivity {
         }
     }
 
-    public class StoreInfoRecyclerViewDataAdapter extends RecyclerView.Adapter<StoreInfoItemViewHolder> {
+    public class StoreInfoRecyclerViewDataAdapter extends RecyclerView.Adapter<StoreInfoItemViewHolder> implements View.OnClickListener {
         private Context mContext;
         private List<String> viewItemList;
 
@@ -196,6 +197,7 @@ public class StoreInfoActivity extends AppCompatActivity {
 
             // Create and return our customRecycler View Holder object.
             StoreInfoItemViewHolder ret = new StoreInfoItemViewHolder(itemView);
+            itemView.setOnClickListener(this);
             return ret;
         }
 
@@ -219,6 +221,14 @@ public class StoreInfoActivity extends AppCompatActivity {
                 ret = viewItemList.size();
             }
             return ret;
+        }
+
+        @Override
+        public void onClick(View v) {
+
+//            System.out.println(getPosition());
+//            Intent intent = ;
+            startActivity(new Intent(StoreInfoActivity.this , StoreInfoImageViewActivity.class));
         }
     }
 
@@ -268,7 +278,7 @@ public class StoreInfoActivity extends AppCompatActivity {
 
         public ReviewRecyclerViewHolder(View itemView) {
             super(itemView);
-            loginImageView = (ImageView) itemView.findViewById(R.id.main_img_review_item);
+            loginImageView = (ImageView) itemView.findViewById(R.id.realreview_recyler_item_image);
         }
     }
 
@@ -352,7 +362,7 @@ public class StoreInfoActivity extends AppCompatActivity {
 
         public SocialReviewRecyclerViewHolder(View itemView) {
             super(itemView);
-            loginImageView = (ImageView) itemView.findViewById(R.id.main_img_review_item);
+            loginImageView = (ImageView) itemView.findViewById(R.id.realreview_recyler_item_image);
         }
     }
 

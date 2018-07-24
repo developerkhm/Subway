@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -67,4 +68,5 @@ public class MainApplication extends Application {
                 .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop())
                 .into(view);
     }
+
 }

@@ -1,72 +1,78 @@
 <resources>
+        <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+            <!-- Customize your theme here. -->
+            <item name="colorPrimary">@color/colorPrimary</item>
+            <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+            <item name="colorAccent">@color/colorAccent</item>
+            <item name="colorControlNormal">@color/colorControlNormal</item>
+            <item name="windowNoTitle">true</item>
+        </style>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorControlNormal">@color/colorControlNormal</item>
+        <style name="AppTheme.NoActionBar">
+            <item name="windowActionBar">false</item>
+            <item name="windowNoTitle">true</item>
+        </style>
+
+        <style name="AppTheme.SplashTheme" parent="Theme.AppCompat.NoActionBar">
+            <item name="android:windowBackground">@drawable/splash_background</item>
+        </style>
+
+        <style name="SyrupCustomTabLayout" parent="Widget.Design.TabLayout">
+            <!--item name="tabMaxWidth">@dimen/tab_max_width</item-->
+            <item name="tabIndicatorColor">?attr/colorAccent</item>
+            <item name="tabIndicatorHeight">8dp</item>
+            <!--item name="tabPaddingStart">12dp</item-->
+            <!--item name="tabPaddingEnd">12dp</item-->
+            <item name="tabBackground">@color/colorWhite</item>
+            <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
+            <item name="tabSelectedTextColor">@color/colorBlack</item>
+        </style>
+
+        <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+            <item name="android:textSize">14sp</item>
+            <item name="android:textColor">@color/colorBlack</item>
+            <item name="textAllCaps">true</item>
+        </style>
+
+        <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+        <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+        <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+        <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+        <style name="MyButton" parent="Theme.AppCompat.Light">
+            <item name="colorControlHighlight">@color/teal_100</item>
+            <item name="colorButtonNormal">@color/teal_500</item>
+        </style>
+
+        <style name="TransparentToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            <item name="android:windowActionBarOverlay">true</item>
+            <item name="android:background">@android:color/transparent</item>
+            <item name="windowActionBarOverlay">true</item>
+            <item name="colorControlNormal">@color/colorWhite</item>
+        </style>
+
+        <style name="BaseToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            <item name="android:windowActionBarOverlay">false</item>
+            <item name="windowActionBarOverlay">false</item>
+            <item name="android:background">@android:color/transparent</item>
+            <item name="colorControlNormal">@android:color/black</item>
+        </style>
 
 
-        <item name="windowNoTitle">true</item>
-    </style>
+        <style name="DefaultToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            <item name="android:windowActionBarOverlay">false</item>
+            <item name="windowActionBarOverlay">false</item>
+            <item name="android:background">@android:color/black</item>
+            <item name="colorControlNormal">@color/colorWhite</item>
+        </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
+        <style name="CustomToolbarTheme" parent="Base.ThemeOverlay.AppCompat.ActionBar">
+            <item name="android:textColorPrimary">@color/multiple_image_select_toolbarPrimaryText
+            </item>
+        </style>
+    </resources>
 
-    <style name="AppTheme.SplashTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_background</item>
-    </style>
 
-    <style name="SyrupCustomTabLayout" parent="Widget.Design.TabLayout">
-        <!--item name="tabMaxWidth">@dimen/tab_max_width</item-->
-        <item name="tabIndicatorColor">?attr/colorAccent</item>
-        <item name="tabIndicatorHeight">8dp</item>
-        <!--item name="tabPaddingStart">12dp</item-->
-        <!--item name="tabPaddingEnd">12dp</item-->
-        <item name="tabBackground">@color/colorWhite</item>
-        <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
-        <item name="tabSelectedTextColor">@color/colorBlack</item>
-    </style>
-
-    <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/colorBlack</item>
-        <item name="textAllCaps">true</item>
-    </style>
-
-    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="MyButton" parent="Theme.AppCompat.Light">
-        <item name="colorControlHighlight">@color/teal_100</item>
-        <item name="colorButtonNormal">@color/teal_500</item>
-    </style>
-
-    <style name="TransparentToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="android:background">@android:color/transparent</item>
-        <item name="windowActionBarOverlay">true</item>
-        <item name="colorControlNormal">@color/colorWhite</item>
-    </style>
-
-    <style name="DefaultToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:windowActionBarOverlay">false</item>
-        <item name="windowActionBarOverlay">false</item>
-        <item name="android:background">@android:color/black</item>
-        <item name="colorControlNormal">@color/colorWhite</item>
-    </style>
-
-    <style name="CustomToolbarTheme" parent="Base.ThemeOverlay.AppCompat.ActionBar">
-        <item name="android:textColorPrimary">@color/multiple_image_select_toolbarPrimaryText</item>
-    </style>
-
-</resources>

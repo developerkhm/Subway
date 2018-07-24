@@ -3,6 +3,8 @@ package com.skt.tmaphot.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
+import android.graphics.drawable.GradientDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -258,6 +260,7 @@ public class NewSyrupMainActivity extends AppCompatActivity
 
         // Set layout manager.
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addItemDecoration(new SpacesItemDecoration(15));
 
 
         switch (recyclerView.getId()) {
@@ -760,6 +763,7 @@ public class NewSyrupMainActivity extends AppCompatActivity
         rollingViewPager = (ViewPager) findViewById(R.id.viewPager);
 
         searchbarImgView = (ImageView) findViewById(R.id.main_img_searchbar);
+        searchbarImgView.setScaleType(ImageView.ScaleType.FIT_XY);
 
         realReviewRecyclerView = (RecyclerView) findViewById(R.id.review_recycler_view);
         realReviewLoadingProgressBar = (ProgressBar) findViewById(R.id.review_recycler_view_progressbar);
@@ -964,4 +968,26 @@ public class NewSyrupMainActivity extends AppCompatActivity
             }
         }
     };
+
+
+    public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
+        private int space;
+
+        public SpacesItemDecoration(int space) {
+            this.space = space;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+//            outRect.left = space;
+            outRect.right = space;
+//            outRect.bottom = space;
+
+            // Add top margin only for the first item to avoid double space between items
+//            if(parent.getChildAdapterPosition(view) == 0) {
+//                outRect.top = space;
+//            }
+        }
+    }
+
 }

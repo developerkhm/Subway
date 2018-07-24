@@ -11,9 +11,17 @@
     <color name="colorGreen">#60c701</color>
     <color name="colorTransparent">#000000</color>
 
+    <color name="black_40filter">#66000000</color>
+    <color name="black_55filter">#8C000000</color>
+    <color name="sale_bg">#fa3500</color>
+
+
     <color name="black_40">#66000000</color>
 
     <color name="layout_bottom_boder">#ebebeb</color>
+
+
+
 
 
 

@@ -1,6 +1,8 @@
 package com.skt.tmaphot.activity.main.hotdeal;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,7 @@ public class HotdealRecyclerViewDataAdapter extends RecyclerView.Adapter<Hotdeal
         this.viewItemList = viewItemList;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public HotdealRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Get LayoutInflater object.
@@ -43,10 +46,8 @@ public class HotdealRecyclerViewDataAdapter extends RecyclerView.Adapter<Hotdeal
             if(viewItem != null) {
                 // Set car item title.
                 MainApplication.loadUrlImage(context , viewItem.getUrl(), holder.getmImgReview());
-                holder.getmTextSale().setText(viewItem.getSale());
                 holder.getmTitleText().setText(viewItem.getTitle());
                 holder.getmMenueText().setText(viewItem.getMenu());
-                holder.getmDistanceText().setText(viewItem.getDistance());
             }
         }
     }

@@ -66,6 +66,7 @@
         <activity android:name=".activity.review.multiple.activities.HelperActivity"/>
         <activity android:name=".activity.review.multiple.activities.ImageSelectActivity"/>
         <activity android:name=".activity.main.store.StoreInfoActivity"/>
+        <activity android:name=".activity.main.store.StoreInfoImageViewActivity"/>
 
         <activity android:name=".activity.MapTest" />
 

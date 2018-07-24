@@ -1,6 +1,8 @@
 package com.skt.tmaphot.activity.main.coupon;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,12 +24,12 @@ public class CouponRecyclerViewDataAdapter extends RecyclerView.Adapter<CouponRe
         this.viewItemList = viewItemList;
     }
 
-    @Override
+
     public CouponRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Get LayoutInflater object.
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         // Inflate the RecyclerView item layout xml.
-        View itemView = layoutInflater.inflate(R.layout.coupon_recycler_item, parent, false);
+        View itemView = layoutInflater.inflate(R.layout.main_coupon_recycler_item, parent, false);
 
         // Create and return our customRecycler View Holder object.
         CouponRecyclerViewHolder ret = new CouponRecyclerViewHolder(itemView);

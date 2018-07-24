@@ -50,12 +50,10 @@ public class HotplaceGridAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.main_hotplace_grid_item, null);
         }
 
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.main_grid_hotplace_img_item);
-        TextView TitletextView = (TextView) convertView.findViewById(R.id.main_grid_hotplace_txt_title);
-        TextView MenutextView = (TextView) convertView.findViewById(R.id.main_grid_hotplace_txt_menu);
-        TextView DistancetextView = (TextView) convertView.findViewById(R.id.main_grid_hotplace_txt_distance);
-        TextView SaletextView = (TextView) convertView.findViewById(R.id.main_grid_hotplace_txt_sale);
-        TextView ReviewtextView = (TextView) convertView.findViewById(R.id.main_grid_hotplace_txt_review);
+        ImageView imageView = (ImageView) convertView.findViewById(R.id.hotplace_grid_item_image);
+        TextView TitletextView = (TextView) convertView.findViewById(R.id.hotplace_grid_txt_title);
+        TextView MenutextView = (TextView) convertView.findViewById(R.id.hotplace_grid_txt_menu);
+        TextView DistancetextView = (TextView) convertView.findViewById(R.id.hotplace_grid_txt_distance);
 
 
         GradientDrawable drawable=
@@ -69,8 +67,6 @@ public class HotplaceGridAdapter extends BaseAdapter {
         TitletextView.setText(hotplaceGridViewItemsList.get(position).getTitle());
         MenutextView.setText(hotplaceGridViewItemsList.get(position).getMenu());
         DistancetextView.setText(hotplaceGridViewItemsList.get(position).getDistance());
-        SaletextView.setText(hotplaceGridViewItemsList.get(position).getSale());
-        ReviewtextView.setText(hotplaceGridViewItemsList.get(position).getReview());
 
         return convertView;
     }
