@@ -37,6 +37,9 @@
     <string name="main_content_menu_hotdeal">주변 핫딜 맛집</string>
     <string name="main_content_menu_hotdeal_more">+ 더보기</string>
 
+    <string name="main_content_menu_hotplace">핫플레이스</string>
+
+
 
     <string name="album_view">Select photo album</string>
     <string name="image_view">Tap to select images</string>

@@ -2,9 +2,6 @@ package com.skt.tmaphot.activity.main.hotplace;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

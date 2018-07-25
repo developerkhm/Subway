@@ -1,6 +1,6 @@
 package com.skt.tmaphot.activity.main.hotplace;
 
-public class HotplaceGridViewItem {
+public class HotplaceGridViewItem<H> {
     private String url;
     private String title;
     private String menu;
