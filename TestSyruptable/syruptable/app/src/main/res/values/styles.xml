@@ -6,6 +6,7 @@
             <item name="colorAccent">@color/colorAccent</item>
             <item name="colorControlNormal">@color/colorControlNormal</item>
             <item name="windowNoTitle">true</item>
+            <item name="android:textColor">@color/colorBlack</item>
         </style>
 
         <style name="AppTheme.NoActionBar">
@@ -49,15 +50,16 @@
 
         <style name="TransparentToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
             <item name="android:windowActionBarOverlay">true</item>
-            <item name="android:background">@android:color/transparent</item>
             <item name="windowActionBarOverlay">true</item>
+            <item name="android:background">@android:color/transparent</item>
             <item name="colorControlNormal">@color/colorWhite</item>
         </style>
 
         <style name="BaseToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            <item name="colorControlHighlight">@color/colorGreen</item>
             <item name="android:windowActionBarOverlay">false</item>
             <item name="windowActionBarOverlay">false</item>
-            <item name="android:background">@android:color/transparent</item>
+            <item name="android:background">@android:color/white</item>
             <item name="colorControlNormal">@android:color/black</item>
         </style>
 

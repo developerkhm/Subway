@@ -44,6 +44,7 @@ public class CouponRecyclerViewDataAdapter extends RecyclerView.Adapter<CouponRe
 
             if(viewItem != null) {
                 // Set car item title.
+//                MainApplication.loadUrlRoundImage(context , viewItem.getUrl(), holder.getmImgReview());
                 MainApplication.loadUrlImage(context , viewItem.getUrl(), holder.getmImgReview());
                 holder.getmTextSale().setText(viewItem.getSale());
                 holder.getmTitleText().setText(viewItem.getTitle());

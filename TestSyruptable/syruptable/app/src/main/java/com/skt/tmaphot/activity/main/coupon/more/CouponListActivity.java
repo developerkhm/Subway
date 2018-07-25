@@ -1,5 +1,6 @@
 package com.skt.tmaphot.activity.main.coupon.more;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
@@ -9,15 +10,17 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
+import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.activity.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CouponListActivity extends AppCompatActivity {
-
-    private Handler handler = new Handler();
+public class CouponListActivity extends BaseActivity {
 
     private RecyclerView recyclerView;
     private CouponListRecyclerViewDataAdapter adapter;
@@ -30,6 +33,7 @@ public class CouponListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coupon_layout);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -38,11 +42,11 @@ public class CouponListActivity extends AppCompatActivity {
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
 
+        locationTextview = (TextView) findViewById(R.id.appbar_location_txt);
+        locationTextview.setText(MainApplication.LOCATION_ADDRESS);
         //////////////////////////////////////////////////////////
 
-
         getLoadDate(); //dummy
-
 
         recyclerView = (RecyclerView) findViewById(R.id.main_coupon_list_recyclerview);
         layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -50,6 +54,9 @@ public class CouponListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         adapter = new CouponListRecyclerViewDataAdapter(this, couponListRecyclerViewItemList);
         recyclerView.setAdapter(adapter);
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addItemDecoration(new SpacesItemDecoration(20));
 
         recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -63,7 +70,6 @@ public class CouponListActivity extends AppCompatActivity {
                 if (!mLoading && lastVisibleItem == totalItem - 1) {
                     mLoading = true;
                     // Scrolled to bottom. Do something here.
-
                     getLoadDate();
 
                     adapter.notifyDataSetChanged();
@@ -73,47 +79,19 @@ public class CouponListActivity extends AppCompatActivity {
             }
         });
 
+
     } //END
 
+    private void getLoadDate() {
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.store_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home: {
-                finish();
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void getLoadDate(){
-
-        if(couponListRecyclerViewItemList == null)
+        if (couponListRecyclerViewItemList == null)
             couponListRecyclerViewItemList = new ArrayList<CouponListRecyclerViewItem>();
 
+
+        couponListRecyclerViewItemList.add(new CouponListRecyclerViewItem(
+                "https://png.pngtree.com/element_origin_min_pic/16/10/25/ee6d5e601c9d19fc98dc4add819b9c77.jpg",
+                "황제짜장", "수제피자", "200m", "50%"));
+
         couponListRecyclerViewItemList.add(new CouponListRecyclerViewItem(
                 "http://img.kormedi.com/news/article/__icsFiles/artimage/2015/05/23/c_km601/432212_540.jpg",
                 "황제짜장", "수제피자", "200m", "50%"));
@@ -141,7 +119,28 @@ public class CouponListActivity extends AppCompatActivity {
         couponListRecyclerViewItemList.add(new CouponListRecyclerViewItem(
                 "http://img.kormedi.com/news/article/__icsFiles/artimage/2015/05/23/c_km601/432212_540.jpg",
                 "황제짜장", "수제피자", "200m", "50%"));
-    };
+    }
+
+
+    public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
+        private int space;
+
+        public SpacesItemDecoration(int space) {
+            this.space = space;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+//            outRect.left = space;
+//            outRect.right = space;
+            outRect.bottom = space;
+
+            // Add top margin only for the first item to avoid double space between items
+//            if(parent.getChildAdapterPosition(view) == 0) {
+//                outRect.top = space;
+//            }
+        }
+    }
 }
 
 

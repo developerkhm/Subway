@@ -556,11 +556,11 @@ public class NewSyrupMainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_cart) {
+        if (id == R.id.action_map) {
             return true;
         }
 
-        if (id == R.id.action_user) {
+        if (id == R.id.action_alarm) {
             return true;
         }
 
@@ -728,7 +728,12 @@ public class NewSyrupMainActivity extends AppCompatActivity
         String tt = addresses.get(0).getThoroughfare();     //동
 
         TextView mGPSTextView = (TextView) findViewById(R.id.main_text_gps);
-        mGPSTextView.setText(t + " " + tt);
+
+        MainApplication.LOCATION_ADDRESS  = t + " " + tt +"▼";
+
+
+        mGPSTextView.setText(MainApplication.LOCATION_ADDRESS);
+
     }
 
     private void initView() {

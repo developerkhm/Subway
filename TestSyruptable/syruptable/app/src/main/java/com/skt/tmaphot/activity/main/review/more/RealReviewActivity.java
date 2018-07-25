@@ -16,14 +16,17 @@ import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.activity.BaseActivity;
 
 import java.util.ArrayList;
 
-public class RealReviewActivity extends AppCompatActivity {
+public class RealReviewActivity extends BaseActivity {
 
     private GridView gridview;
     private Point size;
@@ -35,7 +38,8 @@ public class RealReviewActivity extends AppCompatActivity {
     private boolean mLockListView;
     private ArrayList<String> mRowList;
 
-    private ImageAdapter imageAdapter;
+
+    protected ImageAdapter imageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,8 @@ public class RealReviewActivity extends AppCompatActivity {
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
 
+        locationTextview = (TextView)findViewById(R.id.appbar_location_txt);
+        locationTextview.setText(MainApplication.LOCATION_ADDRESS);
         gridview = (GridView) findViewById(R.id.simpleGridView);
 
         size = new Point();
@@ -208,41 +214,6 @@ public class RealReviewActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.store_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home: { //toolbar의 back키 눌렀을 때 동작
-                finish();
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-    }
 }
 
 

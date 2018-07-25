@@ -186,15 +186,15 @@ public class SyrupMainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_cart) {
-            placeholderFragment.setLoadUrl(PlaceholderFragment.CART_URL, mViewPager.getCurrentItem());
-            return true;
-        }
-
-        if (id == R.id.action_user) {
-            placeholderFragment.setLoadUrl(PlaceholderFragment.LOGIN_URL, mViewPager.getCurrentItem());
-            return true;
-        }
+//        if (id == R.id.action_cart) {
+//            placeholderFragment.setLoadUrl(PlaceholderFragment.CART_URL, mViewPager.getCurrentItem());
+//            return true;
+//        }
+//
+//        if (id == R.id.action_user) {
+//            placeholderFragment.setLoadUrl(PlaceholderFragment.LOGIN_URL, mViewPager.getCurrentItem());
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

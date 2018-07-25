@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,13 +13,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.activity.BaseActivity;
 import com.skt.tmaphot.activity.main.banner.RollingAdapter;
 import com.skt.tmaphot.activity.main.banner.RollingAutoManager;
 import com.skt.tmaphot.activity.main.banner.RollingIndicatorView;
@@ -29,7 +28,7 @@ import com.skt.tmaphot.activity.main.banner.RollingModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StoreInfoActivity extends AppCompatActivity {
+public class StoreInfoActivity extends BaseActivity {
 
     private ViewPager mViewPager;
     private RollingAdapter mAdapter;
@@ -48,10 +47,6 @@ public class StoreInfoActivity extends AppCompatActivity {
     private RecyclerView socialReviewRecyclerView;
     private SocialReviewRecyclerViewAdapter socialReviewRecyclerViewAdapter;
     private List<SocialReviewItem> socialReviewItemList;
-
-
-    private Button tempBtn;
-
 
     private List<RollingModel> getData() {
         List<RollingModel> list = new ArrayList<>();
@@ -101,20 +96,6 @@ public class StoreInfoActivity extends AppCompatActivity {
 
         setSocialReview();
 
-        tempBtn = (Button) findViewById(R.id.temp_btn);
-        tempBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-
-                    }
-                });
-            }
-        });
-
     } //END
 
     @Override
@@ -162,7 +143,7 @@ public class StoreInfoActivity extends AppCompatActivity {
             super(itemView);
 
             if (itemView != null) {
-                mImgReview = (ImageView) itemView.findViewById(R.id.realreview_recyler_item_image);
+                mImgReview = (ImageView) itemView.findViewById(R.id.coupon_recyler_item_image);
                 itemView.setOnClickListener(this);
             }
         }
@@ -193,7 +174,7 @@ public class StoreInfoActivity extends AppCompatActivity {
             // Get LayoutInflater object.
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             // Inflate the RecyclerView item layout xml.
-            View itemView = layoutInflater.inflate(R.layout.storeinfo_review_recycler_item, parent, false);
+            View itemView = layoutInflater.inflate(R.layout.storeinfo_image_review_recycler_item, parent, false);
 
             // Create and return our customRecycler View Holder object.
             StoreInfoItemViewHolder ret = new StoreInfoItemViewHolder(itemView);
@@ -278,7 +259,7 @@ public class StoreInfoActivity extends AppCompatActivity {
 
         public ReviewRecyclerViewHolder(View itemView) {
             super(itemView);
-            loginImageView = (ImageView) itemView.findViewById(R.id.realreview_recyler_item_image);
+//            loginImageView = (ImageView) itemView.findViewById(R.id.coupon_recyler_item_image);
         }
     }
 
@@ -295,14 +276,14 @@ public class StoreInfoActivity extends AppCompatActivity {
         public ReviewRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             mContext = parent.getContext();
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View itemView = layoutInflater.inflate(R.layout.storeinfo_socialreview_recycler_item, parent, false);
+            View itemView = layoutInflater.inflate(R.layout.storeinfo_review_recycler_item, parent, false);
             ReviewRecyclerViewHolder ret = new ReviewRecyclerViewHolder(itemView);
             return ret;
         }
 
         @Override
         public void onBindViewHolder(ReviewRecyclerViewHolder holder, final int position) {
-            MainApplication.loadUrlImage(mContext, mItems.get(position).getLoginImageUrl(), holder.loginImageView);
+//            MainApplication.loadUrlImage(mContext, mItems.get(position).getLoginImageUrl(), holder.loginImageView);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -362,7 +343,7 @@ public class StoreInfoActivity extends AppCompatActivity {
 
         public SocialReviewRecyclerViewHolder(View itemView) {
             super(itemView);
-            loginImageView = (ImageView) itemView.findViewById(R.id.realreview_recyler_item_image);
+//            loginImageView = (ImageView) itemView.findViewById(R.id.coupon_recyler_item_image);
         }
     }
 
@@ -386,7 +367,7 @@ public class StoreInfoActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(SocialReviewRecyclerViewHolder holder, final int position) {
-            MainApplication.loadUrlImage(mContext, mItems.get(position).getLoginImageUrl(), holder.loginImageView);
+//            MainApplication.loadUrlImage(mContext, mItems.get(position).getLoginImageUrl(), holder.loginImageView);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -5,7 +5,7 @@
 
 
     <ImageView
-        android:id="@+id/hotdeal_recyler_item_image"
+        android:id="@+id/main_hotdeal_recyler_item_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -16,21 +16,21 @@
         android:gravity="center">
 
         <TextView
-            android:id="@+id/hotdeal_recyler_item_txt_title"
+            android:id="@+id/main_hotdeal_recyler_item_txt_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
             android:text="테스트"/>
 
         <TextView
-            android:id="@+id/hotdeal_recyler_item_txt_menu"
+            android:id="@+id/main_hotdeal_recyler_item_txt_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
             android:text="맛집"/>
 
         <RatingBar
-            android:id="@+id/hotdeal_ratingBar"
+            android:id="@+id/main_hotdeal_ratingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

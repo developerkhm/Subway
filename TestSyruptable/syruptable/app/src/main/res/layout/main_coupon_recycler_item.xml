@@ -4,7 +4,7 @@
     android:layout_height="@dimen/activity_main_default_recycler_item_height">
 
     <ImageView
-        android:id="@+id/hotdeal_recyler_item_image"
+        android:id="@+id/main_coupon_recyler_item_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -17,21 +17,21 @@
         >
 
         <TextView
-            android:id="@+id/hotdeal_recyler_item_txt_title"
+            android:id="@+id/main_coupon_recyler_item_txt_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
             android:text="꽃새우 영번지" />
 
         <TextView
-            android:id="@+id/hotdeal_recyler_item_txt_menu"
+            android:id="@+id/main_coupon_recyler_item_txt_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
             android:text="독도꽃새우" />
 
         <TextView
-            android:id="@+id/coupon_recyler_item_txt_distance"
+            android:id="@+id/main_coupon_recyler_item_txt_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
@@ -39,7 +39,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/coupon_recyler_item_txt_sale"
+        android:id="@+id/main_coupon_recyler_item_txt_sale"
         android:layout_width="@dimen/activity_main_realreview_item_sale_width"
         android:layout_height="@dimen/activity_main_realreview_item_sale_height"
         android:layout_gravity="top"

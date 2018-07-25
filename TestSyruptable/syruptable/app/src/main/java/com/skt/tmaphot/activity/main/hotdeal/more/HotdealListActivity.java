@@ -3,19 +3,17 @@ package com.skt.tmaphot.activity.main.hotdeal.more;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.activity.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HotdealListActivity extends AppCompatActivity {
+public class HotdealListActivity extends BaseActivity {
 
     private Handler handler = new Handler();
 
@@ -44,7 +42,7 @@ public class HotdealListActivity extends AppCompatActivity {
         getLoadDate(); //dummy
 
 
-        recyclerView = (RecyclerView) findViewById(R.id.main_hotdeal_list_recyclerview);
+        recyclerView = (RecyclerView) findViewById(R.id.hotdeal_list_recyclerview);
         layoutManager = new LinearLayoutManager(getApplicationContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
@@ -75,40 +73,6 @@ public class HotdealListActivity extends AppCompatActivity {
 
     } //END
 
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.store_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home: {
-                finish();
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     private void getLoadDate(){
 
         if(hotdealListRecyclerViewItemList == null)
@@ -132,7 +96,6 @@ public class HotdealListActivity extends AppCompatActivity {
         hotdealListRecyclerViewItemList.add(new HotdealListRecyclerViewItem(
                 "http://img.kormedi.com/news/article/__icsFiles/artimage/2015/05/23/c_km601/432212_540.jpg",
                 "황제짜장", "수제피자", "200m", "50%"));
-
 
     };
 }

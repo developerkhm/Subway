@@ -2,6 +2,7 @@ package com.skt.tmaphot.activity.main.hotdeal;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -19,24 +20,26 @@ public class HotdealRecyclerViewHolder extends RecyclerView.ViewHolder {
     private TextView mMenueText;
 
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
     public HotdealRecyclerViewHolder(View itemView) {
         super(itemView);
 
         if (itemView != null) {
-            mImg = (ImageView) itemView.findViewById(R.id.hotdeal_recyler_item_image);
-            mTitleText = (TextView)itemView.findViewById(R.id.hotdeal_recyler_item_txt_title);
-            mMenueText = (TextView)itemView.findViewById(R.id.hotdeal_recyler_item_txt_menu);
+            mImg = (ImageView) itemView.findViewById(R.id.main_hotdeal_recyler_item_image);
+            mTitleText = (TextView)itemView.findViewById(R.id.main_hotdeal_recyler_item_txt_title);
+            mMenueText = (TextView)itemView.findViewById(R.id.main_hotdeal_recyler_item_txt_menu);
 
 
             int greenColor = itemView.getContext().getResources().getColor(R.color.black_55filter);
             String color = "#"+Integer.toHexString(greenColor);
             mImg.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_OVER);
 
-
-            GradientDrawable drawable= (GradientDrawable)itemView.getContext().getDrawable(R.drawable.round_main_item);
-            itemView.setBackground(drawable);
-            itemView.setClipToOutline(true);
+            Drawable drawable= null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                drawable = (Drawable)itemView.getContext().getDrawable(R.drawable.round_main_item);
+                itemView.setBackground(drawable);
+                itemView.setClipToOutline(true);
+            }
 
         }
     }
