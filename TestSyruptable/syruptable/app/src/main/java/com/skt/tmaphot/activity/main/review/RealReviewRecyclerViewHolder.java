@@ -39,6 +39,6 @@ public class RealReviewRecyclerViewHolder extends RecyclerView.ViewHolder implem
 
     @Override
     public void onClick(View v) {
-        v.getContext().startActivity(new Intent(v.getContext(), StoreInfoActivity.class));
+//        v.getContext().startActivity(new Intent(v.getContext(), StoreInfoActivity.class));
     }
 }

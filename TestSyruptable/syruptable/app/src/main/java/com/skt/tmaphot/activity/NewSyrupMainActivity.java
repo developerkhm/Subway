@@ -154,7 +154,9 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
 
     private void initRecylerViewSet(final RecyclerView recyclerView) {
 
-        runOnUiThread(new Runnable() {
+
+
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 GridLayoutManager layoutManager = new GridLayoutManager(NewSyrupMainActivity.this, 1);
@@ -289,7 +291,7 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
                     }
                 });
             }
-        });
+        }).start();
 
 
     }
@@ -299,7 +301,7 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
             return;
         }
 
-        runOnUiThread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
 
@@ -380,7 +382,7 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
                 newItemIndex = iRecyclerItems.size() - 1;
                 iRecyclerViewDataAdapter.notifyData(); // 갱신
             }
-        });
+        }).start();
     }
 
 
@@ -590,7 +592,7 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
 
     private void loadHotplaceItem(final boolean mode) {
 
-        runOnUiThread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
 
@@ -668,7 +670,7 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
                 hotplaceGridAdapter.notifyDataSetChanged();
                 hotplaceGridview.setFocusable(false);
             }
-        });
+        }).start();
     }
 
     private void reloadHotPlace(boolean mode) {

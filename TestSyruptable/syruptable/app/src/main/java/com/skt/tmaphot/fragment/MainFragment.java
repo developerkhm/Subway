@@ -58,6 +58,11 @@ import java.util.Locale;
 
 public class MainFragment extends Fragment {
 
+    public int MESSAGE_REVIEW_COUPON_NOTIFY = 1004;
+    public int MESSAGE_HOTPLACE_NOTIFY = 1004;
+    public int MESSAGE_RECYLER_NOTIFY = 1004;
+
+
 
     private NestedScrollView nestedScrollView;
 
@@ -103,8 +108,14 @@ public class MainFragment extends Fragment {
     private View view;
 
 
+
+    private TextView hotplace_pop, hotplace_distance;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
 
         view = inflater.inflate(R.layout.fragment_main_layout, container, false);
 
@@ -117,17 +128,17 @@ public class MainFragment extends Fragment {
         //banner
         initEventBannerSet();
 
-        // 리얼후기
-        initRecylerViewSet(realReviewRecyclerView);
-
         // 주변할인 쿠폰
-        initRecylerViewSet(couponRecyclerView);
+        initRecylerViewSet(couponRecyclerView, 100);
+
+        // 리얼후기
+        initRecylerViewSet(realReviewRecyclerView, 100);
 
         // 주변 핫딜 맛집
-        initRecylerViewSet(hotdealRecyclerView);
+        initRecylerViewSet(hotdealRecyclerView, 100);
 
         // 메뉴
-        initRecylerViewSet(menuRecyclerView);
+        initRecylerViewSet(menuRecyclerView, 100);
 
         // 핫플레이스
         initHotplaceSet();
@@ -136,15 +147,20 @@ public class MainFragment extends Fragment {
     }
 
 
-    private void initRecylerViewSet(final RecyclerView recyclerView) {
+    private void initRecylerViewSet(final RecyclerView recyclerView, final int position) {
 
-        getActivity().runOnUiThread(new Runnable() {
+
+        getActivity().runOnUiThread(
+
+        (new Runnable() {
             @Override
             public void run() {
+
                 GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 1);
                 layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                 recyclerView.setLayoutManager(layoutManager);
-                recyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 15, 0, 0));
+                if(menuRecyclerViewDataAdapter == null)
+                    recyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 15, 0, 0));
 
                 switch (recyclerView.getId()) {
 
@@ -165,41 +181,38 @@ public class MainFragment extends Fragment {
                         menuRecyclerViewDataAdapter = new MainMenuRecyclerViewDataAdapter(getActivity(), mainMenuRecyclerViewItems);
                         menuRecyclerViewDataAdapter.setOnMenuCilckListener(onMenuCilckListener); // 메뉴 리스너 등록
                         recyclerView.setAdapter(menuRecyclerViewDataAdapter);
-//                loadData(false, recyclerView);
+      //                loadData(false, recyclerView);
                         recyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0));
-                        break;
-
-                    case R.id.review_recycler_view:
-
-                        if (realReviewItemList == null) {
-                            realReviewItemList = new ArrayList<IRecyclerItem>();
-                        }
-
-                        realReviewRecyclerViewDataAdapter = new RealReviewRecyclerViewDataAdapter(getActivity(), realReviewItemList);
-                        recyclerView.setAdapter(realReviewRecyclerViewDataAdapter);
-                        loadData(false, recyclerView);
                         break;
 
                     case R.id.coupon_recycler_view:
 
-                        if (couponItemList == null) {
-                            couponItemList = new ArrayList<IRecyclerItem>();
-                        }
+                        couponItemList = new ArrayList<IRecyclerItem>();
 
                         couponRecyclerViewDataAdapter = new CouponRecyclerViewDataAdapter(getActivity(), couponItemList);
                         recyclerView.setAdapter(couponRecyclerViewDataAdapter);
-                        loadData(false, recyclerView);
+                        loadData(position, recyclerView);
                         break;
+
+
+                    case R.id.review_recycler_view:
+
+
+                        realReviewItemList = new ArrayList<IRecyclerItem>();
+
+                        realReviewRecyclerViewDataAdapter = new RealReviewRecyclerViewDataAdapter(getActivity(), realReviewItemList);
+                        recyclerView.setAdapter(realReviewRecyclerViewDataAdapter);
+                        loadData(position, recyclerView);
+                        break;
+
 
                     case R.id.hotdeal_recycler_view:
 
-                        if (hotdealItemList == null) {
-                            hotdealItemList = new ArrayList<IRecyclerItem>();
-                        }
+                        hotdealItemList = new ArrayList<IRecyclerItem>();
 
                         hotdealRecyclerViewDataAdapter = new HotdealRecyclerViewDataAdapter(getActivity(), hotdealItemList);
                         recyclerView.setAdapter(hotdealRecyclerViewDataAdapter);
-                        loadData(false, recyclerView);
+                        loadData(position, recyclerView);
                         break;
                 }
 
@@ -262,8 +275,8 @@ public class MainFragment extends Fragment {
 
                                 // Scroll to left
                                 if (dx > 0) {
-                                    Log.d("RRR", "Scroll to left");
-                                    loadData(false, recyclerView);
+                                    Log.d("ABCD", "Scroll to left");
+                                    loadData(position, recyclerView);
                                 }
                             }
                         }
@@ -273,27 +286,47 @@ public class MainFragment extends Fragment {
                         }
                     }
                 });
+
             }
-        });
+        }));
 
 
     }
 
-    private void loadData(final boolean insertDataNewBeginning, final RecyclerView recyclerView) {
+    private class CustomRunnable implements Runnable{
+
+        ArrayList<IRecyclerItem> iRecyclerItems;
+        IRecyclerViewDataAdapter iRecyclerViewDataAdapter;
+
+        public CustomRunnable(ArrayList<IRecyclerItem> iRecyclerItems){
+            this.iRecyclerItems = iRecyclerItems;
+        }
+
+        public CustomRunnable(IRecyclerViewDataAdapter iRecyclerViewDataAdapter){
+            this.iRecyclerViewDataAdapter = iRecyclerViewDataAdapter;
+        }
+
+        @Override
+        public void run(){ }
+
+    }
+
+    private void loadData(final int position, final RecyclerView recyclerView) {
         if (recyclerView.getId() == R.id.menu_recycler_view) {
             return;
         }
 
-        getActivity().runOnUiThread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
+
+                ArrayList<IRecyclerItem> iRecyclerItems = null;
+                IRecyclerViewDataAdapter iRecyclerViewDataAdapter = null;
 
                 int currItemListSize = 0;   // 현재 리스트 사이즈
                 int newItemIndex = 0;       // 아이템 끝 index
                 int loadMoreItemCount = 0;  // 로드할 아이템 개수
-
-                ArrayList<IRecyclerItem> iRecyclerItems = null;
-                IRecyclerViewDataAdapter iRecyclerViewDataAdapter = null;
+                int id = recyclerView.getId();
 
                 switch (recyclerView.getId()) {
 
@@ -316,56 +349,108 @@ public class MainFragment extends Fragment {
                         break;
                 }
 
-                if (insertDataNewBeginning)
-                    iRecyclerItems.clear();
-
 
                 currItemListSize = iRecyclerItems.size();
                 IRecyclerItem newViewItem = null;
 
+
+//                if (insertDataNewBeginning)
+//                {
+//                    view.post(new CustomRunnable(iRecyclerItems){
+//
+//                        @Override
+//                        public void run(){
+//                            this.iRecyclerItems.clear();
+//                        }
+//                    });
+
+//                    iRecyclerItems = null;
+//                    currItemListSize = 0;
+//                }
+
+
+
+                Log.d("ABCD", "currItemListSize: " +  currItemListSize);
+                Log.d("ABCD", "currItemListSize + currItemListSize: " +  currItemListSize + loadMoreItemCount);
+
                 for (int i = currItemListSize; i < currItemListSize + loadMoreItemCount; i++) {
+                    Log.d("ABCD", "i: " +  i);
+
 
                     // 임시 더미 데이터 및 메뉴 클릭시 테스트 아직 정보가 없으니 갱신만 테스트
 
-                    if (!insertDataNewBeginning) {
-                        switch (recyclerView.getId()) {
-                            case R.id.coupon_recycler_view:
-                                int temp = 10 + i;
-                                newViewItem = new CouponRecyclerViewItem("http://img.kormedi.com/news/article/__icsFiles/artimage/2015/05/23/c_km601/432212_540.jpg",
-                                        "황제짜장", "수제피자", "200m", String.valueOf(temp));
-                                break;
-                            case R.id.review_recycler_view:
-                                newViewItem = new RealReviewRecyclerViewItem("https://www.lwt.co.kr/datas/factory/main_img/006059");
-                                break;
-                            case R.id.hotdeal_recycler_view:
-                                newViewItem = new HotdealRecyclerViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
-                                        "황제짜장", "수제피자", "200m", "50%");
-                                break;
+                    if (position == 100) {
+
+                        if(id == R.id.coupon_recycler_view)
+                        {
+                            int temp = 10 + i;
+                            newViewItem = new CouponRecyclerViewItem("http://img.kormedi.com/news/article/__icsFiles/artimage/2015/05/23/c_km601/432212_540.jpg",
+                                    "황제짜장", "수제피자", "200m", String.valueOf(temp));
                         }
 
-                    } else {  // 임시 메뉴 클릭했을때 테스트
-                        switch (recyclerView.getId()) {
-                            case R.id.coupon_recycler_view:
-                                newViewItem = new CouponRecyclerViewItem("https://pbs.twimg.com/profile_images/900200925775757312/ajoiMwhv_400x400.jpg",
-                                        "황제짜장", "수제피자", "200m", "50%");
-                                break;
-                            case R.id.review_recycler_view:
-                                newViewItem = new RealReviewRecyclerViewItem("http://image.koreatimes.com/article/2018/01/29/201801291510425a1.jpg");
-                                break;
-                            case R.id.hotdeal_recycler_view:
-                                newViewItem = new HotdealRecyclerViewItem("http://4.bp.blogspot.com/-R29WyCcMomw/VIq-UhEndUI/AAAAAAAAAdo/vJZBIUKUAto/s1600/%EC%88%98%EC%A7%801.jpg",
-                                        "황제짜장", "수제피자", "200m", "50%");
-                                break;
+                        if(id == R.id.review_recycler_view)
+                        {
+                            newViewItem = new RealReviewRecyclerViewItem("https://www.lwt.co.kr/datas/factory/main_img/006059");
+                        }
+
+                        if(id == R.id.hotdeal_recycler_view)
+                        {
+                            newViewItem = new HotdealRecyclerViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                                    "황제짜장", "수제피자", "200m", "50%");
                         }
 
                     }
-                    iRecyclerItems.add(newViewItem);
 
+
+                    if (position == 0) {
+
+                        if(id == R.id.review_recycler_view)
+                        {
+                            Log.d("ABCD","data sdfsdfsdf");
+                            newViewItem = new RealReviewRecyclerViewItem("https://i.ytimg.com/vi/SZvTL5A_tNQ/maxresdefault.jpg");
+                        }
+
+                        if(id == R.id.hotdeal_recycler_view)
+                        {
+                            newViewItem = new HotdealRecyclerViewItem("http://4.bp.blogspot.com/-R29WyCcMomw/VIq-UhEndUI/AAAAAAAAAdo/vJZBIUKUAto/s1600/%EC%88%98%EC%A7%801.jpg",
+                                    "황제짜장", "수제피자", "200m", "50%");
+                        }
+
+                    }
+
+
+                    if (position == 1) {
+
+                        if(id == R.id.review_recycler_view)
+                        {
+                            Log.d("ABCD","data sdfsdfsdf");
+                            newViewItem = new RealReviewRecyclerViewItem("http://cfile10.uf.tistory.com/image/266D213B56A51A172FC174");
+                        }
+
+                        if(id == R.id.hotdeal_recycler_view)
+                        {
+                            newViewItem = new HotdealRecyclerViewItem("https://fimg4.pann.com/new/download.jsp?FileID=42599762",
+                                    "황제짜장", "수제피자", "200m", "50%");
+                        }
+
+                    }
+
+
+                    iRecyclerItems.add(newViewItem);
                 }
                 newItemIndex = iRecyclerItems.size() - 1;
-                iRecyclerViewDataAdapter.notifyData(); // 갱신
+
+
+                view.post(new CustomRunnable(iRecyclerViewDataAdapter){
+
+                    @Override
+                    public void run(){
+                        this.iRecyclerViewDataAdapter.notifyData();
+                    }
+                });
             }
-        });
+        }).start();
+        Log.d("ABCD","Thead start");
     }
 
 
@@ -510,28 +595,12 @@ public class MainFragment extends Fragment {
         hotdealMoreTextview = (TextView) view.findViewById(R.id.main_txt_hotdeal_more);
         hotdealMoreTextview.setOnClickListener(onClickListenerMore);
 
+        hotplace_pop = (TextView) view.findViewById(R.id.main_hotplace_pop);
+        hotplace_pop.setOnClickListener(onClickListenerHotplaceType);
 
-        TextView hotplace_pop = (TextView) view.findViewById(R.id.main_hotplace_pop);
-        hotplace_pop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("QQQ", "pop click");
-                ishotplaceModeDistance = false;
-                reloadHotPlace(ishotplaceModeDistance);
-            }
-        });
+        hotplace_distance = (TextView) view.findViewById(R.id.main_hotplace_distance);
+        hotplace_distance.setOnClickListener(onClickListenerHotplaceType);
 
-
-        TextView hotplace_distance = (TextView) view.findViewById(R.id.main_hotplace_distance);
-        hotplace_distance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("QQQ", "distance click");
-
-                ishotplaceModeDistance = true;
-                reloadHotPlace(ishotplaceModeDistance);
-            }
-        });
     }
 
     private void initHotplaceSet() {
@@ -577,7 +646,7 @@ public class MainFragment extends Fragment {
 
     private void loadHotplaceItem(final boolean mode) {
 
-        getActivity().runOnUiThread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
 
@@ -652,10 +721,16 @@ public class MainFragment extends Fragment {
                 }
 
                 ishotplaceItemLoad = false;
-                hotplaceGridAdapter.notifyDataSetChanged();
+                view.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        hotplaceGridAdapter.notifyDataSetChanged();
+                    }
+                });
+
                 hotplaceGridview.setFocusable(false);
             }
-        });
+        }).start();
     }
 
     private void reloadHotPlace(boolean mode) {
@@ -696,6 +771,27 @@ public class MainFragment extends Fragment {
         }
     };
 
+    View.OnClickListener onClickListenerHotplaceType = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+            Log.d("ABC", "click");
+
+            view.setSelected(!view.isSelected());
+//            view.setFocusable(!view.isSelected());
+            switch (view.getId()) {
+                case R.id.main_hotplace_pop:
+                    ishotplaceModeDistance = false;
+                    reloadHotPlace(ishotplaceModeDistance);
+                    break;
+                case R.id.main_hotplace_distance:
+                    ishotplaceModeDistance = true;
+                    reloadHotPlace(ishotplaceModeDistance);
+                    break;
+            }
+        }
+    };
+
 
     AdapterView.OnItemClickListener onItemClickListenerHotplace = new AdapterView.OnItemClickListener() {
         @Override
@@ -713,7 +809,19 @@ public class MainFragment extends Fragment {
         @Override
         public void menuOnClick(View v, int id, int position) {
             // 임시구현
-            Toast.makeText(getContext(), "position : " + position, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "position : " + position, Toast.LENGTH_SHORT).show();
+
+            Log.d("ABCD","CLICKKKKKKKKKKKKKKKKKKKKKKKKK");
+
+
+                    initRecylerViewSet(realReviewRecyclerView, position);
+                    initRecylerViewSet(hotdealRecyclerView, position);
+
+//            loadData(true, realReviewRecyclerView);
+//            loadData(true, hotdealRecyclerView);
+                    loadHotplaceItem(ishotplaceItemLoad);
+
+
         }
     };
 
