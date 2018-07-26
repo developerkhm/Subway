@@ -13,7 +13,6 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -89,7 +88,8 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 //         Intent intent = new Intent(this, MainActivity.class);
 //                Intent intent = new Intent(SplashActivity.this, SyrupMainActivity.class);
-                Intent intent = new Intent(SplashActivity.this, NewSyrupMainActivity.class);
+//                Intent intent = new Intent(SplashActivity.this, NewSyrupMainActivity.class);
+                Intent intent = new Intent(SplashActivity.this, NewSyrupMainActivity2.class);
                 intent.putExtra("latitude", GPSData.latitude);
                 intent.putExtra("longitude",GPSData.longitude);
                 startActivity(intent);

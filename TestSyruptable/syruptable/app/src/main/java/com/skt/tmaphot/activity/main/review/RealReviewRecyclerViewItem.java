@@ -1,6 +1,8 @@
 package com.skt.tmaphot.activity.main.review;
 
-public class RealReviewRecyclerViewItem  {
+import com.skt.tmaphot.activity.IRecyclerItem;
+
+public class RealReviewRecyclerViewItem implements IRecyclerItem {
 
 
     private String text;

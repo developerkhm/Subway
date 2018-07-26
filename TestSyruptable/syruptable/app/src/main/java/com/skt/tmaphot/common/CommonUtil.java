@@ -2,9 +2,12 @@ package com.skt.tmaphot.common;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -52,7 +55,42 @@ public class CommonUtil {
     }
 
     @SuppressLint("MissingPermission")
-    public String getPhoneNumber(){
+    public String getPhoneNumber() {
         return ((TelephonyManager) mainContex.getSystemService(Context.TELEPHONY_SERVICE)).getLine1Number();
+    }
+
+
+    public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
+        private int top;
+        private int right;
+        private int bottom;
+        private int left;
+
+        public SpacesItemDecoration(int top, int right, int bottom, int left) {
+            this.top = top;
+            this.right = right;
+            this.bottom = bottom;
+            this.left = left;
+        }
+
+        public SpacesItemDecoration(int offset) {
+            this.top = offset;
+            this.right = offset;
+            this.bottom = offset;
+            this.left = offset;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            outRect.top = top;
+            outRect.right = right;
+            outRect.bottom = bottom;
+            outRect.left = left;
+
+            // Add top margin only for the first item to avoid double space between items
+//            if(parent.getChildAdapterPosition(view) == 0) {
+//                outRect.top = space;
+//            }
+        }
     }
 }

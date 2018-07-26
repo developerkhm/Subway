@@ -200,15 +200,9 @@ public class RealReviewActivity extends BaseActivity {
 
                 imageView = (ImageView) convertView;
             }
-//            Glide.with(getBaseContext()).load(mThumbIds[position]).into(imageView);
 
-            RequestOptions options = new RequestOptions();
-            options.fitCenter();
 
-            Glide.with(getBaseContext())
-                    .load(mRowList.get(position))
-                    .apply(options)
-                    .into(imageView);
+            MainApplication.loadUrlImage(mContext, mRowList.get(position),imageView );
 
             return imageView;
         }

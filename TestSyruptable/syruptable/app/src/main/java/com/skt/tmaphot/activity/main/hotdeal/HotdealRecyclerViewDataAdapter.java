@@ -10,22 +10,24 @@ import android.view.ViewGroup;
 
 import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.activity.IRecyclerItem;
+import com.skt.tmaphot.activity.IRecyclerViewDataAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class HotdealRecyclerViewDataAdapter extends RecyclerView.Adapter<HotdealRecyclerViewHolder> {
+public class HotdealRecyclerViewDataAdapter extends RecyclerView.Adapter<HotdealRecyclerViewHolder> implements IRecyclerViewDataAdapter {
 
     private Context context;
-    private List<HotdealRecyclerViewItem> viewItemList;
+    private ArrayList<IRecyclerItem> viewItemList;
 
 
-    public HotdealRecyclerViewDataAdapter(Context context, List<HotdealRecyclerViewItem> viewItemList) {
+    public HotdealRecyclerViewDataAdapter(Context context, ArrayList<IRecyclerItem> viewItemList) {
         this.context = context;
         this.viewItemList = viewItemList;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @Override
+
     public HotdealRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Get LayoutInflater object.
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
@@ -41,7 +43,7 @@ public class HotdealRecyclerViewDataAdapter extends RecyclerView.Adapter<Hotdeal
     public void onBindViewHolder(HotdealRecyclerViewHolder holder, int position) {
         if(viewItemList!=null) {
             // Get car item dto in list.
-            HotdealRecyclerViewItem viewItem = viewItemList.get(position);
+            HotdealRecyclerViewItem viewItem = (HotdealRecyclerViewItem)viewItemList.get(position);
 
             if(viewItem != null) {
                 // Set car item title.
@@ -60,5 +62,10 @@ public class HotdealRecyclerViewDataAdapter extends RecyclerView.Adapter<Hotdeal
             ret = viewItemList.size();
         }
         return ret;
+    }
+
+    @Override
+    public void notifyData() {
+        this.notifyDataSetChanged();
     }
 }

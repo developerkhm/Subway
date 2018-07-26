@@ -1,31 +1,25 @@
-package com.skt.tmaphot.activity;
+package com.skt.tmaphot.fragment;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
+
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,6 +27,8 @@ import android.widget.Toast;
 
 import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.activity.IRecyclerItem;
+import com.skt.tmaphot.activity.IRecyclerViewDataAdapter;
 import com.skt.tmaphot.activity.main.banner.RollingAdapter;
 import com.skt.tmaphot.activity.main.banner.RollingAutoManager;
 import com.skt.tmaphot.activity.main.banner.RollingIndicatorView;
@@ -47,10 +43,12 @@ import com.skt.tmaphot.activity.main.hotplace.ExpandableHeightGridView;
 import com.skt.tmaphot.activity.main.hotplace.HotplaceGridAdapter;
 import com.skt.tmaphot.activity.main.hotplace.HotplaceGridViewItem;
 import com.skt.tmaphot.activity.main.menu.MainMenuRecyclerViewDataAdapter;
+import com.skt.tmaphot.activity.main.menu.MainMenuRecyclerViewHolder;
 import com.skt.tmaphot.activity.main.menu.MainMenuRecyclerViewItem;
 import com.skt.tmaphot.activity.main.review.RealReviewRecyclerViewDataAdapter;
 import com.skt.tmaphot.activity.main.review.RealReviewRecyclerViewItem;
 import com.skt.tmaphot.activity.main.review.more.RealReviewActivity;
+import com.skt.tmaphot.activity.main.store.StoreInfoActivity;
 import com.skt.tmaphot.common.CommonUtil;
 
 import java.io.IOException;
@@ -58,7 +56,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class NewSyrupMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainFragment extends Fragment {
+
 
     private NestedScrollView nestedScrollView;
 
@@ -101,30 +100,13 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
     private ImageView searchbarImgView;
     //더보기
     private TextView reviewMoreTextView, couponMoreTextview, hotdealMoreTextview;
+    private View view;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        setContentView(R.layout.activity_syrup_main_new);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(false);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-//        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-//        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        ///////////////////////////////////////init/////////////////////////////////////////////////
+        view = inflater.inflate(R.layout.fragment_main_layout, container, false);
 
         //초기 View 세팅
         initView();
@@ -150,14 +132,16 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
         // 핫플레이스
         initHotplaceSet();
 
-    } /////////////////////////////// onCreate END /////////////////////////////////////////////////
+        return view;
+    }
+
 
     private void initRecylerViewSet(final RecyclerView recyclerView) {
 
-        runOnUiThread(new Runnable() {
+        getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                GridLayoutManager layoutManager = new GridLayoutManager(NewSyrupMainActivity.this, 1);
+                GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 1);
                 layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 15, 0, 0));
@@ -169,16 +153,17 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
                         if (mainMenuRecyclerViewItems == null)
                             mainMenuRecyclerViewItems = new ArrayList<MainMenuRecyclerViewItem>();
 
-                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("", "", R.drawable.img_main_menu_1));
-                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("", "", R.drawable.img_main_menu_2));
-                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("", "", R.drawable.img_main_menu_3));
-                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("", "", R.drawable.img_main_menu_4));
-                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("", "", R.drawable.img_main_menu_5));
-                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("", "", R.drawable.img_main_menu_6));
-                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("", "", R.drawable.img_main_menu_7));
-                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("", "", R.drawable.img_main_menu_8));
+                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("55", "", R.drawable.img_main_menu_1));
+                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("88", "", R.drawable.img_main_menu_2));
+                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("22", "", R.drawable.img_main_menu_3));
+                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("222", "", R.drawable.img_main_menu_4));
+                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("545", "", R.drawable.img_main_menu_5));
+                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("235235", "", R.drawable.img_main_menu_6));
+                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("2355", "", R.drawable.img_main_menu_7));
+                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("23525", "", R.drawable.img_main_menu_8));
 
-                        menuRecyclerViewDataAdapter = new MainMenuRecyclerViewDataAdapter(NewSyrupMainActivity.this, mainMenuRecyclerViewItems);
+                        menuRecyclerViewDataAdapter = new MainMenuRecyclerViewDataAdapter(getActivity(), mainMenuRecyclerViewItems);
+                        menuRecyclerViewDataAdapter.setOnMenuCilckListener(onMenuCilckListener); // 메뉴 리스너 등록
                         recyclerView.setAdapter(menuRecyclerViewDataAdapter);
 //                loadData(false, recyclerView);
                         recyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0));
@@ -190,7 +175,7 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
                             realReviewItemList = new ArrayList<IRecyclerItem>();
                         }
 
-                        realReviewRecyclerViewDataAdapter = new RealReviewRecyclerViewDataAdapter(NewSyrupMainActivity.this, realReviewItemList);
+                        realReviewRecyclerViewDataAdapter = new RealReviewRecyclerViewDataAdapter(getActivity(), realReviewItemList);
                         recyclerView.setAdapter(realReviewRecyclerViewDataAdapter);
                         loadData(false, recyclerView);
                         break;
@@ -201,7 +186,7 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
                             couponItemList = new ArrayList<IRecyclerItem>();
                         }
 
-                        couponRecyclerViewDataAdapter = new CouponRecyclerViewDataAdapter(NewSyrupMainActivity.this, couponItemList);
+                        couponRecyclerViewDataAdapter = new CouponRecyclerViewDataAdapter(getActivity(), couponItemList);
                         recyclerView.setAdapter(couponRecyclerViewDataAdapter);
                         loadData(false, recyclerView);
                         break;
@@ -212,7 +197,7 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
                             hotdealItemList = new ArrayList<IRecyclerItem>();
                         }
 
-                        hotdealRecyclerViewDataAdapter = new HotdealRecyclerViewDataAdapter(NewSyrupMainActivity.this, hotdealItemList);
+                        hotdealRecyclerViewDataAdapter = new HotdealRecyclerViewDataAdapter(getActivity(), hotdealItemList);
                         recyclerView.setAdapter(hotdealRecyclerViewDataAdapter);
                         loadData(false, recyclerView);
                         break;
@@ -284,7 +269,7 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
                         }
 
                         if (message.length() > 0) {
-                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -299,7 +284,7 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
             return;
         }
 
-        runOnUiThread(new Runnable() {
+        getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
 
@@ -345,7 +330,7 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
                     if (!insertDataNewBeginning) {
                         switch (recyclerView.getId()) {
                             case R.id.coupon_recycler_view:
-                                int temp = 10 +i;
+                                int temp = 10 + i;
                                 newViewItem = new CouponRecyclerViewItem("http://img.kormedi.com/news/article/__icsFiles/artimage/2015/05/23/c_km601/432212_540.jpg",
                                         "황제짜장", "수제피자", "200m", String.valueOf(temp));
                                 break;
@@ -397,10 +382,10 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
         });
 
 
-        rollingAdapter = new RollingAdapter(this, setEventBannerData(), new RollingAdapter.OnAdapterItemClickListener() {
+        rollingAdapter = new RollingAdapter(getActivity(), setEventBannerData(), new RollingAdapter.OnAdapterItemClickListener() {
             @Override
             public void onItemClick(RollingModel object, int position) {
-                Toast.makeText(NewSyrupMainActivity.this, position + " items click!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), position + " items click!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -421,10 +406,10 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
     }
 
     private void initGPSTransferAddress() {
-        Intent intent = getIntent();
+        Intent intent = getActivity().getIntent();
         String cityName = null;
 
-        Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
+        Geocoder gcd = new Geocoder(getActivity(), Locale.getDefault());
 
         List<Address> addresses = null;
 
@@ -464,7 +449,7 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
         }
 
         String tt = addresses.get(0).getThoroughfare();     //동
-        TextView mGPSTextView = (TextView) findViewById(R.id.main_text_gps);
+        TextView mGPSTextView = (TextView) view.findViewById(R.id.main_text_gps);
         MainApplication.LOCATION_ADDRESS = t + " " + tt + "▼";
         mGPSTextView.setText(MainApplication.LOCATION_ADDRESS);
 
@@ -472,7 +457,7 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
 
     private void initView() {
 
-        nestedScrollView = (NestedScrollView) findViewById(R.id.main_nestedscrollview);
+        nestedScrollView = (NestedScrollView) view.findViewById(R.id.main_nestedscrollview);
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
@@ -496,36 +481,37 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
         });
 
         // 아직 할지 말지 모름 여기는 text 서버에서 받아오는건지.. 임시
-        rollingTextView = (TextView) findViewById(R.id.main_text_banner);
-        rollingIndicatorView = (RollingIndicatorView) findViewById(R.id.indicator_view);
-        rollingViewPager = (ViewPager) findViewById(R.id.viewPager);
+        rollingTextView = (TextView) view.findViewById(R.id.main_text_banner);
+        rollingIndicatorView = (RollingIndicatorView) view.findViewById(R.id.indicator_view);
+        rollingViewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
-        searchbarImgView = (ImageView) findViewById(R.id.main_img_searchbar);
+        searchbarImgView = (ImageView) view.findViewById(R.id.main_img_searchbar);
 //        searchbarImgView.setScaleType(ImageView.ScaleType.FIT_XY);
         //searchbar
-        MainApplication.loadImage(this, R.drawable.img_main_searchbar, searchbarImgView);
+        MainApplication.loadImage(getActivity(), R.drawable.img_main_searchbar, searchbarImgView);
 
-        realReviewRecyclerView = (RecyclerView) findViewById(R.id.review_recycler_view);
-        realReviewLoadingProgressBar = (ProgressBar) findViewById(R.id.review_recycler_view_progressbar);
+        realReviewRecyclerView = (RecyclerView) view.findViewById(R.id.review_recycler_view);
+        realReviewLoadingProgressBar = (ProgressBar) view.findViewById(R.id.review_recycler_view_progressbar);
 
-        couponRecyclerView = (RecyclerView) findViewById(R.id.coupon_recycler_view);
-        couponLoadingProgressBar = (ProgressBar) findViewById(R.id.coupon_recycler_view_progressbar);
+        couponRecyclerView = (RecyclerView) view.findViewById(R.id.coupon_recycler_view);
+        couponLoadingProgressBar = (ProgressBar) view.findViewById(R.id.coupon_recycler_view_progressbar);
 
-        hotdealRecyclerView = (RecyclerView) findViewById(R.id.hotdeal_recycler_view);
-        menuRecyclerView = (RecyclerView) findViewById(R.id.menu_recycler_view);
-        hotplaceGridview = (ExpandableHeightGridView) findViewById(R.id.hotplace_gridview);
+        hotdealRecyclerView = (RecyclerView) view.findViewById(R.id.hotdeal_recycler_view);
+        menuRecyclerView = (RecyclerView) view.findViewById(R.id.menu_recycler_view);
+        hotplaceGridview = (ExpandableHeightGridView) view.findViewById(R.id.hotplace_gridview);
 
-        reviewMoreTextView = (TextView) findViewById(R.id.main_txt_review_more);
+
+        reviewMoreTextView = (TextView) view.findViewById(R.id.main_txt_review_more);
         reviewMoreTextView.setOnClickListener(onClickListenerMore);
 
-        couponMoreTextview = (TextView) findViewById(R.id.main_txt_coupon_more);
+        couponMoreTextview = (TextView) view.findViewById(R.id.main_txt_coupon_more);
         couponMoreTextview.setOnClickListener(onClickListenerMore);
 
-        hotdealMoreTextview = (TextView) findViewById(R.id.main_txt_hotdeal_more);
+        hotdealMoreTextview = (TextView) view.findViewById(R.id.main_txt_hotdeal_more);
         hotdealMoreTextview.setOnClickListener(onClickListenerMore);
 
 
-        TextView hotplace_pop = (TextView) findViewById(R.id.main_hotplace_pop);
+        TextView hotplace_pop = (TextView) view.findViewById(R.id.main_hotplace_pop);
         hotplace_pop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -536,7 +522,7 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
         });
 
 
-        TextView hotplace_distance = (TextView) findViewById(R.id.main_hotplace_distance);
+        TextView hotplace_distance = (TextView) view.findViewById(R.id.main_hotplace_distance);
         hotplace_distance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -551,11 +537,12 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
     private void initHotplaceSet() {
 
         hotplaceGridview.setExpanded(true);
+        hotplaceGridview.setOnItemClickListener(onItemClickListenerHotplace);
 
         if (hotplace_Pop_ItemList == null)
             hotplace_Pop_ItemList = new ArrayList<HotplaceGridViewItem>();
 
-        hotplaceGridAdapter = new HotplaceGridAdapter(this, hotplace_Pop_ItemList);
+        hotplaceGridAdapter = new HotplaceGridAdapter(getContext(), hotplace_Pop_ItemList);
         hotplaceGridview.setAdapter(hotplaceGridAdapter);
         hotplaceGridview.setOnScrollListener(new AbsListView.OnScrollListener() {
 
@@ -590,7 +577,7 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
 
     private void loadHotplaceItem(final boolean mode) {
 
-        runOnUiThread(new Runnable() {
+        getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
 
@@ -600,7 +587,7 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
 
                     Log.d("QQQ", "pop dataload");
                     hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
-                            "황제짜장", "수제피자", "200m", "50%", "맛이어요"));
+                            "몰라짜장", "수제피자", "200m", "50%", "맛이어요"));
                     hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
                             "황제짜장", "수제피자", "200m", "50%", "맛이어요"));
 
@@ -675,7 +662,7 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
         if (mode) {
             hotplace_Distance_ItemList = new ArrayList<HotplaceGridViewItem>();
             hotplaceGridview.invalidateViews();
-            hotplaceGridAdapter = new HotplaceGridAdapter(NewSyrupMainActivity.this, hotplace_Distance_ItemList);
+            hotplaceGridAdapter = new HotplaceGridAdapter(getActivity(), hotplace_Distance_ItemList);
             hotplaceGridview.setAdapter(hotplaceGridAdapter);
 
             loadHotplaceItem(mode);
@@ -683,120 +670,13 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
 
             hotplace_Pop_ItemList = new ArrayList<HotplaceGridViewItem>();
             hotplaceGridview.invalidateViews();
-            hotplaceGridAdapter = new HotplaceGridAdapter(NewSyrupMainActivity.this, hotplace_Pop_ItemList);
+            hotplaceGridAdapter = new HotplaceGridAdapter(getActivity(), hotplace_Pop_ItemList);
             hotplaceGridview.setAdapter(hotplaceGridAdapter);
 
             loadHotplaceItem(mode);
         }
     }
 
-    @Override
-    public void onBackPressed() {
-
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        rollingAutoManager.onRollingStop();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        rollingAutoManager.onRollingStart();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        rollingAutoManager.onRollingDestroy();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.syrup_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_map) {
-            return true;
-        }
-
-        if (id == R.id.action_alarm) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        switch (id) {
-
-            case R.id.nav_home:
-                break;
-            case R.id.nav_login:
-
-                break;
-            case R.id.nav_mypage:
-
-                break;
-            case R.id.nav_cart:
-
-                break;
-
-            case R.id.nav_noti:
-
-                break;
-            case R.id.nav_board:
-
-                break;
-            case R.id.nav_review:
-
-                break;
-
-            default:
-                break;
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return false;
-    }
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-//                    mTextMessage.setText(R.string.title_home);
-                    return true;
-                case R.id.navigation_dashboard:
-//                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-//                    mTextMessage.setText(R.string.title_notifications);
-                    return true;
-            }
-            return false;
-        }
-    };
 
     View.OnClickListener onClickListenerMore = new View.OnClickListener() {
         @Override
@@ -804,15 +684,86 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
 
             switch (view.getId()) {
                 case R.id.main_txt_coupon_more:
-                    startActivity(new Intent(NewSyrupMainActivity.this, CouponListActivity.class));
+                    startActivity(new Intent(getActivity(), CouponListActivity.class));
                     break;
                 case R.id.main_txt_review_more:
-                    startActivity(new Intent(NewSyrupMainActivity.this, RealReviewActivity.class));
+                    startActivity(new Intent(getActivity(), RealReviewActivity.class));
                     break;
                 case R.id.main_txt_hotdeal_more:
-                    startActivity(new Intent(NewSyrupMainActivity.this, HotdealListActivity.class));
+                    startActivity(new Intent(getActivity(), HotdealListActivity.class));
                     break;
             }
         }
     };
+
+
+    AdapterView.OnItemClickListener onItemClickListenerHotplace = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+            //이렇게 아이디 등 값을 가져와서 전달한다.
+            //TextView tv = (TextView)view.findViewById(R.id.hotplace_grid_txt_title);
+            Intent intent = new Intent(getActivity(), StoreInfoActivity.class);
+            Bundle bundle = new Bundle();
+            getActivity().startActivity(intent);
+        }
+    };
+
+    MainMenuRecyclerViewHolder.OnMenuCilckListener onMenuCilckListener = new MainMenuRecyclerViewHolder.OnMenuCilckListener() {
+        @Override
+        public void menuOnClick(View v, int id, int position) {
+            // 임시구현
+            Toast.makeText(getContext(), "position : " + position, Toast.LENGTH_SHORT).show();
+        }
+    };
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        rollingAutoManager.onRollingStart();
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        rollingAutoManager.onRollingStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        rollingAutoManager.onRollingDestroy();
+    }
+
+    @Override
+    public void onDestroy() {
+
+        super.onDestroy();
+    }
 }

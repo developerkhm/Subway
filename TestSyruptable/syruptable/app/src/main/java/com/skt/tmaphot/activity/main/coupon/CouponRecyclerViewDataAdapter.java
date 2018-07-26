@@ -10,16 +10,19 @@ import android.view.ViewGroup;
 
 import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.activity.IRecyclerItem;
+import com.skt.tmaphot.activity.IRecyclerViewDataAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class CouponRecyclerViewDataAdapter extends RecyclerView.Adapter<CouponRecyclerViewHolder> {
+public class CouponRecyclerViewDataAdapter extends RecyclerView.Adapter<CouponRecyclerViewHolder> implements IRecyclerViewDataAdapter {
 
     private Context context;
-    private List<CouponRecyclerViewItem> viewItemList;
+    private ArrayList<IRecyclerItem> viewItemList;
 
 
-    public CouponRecyclerViewDataAdapter(Context context, List<CouponRecyclerViewItem> viewItemList) {
+    public CouponRecyclerViewDataAdapter(Context context, ArrayList<IRecyclerItem> viewItemList) {
         this.context = context;
         this.viewItemList = viewItemList;
     }
@@ -40,7 +43,7 @@ public class CouponRecyclerViewDataAdapter extends RecyclerView.Adapter<CouponRe
     public void onBindViewHolder(CouponRecyclerViewHolder holder, int position) {
         if(viewItemList!=null) {
             // Get car item dto in list.
-            CouponRecyclerViewItem viewItem = viewItemList.get(position);
+            CouponRecyclerViewItem viewItem = (CouponRecyclerViewItem)viewItemList.get(position);
 
             if(viewItem != null) {
                 // Set car item title.
@@ -54,6 +57,8 @@ public class CouponRecyclerViewDataAdapter extends RecyclerView.Adapter<CouponRe
         }
     }
 
+
+
     @Override
     public int getItemCount() {
         int ret = 0;
@@ -62,5 +67,10 @@ public class CouponRecyclerViewDataAdapter extends RecyclerView.Adapter<CouponRe
             ret = viewItemList.size();
         }
         return ret;
+    }
+
+    @Override
+    public void notifyData() {
+        this.notifyDataSetChanged();
     }
 }

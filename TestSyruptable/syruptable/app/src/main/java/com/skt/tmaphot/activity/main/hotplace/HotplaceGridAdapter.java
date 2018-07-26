@@ -68,6 +68,8 @@ public class HotplaceGridAdapter extends BaseAdapter {
         MenutextView.setText(hotplaceGridViewItemsList.get(position).getMenu());
         DistancetextView.setText(hotplaceGridViewItemsList.get(position).getDistance());
 
+
+
         return convertView;
     }
 }

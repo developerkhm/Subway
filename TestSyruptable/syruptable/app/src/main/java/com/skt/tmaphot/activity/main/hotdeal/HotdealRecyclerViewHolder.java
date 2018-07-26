@@ -1,10 +1,12 @@
 package com.skt.tmaphot.activity.main.hotdeal;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.activity.main.store.StoreInfoActivity;
 
 public class HotdealRecyclerViewHolder extends RecyclerView.ViewHolder {
 
@@ -40,6 +43,20 @@ public class HotdealRecyclerViewHolder extends RecyclerView.ViewHolder {
                 itemView.setBackground(drawable);
                 itemView.setClipToOutline(true);
             }
+
+            // on item click
+            itemView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    // get position
+                    int pos = getAdapterPosition();
+
+                    Intent intent = new Intent(v.getContext(), StoreInfoActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("key", getAdapterPosition());
+                    v.getContext().startActivity(intent);
+                }
+            });
 
         }
     }

@@ -1,6 +1,8 @@
 package com.skt.tmaphot.activity.main.hotdeal;
 
-public class HotdealRecyclerViewItem {
+import com.skt.tmaphot.activity.IRecyclerItem;
+
+public class HotdealRecyclerViewItem implements IRecyclerItem {
     private String url;
     private String title;
     private String menu;

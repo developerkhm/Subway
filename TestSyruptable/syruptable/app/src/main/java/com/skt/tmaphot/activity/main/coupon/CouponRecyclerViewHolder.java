@@ -1,20 +1,25 @@
 package com.skt.tmaphot.activity.main.coupon;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Outline;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.activity.main.store.StoreInfoActivity;
+import com.skt.tmaphot.activity.main.store.StoreInfoImageViewActivity;
 
 public class CouponRecyclerViewHolder extends RecyclerView.ViewHolder {
 
@@ -47,6 +52,30 @@ public class CouponRecyclerViewHolder extends RecyclerView.ViewHolder {
                 itemView.setBackground(drawable);
                 itemView.setClipToOutline(true);
             }
+
+            // on item click
+            itemView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    // get position
+                    int pos = getAdapterPosition();
+
+                    Intent intent = new Intent(v.getContext(), StoreInfoActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("key", getAdapterPosition());
+                    v.getContext().startActivity(intent);
+
+
+                    // 여기서 값을 가져갈수 있다 예를 들어서 id, mTextSale.setText
+//                    Toast.makeText(v.getContext(), "You clicked " + mTextSale.getText(),Toast.LENGTH_SHORT).show();
+
+//                    // check if item still exists
+//                    if(pos != RecyclerView.NO_POSITION){
+//                        RvDataItem clickedDataItem = dataItems.get(pos);
+//                        Toast.makeText(v.getContext(), "You clicked " + clickedDataItem.getName(), Toast.LENGTH_SHORT).show();
+//                    }
+                }
+            });
         }
     }
 

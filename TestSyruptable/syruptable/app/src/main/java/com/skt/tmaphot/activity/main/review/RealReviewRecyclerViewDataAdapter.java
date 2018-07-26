@@ -8,16 +8,19 @@ import android.view.ViewGroup;
 
 import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.activity.IRecyclerItem;
+import com.skt.tmaphot.activity.IRecyclerViewDataAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class RealReviewRecyclerViewDataAdapter extends RecyclerView.Adapter<RealReviewRecyclerViewHolder> {
+public class RealReviewRecyclerViewDataAdapter extends RecyclerView.Adapter<RealReviewRecyclerViewHolder> implements IRecyclerViewDataAdapter {
 
     private Context context;
-    private List<RealReviewRecyclerViewItem> viewItemList;
+    private ArrayList<IRecyclerItem> viewItemList;
 
 
-    public RealReviewRecyclerViewDataAdapter(Context context, List<RealReviewRecyclerViewItem> viewItemList) {
+    public RealReviewRecyclerViewDataAdapter(Context context, ArrayList<IRecyclerItem> viewItemList) {
         this.context = context;
         this.viewItemList = viewItemList;
     }
@@ -38,7 +41,7 @@ public class RealReviewRecyclerViewDataAdapter extends RecyclerView.Adapter<Real
     public void onBindViewHolder(RealReviewRecyclerViewHolder holder, int position) {
         if(viewItemList!=null) {
             // Get car item dto in list.
-            RealReviewRecyclerViewItem viewItem = viewItemList.get(position);
+            RealReviewRecyclerViewItem viewItem = (RealReviewRecyclerViewItem)viewItemList.get(position);
 
             if(viewItem != null) {
                 // Set car item title.
@@ -56,5 +59,10 @@ public class RealReviewRecyclerViewDataAdapter extends RecyclerView.Adapter<Real
             ret = viewItemList.size();
         }
         return ret;
+    }
+
+    @Override
+    public void notifyData() {
+        this.notifyDataSetChanged();
     }
 }

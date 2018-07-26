@@ -54,6 +54,7 @@
         <!-- TEST ING -->
         <activity android:name=".activity.SyrupMainActivity" />
         <activity android:name=".activity.NewSyrupMainActivity" />
+
         <activity android:name=".activity.main.review.more.RealReviewActivity"/>
         <activity android:name=".activity.main.coupon.more.CouponListActivity"/>
         <activity android:name=".activity.main.hotdeal.more.HotdealListActivity"/>
@@ -67,6 +68,7 @@
         <activity android:name=".activity.main.store.StoreInfoImageViewActivity"/>
 
         <activity android:name=".activity.MapTest" />
+        <activity android:name=".activity.NewSyrupMainActivity2" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
