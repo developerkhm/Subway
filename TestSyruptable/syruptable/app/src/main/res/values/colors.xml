@@ -11,6 +11,16 @@
     <color name="colorGreen">#60c701</color>
     <color name="colorTransparent">#000000</color>
 
+
+    <color name="text_gray_default">#8f8f93</color>
+    <color name="text_gray_bold">#333333</color>
+    <color name="text_gray_nonSelect">#aaaaaa</color>
+    <color name="text_green_Select">#60c701</color>
+    <color name="ratingbar_yellow">#fcc314</color>
+
+
+
+
     <color name="black_40filter">#66000000</color>
     <color name="black_55filter">#8C000000</color>
     <color name="sale_bg">#fa3500</color>

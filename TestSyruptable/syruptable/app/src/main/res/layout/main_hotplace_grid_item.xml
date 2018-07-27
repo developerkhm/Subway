@@ -25,25 +25,68 @@
                 android:id="@+id/hotplace_ratingBar"
                 style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:numStars="5" />
 
             <TextView
                 android:id="@+id/hotplace_grid_txt_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="에머이 선릉점" />
+                android:paddingVertical="6.0dp"
+                android:text="에머이 선릉점"
+                style="@style/hotplace_item_name"/>
 
-            <TextView
-                android:id="@+id/hotplace_grid_txt_menu"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="후기 불라불라불라" />
+                android:orientation="horizontal"
+                android:gravity="left|center_vertical">
 
-            <TextView
-                android:id="@+id/hotplace_grid_txt_distance"
+                <TextView
+                    android:layout_width="24.3dp"
+                    android:layout_height="14.7dp"
+                    android:layout_marginRight="3dp"
+                    android:gravity="center"
+                    android:text="후기"
+                    style="@style/hotplace_item_review_icon"/>
+
+                <TextView
+                    android:id="@+id/hotplace_grid_txt_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="후기 불라불라불라"
+                    style="@style/hotplace_item_review"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="리뷰 10 | 40m" />
+                android:orientation="horizontal"
+                android:paddingVertical="8dp"
+                android:gravity="left|center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="리뷰"
+                    style="@style/hotplace_item_review"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" | "
+                    style="@style/hotplace_item_review"/>
+
+                <TextView
+                    android:id="@+id/hotplace_grid_txt_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="400m"
+                    style="@style/hotplace_item_review"/>
+            </LinearLayout>
+
+
         </LinearLayout>
     </LinearLayout>
 

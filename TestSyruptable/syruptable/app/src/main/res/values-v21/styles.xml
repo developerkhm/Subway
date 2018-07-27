@@ -1,0 +1,97 @@
+<resources>
+    <style name="main_more" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">11.7dp</item>
+        <item name="android:textColor">@color/text_gray_default</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:text">@string/main_more_txt</item>
+    </style>
+
+    <style name="main_category" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">15.2dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_gray_bold</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+
+    <style name="main_hotplace" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+
+
+    <style name="coupon_item_sale" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">13.3sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+
+    <style name="coupon_item_name" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">13.2sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+
+    <style name="coupon_item_menu" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+
+    <style name="coupon_item_distance" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+
+    <style name="hotdeal_item_name" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">-3sp</item>
+    </style>
+
+    <style name="hotdeal_item_menu" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">0.3sp</item>
+    </style>
+
+
+    <style name="hotplace_item_name" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">13.2sp</item>
+        <item name="android:letterSpacing">-0.02</item>\
+        <item name="android:lineSpacingExtra">3.2sp</item>
+    </style>
+
+    <style name="hotplace_item_review_icon" parent="@android:style/Widget.TextView">
+        <item name="android:background">@color/text_green_Select</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">6.3sp</item>
+    </style>
+
+
+    <style name="hotplace_item_review" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/text_gray_default</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">6.3sp</item>
+    </style>
+
+    <style name="ratingBar" parent="@android:style/Widget.RatingBar">
+
+    </style>
+
+</resources>
+
+

@@ -3,6 +3,9 @@ package com.skt.tmaphot.activity.main.store;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,46 +20,37 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.chrisbanes.photoview.PhotoView;
+import com.github.chrisbanes.photoview.PhotoViewAttacher;
 import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.BaseActivity;
-import com.skt.tmaphot.activity.main.banner.RollingAdapter;
-import com.skt.tmaphot.activity.main.banner.RollingAutoManager;
-import com.skt.tmaphot.activity.main.banner.RollingIndicatorView;
-import com.skt.tmaphot.activity.main.banner.RollingModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StoreInfoActivity extends BaseActivity {
 
-    private ViewPager mViewPager;
-    private RollingAdapter mAdapter;
-    private RollingIndicatorView mIndicatorView;
-    private RollingAutoManager mAutoRollingManager;
+    //상단 메인 이미지
+    private StoreInfoActivity.SectionsPagerAdapter mSectionsPagerAdapter;
+    private StoreInfoImageViewPager mViewPager;
+    private List<String> imageUrlList;
+    private TextView imageCounttxt;
 
+    // 상점 리뷰사진 모음 리스트
     private RecyclerView storeInfoReviewRecyclerView;
     private StoreInfoRecyclerViewDataAdapter storeInfoRecyclerViewDataAdapter;
     private StoreInfoItem storeInfoItem;
 
-
+    //리뷰리스트
     private RecyclerView reviewRecyclerView;
     private ReviewRecyclerViewAdapter reviewRecyclerViewAdapter;
     private List<ReviewItem> reviewItemList;
 
+    //소셜 리뷰리스트
     private RecyclerView socialReviewRecyclerView;
     private SocialReviewRecyclerViewAdapter socialReviewRecyclerViewAdapter;
     private List<SocialReviewItem> socialReviewItemList;
-
-    private List<RollingModel> getData() {
-        List<RollingModel> list = new ArrayList<>();
-
-        list.add(new RollingModel("1", "https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg"));
-        list.add(new RollingModel("2", "https://picksell.co.kr/images/product/128734/1104487a-82c9-41b4-be65-89d3f80088f5.jpg"));
-        list.add(new RollingModel("3", "https://picksell.co.kr/images/product/129084/5809e78b-80ac-42ac-a455-eb179deab4ed.jpg"));
-        list.add(new RollingModel("4", "https://picksell.co.kr/images/product/129084/5809e78b-80ac-42ac-a455-eb179deab4ed.jpg"));
-        return list;
-    }
 
 
     @Override
@@ -73,19 +67,45 @@ public class StoreInfoActivity extends BaseActivity {
         actionBar.setDisplayShowTitleEnabled(false);
 
 
-        mIndicatorView = (RollingIndicatorView) findViewById(R.id.indicator_view);
-        mViewPager = (ViewPager) findViewById(R.id.viewPager);
+        ///////////////////////////////////////////////////////
+        // 임시 메인 이미지 큰거만 뽑음
+        setData();
 
-        mAdapter = new RollingAdapter(StoreInfoActivity.this, getData(), new RollingAdapter.OnAdapterItemClickListener() {
+        mSectionsPagerAdapter = new StoreInfoActivity.SectionsPagerAdapter(getSupportFragmentManager());
+        mViewPager = (StoreInfoImageViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
+        {
             @Override
-            public void onItemClick(RollingModel object, int position) {
-                Toast.makeText(StoreInfoActivity.this, position + " items click!", Toast.LENGTH_SHORT).show();
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        imageCounttxt.setText( (mViewPager.getCurrentItem() + 1) +"/"+ imageUrlList.size());
+                    }
+                });
+            }
+
+            @Override
+            public void onPageSelected(int position)
+            {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state)
+            {
+
             }
         });
-        mViewPager.setAdapter(mAdapter);
-        mIndicatorView.setViewPager(mViewPager);
-        mAutoRollingManager = new RollingAutoManager(mViewPager, mAdapter, mIndicatorView);
-        mAutoRollingManager.setRollingTime(5500);
+
+
+        imageCounttxt = (TextView)findViewById(R.id.storeinfo_image_count_txt);
+        /////////////////////////////////////////////////////////////////////////////
+
 
 
         getIninData();
@@ -101,21 +121,94 @@ public class StoreInfoActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        mAutoRollingManager.onRollingStop();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mAutoRollingManager.onRollingStart();
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mAutoRollingManager.onRollingDestroy();
+
     }
 
+    // 임시 메인 이미지
+    private void setData(){
+        imageUrlList = new ArrayList<String>();
+        imageUrlList.add("http://img.hani.co.kr/imgdb/resize/2018/0319/00503531_20180319.JPG"); //손예진
+        imageUrlList.add("https://pbs.twimg.com/media/C3EbdSxWIAAU-6M.jpg");    //수지
+        imageUrlList.add("http://www.hotelavia.net/news/photo/201710/1287_2768_5455.jpg"); //이연희
+        imageUrlList.add("http://www.mbcsportsplus.com/data/board/attach/2018/04/20180429102237_lnzqycwf.jpg"); //조보아
+        imageUrlList.add("https://pbs.twimg.com/media/DIFyDGIUIAEzJZX.jpg");    // 쯔위
+    }
+
+    public static class PlaceholderFragment extends Fragment {
+
+        private static final String ARG_SECTION_NUMBER = "section_number";
+        private static final String ARG_SECTION_URL = "section_url";
+
+        public PlaceholderFragment() {
+        }
+
+        public static StoreInfoImageViewActivity.PlaceholderFragment newInstance(int sectionNumber, String sectionUrl) {
+            StoreInfoImageViewActivity.PlaceholderFragment fragment = new StoreInfoImageViewActivity.PlaceholderFragment();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            args.putString(ARG_SECTION_URL, sectionUrl);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+
+            View rootView = inflater.inflate(R.layout.storeinfo_image_fragment, container, false);
+            PhotoView imageView = (PhotoView) rootView.findViewById(R.id.photo_view);
+            PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
+            mAttacher.setScaleType(ImageView.ScaleType.FIT_CENTER);
+//            mAttacher.setMinimumScale(1f);
+            MainApplication.loadUrlImage(getActivity(), getArguments().getString(ARG_SECTION_URL), imageView);
+
+            return rootView;
+        }
+
+        @Override
+        public void setUserVisibleHint(boolean isVisibleToUser) {
+            if (isVisibleToUser) {
+
+            } else {
+
+            }
+            super.setUserVisibleHint(isVisibleToUser);
+        }
+    }
+
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+
+            super(fm);
+
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+
+//          return PlaceholderFragment.newInstance(position + 1);
+            return StoreInfoImageViewActivity.PlaceholderFragment.newInstance(position, imageUrlList.get(position));
+        }
+
+        @Override
+        public int getCount() {
+            // Show 3 total pages.
+            return imageUrlList.size();
+        }
+    }
 
     public class StoreInfoItem {
         List<String> stroeInfoMainImageList;
@@ -544,9 +637,6 @@ public class StoreInfoActivity extends BaseActivity {
                 storeInfoRecyclerViewDataAdapter.notifyDataSetChanged();
             }
         });
-
-
-
     }
 }
 

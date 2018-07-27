@@ -1,5 +1,6 @@
 package com.skt.tmaphot.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -35,6 +36,7 @@ import com.skt.tmaphot.activity.main.menu.MainMenuRecyclerViewDataAdapter;
 import com.skt.tmaphot.activity.main.menu.MainMenuRecyclerViewItem;
 import com.skt.tmaphot.activity.main.review.RealReviewRecyclerViewDataAdapter;
 import com.skt.tmaphot.fragment.MainFragment;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +44,13 @@ import java.util.List;
 public class NewSyrupMainActivity2 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_syrup_main_new2);

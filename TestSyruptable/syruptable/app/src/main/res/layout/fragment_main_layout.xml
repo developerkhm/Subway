@@ -49,7 +49,7 @@
                         android:layout_gravity="top"
                         android:orientation="vertical">
 
-                        <LinearLayout
+                        <!--LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="?attr/actionBarSize"
                             android:gravity="center"
@@ -59,7 +59,7 @@
                                 android:layout_width="189dp"
                                 android:layout_height="31dp"
                                 android:background="@drawable/logo_test" />
-                        </LinearLayout>
+                        </LinearLayout-->
 
                         <TextView
                             android:id="@+id/main_text_gps"
@@ -124,15 +124,14 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center_vertical"
                             android:text="@string/main_content_menu_coupon"
-                            android:textColor="@color/colorBlack"
-                            android:textStyle="bold" />
+                            style="@style/main_category"/>
 
                         <TextView
                             android:id="@+id/main_txt_coupon_more"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end|center_vertical"
-                            android:text="@string/main_content_menu_coupon_more" />
+                            style="@style/main_more"/>
                     </FrameLayout>
 
                     <FrameLayout
@@ -173,8 +172,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center_vertical"
                             android:text="@string/main_content_menu_food"
-                            android:textColor="@color/colorBlack"
-                            android:textStyle="bold" />
+                            style="@style/main_category" />
 
                         <ImageView
                             android:layout_width="21dp"
@@ -241,15 +239,14 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center_vertical"
                             android:text="@string/main_content_menu_review"
-                            android:textColor="@color/colorBlack"
-                            android:textStyle="bold" />
+                            style="@style/main_category"/>
 
                         <TextView
                             android:id="@+id/main_txt_review_more"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end|center_vertical"
-                            android:text="@string/main_content_menu_review_more" />
+                            style="@style/main_more"/>
 
 
                     </FrameLayout>
@@ -283,15 +280,14 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center_vertical"
                             android:text="@string/main_content_menu_hotdeal"
-                            android:textColor="@color/colorBlack"
-                            android:textStyle="bold" />
+                            style="@style/main_category" />
 
                         <TextView
                             android:id="@+id/main_txt_hotdeal_more"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end|center_vertical"
-                            android:text="@string/main_content_menu_hotdeal_more" />
+                            style="@style/main_more"/>
                     </FrameLayout>
 
                     <FrameLayout
@@ -324,8 +320,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="left|center_vertical"
                             android:text="@string/main_content_menu_hotplace"
-                            android:textColor="@color/colorBlack"
-                            android:textStyle="bold" />
+                            style="@style/main_category" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -338,12 +333,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/selector_hotplace_type"
-                                android:text="인기순" />
+                                android:text="@string/main_content_menu_hotplace_pop"
+                                style="@style/main_hotplace"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text=" | " />
+                                android:textColor="@color/text_gray_nonSelect"
+                                android:textStyle="bold"
+                                android:text=" | "/>
 
 
                             <TextView
@@ -351,21 +349,31 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/selector_hotplace_type"
-                                android:text="거리순" />
+                                android:text="@string/main_content_menu_hotplace_distance"
+                                style="@style/main_hotplace"/>
 
                         </LinearLayout>
 
 
                     </FrameLayout>
 
-
-                    <com.skt.tmaphot.activity.main.hotplace.ExpandableHeightGridView
-                        android:id="@+id/hotplace_gridview"
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:isScrollContainer="false"
-                        android:verticalSpacing="10dp"
-                        android:numColumns="2" />
+                        android:layout_height="wrap_content">
+                        <ProgressBar
+                            android:layout_gravity="top"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <com.skt.tmaphot.activity.main.hotplace.ExpandableHeightGridView
+                            android:id="@+id/hotplace_gridview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:isScrollContainer="false"
+                            android:verticalSpacing="10dp"
+                            android:numColumns="2" />
+                    </FrameLayout>
+
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

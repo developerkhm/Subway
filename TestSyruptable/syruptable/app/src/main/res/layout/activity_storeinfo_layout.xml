@@ -25,25 +25,28 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="300dp">
 
-                    <android.support.v4.view.ViewPager
-                        android:id="@+id/viewPager"
+                    <com.skt.tmaphot.activity.main.store.StoreInfoImageViewPager
+                        android:id="@+id/container"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="8dp" />
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-                    <com.skt.tmaphot.activity.main.banner.RollingIndicatorView
-                        android:id="@+id/indicator_view"
+
+                    <TextView
+                        android:layout_gravity="center"
+                        android:id="@+id/storeinfo_image_count_txt"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|center_horizontal"
-                        android:layout_marginBottom="9dp" />
+                        android:layout_height="wrap_content" />
+
                 </FrameLayout>
 
-                <include layout="@layout/base_appbar_trans_layout"/>
+
+                <include layout="@layout/base_appbar_trans_layout" />
 
             </RelativeLayout>
 
@@ -253,12 +256,7 @@
                 android:scrollbars="none" />
 
 
-
-
         </LinearLayout>
-
-
-
 
 
     </android.support.v4.widget.NestedScrollView>

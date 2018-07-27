@@ -97,9 +97,6 @@ public class StoreInfoImageViewActivity extends AppCompatActivity {
 
         imageCounttxt = (TextView)findViewById(R.id.storeinfo_image_count_txt);
 
-
-
-
     } //END
 
 

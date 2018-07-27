@@ -22,6 +22,8 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.Target;
 import com.facebook.stetho.Stetho;
 import com.crashlytics.android.Crashlytics;
+import com.tsengvn.typekit.Typekit;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -31,7 +33,17 @@ public class MainApplication extends Application {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
         Stetho.initializeWithDefaults(this);
+
+        Typekit.getInstance()
+                .addNormal(Typekit.createFromAsset(this, "NanumBarunGothic.ttf"))
+                .addBold(Typekit.createFromAsset(this, "NanumBarunGothicBold.ttf"));
+
     }
+
+//    @Override
+//    protected void attachBaseContext(Context newBase) {
+//        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+//    }
 
     public static String LOCATION_ADDRESS;
 

@@ -20,17 +20,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
-            android:text="테스트"/>
+            android:text="스테이크불 강남점"
+            style="@style/hotdeal_item_name"/>
 
         <TextView
             android:id="@+id/main_hotdeal_recyler_item_txt_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
-            android:text="맛집"/>
+            android:text="강남에서 유명한 스테이크 맛집"
+            style="@style/hotdeal_item_menu"/>
 
         <RatingBar
             android:id="@+id/main_hotdeal_ratingBar"
+            style="?android:attr/ratingBarStyleIndicator"
+            android:isIndicator="true"
+            android:numStars="5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

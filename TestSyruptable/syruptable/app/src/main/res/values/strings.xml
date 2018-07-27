@@ -24,20 +24,23 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_store_info">StoreInfoActivity</string>
 
+    <string name="main_content_menu_coupon">주변 할인쿠폰</string>
+    <string name="main_more_txt">+ 더보기</string>
+
+
+    <string name="main_content_menu_food">음식테마</string>
+
 
     <string name="main_content_menu_review">리얼후기</string>
     <string name="main_content_menu_review_more">+ 더보기</string>
 
-    <string name="main_content_menu_food">음식테마</string>
-
-    <string name="main_content_menu_coupon">주변 할인쿠폰</string>
-    <string name="main_content_menu_coupon_more">+ 더보기</string>
-
-
     <string name="main_content_menu_hotdeal">주변 핫딜 맛집</string>
     <string name="main_content_menu_hotdeal_more">+ 더보기</string>
 
-    <string name="main_content_menu_hotplace">핫플레이스</string>
+    <string name="main_content_menu_hotplace">핫플레이스 추천</string>
+
+    <string name="main_content_menu_hotplace_pop">인기순</string>
+    <string name="main_content_menu_hotplace_distance">거리순</string>
 
 
 
