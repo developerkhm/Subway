@@ -30,6 +30,8 @@ import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.IRecyclerItem;
 import com.skt.tmaphot.activity.IRecyclerViewDataAdapter;
+import com.skt.tmaphot.activity.NewSyrupMainActivity2;
+import com.skt.tmaphot.activity.area.SelectionAreaActivity;
 import com.skt.tmaphot.activity.main.banner.RollingAdapter;
 import com.skt.tmaphot.activity.main.banner.RollingAutoManager;
 import com.skt.tmaphot.activity.main.banner.RollingIndicatorView;
@@ -101,8 +103,8 @@ public class MainFragment extends Fragment {
     private RollingAutoManager rollingAutoManager;
     private ViewPager rollingViewPager;
     private RollingIndicatorView rollingIndicatorView;
-    private TextView rollingTextView;
-    private ImageView searchbarImgView;
+    //    private TextView rollingTextView;
+//    private ImageView searchbarImgView;
     //더보기
     private TextView reviewMoreTextView, couponMoreTextview, hotdealMoreTextview;
     private View view;
@@ -239,12 +241,10 @@ public class MainFragment extends Fragment {
 //                        }
 
 
-                            if(init){
-                                onScrollListenerRecyclerView = new CustomRecyclerViewOnScrollListener();
-                                recyclerView.addOnScrollListener(onScrollListenerRecyclerView);
-                            }
-
-
+                        if (init) {
+                            onScrollListenerRecyclerView = new CustomRecyclerViewOnScrollListener();
+                            recyclerView.addOnScrollListener(onScrollListenerRecyclerView);
+                        }
 
 
 //                        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -515,7 +515,6 @@ public class MainFragment extends Fragment {
 
     private void initGPSTransferAddress() {
         Intent intent = getActivity().getIntent();
-        String cityName = null;
 
         Geocoder gcd = new Geocoder(getActivity(), Locale.getDefault());
 
@@ -523,48 +522,51 @@ public class MainFragment extends Fragment {
 
         try {
 
+
+            //        Log.d("GEO", "addresses.get(0).getAdminArea() " + addresses.get(0).getAdminArea());   //동
+            //        Log.d("GEO", "addresses.get(0).getSubLocality() " + addresses.get(0).getSubLocality());   //동
+            //        Log.d("GEO", "addresses.get(0).getThoroughfare() " + addresses.get(0).getThoroughfare());   //동
+            //        Log.d("GEO", "addresses.get(0).getAdminArea() " + addresses.get(0).getAdminArea());   //동
+            //        Log.d("GEO", "addresses.get(0).getLocality() " + addresses.get(0).getLocality());   //동
+            //        Log.d("GEO", "addresses.get(0).getAddressLine(0).toString() " + addresses.get(0).getAddressLine(0).toString());   //동
+
+                /*
+                addresses.get(0).getAdminArea() 경기도
+                addresses.get(0).getSubLocality() null
+                addresses.get(0).getThoroughfare() 덕풍동
+                addresses.get(0).getAdminArea() 경기도
+                addresses.get(0).getLocality() 하남시
+                addresses.get(0).getAddressLine(0).toString() 대한민국 경기도 하남시 덕풍동 산62-3
+                */
+
             addresses = gcd.getFromLocation(intent.getDoubleExtra("latitude", 0), intent.getDoubleExtra("longitude", 0), 1);
-
+            String t = null;
             if (addresses.size() > 0)
+            {
+                if (addresses.get(0).getSubLocality() != null) {
+                    t = addresses.get(0).getSubLocality();   //구
+                } else {
+                    t = addresses.get(0).getLocality();   //시
+                }
 
-//            Log.d("GEO", addresses.get(0).getLocality());   // 구 메인,
-//            Log.d("GEO", addresses.get(0).getAddressLine(0).toString());    // 국가, 시 군 구 동 번지
-//            Log.d("GEO", addresses.get(0).getAdminArea());  //시
-//            Log.d("GEO", addresses.get(0).getThoroughfare());   //동
-
-
-//            String tt = addresses.get(0).getAddressLine(0).toString();
-//            String result = tt.substring(tt.star(" "), tt.lastIndexOf(" "));
-
-                //서울시 강남구 삼성동
-                //하남시 덕풍동
-
-                Log.d("GEO", addresses.get(0).getAdminArea() + " " + addresses.get(0).getSubLocality() + " " + addresses.get(0).getThoroughfare());   //동
-
-
+                String tt = addresses.get(0).getThoroughfare();     //동
+                TextView mGPSTextView = (TextView) view.findViewById(R.id.main_text_gps);
+                MainApplication.LOCATION_ADDRESS = t + " " + tt + " ▼";
+                mGPSTextView.setText(MainApplication.LOCATION_ADDRESS);
+                mGPSTextView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Log.d("TAD", "click");
+                        startActivity(new Intent(getActivity(), SelectionAreaActivity.class));
+                    }
+                });
+            }
         } catch (IOException e) {
-
             e.printStackTrace();
-
         }
-
-        //임시 테스트중
-        String t = null;
-        if (addresses.get(0).getSubLocality() != null) {
-            t = addresses.get(0).getSubLocality();   //구
-        } else {
-            t = addresses.get(0).getAdminArea();   //시
-        }
-
-        String tt = addresses.get(0).getThoroughfare();     //동
-        TextView mGPSTextView = (TextView) view.findViewById(R.id.main_text_gps);
-        MainApplication.LOCATION_ADDRESS = t + " " + tt + "▼";
-        mGPSTextView.setText(MainApplication.LOCATION_ADDRESS);
-
     }
 
     private void initView() {
-
         nestedScrollView = (NestedScrollView) view.findViewById(R.id.main_nestedscrollview);
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
@@ -589,14 +591,14 @@ public class MainFragment extends Fragment {
         });
 
         // 아직 할지 말지 모름 여기는 text 서버에서 받아오는건지.. 임시
-        rollingTextView = (TextView) view.findViewById(R.id.main_text_banner);
+//        rollingTextView = (TextView) view.findViewById(R.id.main_text_banner);
         rollingIndicatorView = (RollingIndicatorView) view.findViewById(R.id.indicator_view);
         rollingViewPager = (ViewPager) view.findViewById(R.id.viewPager);
 
-        searchbarImgView = (ImageView) view.findViewById(R.id.main_img_searchbar);
-//        searchbarImgView.setScaleType(ImageView.ScaleType.FIT_XY);
-        //searchbar
-        MainApplication.loadImage(getActivity(), R.drawable.img_main_searchbar, searchbarImgView);
+//        searchbarImgView = (ImageView) view.findViewById(R.id.main_img_searchbar);
+////        searchbarImgView.setScaleType(ImageView.ScaleType.FIT_XY);
+//        //searchbar
+//        MainApplication.loadImage(getActivity(), R.drawable.img_main_searchbar, searchbarImgView);
 
         realReviewRecyclerView = (RecyclerView) view.findViewById(R.id.review_recycler_view);
         realReviewLoadingProgressBar = (ProgressBar) view.findViewById(R.id.review_recycler_view_progressbar);
@@ -637,32 +639,32 @@ public class MainFragment extends Fragment {
 
         hotplaceGridAdapter = new HotplaceGridAdapter(getContext(), hotplace_Pop_ItemList);
         hotplaceGridview.setAdapter(hotplaceGridAdapter);
-        hotplaceGridview.setOnScrollListener(new AbsListView.OnScrollListener() {
-
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                // TODO Auto-generated method stub
-
-                Log.e("GridView", "onScrollStateChanged : " + scrollState);
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem,
-                                 int visibleItemCount, int totalItemCount) {
-                // TODO Auto-generated method stub
-                Log.e("GridView", "firstVisibleItem: " + firstVisibleItem + "\nvisibleItemCount: " + visibleItemCount + "\ntotalItemCount: " + totalItemCount);
-
-                // 현재 가장 처음에 보이는 셀번호와 보여지는 셀번호를 더한값이
-                // 전체의 숫자와 동일해지면 가장 아래로 스크롤 되었다고 가정합니다.
-                int count = totalItemCount - visibleItemCount;
-
-
-                if (firstVisibleItem >= count && totalItemCount != 0 && ishotplaceItemLoad == false) {
-                    //loadGridItem();
-                    Log.e("GridView", "XXXXXXXXX loadGridItem : ");
-                }
-            }
-        });
+//        hotplaceGridview.setOnScrollListener(new AbsListView.OnScrollListener() {
+//
+//            @Override
+//            public void onScrollStateChanged(AbsListView view, int scrollState) {
+//                // TODO Auto-generated method stub
+//
+//                Log.e("GridView", "onScrollStateChanged : " + scrollState);
+//            }
+//
+//            @Override
+//            public void onScroll(AbsListView view, int firstVisibleItem,
+//                                 int visibleItemCount, int totalItemCount) {
+//                // TODO Auto-generated method stub
+//                Log.e("GridView", "firstVisibleItem: " + firstVisibleItem + "\nvisibleItemCount: " + visibleItemCount + "\ntotalItemCount: " + totalItemCount);
+//
+//                // 현재 가장 처음에 보이는 셀번호와 보여지는 셀번호를 더한값이
+//                // 전체의 숫자와 동일해지면 가장 아래로 스크롤 되었다고 가정합니다.
+//                int count = totalItemCount - visibleItemCount;
+//
+//
+//                if (firstVisibleItem >= count && totalItemCount != 0 && ishotplaceItemLoad == false) {
+//                    //loadGridItem();
+//                    Log.e("GridView", "XXXXXXXXX loadGridItem : ");
+//                }
+//            }
+//        });
 
         //데이터 로드
         loadHotplaceItem(ishotplaceModeDistance);
@@ -768,9 +770,9 @@ public class MainFragment extends Fragment {
     private void reloadHotPlace(boolean mode) {
         if (mode) {
             Log.d("GRID", "distnace mode");
-            if(hotplace_Distance_ItemList == null) {
+            if (hotplace_Distance_ItemList == null) {
                 hotplace_Distance_ItemList = new ArrayList<HotplaceGridViewItem>();
-            }else{
+            } else {
                 Log.d("GRID", "clear");
                 hotplace_Distance_ItemList.clear();
             }
@@ -781,9 +783,9 @@ public class MainFragment extends Fragment {
             loadHotplaceItem(mode);
         } else {
 
-            if(hotplace_Pop_ItemList == null) {
+            if (hotplace_Pop_ItemList == null) {
                 hotplace_Pop_ItemList = new ArrayList<HotplaceGridViewItem>();
-            }else{
+            } else {
                 hotplace_Pop_ItemList.clear();
             }
 
@@ -932,7 +934,6 @@ public class MainFragment extends Fragment {
     private class CustomRecyclerViewOnScrollListener extends RecyclerView.OnScrollListener {
 
 
-
         public CustomRecyclerViewOnScrollListener() {
 
         }
@@ -944,7 +945,6 @@ public class MainFragment extends Fragment {
 //                recyclerView.removeOnScrollListener(this);
 //            }
 //        }
-
 
 
         @Override

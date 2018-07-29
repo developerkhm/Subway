@@ -2,8 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:theme="@style/BaseToolbar">
+
+        <TextView
+            android:id="@+id/main_text_gps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/colorWhite" />
+    </android.support.v7.widget.Toolbar>
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/main_nestedscrollview"
@@ -19,363 +34,312 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:layout_height="315dp">
+
+                <!-- banner -->
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <com.skt.tmaphot.activity.main.banner.RollingIndicatorView
+                    android:id="@+id/indicator_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/main_searchbar"
+                    android:layout_centerHorizontal="true" />
+
+                <!-- searchbar -->
+                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/main_searchbar"
+                    android:layout_width="@dimen/activity_main_searchbar_width"
+                    android:layout_height="@dimen/activity_main_searchbar_height"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    app:cardCornerRadius="3dp"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="50.7dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/text_green_Select" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </RelativeLayout>
+
+            <!-- 주변할인 쿠폰-->
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <FrameLayout
+                <TextView
+                    style="@style/main_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_alignBaseline="@+id/main_txt_coupon_more"
+                    android:text="@string/main_content_menu_coupon" />
+
+                <TextView
+                    android:id="@+id/main_txt_coupon_more"
+                    style="@style/main_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="16dp"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="34dp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/coupon_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="400dp">
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="358dp">
-
-                        <android.support.v4.view.ViewPager
-                            android:id="@+id/viewPager"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-
-                        <com.skt.tmaphot.activity.main.banner.RollingIndicatorView
-                            android:id="@+id/indicator_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom|center_horizontal"
-                            android:layout_marginBottom="20dp" />
-                    </FrameLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:orientation="vertical">
-
-                        <!--LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="?attr/actionBarSize"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="189dp"
-                                android:layout_height="31dp"
-                                android:background="@drawable/logo_test" />
-                        </LinearLayout-->
-
-                        <TextView
-                            android:id="@+id/main_text_gps"
-                            android:layout_width="match_parent"
-                            android:layout_height="31dp"
-                            android:gravity="center"
-                            android:textColor="@color/colorWhite" />
-                    </LinearLayout>
-
-
-                    <TextView
-                        android:id="@+id/main_text_banner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center" />
-
-                    <LinearLayout
-                        android:layout_width="@dimen/activity_main_searchbar_width"
-                        android:layout_height="@dimen/activity_main_searchbar_height"
-                        android:layout_gravity="bottom|center_horizontal"
-                        android:orientation="horizontal"
-                        android:background="@drawable/border_main_searchbar">
-
-                        <ImageView
-                            android:id="@+id/main_img_searchbar"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-                    </LinearLayout>
-
-
-                </FrameLayout>
-
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_below="@+id/main_txt_coupon_more"
+                    android:layout_marginBottom="41dp"
+                    android:layout_gravity="center" />
+                <View
+                    android:layout_below="@+id/coupon_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:theme="@style/TransparentToolbar" />
+                    android:layout_height="9dp"
+                    android:background="@color/layout_bottom_boder"/>
 
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
+                android:gravity="center"
                 android:orientation="vertical">
 
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <TextView
+                        style="@style/main_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center_vertical"
+                        android:text="@string/main_content_menu_food" />
+
+                    <ImageView
+                        android:layout_width="21dp"
+                        android:layout_height="12dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:contentDescription="TODO"
+                        android:src="@drawable/img_main_menu_more" />
+
+                </FrameLayout>
+
+                <!--menu-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/border_layout_bottom"
-                    android:orientation="vertical"
-                    android:paddingBottom="40dp">
+                    android:orientation="horizontal">
 
-
-                    <FrameLayout
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/menu_recycler_view"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp">
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start|center_vertical"
-                            android:text="@string/main_content_menu_coupon"
-                            style="@style/main_category"/>
+                    <!--ImageView
+                        android:id="@+id/main_img_menu_1"
+                        android:layout_width="@dimen/activity_main_menu_image_width"
+                        android:layout_height="@dimen/activity_main_menu_image_height"
+                        android:contentDescription="TODO" />
 
-                        <TextView
-                            android:id="@+id/main_txt_coupon_more"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end|center_vertical"
-                            style="@style/main_more"/>
-                    </FrameLayout>
+                    <ImageView
+                        android:id="@+id/main_img_menu_2"
 
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_width="@dimen/activity_main_menu_image_width"
+                        android:layout_height="@dimen/activity_main_menu_image_height"
+                        android:contentDescription="TODO" />
 
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/coupon_recycler_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center" />
+                    <ImageView
+                        android:id="@+id/main_img_menu_3"
+                        android:layout_width="@dimen/activity_main_menu_image_width"
+                        android:layout_height="@dimen/activity_main_menu_image_height"
+                        android:contentDescription="TODO" />
 
-                        <ProgressBar
-                            android:id="@+id/coupon_recycler_view_progressbar"
-                            style="@android:style/Widget.Holo.Light.ProgressBar.Large.Inverse"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:foregroundGravity="center_vertical"
-                            android:visibility="gone" />
-                    </FrameLayout>
+                    <ImageView
+                        android:id="@+id/main_img_menu_4"
 
-
+                        android:layout_width="@dimen/activity_main_menu_image_width"
+                        android:layout_height="@dimen/activity_main_menu_image_height" /-->
                 </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_layout_bottom"
+                android:orientation="vertical"
+                android:paddingBottom="40dp">
 
 
-                <LinearLayout
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_height="50dp">
 
-                    <FrameLayout
+                    <TextView
+                        style="@style/main_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center_vertical"
+                        android:text="@string/main_content_menu_review" />
+
+                    <TextView
+                        android:id="@+id/main_txt_review_more"
+                        style="@style/main_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center_vertical" />
+
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/review_recycler_view"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp">
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start|center_vertical"
-                            android:text="@string/main_content_menu_food"
-                            style="@style/main_category" />
+                    <ProgressBar
+                        android:id="@+id/review_recycler_view_progressbar"
+                        style="@android:style/Widget.Holo.Light.ProgressBar.Large.Inverse"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:foregroundGravity="center_vertical"
+                        android:visibility="gone" />
+                </FrameLayout>
 
-                        <ImageView
-                            android:layout_width="21dp"
-                            android:layout_height="12dp"
-                            android:layout_gravity="end|center_vertical"
-                            android:src="@drawable/img_main_menu_more"
-                            android:contentDescription="TODO" />
 
-                    </FrameLayout>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
 
-                    <!--menu-->
+                    <TextView
+                        style="@style/main_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center_vertical"
+                        android:text="@string/main_content_menu_hotdeal" />
+
+                    <TextView
+                        android:id="@+id/main_txt_hotdeal_more"
+                        style="@style/main_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center_vertical" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/hotdeal_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
+                </FrameLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="15dp"
+                android:background="@drawable/border_layout_bottom"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <TextView
+                        style="@style/main_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center_vertical"
+                        android:text="@string/main_content_menu_hotplace" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_gravity="left|center_vertical"
+                        android:gravity="right">
 
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/menu_recycler_view"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/main_hotplace_pop"
+                            style="@style/main_hotplace"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center" />
+                            android:text="@string/main_content_menu_hotplace_pop"
+                            android:textColor="@color/selector_hotplace_type" />
 
-                        <!--ImageView
-                            android:id="@+id/main_img_menu_1"
-                            android:layout_width="@dimen/activity_main_menu_image_width"
-                            android:layout_height="@dimen/activity_main_menu_image_height"
-                            android:contentDescription="TODO" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" | "
+                            android:textColor="@color/text_gray_nonSelect"
+                            android:textStyle="bold" />
 
-                        <ImageView
-                            android:id="@+id/main_img_menu_2"
 
-                            android:layout_width="@dimen/activity_main_menu_image_width"
-                            android:layout_height="@dimen/activity_main_menu_image_height"
-                            android:contentDescription="TODO" />
+                        <TextView
+                            android:id="@+id/main_hotplace_distance"
+                            style="@style/main_hotplace"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/main_content_menu_hotplace_distance"
+                            android:textColor="@color/selector_hotplace_type" />
 
-                        <ImageView
-                            android:id="@+id/main_img_menu_3"
-                            android:layout_width="@dimen/activity_main_menu_image_width"
-                            android:layout_height="@dimen/activity_main_menu_image_height"
-                            android:contentDescription="TODO" />
-
-                        <ImageView
-                            android:id="@+id/main_img_menu_4"
-
-                            android:layout_width="@dimen/activity_main_menu_image_width"
-                            android:layout_height="@dimen/activity_main_menu_image_height" /-->
                     </LinearLayout>
-                </LinearLayout>
 
-                <LinearLayout
+
+                </FrameLayout>
+
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/border_layout_bottom"
-                    android:orientation="vertical"
-                    android:paddingBottom="40dp">
+                    android:layout_height="wrap_content">
 
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top" />
 
-                    <FrameLayout
+                    <com.skt.tmaphot.activity.main.hotplace.ExpandableHeightGridView
+                        android:id="@+id/hotplace_gridview"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp">
+                        android:layout_height="wrap_content"
+                        android:isScrollContainer="false"
+                        android:numColumns="2"
+                        android:verticalSpacing="10dp" />
+                </FrameLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start|center_vertical"
-                            android:text="@string/main_content_menu_review"
-                            style="@style/main_category"/>
-
-                        <TextView
-                            android:id="@+id/main_txt_review_more"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end|center_vertical"
-                            style="@style/main_more"/>
-
-
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/review_recycler_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center" />
-
-                        <ProgressBar
-                            android:id="@+id/review_recycler_view_progressbar"
-                            style="@android:style/Widget.Holo.Light.ProgressBar.Large.Inverse"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:foregroundGravity="center_vertical"
-                            android:visibility="gone" />
-                    </FrameLayout>
-
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start|center_vertical"
-                            android:text="@string/main_content_menu_hotdeal"
-                            style="@style/main_category" />
-
-                        <TextView
-                            android:id="@+id/main_txt_hotdeal_more"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end|center_vertical"
-                            style="@style/main_more"/>
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/hotdeal_recycler_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center" />
-                    </FrameLayout>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/border_layout_bottom"
-                    android:orientation="vertical"
-                    android:layout_marginVertical="15dp">
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="left|center_vertical"
-                            android:text="@string/main_content_menu_hotplace"
-                            style="@style/main_category" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="left|center_vertical"
-                            android:gravity="right">
-
-                            <TextView
-                                android:id="@+id/main_hotplace_pop"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/selector_hotplace_type"
-                                android:text="@string/main_content_menu_hotplace_pop"
-                                style="@style/main_hotplace"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/text_gray_nonSelect"
-                                android:textStyle="bold"
-                                android:text=" | "/>
-
-
-                            <TextView
-                                android:id="@+id/main_hotplace_distance"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/selector_hotplace_type"
-                                android:text="@string/main_content_menu_hotplace_distance"
-                                style="@style/main_hotplace"/>
-
-                        </LinearLayout>
-
-
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <ProgressBar
-                            android:layout_gravity="top"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <com.skt.tmaphot.activity.main.hotplace.ExpandableHeightGridView
-                            android:id="@+id/hotplace_gridview"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:isScrollContainer="false"
-                            android:verticalSpacing="10dp"
-                            android:numColumns="2" />
-                    </FrameLayout>
-
-                </LinearLayout>
             </LinearLayout>
+
         </LinearLayout>
 
 

@@ -69,6 +69,10 @@
 
         <activity android:name=".activity.MapTest" />
         <activity android:name=".activity.NewSyrupMainActivity2" />
+        <activity android:name=".activity.area.SelectionAreaActivity" />
+        <activity android:name=".activity.search.SearchActivity" />
+        <activity android:name=".activity.area.FoodAreaListActivity" />
+
 
         <meta-data
             android:name="io.fabric.ApiKey"

@@ -17,10 +17,13 @@
 
 
     <string name="action_settings">Settings</string>
-    <string name="tab_text_1">핫플레이스</string>
-    <string name="tab_text_2">SHOP</string>
-    <string name="tab_text_3">음식공유</string>
-    <string name="tab_text_4">배달365</string>
+    <string name="selectionarea_tab1">인기지역</string>
+    <string name="selectionarea_tab2">지역선택</string>
+
+    <string name="search_tab1">추천 검색어</string>
+    <string name="search_tab2">최근 검색어</string>
+    <string name="search_tab3">검색</string>
+
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_store_info">StoreInfoActivity</string>
 

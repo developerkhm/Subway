@@ -1,6 +1,7 @@
 package com.skt.tmaphot.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -16,14 +17,17 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.IRecyclerItem;
+import com.skt.tmaphot.activity.area.SelectionAreaActivity;
 import com.skt.tmaphot.activity.main.banner.RollingAdapter;
 import com.skt.tmaphot.activity.main.banner.RollingAutoManager;
 import com.skt.tmaphot.activity.main.banner.RollingIndicatorView;
@@ -35,6 +39,7 @@ import com.skt.tmaphot.activity.main.hotplace.HotplaceGridViewItem;
 import com.skt.tmaphot.activity.main.menu.MainMenuRecyclerViewDataAdapter;
 import com.skt.tmaphot.activity.main.menu.MainMenuRecyclerViewItem;
 import com.skt.tmaphot.activity.main.review.RealReviewRecyclerViewDataAdapter;
+import com.skt.tmaphot.activity.search.SearchActivity;
 import com.skt.tmaphot.fragment.MainFragment;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
@@ -42,6 +47,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewSyrupMainActivity2 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    public Toolbar toolbar;
+
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -54,11 +62,13 @@ public class NewSyrupMainActivity2 extends AppCompatActivity implements Navigati
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_syrup_main_new2);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setOnClickListener(onClickListenerArea);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -82,6 +92,19 @@ public class NewSyrupMainActivity2 extends AppCompatActivity implements Navigati
         fragmentTransaction.commit();
         
     }
+
+    View.OnClickListener onClickListenerArea = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+            startActivity(new Intent(NewSyrupMainActivity2.this, SelectionAreaActivity.class));
+
+            switch (view.getId()) {
+
+            }
+        }
+    };
+
 
     @Override
     public void onBackPressed() {
@@ -118,6 +141,7 @@ public class NewSyrupMainActivity2 extends AppCompatActivity implements Navigati
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        Log.d("TAD","appbar test");
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_map) {
@@ -125,6 +149,9 @@ public class NewSyrupMainActivity2 extends AppCompatActivity implements Navigati
         }
 
         if (id == R.id.action_alarm) {
+
+            startActivity(new Intent(NewSyrupMainActivity2.this, SearchActivity.class));
+
             return true;
         }
 
