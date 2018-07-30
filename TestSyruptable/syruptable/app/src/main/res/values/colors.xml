@@ -12,9 +12,10 @@
     <color name="colorTransparent">#000000</color>
 
 
-    <color name="text_gray_default">#8f8f93</color>
-    <color name="text_gray_bold">#333333</color>
-    <color name="text_gray_nonSelect">#aaaaaa</color>
+    <color name="text_gray_8f">#8f8f93</color>
+    <color name="text_gray_33">#333333</color>
+    <color name="text_gray_aa">#aaaaaa</color>
+    <color name="text_gray_d4">#d4d4d4</color>
     <color name="text_green_Select">#60c701</color>
     <color name="ratingbar_yellow">#fcc314</color>
 
@@ -23,7 +24,7 @@
 
     <color name="black_40filter">#66000000</color>
     <color name="black_55filter">#8C000000</color>
-    <color name="sale_bg">#fa3500</color>
+    <color name="orange">#fa3500</color>
 
 
     <color name="black_40">#66000000</color>

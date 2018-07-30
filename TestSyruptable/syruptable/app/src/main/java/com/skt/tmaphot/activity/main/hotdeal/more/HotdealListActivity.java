@@ -48,6 +48,7 @@ public class HotdealListActivity extends BaseActivity {
         recyclerView.setLayoutManager(layoutManager);
         adapter = new HotdealListRecyclerViewDataAdapter(this, hotdealListRecyclerViewItemList);
         recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);
 
         recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 

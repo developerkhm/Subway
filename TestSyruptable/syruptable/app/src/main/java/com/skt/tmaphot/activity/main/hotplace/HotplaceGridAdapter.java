@@ -50,7 +50,7 @@ public class HotplaceGridAdapter extends BaseAdapter {
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.hotplace_grid_item_image);
         TextView TitletextView = (TextView) convertView.findViewById(R.id.hotplace_grid_txt_title);
-        TextView MenutextView = (TextView) convertView.findViewById(R.id.hotplace_grid_txt_menu);
+        TextView MenutextView = (TextView) convertView.findViewById(R.id.hotplace_review);
         TextView DistancetextView = (TextView) convertView.findViewById(R.id.hotplace_grid_txt_distance);
 
 

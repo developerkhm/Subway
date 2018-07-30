@@ -63,7 +63,8 @@ public class MainMenuRecyclerViewDataAdapter extends RecyclerView.Adapter<MainMe
                     MainApplication.loadUrlImage(context , viewItem.getMenuImageUrl(), holder.getImageView());
                 }
                 else{
-                    MainApplication.loadImage(context, viewItem.getRes(), holder.getImageView());
+                    holder.getImageView().setBackgroundResource(viewItem.getRes());
+//                    MainApplication.loadImage(context, viewItem.getRes(), holder.getImageView());
                 }
             }
         }

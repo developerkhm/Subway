@@ -32,11 +32,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- banner -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="315dp">
 
-                <!-- banner -->
                 <android.support.v4.view.ViewPager
                     android:id="@+id/viewPager"
                     android:layout_width="match_parent"
@@ -60,21 +60,28 @@
                     app:cardCornerRadius="3dp"
                     app:cardUseCompatPadding="true">
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:background="@color/colorWhite">
 
                         <ImageView
+                            android:id="@+id/main_searchbar_icon"
                             android:layout_width="50.7dp"
                             android:layout_height="match_parent"
                             android:background="@color/text_green_Select" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-                    </LinearLayout>
+                            android:layout_marginLeft="3dp"
+                            android:layout_toRightOf="@+id/main_searchbar_icon"
+                            android:layout_centerVertical="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/main_searchbar"
+                            style="@style/main_searchbar"/>
+
+                    </RelativeLayout>
                 </android.support.v7.widget.CardView>
             </RelativeLayout>
 
@@ -82,13 +89,13 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="15dp">
 
                 <TextView
                     style="@style/main_category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
                     android:layout_alignBaseline="@+id/main_txt_coupon_more"
                     android:text="@string/main_content_menu_coupon" />
 
@@ -98,251 +105,175 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginLeft="16dp"
-                    android:paddingBottom="20dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:paddingTop="34dp" />
+                    android:padding="15dp" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/coupon_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_below="@+id/main_txt_coupon_more"
-                    android:layout_marginBottom="41dp"
-                    android:layout_gravity="center" />
-                <View
-                    android:layout_below="@+id/coupon_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="9dp"
-                    android:background="@color/layout_bottom_boder"/>
-
+                    android:layout_below="@+id/main_txt_coupon_more" />
             </RelativeLayout>
 
-            <LinearLayout
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="9dp"
+                android:background="@color/layout_bottom_boder" />
+
+            <!-- 메뉴 -->
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="15dp"
+                android:visibility="visible">
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp">
+                <TextView
+                    android:id="@+id/main_menu_title"
+                    style="@style/main_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/main_content_menu_food" />
 
-                    <TextView
-                        style="@style/main_category"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start|center_vertical"
-                        android:text="@string/main_content_menu_food" />
+                <ImageView
+                    android:id="@+id/menu_mene_more_img"
+                    android:layout_width="21dp"
+                    android:layout_height="12dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/img_main_menu_more" />
 
-                    <ImageView
-                        android:layout_width="21dp"
-                        android:layout_height="12dp"
-                        android:layout_gravity="end|center_vertical"
-                        android:contentDescription="TODO"
-                        android:src="@drawable/img_main_menu_more" />
-
-                </FrameLayout>
-
-                <!--menu-->
-                <LinearLayout
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/menu_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_below="@+id/main_menu_title" />
+            </RelativeLayout>
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/menu_recycler_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center" />
-
-                    <!--ImageView
-                        android:id="@+id/main_img_menu_1"
-                        android:layout_width="@dimen/activity_main_menu_image_width"
-                        android:layout_height="@dimen/activity_main_menu_image_height"
-                        android:contentDescription="TODO" />
-
-                    <ImageView
-                        android:id="@+id/main_img_menu_2"
-
-                        android:layout_width="@dimen/activity_main_menu_image_width"
-                        android:layout_height="@dimen/activity_main_menu_image_height"
-                        android:contentDescription="TODO" />
-
-                    <ImageView
-                        android:id="@+id/main_img_menu_3"
-                        android:layout_width="@dimen/activity_main_menu_image_width"
-                        android:layout_height="@dimen/activity_main_menu_image_height"
-                        android:contentDescription="TODO" />
-
-                    <ImageView
-                        android:id="@+id/main_img_menu_4"
-
-                        android:layout_width="@dimen/activity_main_menu_image_width"
-                        android:layout_height="@dimen/activity_main_menu_image_height" /-->
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
+            <!-- 리얼후기 -->
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border_layout_bottom"
-                android:orientation="vertical"
-                android:paddingBottom="40dp">
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="15dp">
 
+                <TextView
+                    style="@style/main_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/main_txt_review_more"
+                    android:text="@string/main_content_menu_review" />
 
-                <FrameLayout
+                <TextView
+                    android:id="@+id/main_txt_review_more"
+                    style="@style/main_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:padding="15dp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/review_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp">
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/main_txt_review_more" />
+            </RelativeLayout>
 
-                    <TextView
-                        style="@style/main_category"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start|center_vertical"
-                        android:text="@string/main_content_menu_review" />
-
-                    <TextView
-                        android:id="@+id/main_txt_review_more"
-                        style="@style/main_more"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end|center_vertical" />
-
-
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/review_recycler_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center" />
-
-                    <ProgressBar
-                        android:id="@+id/review_recycler_view_progressbar"
-                        style="@android:style/Widget.Holo.Light.ProgressBar.Large.Inverse"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:foregroundGravity="center_vertical"
-                        android:visibility="gone" />
-                </FrameLayout>
-
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp">
-
-                    <TextView
-                        style="@style/main_category"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start|center_vertical"
-                        android:text="@string/main_content_menu_hotdeal" />
-
-                    <TextView
-                        android:id="@+id/main_txt_hotdeal_more"
-                        style="@style/main_more"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end|center_vertical" />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/hotdeal_recycler_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center" />
-                </FrameLayout>
-
-
-            </LinearLayout>
-
-            <LinearLayout
+            <!-- 주변 추천 맛집-->
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="15dp"
-                android:background="@drawable/border_layout_bottom"
-                android:orientation="vertical">
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="15dp">
 
-                <FrameLayout
+                <TextView
+                    style="@style/main_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/main_txt_hotdeal_more"
+                    android:text="@string/main_content_menu_hotdeal" />
+
+                <TextView
+                    android:id="@+id/main_txt_hotdeal_more"
+                    style="@style/main_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:padding="15dp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/hotdeal_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp">
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/main_txt_hotdeal_more" />
+            </RelativeLayout>
 
-                    <TextView
-                        style="@style/main_category"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left|center_vertical"
-                        android:text="@string/main_content_menu_hotplace" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="9dp"
+                android:background="@color/layout_bottom_boder" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left|center_vertical"
-                        android:gravity="right">
+            <!-- 핫플레이스 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
 
-                        <TextView
-                            android:id="@+id/main_hotplace_pop"
-                            style="@style/main_hotplace"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/main_content_menu_hotplace_pop"
-                            android:textColor="@color/selector_hotplace_type" />
+                <TextView
+                    style="@style/main_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/main_hotplace_distance"
+                    android:layout_marginLeft="15dp"
+                    android:text="@string/main_content_menu_hotplace" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" | "
-                            android:textColor="@color/text_gray_nonSelect"
-                            android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/main_hotplace_distance"
+                    style="@style/main_hotplace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:padding="15dp"
+                    android:text="@string/main_content_menu_hotplace_distance"
+                    android:textColor="@color/selector_hotplace_type" />
 
+                <TextView
+                    android:id="@+id/main_hotplace_divid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/main_hotplace_distance"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp"
+                    android:text="|"
+                    android:textColor="@color/text_gray_aa"
+                    android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/main_hotplace_distance"
-                            style="@style/main_hotplace"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/main_content_menu_hotplace_distance"
-                            android:textColor="@color/selector_hotplace_type" />
+                <TextView
+                    android:id="@+id/main_hotplace_pop"
+                    style="@style/main_hotplace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/main_hotplace_divid"
+                    android:padding="15dp"
+                    android:text="@string/main_content_menu_hotplace_pop"
+                    android:textColor="@color/selector_hotplace_type" />
 
-                    </LinearLayout>
-
-
-                </FrameLayout>
-
-                <FrameLayout
+                <com.skt.tmaphot.activity.main.hotplace.ExpandableHeightGridView
+                    android:id="@+id/hotplace_gridview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/main_hotplace_pop"
+                    android:layout_marginHorizontal="15dp"
+                    android:horizontalSpacing="10dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="2"
+                    android:verticalSpacing="15dp" />
+            </RelativeLayout>
 
-                    <ProgressBar
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top" />
-
-                    <com.skt.tmaphot.activity.main.hotplace.ExpandableHeightGridView
-                        android:id="@+id/hotplace_gridview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:isScrollContainer="false"
-                        android:numColumns="2"
-                        android:verticalSpacing="10dp" />
-                </FrameLayout>
-
-            </LinearLayout>
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="9dp"
+                android:background="@color/layout_bottom_boder" />
         </LinearLayout>
-
-
     </android.support.v4.widget.NestedScrollView>
-
 </LinearLayout>

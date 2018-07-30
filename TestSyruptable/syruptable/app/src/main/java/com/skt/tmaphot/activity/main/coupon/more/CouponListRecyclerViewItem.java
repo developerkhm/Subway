@@ -2,56 +2,54 @@ package com.skt.tmaphot.activity.main.coupon.more;
 
 public class CouponListRecyclerViewItem {
     private String url;
-    private String title;
+    private String id;
+    private String name;
     private String menu;
-    private String distance;
+    private String type;
     private String sale;
+    private String preprice;
+    private String price;
 
-    public CouponListRecyclerViewItem(String url, String title, String menu, String distance, String sale) {
+    public CouponListRecyclerViewItem(String url, String id, String name, String menu, String type, String sale, String preprice, String price) {
         this.url = url;
-        this.title = title;
+        this.id = id;
+        this.name = name;
         this.menu = menu;
-        this.distance = distance;
+        this.type = type;
         this.sale = sale;
+        this.preprice = preprice;
+        this.price = price;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public String getId() {
+        return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public String getName() {
+        return name;
     }
 
     public String getMenu() {
         return menu;
     }
 
-    public void setMenu(String menu) {
-        this.menu = menu;
-    }
-
-    public String getDistance() {
-        return distance;
-    }
-
-    public void setDistance(String distance) {
-        this.distance = distance;
+    public String getType() {
+        return type;
     }
 
     public String getSale() {
         return sale;
     }
 
-    public void setSale(String sale) {
-        this.sale = sale;
+    public String getPreprice() {
+        return preprice;
+    }
+
+    public String getPrice() {
+        return price;
     }
 }

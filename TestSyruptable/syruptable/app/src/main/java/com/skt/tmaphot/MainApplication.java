@@ -64,7 +64,7 @@ public class MainApplication extends Application {
                         return false;
                     }
                 })
-                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop())
+                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
                 .into(view);
     }
 

@@ -236,7 +236,7 @@ public class StoreInfoActivity extends BaseActivity {
             super(itemView);
 
             if (itemView != null) {
-                mImgReview = (ImageView) itemView.findViewById(R.id.coupon_recyler_item_image);
+                mImgReview = (ImageView) itemView.findViewById(R.id.coupon_image);
                 itemView.setOnClickListener(this);
             }
         }

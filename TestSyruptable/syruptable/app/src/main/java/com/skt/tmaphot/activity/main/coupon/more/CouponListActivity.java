@@ -57,6 +57,7 @@ public class CouponListActivity extends BaseActivity {
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new SpacesItemDecoration(20));
+        recyclerView.setHasFixedSize(true);
 
         recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -89,36 +90,13 @@ public class CouponListActivity extends BaseActivity {
 
 
         couponListRecyclerViewItemList.add(new CouponListRecyclerViewItem(
-                "https://png.pngtree.com/element_origin_min_pic/16/10/25/ee6d5e601c9d19fc98dc4add819b9c77.jpg",
-                "황제짜장", "수제피자", "200m", "50%"));
+                "http://image.sportsseoul.com/2018/02/23/news/20180223095152_(7).jpg",
+                "id", "전주순대국", "뽁음순대", "한식","30","50,000원","30,000원"));
 
         couponListRecyclerViewItemList.add(new CouponListRecyclerViewItem(
-                "http://img.kormedi.com/news/article/__icsFiles/artimage/2015/05/23/c_km601/432212_540.jpg",
-                "황제짜장", "수제피자", "200m", "50%"));
-        couponListRecyclerViewItemList.add(new CouponListRecyclerViewItem(
-                "http://img.kormedi.com/news/article/__icsFiles/artimage/2015/05/23/c_km601/432212_540.jpg",
-                "황제짜장", "수제피자", "200m", "50%"));
-        couponListRecyclerViewItemList.add(new CouponListRecyclerViewItem(
-                "http://img.kormedi.com/news/article/__icsFiles/artimage/2015/05/23/c_km601/432212_540.jpg",
-                "황제짜장", "수제피자", "200m", "50%"));
-        couponListRecyclerViewItemList.add(new CouponListRecyclerViewItem(
-                "http://img.kormedi.com/news/article/__icsFiles/artimage/2015/05/23/c_km601/432212_540.jpg",
-                "황제짜장", "수제피자", "200m", "50%"));
-        couponListRecyclerViewItemList.add(new CouponListRecyclerViewItem(
-                "http://img.kormedi.com/news/article/__icsFiles/artimage/2015/05/23/c_km601/432212_540.jpg",
-                "황제짜장", "수제피자", "200m", "50%"));
-        couponListRecyclerViewItemList.add(new CouponListRecyclerViewItem(
-                "http://img.kormedi.com/news/article/__icsFiles/artimage/2015/05/23/c_km601/432212_540.jpg",
-                "황제짜장", "수제피자", "200m", "50%"));
-        couponListRecyclerViewItemList.add(new CouponListRecyclerViewItem(
-                "http://img.kormedi.com/news/article/__icsFiles/artimage/2015/05/23/c_km601/432212_540.jpg",
-                "황제짜장", "수제피자", "200m", "50%"));
-        couponListRecyclerViewItemList.add(new CouponListRecyclerViewItem(
-                "http://img.kormedi.com/news/article/__icsFiles/artimage/2015/05/23/c_km601/432212_540.jpg",
-                "황제짜장", "수제피자", "200m", "50%"));
-        couponListRecyclerViewItemList.add(new CouponListRecyclerViewItem(
-                "http://img.kormedi.com/news/article/__icsFiles/artimage/2015/05/23/c_km601/432212_540.jpg",
-                "황제짜장", "수제피자", "200m", "50%"));
+                "http://image.sportsseoul.com/2018/02/23/news/20180223095152_(7).jpg",
+                "id", "전주순대국", "뽁음순대", "한식","30","50,000원","30,000원"));
+
     }
 
 

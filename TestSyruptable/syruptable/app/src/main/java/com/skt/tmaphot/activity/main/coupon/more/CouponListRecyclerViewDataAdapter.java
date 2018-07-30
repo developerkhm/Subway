@@ -42,7 +42,13 @@ public class CouponListRecyclerViewDataAdapter extends RecyclerView.Adapter<Coup
 
             if(viewItem != null) {
                 // Set car item title.
-                MainApplication.loadUrlImage(context , viewItem.getUrl(), holder.getImageView());
+                MainApplication.loadUrlImage(context , viewItem.getUrl(), holder.imageview);
+                holder.nameText.setText(viewItem.getName());
+                holder.menuText.setText(viewItem.getMenu());
+                holder.priceText.setText(viewItem.getPrice());
+                holder.prepriceText.setText(viewItem.getPreprice());
+                holder.typeText.setText(viewItem.getType());
+                holder.saleText.setText(viewItem.getSale() +"%");
             }
         }
     }

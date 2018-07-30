@@ -141,7 +141,7 @@ public class MainFragment extends Fragment {
         initRecylerViewSet(hotdealRecyclerView, true);
 
         // 메뉴
-        initRecylerViewSet(menuRecyclerView, true);
+        initRecylerViewSet(menuRecyclerView, false);
 
         // 핫플레이스
         initHotplaceSet();
@@ -151,7 +151,6 @@ public class MainFragment extends Fragment {
 
 
     private void initRecylerViewSet(final RecyclerView recyclerView, final boolean init) {
-
 
         getActivity().runOnUiThread(
 
@@ -233,7 +232,7 @@ public class MainFragment extends Fragment {
                         // Scroll RecyclerView a little to make later scroll take effect.
                         recyclerView.scrollToPosition(0);
                         recyclerView.setNestedScrollingEnabled(false);
-
+                        recyclerView.setHasFixedSize(true);
 
 //                        if (onScrollListenerRecyclerView != null) {
 //                            Log.d("TOA", "onScrollListenerRecyclerView remove");
@@ -417,12 +416,10 @@ public class MainFragment extends Fragment {
 
                         if (id == R.id.hotdeal_recycler_view) {
                             Log.d("FAB", "hotdeal 100 itme add : " + i);
-                            newViewItem = new HotdealRecyclerViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                            newViewItem = new HotdealRecyclerViewItem("http://461cfe6bf17600ff0e6d-db982937f7c48520d2ef90d4bc24f696.r50.cf1.rackcdn.com/lps/assets/u/sspg_food4-169-.jpg",
                                     "황제짜장", "수제피자", "200m", "50%");
                         }
-
                     }
-
 
                     if (food_type == 0) {
 
@@ -823,7 +820,7 @@ public class MainFragment extends Fragment {
 
             Log.d("ABC", "click");
 
-            view.setSelected(!view.isSelected());
+//            view.setSelected(!view.isSelected());
 //            view.setFocusable(!view.isSelected());
             switch (view.getId()) {
                 case R.id.main_hotplace_pop:
@@ -833,6 +830,7 @@ public class MainFragment extends Fragment {
 
                     ishotplaceModeDistance = false;
                     reloadHotPlace(ishotplaceModeDistance);
+                    hotplaceGridview.setFocusable(true);
                     break;
                 case R.id.main_hotplace_distance:
 
@@ -841,6 +839,7 @@ public class MainFragment extends Fragment {
 
                     ishotplaceModeDistance = true;
                     reloadHotPlace(ishotplaceModeDistance);
+                    hotplaceGridview.setFocusable(true);
                     break;
             }
         }

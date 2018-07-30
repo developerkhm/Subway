@@ -1,25 +1,17 @@
 package com.skt.tmaphot.activity.main.coupon;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Outline;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewOutlineProvider;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.main.store.StoreInfoActivity;
-import com.skt.tmaphot.activity.main.store.StoreInfoImageViewActivity;
 
 public class CouponRecyclerViewHolder extends RecyclerView.ViewHolder {
 
@@ -36,7 +28,7 @@ public class CouponRecyclerViewHolder extends RecyclerView.ViewHolder {
         if (itemView != null) {
 
             mImg = (ImageView) itemView.findViewById(R.id.main_coupon_recyler_item_image);
-            mTextSale = (TextView)itemView.findViewById(R.id.main_coupon_recyler_item_txt_sale);
+            mTextSale = (TextView)itemView.findViewById(R.id.coupon_sale);
             mTitleText = (TextView)itemView.findViewById(R.id.main_coupon_recyler_item_txt_title);
             mMenueText = (TextView)itemView.findViewById(R.id.main_coupon_recyler_item_txt_menu);
             mDistanceText = (TextView)itemView.findViewById(R.id.main_coupon_recyler_item_txt_distance);

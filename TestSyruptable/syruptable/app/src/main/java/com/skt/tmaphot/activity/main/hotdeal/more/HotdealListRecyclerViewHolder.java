@@ -15,7 +15,7 @@ public class HotdealListRecyclerViewHolder extends RecyclerView.ViewHolder {
 
         if(itemView != null)
         {
-            mImgReview = (ImageView) itemView.findViewById(R.id.hotdeal_recyler_item_image);
+            mImgReview = (ImageView) itemView.findViewById(R.id.hotdeal_image);
         }
     }
 
