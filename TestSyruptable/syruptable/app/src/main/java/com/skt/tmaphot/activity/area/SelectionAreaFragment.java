@@ -2,6 +2,7 @@ package com.skt.tmaphot.activity.area;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,16 +29,14 @@ public class SelectionAreaFragment extends Fragment {
 
 
     //구
-    private RecyclerView listReviewRecyclerView;
+    private RecyclerView listRecyclerView;
     private ListAreaRecyclerViewAdapter listRecyclerViewAdapter;
     private List<ListAreaItem>[] listItems;
 
 
-
-
     private View slectView;
 
-    private Fragment fagmenttt = PopularityAreaTEST.newInstance(1);
+    private Fragment fagmenttt = TempHotplaceFragment.newInstance(1);
 
     public SelectionAreaFragment() {
     }
@@ -103,10 +102,42 @@ public class SelectionAreaFragment extends Fragment {
         listItems[1].add(new ListAreaItem("1","구리/남양주"));
         listItems[1].add(new ListAreaItem("1","가평/양평"));
 
+        listItems[2] = new ArrayList<ListAreaItem>();
+        listItems[2].add(new ListAreaItem("1","전체"));
+        listItems[2].add(new ListAreaItem("1","기장"));
+        listItems[2].add(new ListAreaItem("1","금정구(부산대)"));
+        listItems[2].add(new ListAreaItem("1","해운대,송정"));
+        listItems[2].add(new ListAreaItem("1","동래구(온천장,명륜,사직)"));
+        listItems[2].add(new ListAreaItem("1","연제구(연산R,토곡,시청)"));
+        listItems[2].add(new ListAreaItem("1","북구(덕천로타리,구포)"));
+        listItems[2].add(new ListAreaItem("1","남구(경성대,용호동)"));
+        listItems[2].add(new ListAreaItem("1","광안리(민락,수영로타리)"));
+        listItems[2].add(new ListAreaItem("1","부산진구(서면,부전,양정)"));
+        listItems[2].add(new ListAreaItem("1","동구(부산역)"));
+        listItems[2].add(new ListAreaItem("1","중구(남포동)"));
+        listItems[2].add(new ListAreaItem("1","영도"));
+        listItems[2].add(new ListAreaItem("1","서구(송도)"));
+        listItems[2].add(new ListAreaItem("1","사상구(사상역)"));
+        listItems[2].add(new ListAreaItem("1","사하구(괴정,하단오거리,동아대)"));
+        listItems[2].add(new ListAreaItem("1","강서구(명지)"));
+
+        listItems[3] = new ArrayList<ListAreaItem>();
+        listItems[3].add(new ListAreaItem("1","전체"));
+        listItems[3].add(new ListAreaItem("1","동해/삼척/태백"));
+        listItems[3].add(new ListAreaItem("1","강릉/평창/정선/영월"));
+        listItems[3].add(new ListAreaItem("1","원주/횡성/홍천"));
+        listItems[3].add(new ListAreaItem("1","속초/양양/고성"));
+        listItems[3].add(new ListAreaItem("1","춘천/인제/철원/화천/양구"));
+
+        listItems[4] = new ArrayList<ListAreaItem>();
+        listItems[4].add(new ListAreaItem("1","전체"));
+        listItems[4].add(new ListAreaItem("1","서구/계양/부평"));
+        listItems[4].add(new ListAreaItem("1","중구/동구/남구/강화"));
+        listItems[4].add(new ListAreaItem("1","남동/연수/옹진"));
 
 
         areaRecyclerView = (RecyclerView)rootView.findViewById(R.id.selectionarea_selection_area_recyler);
-        listReviewRecyclerView = (RecyclerView)rootView.findViewById(R.id.selectionarea_selection_list_recycler);
+        listRecyclerView = (RecyclerView)rootView.findViewById(R.id.selectionarea_selection_list_recycler);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -121,26 +152,38 @@ public class SelectionAreaFragment extends Fragment {
 
         //초기값
 
-        areaRecyclerView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(areaRecyclerView.findViewHolderForAdapterPosition(0).itemView != null){
-                    areaRecyclerView.findViewHolderForAdapterPosition(0).itemView.performClick();
-                }
-            }
-        }, 1);
+//        areaRecyclerView.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                if(areaRecyclerView.findViewHolderForAdapterPosition(0).itemView != null){
+//                    areaRecyclerView.findViewHolderForAdapterPosition(0).itemView.performClick();
+//                }
+//            }
+//        }, 1);
 //        areaReviewRecyclerView.findViewHolderForAdapterPosition(0).itemView.findViewById(R.id.selectionarea_selection_area_txt).performClick();
 
 
-        listReviewRecyclerView.setLayoutManager(layoutManager2);
+        listRecyclerView.setLayoutManager(layoutManager2);
         listRecyclerViewAdapter = new ListAreaRecyclerViewAdapter(listItems[0]);
-        listReviewRecyclerView.setAdapter(listRecyclerViewAdapter);
-        listReviewRecyclerView.setHasFixedSize(true);
+        listRecyclerView.setAdapter(listRecyclerViewAdapter);
+        listRecyclerView.setHasFixedSize(true);
 //        areaReviewRecyclerView.setFocusable(false);
+
+
 
         return rootView;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                areaRecyclerView.findViewHolderForAdapterPosition(0).itemView.performClick();
+            }
+        }, 1);
+    }
 
     private class AreaItem {
         private String id;
@@ -206,18 +249,17 @@ public class SelectionAreaFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    if(slectView != null && slectView != v)
+                    if(slectView != null && slectView != v) {
                         slectView.setSelected(false);
-
-
-
-                    v.setSelected(!v.isSelected());
+                    }
+                    v.setSelected(true);
                     slectView = v;
 
                     listRecyclerViewAdapter = new ListAreaRecyclerViewAdapter(listItems[position]);
-                    listReviewRecyclerView.setAdapter(listRecyclerViewAdapter);
+                    listRecyclerView.setAdapter(listRecyclerViewAdapter);
                     listRecyclerViewAdapter.notifyDataSetChanged();
 
+//                    listRecyclerView.findViewHolderForAdapterPosition(position).itemView.performClick();
                 }
             });
         }
@@ -291,14 +333,11 @@ public class SelectionAreaFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    if(slectView != null && slectView != v)
+                    if(slectView != null && slectView != v){
                         slectView.setSelected(false);
-
-
-
-                    v.setSelected(!v.isSelected());
+                    }
+                    v.setSelected(true);
                     slectView = v;
-
                 }
             });
         }

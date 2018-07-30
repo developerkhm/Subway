@@ -1,15 +1,48 @@
 package com.skt.tmaphot.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.activity.area.SelectionAreaActivity;
+import com.skt.tmaphot.location.GPSData;
 
 public class BaseActivity extends AppCompatActivity {
 
-    public TextView locationTextview;
+    protected TextView locationAddress;
+    protected Toolbar toolbar;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        locationAddress = (TextView) findViewById(R.id.appbar_location_txt);
+        if (locationAddress != null) {
+            locationAddress.setText(GPSData.LOCATION_ADDRESS);
+            Log.d("BASE", "GPS : " + GPSData.LOCATION_ADDRESS);
+        }
+
+        if (toolbar != null)
+            toolbar.setOnClickListener(onClickListenerLocationAddres);
+    }
+
+    private View.OnClickListener onClickListenerLocationAddres = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+            startActivity(new Intent(BaseActivity.this, SelectionAreaActivity.class));
+
+            switch (view.getId()) {
+
+            }
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -33,26 +66,22 @@ public class BaseActivity extends AppCompatActivity {
         if (id == R.id.action_alarm) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
 }
 

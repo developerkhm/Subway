@@ -45,16 +45,15 @@ public class RealReviewActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_realreview_layout);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
+
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
 
-        locationTextview = (TextView)findViewById(R.id.appbar_location_txt);
-        locationTextview.setText(MainApplication.LOCATION_ADDRESS);
         gridview = (GridView) findViewById(R.id.simpleGridView);
 
         size = new Point();

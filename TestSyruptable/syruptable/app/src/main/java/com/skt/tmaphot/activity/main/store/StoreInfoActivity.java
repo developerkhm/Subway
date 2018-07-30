@@ -2,6 +2,8 @@ package com.skt.tmaphot.activity.main.store;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,7 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.chrisbanes.photoview.PhotoView;
-import com.github.chrisbanes.photoview.PhotoViewAttacher;
 import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.BaseActivity;
@@ -66,16 +67,12 @@ public class StoreInfoActivity extends BaseActivity {
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
 
-
-        ///////////////////////////////////////////////////////
         // 임시 메인 이미지 큰거만 뽑음
         setData();
 
         mSectionsPagerAdapter = new StoreInfoActivity.SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (StoreInfoImageViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
-
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
         {
             @Override
@@ -104,8 +101,15 @@ public class StoreInfoActivity extends BaseActivity {
 
 
         imageCounttxt = (TextView)findViewById(R.id.storeinfo_image_count_txt);
-        /////////////////////////////////////////////////////////////////////////////
 
+//        int greenColor = getResources().getColor(R.color.black_40filter);
+//        String color = "#"+Integer.toHexString(greenColor);
+//
+//        ImageView tt= (ImageView)findViewById(R.id.storeinfo_image);
+//
+//
+//        tt.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_OVER);
+        /////////////////////////////////////////////////////////////////////////////
 
 
         getIninData();
@@ -154,8 +158,8 @@ public class StoreInfoActivity extends BaseActivity {
         public PlaceholderFragment() {
         }
 
-        public static StoreInfoImageViewActivity.PlaceholderFragment newInstance(int sectionNumber, String sectionUrl) {
-            StoreInfoImageViewActivity.PlaceholderFragment fragment = new StoreInfoImageViewActivity.PlaceholderFragment();
+        public static StoreInfoActivity.PlaceholderFragment newInstance(int sectionNumber, String sectionUrl) {
+            StoreInfoActivity.PlaceholderFragment fragment = new StoreInfoActivity.PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             args.putString(ARG_SECTION_URL, sectionUrl);
@@ -168,9 +172,10 @@ public class StoreInfoActivity extends BaseActivity {
                                  Bundle savedInstanceState) {
 
             View rootView = inflater.inflate(R.layout.storeinfo_image_fragment, container, false);
-            PhotoView imageView = (PhotoView) rootView.findViewById(R.id.photo_view);
-            PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
-            mAttacher.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            ImageView imageView = (ImageView) rootView.findViewById(R.id.image_view);
+
+//            PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
+//            mAttacher.setScaleType(ImageView.ScaleType.FIT_CENTER);
 //            mAttacher.setMinimumScale(1f);
             MainApplication.loadUrlImage(getActivity(), getArguments().getString(ARG_SECTION_URL), imageView);
 
@@ -200,7 +205,7 @@ public class StoreInfoActivity extends BaseActivity {
         public Fragment getItem(int position) {
 
 //          return PlaceholderFragment.newInstance(position + 1);
-            return StoreInfoImageViewActivity.PlaceholderFragment.newInstance(position, imageUrlList.get(position));
+            return PlaceholderFragment.newInstance(position, imageUrlList.get(position));
         }
 
         @Override

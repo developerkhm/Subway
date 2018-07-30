@@ -90,8 +90,8 @@ public class SplashActivity extends AppCompatActivity {
 //                Intent intent = new Intent(SplashActivity.this, SyrupMainActivity.class);
 //                Intent intent = new Intent(SplashActivity.this, NewSyrupMainActivity.class);
                 Intent intent = new Intent(SplashActivity.this, NewSyrupMainActivity2.class);
-                intent.putExtra("latitude", GPSData.latitude);
-                intent.putExtra("longitude",GPSData.longitude);
+                intent.putExtra("latitude", GPSData.LATITUDE);
+                intent.putExtra("longitude",GPSData.LONGITUDE);
                 startActivity(intent);
                 finish();
             }
@@ -148,8 +148,8 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void logPrint(GPSData gps) {
-        GPSData.latitude = gps.getLatitude();
-        GPSData.longitude = gps.getLongitude();
+        GPSData.LATITUDE = gps.getLatitude();
+        GPSData.LONGITUDE = gps.getLongitude();
     }
 
 

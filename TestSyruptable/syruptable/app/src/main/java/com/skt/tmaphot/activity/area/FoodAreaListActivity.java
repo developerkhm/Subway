@@ -217,9 +217,9 @@ public class FoodAreaListActivity extends BaseActivity {
 
             //이렇게 아이디 등 값을 가져와서 전달한다.
             //TextView tv = (TextView)view.findViewById(R.id.hotplace_grid_txt_title);
-            Intent intent = new Intent(FoodAreaListActivity.this, StoreInfoActivity.class);
-            Bundle bundle = new Bundle();
-            startActivity(intent);
+//            Intent intent = new Intent(FoodAreaListActivity.this, StoreInfoActivity.class);
+//            Bundle bundle = new Bundle();
+//            startActivity(intent);
         }
     };
 }

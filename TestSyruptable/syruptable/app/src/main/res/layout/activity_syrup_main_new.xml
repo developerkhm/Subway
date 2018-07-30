@@ -76,7 +76,7 @@
                         </LinearLayout>
 
                         <TextView
-                            android:id="@+id/main_text_gps"
+                            android:id="@+id/main_gps_address"
                             android:layout_width="match_parent"
                             android:layout_height="31dp"
                             android:gravity="center"

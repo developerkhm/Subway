@@ -1,11 +1,7 @@
 package com.skt.tmaphot.common;
 
-import android.content.Context;
-import android.telephony.TelephonyManager;
 import android.webkit.JavascriptInterface;
-import android.webkit.WebView;
 
-import com.skt.tmaphot.MainActivity;
 import com.skt.tmaphot.location.GPSData;
 
 /**
@@ -19,12 +15,12 @@ public class AndroidBridge {
 
     @JavascriptInterface
     public double getLatitudeValue() {
-        return GPSData.latitude;
+        return GPSData.LATITUDE;
     }
 
     @JavascriptInterface
     public double getLongitudeValue() {
-        return GPSData.longitude;
+        return GPSData.LONGITUDE;
     }
 
     @JavascriptInterface

@@ -121,8 +121,8 @@ public class StoreInfoImageViewActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
 
-            View rootView = inflater.inflate(R.layout.storeinfo_image_fragment, container, false);
-            PhotoView imageView = (PhotoView) rootView.findViewById(R.id.photo_view);
+            View rootView = inflater.inflate(R.layout.storeinfo_image_zoom_fragment, container, false);
+            PhotoView imageView = (PhotoView) rootView.findViewById(R.id.zoom_photoview);
             PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
             mAttacher.setScaleType(ImageView.ScaleType.FIT_CENTER);
 //            mAttacher.setMinimumScale(1f);

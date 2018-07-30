@@ -9,42 +9,21 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.skt.tmaphot.R;
-import com.skt.tmaphot.activity.IRecyclerItem;
 import com.skt.tmaphot.activity.area.SelectionAreaActivity;
-import com.skt.tmaphot.activity.main.banner.RollingAdapter;
-import com.skt.tmaphot.activity.main.banner.RollingAutoManager;
-import com.skt.tmaphot.activity.main.banner.RollingIndicatorView;
-import com.skt.tmaphot.activity.main.coupon.CouponRecyclerViewDataAdapter;
-import com.skt.tmaphot.activity.main.hotdeal.HotdealRecyclerViewDataAdapter;
-import com.skt.tmaphot.activity.main.hotplace.ExpandableHeightGridView;
-import com.skt.tmaphot.activity.main.hotplace.HotplaceGridAdapter;
-import com.skt.tmaphot.activity.main.hotplace.HotplaceGridViewItem;
-import com.skt.tmaphot.activity.main.menu.MainMenuRecyclerViewDataAdapter;
-import com.skt.tmaphot.activity.main.menu.MainMenuRecyclerViewItem;
-import com.skt.tmaphot.activity.main.review.RealReviewRecyclerViewDataAdapter;
 import com.skt.tmaphot.activity.search.SearchActivity;
 import com.skt.tmaphot.fragment.MainFragment;
 import com.tsengvn.typekit.TypekitContextWrapper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class NewSyrupMainActivity2 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -63,7 +42,7 @@ public class NewSyrupMainActivity2 extends AppCompatActivity implements Navigati
 
         setContentView(R.layout.activity_syrup_main_new2);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setOnClickListener(onClickListenerArea);
+        toolbar.setOnClickListener(onClickListenerLocationAddres);
 
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -93,7 +72,7 @@ public class NewSyrupMainActivity2 extends AppCompatActivity implements Navigati
         
     }
 
-    View.OnClickListener onClickListenerArea = new View.OnClickListener() {
+    View.OnClickListener onClickListenerLocationAddres = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
 

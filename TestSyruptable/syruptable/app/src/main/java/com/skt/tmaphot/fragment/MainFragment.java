@@ -1,36 +1,27 @@
 package com.skt.tmaphot.fragment;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.IRecyclerItem;
 import com.skt.tmaphot.activity.IRecyclerViewDataAdapter;
-import com.skt.tmaphot.activity.NewSyrupMainActivity2;
 import com.skt.tmaphot.activity.area.SelectionAreaActivity;
 import com.skt.tmaphot.activity.main.banner.RollingAdapter;
 import com.skt.tmaphot.activity.main.banner.RollingAutoManager;
@@ -53,13 +44,14 @@ import com.skt.tmaphot.activity.main.review.RealReviewRecyclerViewItem;
 import com.skt.tmaphot.activity.main.review.more.RealReviewActivity;
 import com.skt.tmaphot.activity.main.store.StoreInfoActivity;
 import com.skt.tmaphot.common.CommonUtil;
+import com.skt.tmaphot.location.GPSData;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class MainFragment extends Fragment {
+public class MainFragment extends BaseFragment {
 
     public int MESSAGE_REVIEW_COUPON_NOTIFY = 1004;
     public int MESSAGE_HOTPLACE_NOTIFY = 1004;
@@ -107,7 +99,7 @@ public class MainFragment extends Fragment {
 //    private ImageView searchbarImgView;
     //더보기
     private TextView reviewMoreTextView, couponMoreTextview, hotdealMoreTextview;
-    private View view;
+
 
     private CustomRecyclerViewOnScrollListener onScrollListenerRecyclerView;
 
@@ -119,14 +111,10 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-
-        view = inflater.inflate(R.layout.fragment_main_layout, container, false);
+        rootView = inflater.inflate(R.layout.fragment_main_layout, container, false);
 
         //초기 View 세팅
         initView();
-
-        //GPS 주소변환// 임시
-        initGPSTransferAddress();
 
         //banner
         initEventBannerSet();
@@ -146,7 +134,7 @@ public class MainFragment extends Fragment {
         // 핫플레이스
         initHotplaceSet();
 
-        return view;
+        return rootView;
     }
 
 
@@ -458,7 +446,7 @@ public class MainFragment extends Fragment {
                 newItemIndex = iRecyclerItems.size() - 1;
                 Log.d("FAB", "newItemIndex size : " + "[" + newItemIndex + "]");
 
-                view.post(new CustomRunnable(iRecyclerViewDataAdapter) {
+                rootView.post(new CustomRunnable(iRecyclerViewDataAdapter) {
 
                     @Override
                     public void run() {
@@ -547,16 +535,10 @@ public class MainFragment extends Fragment {
                 }
 
                 String tt = addresses.get(0).getThoroughfare();     //동
-                TextView mGPSTextView = (TextView) view.findViewById(R.id.main_text_gps);
-                MainApplication.LOCATION_ADDRESS = t + " " + tt + " ▼";
-                mGPSTextView.setText(MainApplication.LOCATION_ADDRESS);
-                mGPSTextView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Log.d("TAD", "click");
-                        startActivity(new Intent(getActivity(), SelectionAreaActivity.class));
-                    }
-                });
+
+                GPSData.LOCATION_ADDRESS = t + " " + tt + " ▼";
+                locationAddress.setText(GPSData.LOCATION_ADDRESS);
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -564,7 +546,7 @@ public class MainFragment extends Fragment {
     }
 
     private void initView() {
-        nestedScrollView = (NestedScrollView) view.findViewById(R.id.main_nestedscrollview);
+        nestedScrollView = (NestedScrollView) rootView.findViewById(R.id.main_nestedscrollview);
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
@@ -589,39 +571,39 @@ public class MainFragment extends Fragment {
 
         // 아직 할지 말지 모름 여기는 text 서버에서 받아오는건지.. 임시
 //        rollingTextView = (TextView) view.findViewById(R.id.main_text_banner);
-        rollingIndicatorView = (RollingIndicatorView) view.findViewById(R.id.indicator_view);
-        rollingViewPager = (ViewPager) view.findViewById(R.id.viewPager);
+        rollingIndicatorView = (RollingIndicatorView) rootView.findViewById(R.id.indicator_view);
+        rollingViewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
 
 //        searchbarImgView = (ImageView) view.findViewById(R.id.main_img_searchbar);
 ////        searchbarImgView.setScaleType(ImageView.ScaleType.FIT_XY);
 //        //searchbar
 //        MainApplication.loadImage(getActivity(), R.drawable.img_main_searchbar, searchbarImgView);
 
-        realReviewRecyclerView = (RecyclerView) view.findViewById(R.id.review_recycler_view);
-        realReviewLoadingProgressBar = (ProgressBar) view.findViewById(R.id.review_recycler_view_progressbar);
+        realReviewRecyclerView = (RecyclerView) rootView.findViewById(R.id.review_recycler_view);
+        realReviewLoadingProgressBar = (ProgressBar) rootView.findViewById(R.id.review_recycler_view_progressbar);
 
-        couponRecyclerView = (RecyclerView) view.findViewById(R.id.coupon_recycler_view);
-        couponLoadingProgressBar = (ProgressBar) view.findViewById(R.id.coupon_recycler_view_progressbar);
+        couponRecyclerView = (RecyclerView) rootView.findViewById(R.id.coupon_recycler_view);
+        couponLoadingProgressBar = (ProgressBar) rootView.findViewById(R.id.coupon_recycler_view_progressbar);
 
-        hotdealRecyclerView = (RecyclerView) view.findViewById(R.id.hotdeal_recycler_view);
-        menuRecyclerView = (RecyclerView) view.findViewById(R.id.menu_recycler_view);
-        hotplaceGridview = (ExpandableHeightGridView) view.findViewById(R.id.hotplace_gridview);
+        hotdealRecyclerView = (RecyclerView) rootView.findViewById(R.id.hotdeal_recycler_view);
+        menuRecyclerView = (RecyclerView) rootView.findViewById(R.id.menu_recycler_view);
+        hotplaceGridview = (ExpandableHeightGridView) rootView.findViewById(R.id.hotplace_gridview);
 
 
-        reviewMoreTextView = (TextView) view.findViewById(R.id.main_txt_review_more);
+        reviewMoreTextView = (TextView) rootView.findViewById(R.id.main_txt_review_more);
         reviewMoreTextView.setOnClickListener(onClickListenerMore);
 
-        couponMoreTextview = (TextView) view.findViewById(R.id.main_txt_coupon_more);
+        couponMoreTextview = (TextView) rootView.findViewById(R.id.main_txt_coupon_more);
         couponMoreTextview.setOnClickListener(onClickListenerMore);
 
-        hotdealMoreTextview = (TextView) view.findViewById(R.id.main_txt_hotdeal_more);
+        hotdealMoreTextview = (TextView) rootView.findViewById(R.id.main_txt_hotdeal_more);
         hotdealMoreTextview.setOnClickListener(onClickListenerMore);
 
-        hotplace_pop = (TextView) view.findViewById(R.id.main_hotplace_pop);
+        hotplace_pop = (TextView) rootView.findViewById(R.id.main_hotplace_pop);
         hotplace_pop.setOnClickListener(onClickListenerHotplaceType);
         hotplace_pop.setSelected(true);
 
-        hotplace_distance = (TextView) view.findViewById(R.id.main_hotplace_distance);
+        hotplace_distance = (TextView) rootView.findViewById(R.id.main_hotplace_distance);
         hotplace_distance.setOnClickListener(onClickListenerHotplaceType);
 
     }
@@ -752,7 +734,7 @@ public class MainFragment extends Fragment {
                 }
 
                 ishotplaceItemLoad = false;
-                view.post(new Runnable() {
+                rootView.post(new Runnable() {
                     @Override
                     public void run() {
                         hotplaceGridAdapter.notifyDataSetChanged();
@@ -896,7 +878,8 @@ public class MainFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
+        //GPS 주소변환// 임시
+        initGPSTransferAddress();
     }
 
     @Override

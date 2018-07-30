@@ -11,8 +11,12 @@
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/hotplace_gridview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:numColumns="2"
-        android:verticalSpacing="10dp" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_hotplace_pop"
+        android:layout_marginHorizontal="15dp"
+        android:horizontalSpacing="10dp"
+        android:verticalSpacing="15dp"
+        android:scrollbars="none"
+        android:numColumns="2" />
 
 </RelativeLayout>

@@ -52,6 +52,7 @@ import com.skt.tmaphot.activity.main.review.RealReviewRecyclerViewDataAdapter;
 import com.skt.tmaphot.activity.main.review.RealReviewRecyclerViewItem;
 import com.skt.tmaphot.activity.main.review.more.RealReviewActivity;
 import com.skt.tmaphot.common.CommonUtil;
+import com.skt.tmaphot.location.GPSData;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -466,9 +467,9 @@ public class NewSyrupMainActivity extends AppCompatActivity implements Navigatio
         }
 
         String tt = addresses.get(0).getThoroughfare();     //동
-        TextView mGPSTextView = (TextView) findViewById(R.id.main_text_gps);
-        MainApplication.LOCATION_ADDRESS = t + " " + tt + "▼";
-        mGPSTextView.setText(MainApplication.LOCATION_ADDRESS);
+        TextView mGPSTextView = (TextView) findViewById(R.id.main_gps_address);
+        GPSData.LOCATION_ADDRESS = t + " " + tt + "▼";
+        mGPSTextView.setText(GPSData.LOCATION_ADDRESS);
 
     }
 

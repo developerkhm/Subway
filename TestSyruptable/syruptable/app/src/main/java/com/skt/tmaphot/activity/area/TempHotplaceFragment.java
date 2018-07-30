@@ -3,31 +3,24 @@ package com.skt.tmaphot.activity.area;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.GridView;
 
 import com.skt.tmaphot.R;
-import com.skt.tmaphot.activity.main.hotplace.ExpandableHeightGridView;
 import com.skt.tmaphot.activity.main.hotplace.HotplaceGridAdapter;
 import com.skt.tmaphot.activity.main.hotplace.HotplaceGridViewItem;
 import com.skt.tmaphot.activity.main.store.StoreInfoActivity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
-public class PopularityAreaTEST extends Fragment {
+public class TempHotplaceFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -39,11 +32,11 @@ public class PopularityAreaTEST extends Fragment {
     private boolean ishotplaceModeDistance;
 
 
-    public PopularityAreaTEST() {
+    public TempHotplaceFragment() {
     }
 
     public static Fragment newInstance(int sectionNumber) {
-        PopularityAreaTEST fragment = new PopularityAreaTEST();
+        TempHotplaceFragment fragment = new TempHotplaceFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);

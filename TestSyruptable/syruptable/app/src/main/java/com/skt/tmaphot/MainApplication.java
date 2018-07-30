@@ -2,12 +2,8 @@ package com.skt.tmaphot;
 
 import android.app.Application;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -18,12 +14,10 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.Target;
-import com.facebook.stetho.Stetho;
 import com.crashlytics.android.Crashlytics;
+import com.facebook.stetho.Stetho;
 import com.tsengvn.typekit.Typekit;
-import com.tsengvn.typekit.TypekitContextWrapper;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -44,8 +38,6 @@ public class MainApplication extends Application {
 //    protected void attachBaseContext(Context newBase) {
 //        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
 //    }
-
-    public static String LOCATION_ADDRESS;
 
     public static void loadImage(final Context context, int res, ImageView view) {
         Glide.with(context)

@@ -1,19 +1,20 @@
 package com.skt.tmaphot.location;
 
 public class GPSData {
-    public static double latitude;
-    public static double longitude;
+    public static String LOCATION_ADDRESS;
+    public static double LATITUDE;
+    public static double LONGITUDE;
 
     public GPSData(double latitude_, double longitude_) {
-        this.latitude = latitude_;
-        this.longitude = longitude_;
+        this.LATITUDE = latitude_;
+        this.LONGITUDE = longitude_;
     }
 
     public double getLatitude() {
-        return latitude;
+        return LATITUDE;
     }
 
     public double getLongitude() {
-        return longitude;
+        return LONGITUDE;
     }
 }

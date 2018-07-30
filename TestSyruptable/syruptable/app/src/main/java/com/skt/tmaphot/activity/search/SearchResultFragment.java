@@ -3,7 +3,6 @@ package com.skt.tmaphot.activity.search;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.skt.tmaphot.R;
-import com.skt.tmaphot.activity.area.PopularityAreaTEST;
+import com.skt.tmaphot.activity.area.TempHotplaceFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,7 @@ public class SearchResultFragment extends Fragment {
 
 
 
-    private Fragment fagmenttt = PopularityAreaTEST.newInstance(1);
+    private Fragment fagmenttt = TempHotplaceFragment.newInstance(1);
 
     private RecyclerView searchRecyclerView;
     private SearchRecyclerViewAdapter searchRecyclerViewAdapter;
