@@ -32,7 +32,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.SplashActivity"
+            android:name=".MainSplashActivity"
             android:theme="@style/AppTheme.SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,7 +40,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".temp.MainActivityWebViewUp">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -52,8 +52,8 @@
         </activity>
 
         <!-- TEST ING -->
-        <activity android:name=".activity.SyrupMainActivity" />
-        <activity android:name=".activity.NewSyrupMainActivity" />
+        <activity android:name=".temp.MainActivityTab" />
+        <activity android:name=".temp.NewSyrupMainActivity" />
 
         <activity android:name=".activity.main.review.more.RealReviewActivity"/>
         <activity android:name=".activity.main.coupon.more.CouponListActivity"/>
@@ -67,22 +67,17 @@
         <activity android:name=".activity.main.store.StoreInfoActivity"/>
         <activity android:name=".activity.main.store.StoreInfoImageViewActivity"/>
 
-        <activity android:name=".activity.MapTest" />
-        <activity android:name=".activity.NewSyrupMainActivity2" />
+        <activity android:name=".temp.MapTest" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".activity.area.SelectionAreaActivity" />
         <activity android:name=".activity.search.SearchActivity" />
-        <activity android:name=".activity.area.FoodAreaListActivity" />
+        <activity android:name=".activity.FoodAreaListActivity" />
         <activity android:name=".activity.blog.MyBlogActivity" />
 
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="762f7f379ff2a9d0c204987f64d582adb4d197b7" />
-
-        <activity
-            android:name=".activity.TestStoreInfoActivity"
-            android:label="@string/title_activity_store_info"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

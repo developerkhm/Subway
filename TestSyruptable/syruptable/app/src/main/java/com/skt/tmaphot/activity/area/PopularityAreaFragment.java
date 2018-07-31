@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.activity.FoodAreaListActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -177,7 +178,8 @@ public class PopularityAreaFragment extends Fragment {
 
                 }
 
-                getActivity().startActivity(new Intent(getActivity(), FoodAreaListActivity.class));
+                MainApplication.ActivityStart(new Intent(getActivity(), FoodAreaListActivity.class), null);
+
             }
         });
 

@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,10 +20,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.IRecyclerItem;
 import com.skt.tmaphot.activity.IRecyclerViewDataAdapter;
-import com.skt.tmaphot.activity.area.SelectionAreaActivity;
 import com.skt.tmaphot.activity.main.banner.RollingAdapter;
 import com.skt.tmaphot.activity.main.banner.RollingAutoManager;
 import com.skt.tmaphot.activity.main.banner.RollingIndicatorView;
@@ -43,6 +44,7 @@ import com.skt.tmaphot.activity.main.review.RealReviewRecyclerViewDataAdapter;
 import com.skt.tmaphot.activity.main.review.RealReviewRecyclerViewItem;
 import com.skt.tmaphot.activity.main.review.more.RealReviewActivity;
 import com.skt.tmaphot.activity.main.store.StoreInfoActivity;
+import com.skt.tmaphot.activity.search.SearchActivity;
 import com.skt.tmaphot.common.CommonUtil;
 import com.skt.tmaphot.location.GPSData;
 
@@ -95,18 +97,19 @@ public class MainFragment extends BaseFragment {
     private RollingAutoManager rollingAutoManager;
     private ViewPager rollingViewPager;
     private RollingIndicatorView rollingIndicatorView;
-    //    private TextView rollingTextView;
-//    private ImageView searchbarImgView;
+
     //더보기
     private TextView reviewMoreTextView, couponMoreTextview, hotdealMoreTextview;
 
 
+    //리스너
     private CustomRecyclerViewOnScrollListener onScrollListenerRecyclerView;
 
-
+    private CardView searchbar;
     private TextView hotplace_pop, hotplace_distance;
-    private int food_type = 100;
 
+    //임시
+    private int food_type = 100;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -569,15 +572,16 @@ public class MainFragment extends BaseFragment {
             }
         });
 
-        // 아직 할지 말지 모름 여기는 text 서버에서 받아오는건지.. 임시
-//        rollingTextView = (TextView) view.findViewById(R.id.main_text_banner);
         rollingIndicatorView = (RollingIndicatorView) rootView.findViewById(R.id.indicator_view);
         rollingViewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
 
-//        searchbarImgView = (ImageView) view.findViewById(R.id.main_img_searchbar);
-////        searchbarImgView.setScaleType(ImageView.ScaleType.FIT_XY);
-//        //searchbar
-//        MainApplication.loadImage(getActivity(), R.drawable.img_main_searchbar, searchbarImgView);
+        searchbar = (CardView)rootView.findViewById(R.id.main_searchbar);
+        searchbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainApplication.ActivityStart(new Intent(getActivity(), SearchActivity.class), null);
+            }
+        });
 
         realReviewRecyclerView = (RecyclerView) rootView.findViewById(R.id.review_recycler_view);
         realReviewLoadingProgressBar = (ProgressBar) rootView.findViewById(R.id.review_recycler_view_progressbar);
@@ -605,7 +609,6 @@ public class MainFragment extends BaseFragment {
 
         hotplace_distance = (TextView) rootView.findViewById(R.id.main_hotplace_distance);
         hotplace_distance.setOnClickListener(onClickListenerHotplaceType);
-
     }
 
     private void initHotplaceSet() {
@@ -784,13 +787,13 @@ public class MainFragment extends BaseFragment {
 
             switch (view.getId()) {
                 case R.id.main_txt_coupon_more:
-                    startActivity(new Intent(getActivity(), CouponListActivity.class));
+                    MainApplication.ActivityStart(new Intent(getActivity(), CouponListActivity.class), null);
                     break;
                 case R.id.main_txt_review_more:
-                    startActivity(new Intent(getActivity(), RealReviewActivity.class));
+                    MainApplication.ActivityStart(new Intent(getActivity(), RealReviewActivity.class), null);
                     break;
                 case R.id.main_txt_hotdeal_more:
-                    startActivity(new Intent(getActivity(), HotdealListActivity.class));
+                    MainApplication.ActivityStart(new Intent(getActivity(), HotdealListActivity.class), null);
                     break;
             }
         }
@@ -831,12 +834,7 @@ public class MainFragment extends BaseFragment {
     AdapterView.OnItemClickListener onItemClickListenerHotplace = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-            //이렇게 아이디 등 값을 가져와서 전달한다.
-            //TextView tv = (TextView)view.findViewById(R.id.hotplace_grid_txt_title);
-            Intent intent = new Intent(getActivity(), StoreInfoActivity.class);
-            Bundle bundle = new Bundle();
-            getActivity().startActivity(intent);
+            MainApplication.ActivityStart(new Intent(getActivity(), StoreInfoActivity.class), null);
         }
     };
 
@@ -844,21 +842,12 @@ public class MainFragment extends BaseFragment {
         @Override
         public void menuOnClick(View v, int id, int position) {
             // 임시구현
-//            Toast.makeText(getContext(), "position : " + position, Toast.LENGTH_SHORT).show();
-
-            Log.d("ABCD", "CLICKKKKKKKKKKKKKKKKKKKKKKKKK");
-
-
             food_type = position;
 
             initRecylerViewSet(realReviewRecyclerView, false);
             initRecylerViewSet(hotdealRecyclerView, false);
 
-//            loadData(true, realReviewRecyclerView);
-//            loadData(true, hotdealRecyclerView);
             reloadHotPlace(ishotplaceModeDistance);
-
-
         }
     };
 
@@ -915,19 +904,9 @@ public class MainFragment extends BaseFragment {
 
     private class CustomRecyclerViewOnScrollListener extends RecyclerView.OnScrollListener {
 
-
         public CustomRecyclerViewOnScrollListener() {
 
         }
-
-//        @Override
-//        public final void onScrollStateChanged(@NonNull final RecyclerView recyclerView, final int newState) {
-//            super.onScrollStateChanged(recyclerView, newState);
-//            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-//                recyclerView.removeOnScrollListener(this);
-//            }
-//        }
-
 
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

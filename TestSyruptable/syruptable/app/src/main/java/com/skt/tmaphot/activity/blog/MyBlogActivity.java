@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
-import com.skt.tmaphot.activity.BaseActivity;
+import com.skt.tmaphot.BaseActivity;
 import com.skt.tmaphot.common.CommonUtil;
 
 import java.util.ArrayList;

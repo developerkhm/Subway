@@ -18,7 +18,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.skt.tmaphot.activity.SplashActivity;
+import com.skt.tmaphot.MainSplashActivity;
 
 import java.util.Set;
 
@@ -207,25 +207,25 @@ public class GPSTracker implements LocationListener {
     @Override
     public void onProviderDisabled(String provider) {
         //Toast.makeText(mContext, "onProviderDisabled " + provider, Toast.LENGTH_SHORT).show();
-        mHandler.sendEmptyMessage(SplashActivity.RENEW_GPS);
+        mHandler.sendEmptyMessage(MainSplashActivity.RENEW_GPS);
     }
 
     @Override
     public void onProviderEnabled(String provider) {
         //Toast.makeText(mContext, "onProviderEnabled " + provider, Toast.LENGTH_SHORT).show();
-        mHandler.sendEmptyMessage(SplashActivity.RENEW_GPS);
+        mHandler.sendEmptyMessage(MainSplashActivity.RENEW_GPS);
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         //Toast.makeText(mContext, "onStatusChanged " + provider + " : " + status, Toast.LENGTH_SHORT).show();
-        mHandler.sendEmptyMessage(SplashActivity.RENEW_GPS);
+        mHandler.sendEmptyMessage(MainSplashActivity.RENEW_GPS);
     }
 
     private void sendLocation(double latitude, double longitude) {
         Log.d(LOG_TAG, "sendLocation latitude: " + latitude + " longitude: " + longitude);
         Message msg = mHandler.obtainMessage();
-        msg.what = SplashActivity.SEND_PRINT;
+        msg.what = MainSplashActivity.SEND_PRINT;
         msg.obj = new GPSData(latitude, longitude);
         mHandler.sendMessage(msg);
     }

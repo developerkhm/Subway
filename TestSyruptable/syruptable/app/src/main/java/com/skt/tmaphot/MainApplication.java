@@ -2,7 +2,9 @@ package com.skt.tmaphot;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
@@ -22,32 +24,34 @@ import com.tsengvn.typekit.Typekit;
 import io.fabric.sdk.android.Fabric;
 
 public class MainApplication extends Application {
+
+    private static Context context;
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        context = this;
+
         Fabric.with(this, new Crashlytics());
         Stetho.initializeWithDefaults(this);
 
         Typekit.getInstance()
-                .addNormal(Typekit.createFromAsset(this, "NanumBarunGothic.ttf"))
-                .addBold(Typekit.createFromAsset(this, "NanumBarunGothicBold.ttf"));
-
+                .addNormal(Typekit.createFromAsset(this, "fonts/NanumBarunGothic.ttf"))
+                .addBold(Typekit.createFromAsset(this, "fonts/NanumBarunGothicBold.ttf"));
     }
 
-//    @Override
-//    protected void attachBaseContext(Context newBase) {
-//        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
-//    }
 
-    public static void loadImage(final Context context, int res, ImageView view) {
+    public static void ActivityStart(Intent intent, Bundle bundle){
+        context.startActivity(intent, bundle);
+    }
+
+    public static void loadResImage(final Context context, int res, ImageView view) {
         Glide.with(context)
                 .load(res)
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-
-
-//                        Glide.with(context).load(model).into(target);
                         return false;
                     }
 
@@ -62,14 +66,11 @@ public class MainApplication extends Application {
 
     public static void loadUrlImage(final Context context, String url, ImageView view) {
         Glide.with(context)
-
                 .load(url)
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
 
-
-//                        Glide.with(context).load(model).into(target);
                         return false;
                     }
 
@@ -82,32 +83,32 @@ public class MainApplication extends Application {
                 .into(view);
     }
 
-    public static void loadUrlRoundImage(final Context context, String url, ImageView view) {
-
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(16));
-
-
-        Glide.with(context)
-                .load(url)
-
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-
-
-//                        Glide.with(context).load(model).into(target);
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        return false;
-                    }
-                })
-                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop())
-//                .apply(new RequestOptions().transform(new RoundedCorners(100)).diskCacheStrategy(DiskCacheStrategy.NONE))
-
-                .into(view);
-    }
+//    public static void loadUrlRoundImage(final Context context, String url, ImageView view) {
+//
+//        RequestOptions requestOptions = new RequestOptions();
+//        requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(16));
+//
+//
+//        Glide.with(context)
+//                .load(url)
+//
+//                .listener(new RequestListener<Drawable>() {
+//                    @Override
+//                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//
+//
+////                        Glide.with(context).load(model).into(target);
+//                        return false;
+//                    }
+//
+//                    @Override
+//                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+//                        return false;
+//                    }
+//                })
+//                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop())
+////                .apply(new RequestOptions().transform(new RoundedCorners(100)).diskCacheStrategy(DiskCacheStrategy.NONE))
+//
+//                .into(view);
+//    }
 }

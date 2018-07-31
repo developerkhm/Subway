@@ -2,6 +2,7 @@ package com.skt.tmaphot.common;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
@@ -17,6 +18,10 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.skt.tmaphot.MainActivity;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CommonUtil {
 
@@ -34,29 +39,58 @@ public class CommonUtil {
         return uniqueInstance;
     }
 
-    public void loadImage(final Context context, int res, ImageView view) {
-        Glide.with(context)
-                .load(res)
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-
-//                        Glide.with(context).load(model).into(target);
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        return false;
-                    }
-                })
-                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
-                .into(view);
+    public String getCurrenTime(){
+     return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
     }
 
+
+    // 임시 mainContex 고쳐야됨
     @SuppressLint("MissingPermission")
     public String getPhoneNumber() {
         return ((TelephonyManager) mainContex.getSystemService(Context.TELEPHONY_SERVICE)).getLine1Number();
+    }
+
+    // 값 불러오기
+    public int getPreferencesInt(Context context, String name, String key) {
+        SharedPreferences pref = context.getSharedPreferences(name, context.MODE_PRIVATE);
+        return pref.getInt(key, 0);
+    }
+
+    public String getPreferencesString(Context context, String name, String key) {
+        SharedPreferences pref = context.getSharedPreferences(name, context.MODE_PRIVATE);
+        return pref.getString(key, "");
+    }
+
+    // 값 저장하기
+    public void savePreferencesInt(Context context, String name, String key, int vlaue) {
+        SharedPreferences pref = context.getSharedPreferences(name, context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt(key, vlaue);
+        editor.commit();
+    }
+
+    // 값 저장하기
+    public void savePreferencesString(Context context, String name, String key, String vlaue) {
+        SharedPreferences pref = context.getSharedPreferences(name, context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(key, vlaue);
+        editor.commit();
+    }
+
+    // 값(Key Data) 삭제하기
+    public void removePreferences(Context context, String name, String key) {
+        SharedPreferences pref = context.getSharedPreferences(name, context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.remove(key);
+        editor.commit();
+    }
+
+    // 값(ALL Data) 삭제하기
+    public void removeAllPreferences(Context context, String name) {
+        SharedPreferences pref = context.getSharedPreferences(name, context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.clear();
+        editor.commit();
     }
 
 

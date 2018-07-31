@@ -6,8 +6,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.area.SelectionAreaActivity;
+import com.skt.tmaphot.activity.main.coupon.more.CouponListActivity;
 import com.skt.tmaphot.location.GPSData;
 
 public class BaseFragment extends Fragment {
@@ -24,7 +26,7 @@ public class BaseFragment extends Fragment {
             locationAddress.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(getActivity(), SelectionAreaActivity.class));
+                    MainApplication.ActivityStart(new Intent(getActivity(), SelectionAreaActivity.class), null);
                 }
             });
         }

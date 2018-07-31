@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.skt.tmaphot.R;
-import com.skt.tmaphot.activity.area.TempHotplaceFragment;
+import com.skt.tmaphot.temp.TempHotplaceFragment;
 
 import java.util.ArrayList;
 import java.util.List;

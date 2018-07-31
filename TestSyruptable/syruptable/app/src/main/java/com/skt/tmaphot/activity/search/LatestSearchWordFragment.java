@@ -43,15 +43,15 @@ public class LatestSearchWordFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_latest_searchword_layout, container, false);
 
         latestItems = new ArrayList<LatestItem>();
-        latestItems.add(new LatestItem("1","이태원 음식점"));
-        latestItems.add(new LatestItem("1","삼국지 삼겹살"));
-        latestItems.add(new LatestItem("1","선릉"));
-        latestItems.add(new LatestItem("1","뽕나무쟁이 선릉"));
+        latestItems.add(new LatestItem("1", "이태원 음식점"));
+        latestItems.add(new LatestItem("1", "삼국지 삼겹살"));
+        latestItems.add(new LatestItem("1", "선릉"));
+        latestItems.add(new LatestItem("1", "뽕나무쟁이 선릉"));
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        latestRecyclerView = (RecyclerView)rootView.findViewById(R.id.search_latest_recycler);
+        latestRecyclerView = (RecyclerView) rootView.findViewById(R.id.search_latest_recycler);
         latestRecyclerView.setLayoutManager(layoutManager);
         latestRecyclerViewAdapter = new LatestRecyclerViewAdapter(latestItems);
         latestRecyclerView.setAdapter(latestRecyclerViewAdapter);
@@ -86,9 +86,8 @@ public class LatestSearchWordFragment extends Fragment {
         public RecommandRecyclerViewHolder(View itemView) {
             super(itemView);
 
-            if(itemView != null)
-            {
-                areaTextView = (TextView)itemView.findViewById(R.id.search_latest_recycler_txt);
+            if (itemView != null) {
+                areaTextView = (TextView) itemView.findViewById(R.id.search_latest_recycler_txt);
             }
         }
     }
@@ -127,6 +126,10 @@ public class LatestSearchWordFragment extends Fragment {
         public int getItemCount() {
             return mItems.size();
         }
+    }
+
+    public void saveSearchKeyword(String keyword){
+       // 여기서부터 해야됨
     }
 }
 

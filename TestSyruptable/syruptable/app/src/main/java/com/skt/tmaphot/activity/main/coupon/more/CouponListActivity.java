@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.skt.tmaphot.R;
-import com.skt.tmaphot.activity.BaseActivity;
+import com.skt.tmaphot.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;

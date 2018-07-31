@@ -12,10 +12,10 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
-import com.skt.tmaphot.MainActivity;
+import com.skt.tmaphot.temp.MainActivityWebViewUp;
 
-import static com.skt.tmaphot.MainActivity.FILECHOOSER_LOLLIPOP_REQ_CODE;
-import static com.skt.tmaphot.MainActivity.FILECHOOSER_RESULTCODE;
+import static com.skt.tmaphot.temp.MainActivityWebViewUp.FILECHOOSER_LOLLIPOP_REQ_CODE;
+import static com.skt.tmaphot.temp.MainActivityWebViewUp.FILECHOOSER_RESULTCODE;
 
 /**
  * Created by home on 2018-05-26.
@@ -23,11 +23,11 @@ import static com.skt.tmaphot.MainActivity.FILECHOOSER_RESULTCODE;
 
 public class SyrupWebChromeClient extends WebChromeClient {
 
-    private MainActivity activity;
+    private MainActivityWebViewUp activity;
     private Activity sactivity;
     private WebView target;
 
-    public SyrupWebChromeClient(MainActivity activity, WebView target) {
+    public SyrupWebChromeClient(MainActivityWebViewUp activity, WebView target) {
         this.activity = activity;
         this.target = target;
     }
