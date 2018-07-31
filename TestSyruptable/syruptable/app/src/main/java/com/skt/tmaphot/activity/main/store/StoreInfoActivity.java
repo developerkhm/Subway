@@ -2,8 +2,7 @@ package com.skt.tmaphot.activity.main.store;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,10 +21,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.chrisbanes.photoview.PhotoView;
 import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.BaseActivity;
+import com.skt.tmaphot.activity.blog.MyBlogActivity;
+import com.skt.tmaphot.common.CommonUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -242,8 +242,19 @@ public class StoreInfoActivity extends BaseActivity {
 
             if (itemView != null) {
                 mImgReview = (ImageView) itemView.findViewById(R.id.coupon_image);
+
+                Drawable drawable= null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    drawable = (Drawable)itemView.getContext().getDrawable(R.drawable.round_main_item);
+                    itemView.setBackground(drawable);
+                    itemView.setClipToOutline(true);
+                }
+
+
                 itemView.setOnClickListener(this);
             }
+
+
         }
 
         public ImageView getImageView() {
@@ -310,7 +321,6 @@ public class StoreInfoActivity extends BaseActivity {
             startActivity(new Intent(StoreInfoActivity.this , StoreInfoImageViewActivity.class));
         }
     }
-
 
     private class ReviewItem {
         private String loginImageUrl;
@@ -386,6 +396,9 @@ public class StoreInfoActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(mContext, String.format("%d 선택", position + 1), Toast.LENGTH_SHORT).show();
+                    //////////////////////////////////////////////// 임시 ////////////////////////////////////////////////
+                    startActivity(new Intent(StoreInfoActivity.this, MyBlogActivity.class));
+                    //////////////////////////////////////////////////// 임시 ///////////////////////////////////////////////
                 }
             });
         }
@@ -492,6 +505,10 @@ public class StoreInfoActivity extends BaseActivity {
         storeInfoReviewRecyclerView.setFocusable(false);
         storeInfoReviewRecyclerView.scrollToPosition(0);
         storeInfoReviewRecyclerView.setNestedScrollingEnabled(false);
+        storeInfoReviewRecyclerView.setHasFixedSize(true);
+        storeInfoReviewRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 15, 0, 0));
+
+
         storeInfoReviewRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
@@ -553,6 +570,9 @@ public class StoreInfoActivity extends BaseActivity {
         reviewRecyclerViewAdapter = new ReviewRecyclerViewAdapter(reviewItemList);
         reviewRecyclerView.setAdapter(reviewRecyclerViewAdapter);
         reviewRecyclerView.setFocusable(false);
+        reviewRecyclerView.setHasFixedSize(true);
+        reviewRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 0, 1, 0));
+
     }
 
     private void setSocialReview() {
@@ -565,6 +585,8 @@ public class StoreInfoActivity extends BaseActivity {
         socialReviewRecyclerViewAdapter = new SocialReviewRecyclerViewAdapter(socialReviewItemList);
         socialReviewRecyclerView.setAdapter(socialReviewRecyclerViewAdapter);
         socialReviewRecyclerView.setFocusable(false);
+        socialReviewRecyclerView.setHasFixedSize(true);
+        socialReviewRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 0, 1, 0));
     }
 
     private void getIninData() {

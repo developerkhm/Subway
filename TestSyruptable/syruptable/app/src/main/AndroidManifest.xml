@@ -72,6 +72,7 @@
         <activity android:name=".activity.area.SelectionAreaActivity" />
         <activity android:name=".activity.search.SearchActivity" />
         <activity android:name=".activity.area.FoodAreaListActivity" />
+        <activity android:name=".activity.blog.MyBlogActivity" />
 
 
         <meta-data

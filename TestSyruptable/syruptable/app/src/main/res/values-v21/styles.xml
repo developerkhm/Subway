@@ -168,6 +168,169 @@
     </style>
 
 
+    <style name="storeinfo_info_evaluate_count" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">9.8dp</item>
+        <item name="android:textColor">@color/text_gray_71</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">14.5dp</item>
+    </style>
+
+    <style name="storeinfo_info_name" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">20.3dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_gray_33</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">4.8dp</item>
+    </style>
+
+    <style name="storeinfo_info_type" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">13.7dp</item>
+        <item name="android:textColor">@color/text_gray_33</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">8.7dp</item>
+    </style>
+
+    <style name="storeinfo_text_count" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">13.2dp</item>
+        <item name="android:textColor">@color/text_gray_8f</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">11.7dp</item>
+    </style>
+
+
+    <style name="storeinfo_info_text" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">14.8dp</item>
+        <item name="android:textColor">@color/text_gray_33</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">10.2dp</item>
+    </style>
+
+    <style name="storeinfo_info_title_text" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">13.3dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">11.7dp</item>
+    </style>
+
+    <style name="storeinfo_info_content_text" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">13.2dp</item>
+        <item name="android:textColor">@color/text_gray_33</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">11.5dp</item>
+    </style>
+
+    <style name="storeinfo_info_distance_text" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">11.7dp</item>
+        <item name="android:textColor">@color/colorGreen</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">13.2dp</item>
+    </style>
+
+
+    <style name="storeinfo_review_title" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">15.2dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_gray_33</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">3dp</item>
+    </style>
+
+    <style name="storeinfo_review_count_title" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">14.7dp</item>
+        <item name="android:textColor">@color/colorGreen</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">10.2dp</item>
+    </style>
+
+    <style name="storeinfo_review_write" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">11.7dp</item>
+        <item name="android:textColor">@color/text_gray_8f</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">6.5dp</item>
+    </style>
+
+    <style name="storeinfo_review_more" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">15.2dp</item>
+        <item name="android:textColor">@color/text_gray_8f</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">3dp</item>
+    </style>
+
+    <style name="storeinfo_review_nickname" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">1.3dp</item>
+    </style>
+
+    <style name="storeinfo_review_content" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">13.2dp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">3.2dp</item>
+    </style>
+
+    <style name="storeinfo_review_sympathy" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">13.3dp</item>
+        <item name="android:textColor">@color/text_gray_8f</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">8.5dp</item>
+    </style>
+
+    <style name="storeinfo_socialreview_title" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">13.2dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">5dp</item>
+    </style>
+
+    <style name="storeinfo_socialreview_source" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">11.8dp</item>
+        <item name="android:textColor">@color/text_gray_8f</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">4.5dp</item>
+    </style>
+
+    <style name="myblog_nickname" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">20.3dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">4.7dp</item>
+    </style>
+
+    <style name="myblog_follow_count" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">13.3dp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">11.7dp</item>
+    </style>
+
+    <style name="myblog_follow_text" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">14.8dp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">10.2dp</item>
+    </style>
+
+
+    <style name="myblog_count_number" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">20.3dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">4.7dp</item>
+    </style>
+
+    <style name="myblog_count_text" parent="@android:style/Widget.TextView" >
+        <item name="android:textSize">13.3dp</item>
+        <item name="android:textColor">@color/text_gray_8f</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">11.7dp</item>
+    </style>
+
+
 </resources>
 
 

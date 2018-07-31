@@ -1,5 +1,6 @@
 package com.skt.tmaphot.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,11 +13,17 @@ import android.widget.TextView;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.area.SelectionAreaActivity;
 import com.skt.tmaphot.location.GPSData;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 public class BaseActivity extends AppCompatActivity {
 
     protected TextView locationAddress;
     protected Toolbar toolbar;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
 
     @Override
     protected void onStart() {
