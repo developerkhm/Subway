@@ -1,22 +1,30 @@
 package com.skt.tmaphot.activity.review;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.skt.tmaphot.BaseActivity;
@@ -33,22 +41,19 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class ReviewWriteActivity extends BaseActivity {
-    ImageView img;
-    Uri takePhotoUri;
-    String mCurrentPhotoPath;
-
-
-    private LinearLayout tempLay;
 
     private static final int TAKE_FROM_CAMERA = 1000; //카메라 촬영으로 사진 가져오기
     private static final int SELECT_FROM_ALBUM = 2000; //앨범에서 사진 가져오기
     private static final int FROM_VIDEO = 3000; //가져온 사진을 자르기 위한 변수
 
+    private Uri takePhotoUri;
+    private String mCurrentPhotoPath;
+    private int displayWidth;
 
+    private LinearLayout mainLinearLayout;
     private LinearLayout addImageArea;
     private LinearLayout addVideoArea;
     private ImageView addImageView, addVideoView;
-    private int displayWidth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +73,12 @@ public class ReviewWriteActivity extends BaseActivity {
 
         displayWidth = metrics.widthPixels;
 
+        mainLinearLayout = (LinearLayout) findViewById(R.id.reviewwrite_main);
         addImageArea = (LinearLayout) findViewById(R.id.activity_reviewwrite_upload_image_area);
+
+//        addImageArea.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+//        addImageArea.getLayoutParams().width = displayWidth;
+
         addVideoArea = (LinearLayout) findViewById(R.id.activity_reviewwrite_upload_video_area);
         Button takePhotoBtn = (Button) findViewById(R.id.activity_reviewwrite_take_capture);
         takePhotoBtn.setOnClickListener(onClickListener);
@@ -80,7 +90,7 @@ public class ReviewWriteActivity extends BaseActivity {
         addImageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         addImageView.getLayoutParams().width = displayWidth / 3;
         addImageView.getLayoutParams().height = displayWidth / 3;
-        addImageView.requestLayout();
+//        addImageView.requestLayout();
         addImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,7 +105,7 @@ public class ReviewWriteActivity extends BaseActivity {
         addVideoView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         addVideoView.getLayoutParams().width = displayWidth / 3;
         addVideoView.getLayoutParams().height = displayWidth / 3;
-        addVideoView.requestLayout();
+//        addVideoView.requestLayout();
         addVideoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,7 +115,7 @@ public class ReviewWriteActivity extends BaseActivity {
 
         addVideoArea.addView(addVideoView);
 
-    } /////////////////END
+    } //////////////////////////////////////////////////////////////////END
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -123,20 +133,24 @@ public class ReviewWriteActivity extends BaseActivity {
         }
     };
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        Log.d("UU", "ReviewActivity3 : onActivityResult requestCode :" + requestCode);
+        Log.d("UUA", "resultCode :" + resultCode);
+
+        if (resultCode == 0) //not action
+            return;
+
         switch (requestCode) {
             case TAKE_FROM_CAMERA:
 
                 try {
-
-//                    Log.d("AAAB","TAKE_FROM_CAMERA" + takePhotoUri.toString());
-//                    Log.d("AAAB","TAKE_FROM_CAMERA" + takePhotoUri.getPath());
-
-                    MainApplication.loadUriImage(this, takePhotoUri, creatImageView(false));
+                    Log.d("AAAB", "TAKE_FROM_CAMERA getPath" + takePhotoUri.getPath());
+                    ImageView temp = creatImageView(false);
+                    Log.d("AAAB", "TAKE_FROM_CAMERA id" + temp.getId());
+                    Log.d("AAAB", "Function" + takePhotoUri.getPath().lastIndexOf("/"));
+//                    Log.d("AAAB", "Function getPathFromURI" + getPathFromMediaUri(takePhotoUri));
+                    MainApplication.loadUriImage(this, takePhotoUri, temp);
 
                     // 갤러리 이미지 갱신
                     Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
@@ -148,28 +162,34 @@ public class ReviewWriteActivity extends BaseActivity {
                     Log.e("ERROR", e.getMessage().toString());
                 }
                 addImageArea.addView(addImageView);
+
                 break;
             case SELECT_FROM_ALBUM:
 
                 ArrayList<Image> imageList = data.getParcelableArrayListExtra(Constants.INTENT_EXTRA_IMAGES);
 //                Log.d("AAAB","SELECT_FROM_ALBUM" + imageList.get(0).path);
-//                Log.d("AAAB","SELECT_FROM_ALBUM" + Uri.parse(imageList.get(0).path));
 
                 for (Image image : imageList) {
                     MainApplication.loadUriImage(this, Uri.fromFile(new File(image.path)), creatImageView(false));
+                    Log.d("AAAB", "SELECT_FROM_ALBUM path" + image.path);
+                    Log.d("AAAB", "SELECT_FROM_ALBUM id" + image.id);
                 }
                 addImageArea.addView(addImageView);
+//                addImageArea.requestLayout();
+
                 break;
 
             case FROM_VIDEO:
                 Uri videoUri = data.getData();
 //                Log.d("AAAB","FROM_VIDEO" + videoUri.toString());
 //                Log.d("AAAB","FROM_VIDEO" + videoUri.getPath());
+                Log.d("AAAB", "FROM_VIDEO getPath" + videoUri.getPath());
+                ImageView temp = creatImageView(true);
+                Log.d("AAAB", "FROM_VIDEO id" + temp.getId());
+                Log.d("AAAB", "Function getPathFromURI" + getPathFromMediaUri(this, videoUri));
                 MainApplication.loadUriImage(this, videoUri, creatImageView(true));
                 addVideoArea.addView(addVideoView);
                 break;
-
-
         }
     }
 
@@ -218,11 +238,14 @@ public class ReviewWriteActivity extends BaseActivity {
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
-        String imageFileName = "IP" + timeStamp + "_";
-        File storageDir = new File(Environment.getExternalStorageDirectory() + "/test/"); //test라는 경로에 이미지를 저장하기 위함
+        String imageFileName = "syrup_" + timeStamp + "_";
+//        File storageDir = new File(Environment.getExternalStorageDirectory() + "/test/"); //test라는 경로에 이미지를 저장하기 위함
+        File storageDir = new File(Environment.getExternalStorageDirectory() + "/sdcard/syruptable/"); //test라는 경로에 이미지를 저장하기 위함
         if (!storageDir.exists()) {
             storageDir.mkdirs();
         }
+
+
         File image = File.createTempFile(
                 imageFileName,
                 ".jpg",
@@ -232,27 +255,113 @@ public class ReviewWriteActivity extends BaseActivity {
     }
 
     private ImageView creatImageView(boolean isVidio) {
-        ImageView newImageView = new ImageView(this);
-        newImageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        newImageView.getLayoutParams().width = displayWidth / 3;
-        newImageView.getLayoutParams().height = displayWidth / 3;
-        newImageView.requestLayout();
+
+        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = layoutInflater.inflate(R.layout.reviewwrite_image_layout, mainLinearLayout, false);
+        ImageView newImageView = (ImageView) view.findViewById(R.id.reviewwrite_image);
+//        newImageView.setTag
+        Button deleteButton = (Button) view.findViewById(R.id.reviewwrite_delete);
+
+//        ImageView newImageView = new ImageView(this);
+        view.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        view.getLayoutParams().width = displayWidth / 3;
+        view.getLayoutParams().height = displayWidth / 3;
+
+//        newImageView.requestLayout();
         if (!isVidio) {
             addImageArea.removeView(addImageView);
-            addImageArea.addView(newImageView);
+            addImageArea.addView(view);
         } else {
             addVideoArea.removeView(addVideoView);
-            addVideoArea.addView(newImageView);
+            addVideoArea.addView(view);
         }
-
+//        addImageArea.requestLayout();
+//        view.invalidate();
         return newImageView;
     }
+
+//    private ImageView creatImageView(boolean isVidio) {
+//        ImageView newImageView = new ImageView(this);
+//        newImageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+//        newImageView.getLayoutParams().width = displayWidth / 3;
+//        newImageView.getLayoutParams().height = displayWidth / 3;
+//        newImageView.requestLayout();
+//        if (!isVidio) {
+//            addImageArea.removeView(addImageView);
+//            addImageArea.addView(newImageView);
+//        } else {
+//            addVideoArea.removeView(addVideoView);
+//            addVideoArea.addView(newImageView);
+//        }
+//
+//        return newImageView;
+//    }
 
 //    private void goToAlbum() {
 //        Intent intent = new Intent(Intent.ACTION_PICK);
 //        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
 //        startActivityForResult(intent, PICK_FROM_ALBUM);
 //    }
+
+//    @SuppressLint("ObsoleteSdkInt")
+//    public String getPathFromURI(Uri uri){
+//        String realPath="";
+//// SDK < API11
+//        if (Build.VERSION.SDK_INT < 11) {
+//            String[] proj = { MediaStore.Images.Media.DATA };
+//            @SuppressLint("Recycle") Cursor cursor = getContentResolver().query(uri, proj, null, null, null);
+//            int column_index = 0;
+//            String result="";
+//            if (cursor != null) {
+//                column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//                realPath=cursor.getString(column_index);
+//            }
+//        }
+//        // SDK >= 11 && SDK < 19
+//        else if (Build.VERSION.SDK_INT < 19){
+//            String[] proj = { MediaStore.Images.Media.DATA };
+//            CursorLoader cursorLoader = new CursorLoader(this, uri, proj, null, null, null);
+//            Cursor cursor = cursorLoader.loadInBackground();
+//            if(cursor != null){
+//                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//                cursor.moveToFirst();
+//                realPath = cursor.getString(column_index);
+//            }
+//        }
+//        // SDK > 19 (Android 4.4)
+//        else{
+//            String wholeID = DocumentsContract.getDocumentId(uri);
+//            // Split at colon, use second item in the array
+//            String id = wholeID.split(":")[1];
+//            String[] column = { MediaStore.Images.Media.DATA };
+//            // where id is equal to
+//            String sel = MediaStore.Images.Media._ID + "=?";
+//            Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, column, sel, new String[]{ id }, null);
+//            int columnIndex = 0;
+//            if (cursor != null) {
+//                columnIndex = cursor.getColumnIndex(column[0]);
+//                if (cursor.moveToFirst()) {
+//                    realPath = cursor.getString(columnIndex);
+//                }
+//                cursor.close();
+//            }
+//        }
+//        return realPath;
+//    }
+
+
+    public String getPathFromMediaUri(Context context, Uri uri) {
+        String result = null;
+
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
+        int col = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+        if (col >= 0 && cursor.moveToFirst())
+            result = cursor.getString(col);
+        cursor.close();
+
+        return result;
+    }
 
 }
 

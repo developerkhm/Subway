@@ -17,6 +17,8 @@ public class BaseFragment extends Fragment {
     protected TextView locationAddress;
     protected View rootView;
 
+
+
     @Override
     public void onStart() {
         super.onStart();

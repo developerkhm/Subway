@@ -44,6 +44,7 @@ public class MainApplication extends Application {
 
 
     public static void ActivityStart(Intent intent, Bundle bundle){
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent, bundle);
     }
 

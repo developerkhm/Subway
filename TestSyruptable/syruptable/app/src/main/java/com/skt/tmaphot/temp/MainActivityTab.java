@@ -63,7 +63,7 @@ public class MainActivityTab extends AppCompatActivity
         setSupportActionBar(toolbar);
 //      toolbar.setLogo(R.drawable.logo);
         ImageView logo = (ImageView) findViewById(R.id.toolbar_logo);
-        logo.setImageResource(R.drawable.logo);
+//        logo.setImageResource(R.drawable.logo);
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
