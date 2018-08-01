@@ -1,6 +1,7 @@
 package com.skt.tmaphot.activity.blog;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,19 +30,20 @@ import java.util.List;
 
 public class MyBlogActivity extends BaseActivity {
 
-
+    private Context mContext;
     private NestedScrollView nestedScrollView;
 
     // 내리뷰리스트
     private RecyclerView myReviewRecyclerView;
     private MyReviewRecyclerViewAdapter myReviewRecyclerViewAdapter;
     private List<MyReviewItem> myReviewItemList;
-
     private List<MyblogReviewImageItem> myblogReviewImageItemList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mContext = this;
 
         setContentView(R.layout.activity_myblog_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -50,7 +53,6 @@ public class MyBlogActivity extends BaseActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
-
 
         nestedScrollView = (NestedScrollView)findViewById(R.id.scroll_view);
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
@@ -134,7 +136,7 @@ public class MyBlogActivity extends BaseActivity {
         myReviewRecyclerView.setAdapter(myReviewRecyclerViewAdapter);
         myReviewRecyclerView.setFocusable(false);
         myReviewRecyclerView.setHasFixedSize(true);
-        myReviewRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 0, 1, 0));
+        myReviewRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 0, 30, 0));
     }
 
     private class MyReviewItem {
@@ -193,6 +195,11 @@ public class MyBlogActivity extends BaseActivity {
             super(itemView);
 //            loginImageView = (ImageView) itemView.findViewById(R.id.coupon_recyler_item_image);
             myReviewImageRecyclerView = (RecyclerView) itemView.findViewById(R.id.myblog_review_image_recyler);
+            myReviewImageRecyclerView.setFocusable(false);
+            myReviewImageRecyclerView.scrollToPosition(0);
+            myReviewImageRecyclerView.setNestedScrollingEnabled(false);
+            myReviewImageRecyclerView.setHasFixedSize(true);
+            myReviewImageRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 15, 0, 0));
         }
     }
 
@@ -226,6 +233,7 @@ public class MyBlogActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(mContext, String.format("%d 선택", position + 1), Toast.LENGTH_SHORT).show();
+                    MainApplication.ActivityStart(new Intent(mContext, MyBlogStoreReviewActivity.class), null);
                 }
             });
         }
@@ -247,7 +255,7 @@ public class MyBlogActivity extends BaseActivity {
         }
     }
 
-    public class MyblogReviewImageItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MyblogReviewImageItemViewHolder extends RecyclerView.ViewHolder  {
 
         private ImageView mImgReview = null;
 
@@ -264,7 +272,6 @@ public class MyBlogActivity extends BaseActivity {
                     itemView.setClipToOutline(true);
                 }
 
-                itemView.setOnClickListener(this);
             }
         }
 
@@ -272,10 +279,6 @@ public class MyBlogActivity extends BaseActivity {
             return mImgReview;
         }
 
-        @Override
-        public void onClick(View v) {
-//            v.getContext().startActivity(new Intent(v.getContext(), StoreInfoActivity.class));
-        }
     }
 
     public class MyblogReviewImageRecyclerViewDataAdapter extends RecyclerView.Adapter<MyblogReviewImageItemViewHolder> implements View.OnClickListener {
@@ -338,16 +341,10 @@ public class MyBlogActivity extends BaseActivity {
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-//        RecyclerView reviewImageRecyclerView = (RecyclerView) itemView.findViewById(R.id.myblog_review_image_recyler);
         myReviewImageRecyclerView.setLayoutManager(layoutManager);
+
         final MyblogReviewImageRecyclerViewDataAdapter myblogReviewImageRecyclerViewDataAdapter = new MyblogReviewImageRecyclerViewDataAdapter(myblogReviewImageItemList);
         myReviewImageRecyclerView.setAdapter(myblogReviewImageRecyclerViewDataAdapter);
-        myReviewImageRecyclerView.setFocusable(false);
-        myReviewImageRecyclerView.scrollToPosition(0);
-        myReviewImageRecyclerView.setNestedScrollingEnabled(false);
-        myReviewImageRecyclerView.setHasFixedSize(true);
-        myReviewImageRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 15, 0, 0));
-
 
         myReviewImageRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 

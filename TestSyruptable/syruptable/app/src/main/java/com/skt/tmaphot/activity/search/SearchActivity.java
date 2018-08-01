@@ -1,5 +1,6 @@
 package com.skt.tmaphot.activity.search;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -10,9 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.BaseActivity;
@@ -20,6 +23,8 @@ import com.skt.tmaphot.common.CommonUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 
 public class SearchActivity extends BaseActivity {
 
@@ -28,7 +33,7 @@ public class SearchActivity extends BaseActivity {
     private List<Fragment> searchFragmentList = new ArrayList<Fragment>();
     private TabLayout tabLayout;
     private EditText searchEdit;
-    private final String KEYWORD = "keyword";
+    public final static String SAVE_KEYWORD_NAME = "keyword";
 
 
     @Override
@@ -102,10 +107,46 @@ public class SearchActivity extends BaseActivity {
         }
     }
 
-    private void searchAction(String keyword){
-        if(searchFragmentList.get(1) != null){
-            ((LatestSearchWordFragment)searchFragmentList.get(1)).saveSearchKeyword(keyword);
-            CommonUtil.getInstance().savePreferencesString(this, keyword, CommonUtil.getInstance().getCurrenTime(), keyword);
+    private void searchAction(String keyword) {
+        if (searchFragmentList.get(1) != null) {
+            ((LatestSearchWordFragment) searchFragmentList.get(1)).saveSearchKeyword(keyword);
+
+//            boolean isDuplicate = false;
+//            String duplicateKey = null;
+//
+//            SharedPreferences sp = getSharedPreferences(SAVE_KEYWORD_NAME, MODE_PRIVATE);
+//            Map<String, ?> allEntries = sp.getAll();
+//
+//            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+//                Log.d("KEYWORD", entry.getKey().toString() + ": " + entry.getValue().toString() + "/n");
+//
+//                if (entry.getValue().toString().equals(keyword)) {
+//
+//                    //지우고 다시 추가
+//                    isDuplicate = true;
+//                    duplicateKey = entry.getKey();
+//
+//                }
+//            }
+//
+//            if (!isDuplicate) {
+//                //테이블명, key값, value(검색어)
+//                CommonUtil.getInstance().savePreferencesString(this, SAVE_KEYWORD_NAME, CommonUtil.getInstance().getCurrenTime(), keyword);
+//            }else{
+//
+//                CommonUtil.getInstance().removePreferences(this, SAVE_KEYWORD_NAME, duplicateKey);
+//                CommonUtil.getInstance().savePreferencesString(this, SAVE_KEYWORD_NAME, CommonUtil.getInstance().getCurrenTime(), keyword);
+//            }
+//
+//
+//
+//
+//            SharedPreferences temp = getSharedPreferences(SAVE_KEYWORD_NAME, MODE_PRIVATE);
+//            Map<String, ?> test = temp.getAll();
+//
+//            for (Map.Entry<String, ?> entry : test.entrySet()) {
+//                Log.d("KEYWORD", "[===]"+ entry.getKey().toString() + ": " + entry.getValue().toString() + "/n");
+//            }
         }
     }
 
@@ -128,5 +169,28 @@ public class SearchActivity extends BaseActivity {
 //        mSectionsPagerAdapter.notifyDataSetChanged();
 ////        mViewPager.invalidate();
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.home) {
+            finish();
+            return true;
+        }
+
+        if (id == R.id.action_map) {
+            return true;
+        }
+
+        if (id == R.id.action_alarm) {
+
+            CommonUtil.getInstance().removeAllPreferences(this, SAVE_KEYWORD_NAME);
+            Toast.makeText(this, "삭제 함", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -148,6 +148,7 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/myblog_review_recycler"
+            android:background="@color/text_gray_d4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"

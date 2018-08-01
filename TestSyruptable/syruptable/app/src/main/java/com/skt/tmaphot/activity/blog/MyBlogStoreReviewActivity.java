@@ -1,4 +1,4 @@
-package com.skt.tmaphot.activity.main.store;
+package com.skt.tmaphot.activity.blog;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,55 +19,50 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.skt.tmaphot.BaseActivity;
 import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
-import com.skt.tmaphot.BaseActivity;
-import com.skt.tmaphot.activity.blog.MyBlogActivity;
-import com.skt.tmaphot.activity.review.ReviewWriteActivity;
+import com.skt.tmaphot.activity.main.store.StoreInfoImageViewActivity;
+import com.skt.tmaphot.activity.main.store.StoreInfoImageViewPager;
 import com.skt.tmaphot.common.CommonUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StoreInfoActivity extends BaseActivity {
+public class MyBlogStoreReviewActivity extends BaseActivity {
 
-    private Context mContext;
+    private NestedScrollView nestedScrollView;
 
     //상단 메인 이미지
-    private StoreInfoActivity.SectionsPagerAdapter mSectionsPagerAdapter;
+    private MyBlogStoreReviewActivity.SectionsPagerAdapter mSectionsPagerAdapter;
     private StoreInfoImageViewPager mViewPager;
     private List<String> imageUrlList;
     private TextView imageCounttxt;
-    private LinearLayout reviewLayout;
 
-
-    // 상점 리뷰사진 모음 리스트
-    private RecyclerView storeInfoReviewRecyclerView;
-    private StoreInfoRecyclerViewDataAdapter storeInfoRecyclerViewDataAdapter;
-    private StoreInfoItem storeInfoItem;
+//    // 상점 리뷰사진 모음 리스트
+//    private RecyclerView storeInfoReviewRecyclerView;
+//    private StoreInfoRecyclerViewDataAdapter storeInfoRecyclerViewDataAdapter;
+//    private StoreInfoItem storeInfoItem;
 
     //리뷰리스트
     private RecyclerView reviewRecyclerView;
     private ReviewRecyclerViewAdapter reviewRecyclerViewAdapter;
     private List<ReviewItem> reviewItemList;
 
-    //소셜 리뷰리스트
-    private RecyclerView socialReviewRecyclerView;
-    private SocialReviewRecyclerViewAdapter socialReviewRecyclerViewAdapter;
-    private List<SocialReviewItem> socialReviewItemList;
+//    //소셜 리뷰리스트
+//    private RecyclerView socialReviewRecyclerView;
+//    private SocialReviewRecyclerViewAdapter socialReviewRecyclerViewAdapter;
+//    private List<SocialReviewItem> socialReviewItemList;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mContext = this;
-
-        setContentView(R.layout.activity_storeinfo_layout);
+        setContentView(R.layout.activity_myblog_storereview_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -78,15 +74,7 @@ public class StoreInfoActivity extends BaseActivity {
         // 임시 메인 이미지 큰거만 뽑음
         setData();
 
-
-        reviewLayout = (LinearLayout)findViewById(R.id.storeinfo_info_review);
-        reviewLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MainApplication.ActivityStart(new Intent(mContext, ReviewWriteActivity.class), null);
-            }
-        });
-        mSectionsPagerAdapter = new StoreInfoActivity.SectionsPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter = new MyBlogStoreReviewActivity.SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (StoreInfoImageViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
@@ -118,6 +106,44 @@ public class StoreInfoActivity extends BaseActivity {
 
         imageCounttxt = (TextView)findViewById(R.id.storeinfo_image_count_txt);
 
+
+
+        nestedScrollView = (NestedScrollView)findViewById(R.id.scroll_view);
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+
+                if (scrollY > oldScrollY) {
+                    Log.i("TAAA", "Scroll DOWN");
+                }
+                if (scrollY < oldScrollY) {
+                    Log.i("TAAA", "Scroll UP");
+                }
+
+                if (scrollY == 0) {
+                    Log.i("TAAA", "TOP SCROLL");
+                }
+
+                Log.i("TAAAB", "scrollY :" + scrollY);
+                Log.i("TAAAB", "v.getChildAt(0).getMeasuredHeight()" + v.getChildAt(0).getMeasuredHeight());
+                Log.i("TAAAB", "v.getMeasuredHeight() :" +  v.getMeasuredHeight());
+
+                if ( scrollY == ((v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()))) {
+                    Log.i("TAAAB", "BOTTOM SCROLL");
+//                    Log.i("TAAAB", "scrollY :" + scrollY);
+//                    Log.i("TAAAB", "v.getChildAt(0).getMeasuredHeight()" + v.getChildAt(0).getMeasuredHeight());
+//                    Log.i("TAAAB", "v.getMeasuredHeight() :" +  v.getMeasuredHeight());
+
+
+                    tempLoad();
+
+//                    loadHotplaceItem(ishotplaceModeDistance);
+                }
+            }
+        });
+
+
+
 //        int greenColor = getResources().getColor(R.color.black_40filter);
 //        String color = "#"+Integer.toHexString(greenColor);
 //
@@ -130,11 +156,11 @@ public class StoreInfoActivity extends BaseActivity {
 
         getIninData();
 
-        setStoreInfo();
+//        setStoreInfo();
 
         setReview();
 
-        setSocialReview();
+//        setSocialReview();
 
     } //END
 
@@ -174,8 +200,8 @@ public class StoreInfoActivity extends BaseActivity {
         public PlaceholderFragment() {
         }
 
-        public static StoreInfoActivity.PlaceholderFragment newInstance(int sectionNumber, String sectionUrl) {
-            StoreInfoActivity.PlaceholderFragment fragment = new StoreInfoActivity.PlaceholderFragment();
+        public static MyBlogStoreReviewActivity.PlaceholderFragment newInstance(int sectionNumber, String sectionUrl) {
+            MyBlogStoreReviewActivity.PlaceholderFragment fragment = new MyBlogStoreReviewActivity.PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             args.putString(ARG_SECTION_URL, sectionUrl);
@@ -334,7 +360,7 @@ public class StoreInfoActivity extends BaseActivity {
 
 //            System.out.println(getPosition());
 //            Intent intent = ;
-            startActivity(new Intent(StoreInfoActivity.this , StoreInfoImageViewActivity.class));
+            startActivity(new Intent(MyBlogStoreReviewActivity.this , StoreInfoImageViewActivity.class));
         }
     }
 
@@ -417,7 +443,7 @@ public class StoreInfoActivity extends BaseActivity {
                 public void onClick(View v) {
                     Toast.makeText(mContext, String.format("%d 선택", position + 1), Toast.LENGTH_SHORT).show();
                     //////////////////////////////////////////////// 임시 ////////////////////////////////////////////////
-                    startActivity(new Intent(StoreInfoActivity.this, MyBlogActivity.class));
+                    startActivity(new Intent(MyBlogStoreReviewActivity.this, MyBlogActivity.class));
                     //////////////////////////////////////////////////// 임시 ///////////////////////////////////////////////
                 }
             });
@@ -514,70 +540,70 @@ public class StoreInfoActivity extends BaseActivity {
     }
 
 
-    private void setStoreInfo() {
-
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        storeInfoReviewRecyclerView = (RecyclerView) findViewById(R.id.storeinfo_review_recycler_view);
-        storeInfoReviewRecyclerView.setLayoutManager(layoutManager);
-        storeInfoRecyclerViewDataAdapter = new StoreInfoRecyclerViewDataAdapter(storeInfoItem);
-        storeInfoReviewRecyclerView.setAdapter(storeInfoRecyclerViewDataAdapter);
-        storeInfoReviewRecyclerView.setFocusable(false);
-        storeInfoReviewRecyclerView.scrollToPosition(0);
-        storeInfoReviewRecyclerView.setNestedScrollingEnabled(false);
-        storeInfoReviewRecyclerView.setHasFixedSize(true);
-        storeInfoReviewRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 15, 0, 0));
-
-
-        storeInfoReviewRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-
-                Log.d("YYY", "onScrolled");
-
-                super.onScrolled(recyclerView, dx, dy);
-
-                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-
-                int firstCompleteVisibleItemPosition = -1;
-                int lastCompleteVisibleItemPosition = -1;
-                int visibleItemCount = layoutManager.getChildCount();
-                int totalItemCount = layoutManager.getItemCount();
-
-                if (layoutManager instanceof GridLayoutManager) {
-                    GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
-                    firstCompleteVisibleItemPosition = gridLayoutManager.findFirstCompletelyVisibleItemPosition();
-                    lastCompleteVisibleItemPosition = gridLayoutManager.findLastCompletelyVisibleItemPosition();
-                } else if (layoutManager instanceof LinearLayoutManager) {
-                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
-                    firstCompleteVisibleItemPosition = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
-                    lastCompleteVisibleItemPosition = linearLayoutManager.findLastCompletelyVisibleItemPosition();
-                }
-
-                String message = "";
-
-                if (lastCompleteVisibleItemPosition == (totalItemCount - 1 -2)) {
-                    Log.d("YYY", "lastCompleteVisibleItemPosition : " + lastCompleteVisibleItemPosition);
-                    Log.d("YYY", "totalItemCount : " + (totalItemCount - 1));
-                    if (dy > 0 || dx > 0) {
-
-                        if (dy > 0) {
-                            Log.d("YYY", "Scroll to top");
-                            loadData(false);
-                        }
-
-
-                        if (dx > 0) {
-                            Log.d("YYY", "Scroll to left");
-                            loadData(false);
-                        }
-                    }
-                }
-            }
-
-        });
-    }
+//    private void setStoreInfo() {
+//
+//        GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
+//        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+//        storeInfoReviewRecyclerView = (RecyclerView) findViewById(R.id.storeinfo_review_recycler_view);
+//        storeInfoReviewRecyclerView.setLayoutManager(layoutManager);
+//        storeInfoRecyclerViewDataAdapter = new StoreInfoRecyclerViewDataAdapter(storeInfoItem);
+//        storeInfoReviewRecyclerView.setAdapter(storeInfoRecyclerViewDataAdapter);
+//        storeInfoReviewRecyclerView.setFocusable(false);
+//        storeInfoReviewRecyclerView.scrollToPosition(0);
+//        storeInfoReviewRecyclerView.setNestedScrollingEnabled(false);
+//        storeInfoReviewRecyclerView.setHasFixedSize(true);
+//        storeInfoReviewRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 15, 0, 0));
+//
+//
+//        storeInfoReviewRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//
+//                Log.d("YYY", "onScrolled");
+//
+//                super.onScrolled(recyclerView, dx, dy);
+//
+//                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+//
+//                int firstCompleteVisibleItemPosition = -1;
+//                int lastCompleteVisibleItemPosition = -1;
+//                int visibleItemCount = layoutManager.getChildCount();
+//                int totalItemCount = layoutManager.getItemCount();
+//
+//                if (layoutManager instanceof GridLayoutManager) {
+//                    GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
+//                    firstCompleteVisibleItemPosition = gridLayoutManager.findFirstCompletelyVisibleItemPosition();
+//                    lastCompleteVisibleItemPosition = gridLayoutManager.findLastCompletelyVisibleItemPosition();
+//                } else if (layoutManager instanceof LinearLayoutManager) {
+//                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
+//                    firstCompleteVisibleItemPosition = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
+//                    lastCompleteVisibleItemPosition = linearLayoutManager.findLastCompletelyVisibleItemPosition();
+//                }
+//
+//                String message = "";
+//
+//                if (lastCompleteVisibleItemPosition == (totalItemCount - 1 -2)) {
+//                    Log.d("YYY", "lastCompleteVisibleItemPosition : " + lastCompleteVisibleItemPosition);
+//                    Log.d("YYY", "totalItemCount : " + (totalItemCount - 1));
+//                    if (dy > 0 || dx > 0) {
+//
+//                        if (dy > 0) {
+//                            Log.d("YYY", "Scroll to top");
+//                            loadData(false);
+//                        }
+//
+//
+//                        if (dx > 0) {
+//                            Log.d("YYY", "Scroll to left");
+//                            loadData(false);
+//                        }
+//                    }
+//                }
+//            }
+//
+//        });
+//    }
 
 
     private void setReview() {
@@ -585,7 +611,7 @@ public class StoreInfoActivity extends BaseActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        reviewRecyclerView = (RecyclerView) findViewById(R.id.review_recycler_view);
+        reviewRecyclerView = (RecyclerView) findViewById(R.id.myblog_storereview_recycler_view);
         reviewRecyclerView.setLayoutManager(layoutManager);
         reviewRecyclerViewAdapter = new ReviewRecyclerViewAdapter(reviewItemList);
         reviewRecyclerView.setAdapter(reviewRecyclerViewAdapter);
@@ -595,20 +621,20 @@ public class StoreInfoActivity extends BaseActivity {
 
     }
 
-    private void setSocialReview() {
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
-        socialReviewRecyclerView = (RecyclerView) findViewById(R.id.socialreview_recycler_view);
-        socialReviewRecyclerView.setLayoutManager(layoutManager);
-        socialReviewRecyclerViewAdapter = new SocialReviewRecyclerViewAdapter(socialReviewItemList);
-        socialReviewRecyclerView.setAdapter(socialReviewRecyclerViewAdapter);
-        socialReviewRecyclerView.setFocusable(false);
-        socialReviewRecyclerView.setHasFixedSize(true);
-        socialReviewRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 0, 1, 0));
-    }
-
+//    private void setSocialReview() {
+//
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+//        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//
+//        socialReviewRecyclerView = (RecyclerView) findViewById(R.id.socialreview_recycler_view);
+//        socialReviewRecyclerView.setLayoutManager(layoutManager);
+//        socialReviewRecyclerViewAdapter = new SocialReviewRecyclerViewAdapter(socialReviewItemList);
+//        socialReviewRecyclerView.setAdapter(socialReviewRecyclerViewAdapter);
+//        socialReviewRecyclerView.setFocusable(false);
+//        socialReviewRecyclerView.setHasFixedSize(true);
+//        socialReviewRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 0, 1, 0));
+//    }
+//
     private void getIninData() {
 
 
@@ -620,19 +646,19 @@ public class StoreInfoActivity extends BaseActivity {
         mainImageURL.add("http://thumb.mt.co.kr/06/2018/01/2018011114325360998_1.jpg");
 
 
-        List<String> storeInforeviewImageURL = new ArrayList<String>();
-        storeInforeviewImageURL.add("http://1.bp.blogspot.com/-yumuFZdegok/VHNwRS1VqsI/AAAAAAAAFlw/D-RYW3jbWIY/s1600/%EC%A4%91%EA%B5%AD%2B%EA%B5%AC%EC%B1%84%EA%B5%AC%2B%EA%B0%80%EC%9D%84%2B%ED%92%8D%EA%B2%BD.jpg");
-        storeInforeviewImageURL.add("http://1.bp.blogspot.com/-yumuFZdegok/VHNwRS1VqsI/AAAAAAAAFlw/D-RYW3jbWIY/s1600/%EC%A4%91%EA%B5%AD%2B%EA%B5%AC%EC%B1%84%EA%B5%AC%2B%EA%B0%80%EC%9D%84%2B%ED%92%8D%EA%B2%BD.jpg");
-        storeInforeviewImageURL.add("http://1.bp.blogspot.com/-yumuFZdegok/VHNwRS1VqsI/AAAAAAAAFlw/D-RYW3jbWIY/s1600/%EC%A4%91%EA%B5%AD%2B%EA%B5%AC%EC%B1%84%EA%B5%AC%2B%EA%B0%80%EC%9D%84%2B%ED%92%8D%EA%B2%BD.jpg");
-        storeInforeviewImageURL.add("http://1.bp.blogspot.com/-yumuFZdegok/VHNwRS1VqsI/AAAAAAAAFlw/D-RYW3jbWIY/s1600/%EC%A4%91%EA%B5%AD%2B%EA%B5%AC%EC%B1%84%EA%B5%AC%2B%EA%B0%80%EC%9D%84%2B%ED%92%8D%EA%B2%BD.jpg");
-        storeInforeviewImageURL.add("http://1.bp.blogspot.com/-yumuFZdegok/VHNwRS1VqsI/AAAAAAAAFlw/D-RYW3jbWIY/s1600/%EC%A4%91%EA%B5%AD%2B%EA%B5%AC%EC%B1%84%EA%B5%AC%2B%EA%B0%80%EC%9D%84%2B%ED%92%8D%EA%B2%BD.jpg");
-        storeInforeviewImageURL.add("http://1.bp.blogspot.com/-yumuFZdegok/VHNwRS1VqsI/AAAAAAAAFlw/D-RYW3jbWIY/s1600/%EC%A4%91%EA%B5%AD%2B%EA%B5%AC%EC%B1%84%EA%B5%AC%2B%EA%B0%80%EC%9D%84%2B%ED%92%8D%EA%B2%BD.jpg");
-        storeInforeviewImageURL.add("http://1.bp.blogspot.com/-yumuFZdegok/VHNwRS1VqsI/AAAAAAAAFlw/D-RYW3jbWIY/s1600/%EC%A4%91%EA%B5%AD%2B%EA%B5%AC%EC%B1%84%EA%B5%AC%2B%EA%B0%80%EC%9D%84%2B%ED%92%8D%EA%B2%BD.jpg");
-        storeInforeviewImageURL.add("http://1.bp.blogspot.com/-yumuFZdegok/VHNwRS1VqsI/AAAAAAAAFlw/D-RYW3jbWIY/s1600/%EC%A4%91%EA%B5%AD%2B%EA%B5%AC%EC%B1%84%EA%B5%AC%2B%EA%B0%80%EC%9D%84%2B%ED%92%8D%EA%B2%BD.jpg");
-        storeInforeviewImageURL.add("http://1.bp.blogspot.com/-yumuFZdegok/VHNwRS1VqsI/AAAAAAAAFlw/D-RYW3jbWIY/s1600/%EC%A4%91%EA%B5%AD%2B%EA%B5%AC%EC%B1%84%EA%B5%AC%2B%EA%B0%80%EC%9D%84%2B%ED%92%8D%EA%B2%BD.jpg");
-
-
-        storeInfoItem = new StoreInfoItem(mainImageURL, storeInforeviewImageURL);
+//        List<String> storeInforeviewImageURL = new ArrayList<String>();
+//        storeInforeviewImageURL.add("http://1.bp.blogspot.com/-yumuFZdegok/VHNwRS1VqsI/AAAAAAAAFlw/D-RYW3jbWIY/s1600/%EC%A4%91%EA%B5%AD%2B%EA%B5%AC%EC%B1%84%EA%B5%AC%2B%EA%B0%80%EC%9D%84%2B%ED%92%8D%EA%B2%BD.jpg");
+//        storeInforeviewImageURL.add("http://1.bp.blogspot.com/-yumuFZdegok/VHNwRS1VqsI/AAAAAAAAFlw/D-RYW3jbWIY/s1600/%EC%A4%91%EA%B5%AD%2B%EA%B5%AC%EC%B1%84%EA%B5%AC%2B%EA%B0%80%EC%9D%84%2B%ED%92%8D%EA%B2%BD.jpg");
+//        storeInforeviewImageURL.add("http://1.bp.blogspot.com/-yumuFZdegok/VHNwRS1VqsI/AAAAAAAAFlw/D-RYW3jbWIY/s1600/%EC%A4%91%EA%B5%AD%2B%EA%B5%AC%EC%B1%84%EA%B5%AC%2B%EA%B0%80%EC%9D%84%2B%ED%92%8D%EA%B2%BD.jpg");
+//        storeInforeviewImageURL.add("http://1.bp.blogspot.com/-yumuFZdegok/VHNwRS1VqsI/AAAAAAAAFlw/D-RYW3jbWIY/s1600/%EC%A4%91%EA%B5%AD%2B%EA%B5%AC%EC%B1%84%EA%B5%AC%2B%EA%B0%80%EC%9D%84%2B%ED%92%8D%EA%B2%BD.jpg");
+//        storeInforeviewImageURL.add("http://1.bp.blogspot.com/-yumuFZdegok/VHNwRS1VqsI/AAAAAAAAFlw/D-RYW3jbWIY/s1600/%EC%A4%91%EA%B5%AD%2B%EA%B5%AC%EC%B1%84%EA%B5%AC%2B%EA%B0%80%EC%9D%84%2B%ED%92%8D%EA%B2%BD.jpg");
+//        storeInforeviewImageURL.add("http://1.bp.blogspot.com/-yumuFZdegok/VHNwRS1VqsI/AAAAAAAAFlw/D-RYW3jbWIY/s1600/%EC%A4%91%EA%B5%AD%2B%EA%B5%AC%EC%B1%84%EA%B5%AC%2B%EA%B0%80%EC%9D%84%2B%ED%92%8D%EA%B2%BD.jpg");
+//        storeInforeviewImageURL.add("http://1.bp.blogspot.com/-yumuFZdegok/VHNwRS1VqsI/AAAAAAAAFlw/D-RYW3jbWIY/s1600/%EC%A4%91%EA%B5%AD%2B%EA%B5%AC%EC%B1%84%EA%B5%AC%2B%EA%B0%80%EC%9D%84%2B%ED%92%8D%EA%B2%BD.jpg");
+//        storeInforeviewImageURL.add("http://1.bp.blogspot.com/-yumuFZdegok/VHNwRS1VqsI/AAAAAAAAFlw/D-RYW3jbWIY/s1600/%EC%A4%91%EA%B5%AD%2B%EA%B5%AC%EC%B1%84%EA%B5%AC%2B%EA%B0%80%EC%9D%84%2B%ED%92%8D%EA%B2%BD.jpg");
+//        storeInforeviewImageURL.add("http://1.bp.blogspot.com/-yumuFZdegok/VHNwRS1VqsI/AAAAAAAAFlw/D-RYW3jbWIY/s1600/%EC%A4%91%EA%B5%AD%2B%EA%B5%AC%EC%B1%84%EA%B5%AC%2B%EA%B0%80%EC%9D%84%2B%ED%92%8D%EA%B2%BD.jpg");
+//
+//
+//        storeInfoItem = new StoreInfoItem(mainImageURL, storeInforeviewImageURL);
 
 
         // dummydata
@@ -640,39 +666,68 @@ public class StoreInfoActivity extends BaseActivity {
         reviewItemList.add(new ReviewItem("http://image.chosun.com/sitedata/image/201711/28/2017112802484_0.jpg", "", "", "", ""));
         reviewItemList.add(new ReviewItem("http://image.chosun.com/sitedata/image/201711/28/2017112802484_0.jpg", "", "", "", ""));
 
-        // dummydata
-        socialReviewItemList = new ArrayList<SocialReviewItem>();
-        socialReviewItemList.add(new SocialReviewItem("http://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg", "", "", "", ""));
-        socialReviewItemList.add(new SocialReviewItem("http://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg", "", "", "", ""));
+//        // dummydata
+//        socialReviewItemList = new ArrayList<SocialReviewItem>();
+//        socialReviewItemList.add(new SocialReviewItem("http://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg", "", "", "", ""));
+//        socialReviewItemList.add(new SocialReviewItem("http://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg", "", "", "", ""));
     }
 
-    private void loadData(final boolean insertDataAtBeginning) {
-        Log.d("YYY", "loadData");
+//    private void loadData(final boolean insertDataAtBeginning) {
+//        Log.d("YYY", "loadData");
+//
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                int currItemListSize = storeInfoItem.getStoreInfoReviewImageList().size();
+//                int newItemIndex = 0;
+//                int loadMoreItemCount = 5;
+//
+//                // Only add one RecyclerView item.
+//                for (int i = currItemListSize; i < currItemListSize + loadMoreItemCount; i++) {
+//
+//                    String newViewItem = "https://www.lwt.co.kr/datas/factory/main_img/006059";
+//
+//
+//                    if (insertDataAtBeginning) {
+//                        storeInfoItem.getStoreInfoReviewImageList().add(i - currItemListSize, newViewItem);
+//                        newItemIndex = 0;
+//                    } else {
+//                        storeInfoItem.getStoreInfoReviewImageList().add(newViewItem);
+//                        newItemIndex = storeInfoItem.getStoreInfoReviewImageList().size() - 1;
+//                    }
+//                }
+//
+//                Log.d("YYY", "loadData END");
+//                storeInfoRecyclerViewDataAdapter.notifyDataSetChanged();
+//            }
+//        });
+//    }
+
+
+
+    void tempLoad(){
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                int currItemListSize = storeInfoItem.getStoreInfoReviewImageList().size();
-                int newItemIndex = 0;
-                int loadMoreItemCount = 5;
+//                // dummydata
+////                myReviewItemList = new ArrayList<MyReviewItem>(); // 이건 new하면 안됨
+//                myblogReviewImageItemList = new ArrayList<>();
+//
+//                myblogReviewImageItemList.add(new MyblogReviewImageItem("id","https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
+//                myblogReviewImageItemList.add(new MyblogReviewImageItem("id","https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
+//                myblogReviewImageItemList.add(new MyblogReviewImageItem("id","https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
+//                myblogReviewImageItemList.add(new MyblogReviewImageItem("id","https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
+//                myblogReviewImageItemList.add(new MyblogReviewImageItem("id","https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
+//                myblogReviewImageItemList.add(new MyblogReviewImageItem("id","https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
+//                myblogReviewImageItemList.add(new MyblogReviewImageItem("id","https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
+//                myblogReviewImageItemList.add(new MyblogReviewImageItem("id","https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
+                //
+                reviewItemList.add(new ReviewItem("http://image.chosun.com/sitedata/image/201711/28/2017112802484_0.jpg", "", "", "", ""));
 
-                // Only add one RecyclerView item.
-                for (int i = currItemListSize; i < currItemListSize + loadMoreItemCount; i++) {
+//                myReviewRecyclerViewAdapter = new MyReviewRecyclerViewAdapter(myReviewItemList);
 
-                    String newViewItem = "https://www.lwt.co.kr/datas/factory/main_img/006059";
-
-
-                    if (insertDataAtBeginning) {
-                        storeInfoItem.getStoreInfoReviewImageList().add(i - currItemListSize, newViewItem);
-                        newItemIndex = 0;
-                    } else {
-                        storeInfoItem.getStoreInfoReviewImageList().add(newViewItem);
-                        newItemIndex = storeInfoItem.getStoreInfoReviewImageList().size() - 1;
-                    }
-                }
-
-                Log.d("YYY", "loadData END");
-                storeInfoRecyclerViewDataAdapter.notifyDataSetChanged();
+                reviewRecyclerViewAdapter.notifyDataSetChanged();
             }
         });
     }

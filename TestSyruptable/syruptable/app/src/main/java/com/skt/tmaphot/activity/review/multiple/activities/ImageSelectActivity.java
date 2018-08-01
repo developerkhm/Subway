@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -304,6 +305,7 @@ public class ImageSelectActivity extends HelperActivity {
         for (int i = 0, l = images.size(); i < l; i++) {
             if (images.get(i).isSelected) {
                 selectedImages.add(images.get(i));
+                Log.d("UU","ImageSelectActivity : " + images.get(i).path);
             }
         }
         return selectedImages;
@@ -312,6 +314,7 @@ public class ImageSelectActivity extends HelperActivity {
     private void sendIntent() {
         Intent intent = new Intent();
         intent.putParcelableArrayListExtra(Constants.INTENT_EXTRA_IMAGES, getSelected());
+        Log.d("UU","ImageSelectActivity : setResult");
         setResult(RESULT_OK, intent);
         finish();
     }

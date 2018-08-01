@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -58,7 +59,7 @@ public class AlbumSelectActivity extends HelperActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_realreview_album_layout);
-        setView(findViewById(R.id.layout_album_select));
+//        setView(findViewById(R.id.layout_album_select));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -207,9 +208,8 @@ public class AlbumSelectActivity extends HelperActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == Constants.REQUEST_CODE
-                && resultCode == RESULT_OK
-                && data != null) {
+        if (requestCode == Constants.REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            Log.d("UU","AlbumSelectActivity : setResult");
             setResult(RESULT_OK, data);
             finish();
         }

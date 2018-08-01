@@ -1,48 +1,54 @@
 package com.skt.tmaphot.activity.review;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.skt.tmaphot.BaseActivity;
+import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.activity.review.multiple.activities.AlbumSelectActivity;
+import com.skt.tmaphot.activity.review.multiple.helpers.Constants;
+import com.skt.tmaphot.activity.review.multiple.models.Image;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
-public class ReviewWriteActivity extends AppCompatActivity {
-
-    private Handler handler = new Handler();
-
-    private Uri photoUri;
-    private String currentPhotoPath;//실제 사진 파일 경로
-    String mImageCaptureName;//이미지 이름
+public class ReviewWriteActivity extends BaseActivity {
+    ImageView img;
+    Uri takePhotoUri;
+    String mCurrentPhotoPath;
 
 
-    private final int CAMERA_CODE = 777;
-    private final int GALLERY_CODE = 888;
+    private LinearLayout tempLay;
 
-    private ImageView imgView;
+    private static final int TAKE_FROM_CAMERA = 1000; //카메라 촬영으로 사진 가져오기
+    private static final int SELECT_FROM_ALBUM = 2000; //앨범에서 사진 가져오기
+    private static final int FROM_VIDEO = 3000; //가져온 사진을 자르기 위한 변수
 
+
+    private LinearLayout addImageArea;
+    private LinearLayout addVideoArea;
+    private ImageView addImageView, addVideoView;
+    private int displayWidth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,216 +62,198 @@ public class ReviewWriteActivity extends AppCompatActivity {
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
 
-        Button btn = (Button) findViewById(R.id.btn);
-        btn.setOnClickListener(new View.OnClickListener() {
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+
+        displayWidth = metrics.widthPixels;
+
+        addImageArea = (LinearLayout) findViewById(R.id.activity_reviewwrite_upload_image_area);
+        addVideoArea = (LinearLayout) findViewById(R.id.activity_reviewwrite_upload_video_area);
+        Button takePhotoBtn = (Button) findViewById(R.id.activity_reviewwrite_take_capture);
+        takePhotoBtn.setOnClickListener(onClickListener);
+        Button takeVideoBtn = (Button) findViewById(R.id.activity_reviewwrite_take_video);
+        takeVideoBtn.setOnClickListener(onClickListener);
+
+        addImageView = new ImageView(this);
+        addImageView.setBackgroundColor(Color.BLACK);
+        addImageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        addImageView.getLayoutParams().width = displayWidth / 3;
+        addImageView.getLayoutParams().height = displayWidth / 3;
+        addImageView.requestLayout();
+        addImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectPhoto();
             }
         });
 
-        Button btn1 = (Button) findViewById(R.id.btn1);
-        btn1.setOnClickListener(new View.OnClickListener() {
+        addImageArea.addView(addImageView);
+
+        addVideoView = new ImageView(this);
+        addVideoView.setBackgroundColor(Color.BLACK);
+        addVideoView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        addVideoView.getLayoutParams().width = displayWidth / 3;
+        addVideoView.getLayoutParams().height = displayWidth / 3;
+        addVideoView.requestLayout();
+        addVideoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selectGallery();
+                selectVideo();
             }
         });
 
+        addVideoArea.addView(addVideoView);
 
-        imgView = (ImageView) findViewById(R.id.img);
+    } /////////////////END
 
-    }//END
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+            switch (view.getId()) {
+                case R.id.activity_reviewwrite_take_capture:
+                    takePhoto();
+                    break;
+
+                case R.id.activity_reviewwrite_take_video:
+                    takeVideo();
+                    break;
+            }
+        }
+    };
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK) {
+        Log.d("UU", "ReviewActivity3 : onActivityResult requestCode :" + requestCode);
+        switch (requestCode) {
+            case TAKE_FROM_CAMERA:
 
-            switch (requestCode) {
+                try {
 
-                case GALLERY_CODE:
-                    sendPicture(data.getData()); //갤러리에서 가져오기
-                    break;
-                case CAMERA_CODE:
+//                    Log.d("AAAB","TAKE_FROM_CAMERA" + takePhotoUri.toString());
+//                    Log.d("AAAB","TAKE_FROM_CAMERA" + takePhotoUri.getPath());
+
+                    MainApplication.loadUriImage(this, takePhotoUri, creatImageView(false));
+
+                    // 갤러리 이미지 갱신
+                    Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                    File f = new File(mCurrentPhotoPath);
+                    Uri contentUri = Uri.fromFile(f);
+                    mediaScanIntent.setData(contentUri);
+                    this.sendBroadcast(mediaScanIntent);
+                } catch (Exception e) {
+                    Log.e("ERROR", e.getMessage().toString());
+                }
+                addImageArea.addView(addImageView);
+                break;
+            case SELECT_FROM_ALBUM:
+
+                ArrayList<Image> imageList = data.getParcelableArrayListExtra(Constants.INTENT_EXTRA_IMAGES);
+//                Log.d("AAAB","SELECT_FROM_ALBUM" + imageList.get(0).path);
+//                Log.d("AAAB","SELECT_FROM_ALBUM" + Uri.parse(imageList.get(0).path));
+
+                for (Image image : imageList) {
+                    MainApplication.loadUriImage(this, Uri.fromFile(new File(image.path)), creatImageView(false));
+                }
+                addImageArea.addView(addImageView);
+                break;
+
+            case FROM_VIDEO:
+                Uri videoUri = data.getData();
+//                Log.d("AAAB","FROM_VIDEO" + videoUri.toString());
+//                Log.d("AAAB","FROM_VIDEO" + videoUri.getPath());
+                MainApplication.loadUriImage(this, videoUri, creatImageView(true));
+                addVideoArea.addView(addVideoView);
+                break;
 
 
-//                    Bundle extras = data.getExtras();
-//                    Bitmap imageBitmap = (Bitmap) extras.get("data");
-//                    imgView.setImageBitmap(imageBitmap);
-
-
-//                    getPictureForPhoto(); //카메라에서 가져오기
-                    break;
-
-                default:
-                    break;
-            }
         }
     }
 
-
-    // 갤러리 열기
-    private void selectGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*");
-        startActivityForResult(intent, GALLERY_CODE);
-    }
-
-    // 갤러리에서 선택한 사진
-    private void sendPicture(Uri imgUri) {
-
-        String imagePath = getRealPathFromURI(imgUri); // path 경로
-        ExifInterface exif = null;
+    private void takePhoto() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File photoFile = null;
         try {
-            exif = new ExifInterface(imagePath);
+            photoFile = createImageFile();
+            mCurrentPhotoPath = photoFile.getAbsolutePath();
+
         } catch (IOException e) {
-            e.printStackTrace();
+            Toast.makeText(ReviewWriteActivity.this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+            finish();
         }
-        int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-        int exifDegree = exifOrientationToDegrees(exifOrientation);
-
-        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);//경로를 통해 비트맵으로 전환
-
-        ///////////////////////////
-        imgView.setImageBitmap(rotate(bitmap, exifDegree));//이미지 뷰에 비트맵 넣기
-
+        if (photoFile != null) {
+            takePhotoUri = FileProvider.getUriForFile(ReviewWriteActivity.this, "com.skt.tmaphot.provider", photoFile); //FileProvider의 경우 이전 포스트를 참고하세요.
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, takePhotoUri); //사진을 찍어 해당 Content uri를 photoUri에 적용시키기 위함
+            startActivityForResult(intent, TAKE_FROM_CAMERA);
+        }
     }
 
-
-    // 카메라 열기
     private void selectPhoto() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-            }
-
-            if (photoFile != null) {
-                photoUri = FileProvider.getUriForFile(this, getPackageName(), photoFile);
-
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                startActivityForResult(takePictureIntent, CAMERA_CODE);
-            }
-        }
+        Intent intent = new Intent(this, AlbumSelectActivity.class);
+        intent.putExtra(Constants.INTENT_EXTRA_LIMIT, 10);
+        startActivityForResult(intent, Constants.REQUEST_CODE);
     }
 
-    // 임시파일 생성
+    private void takeVideo() {
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0); //동영상 품질
+//      intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 111); //동영상 시간 제한
+        intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, (long) (1024 * 1024 * 4)); //동영상 용량 제한
+        //동영상 저장 경로
+//      String mImageMovieUri = "/sdcard/Download/exam/";
+//      intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,mImageMovieUri);
+        startActivityForResult(intent, FROM_VIDEO);
+    }
+
+    private void selectVideo() {
+        Intent intent = new Intent(Intent.ACTION_PICK); //ACTION_PICK 즉 사진을 고르겠다!
+        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+        intent.setType("video/*");
+        startActivityForResult(intent, FROM_VIDEO);
+    }
+
     private File createImageFile() throws IOException {
-        File dir = new File(Environment.getExternalStorageDirectory() + "/Pictures","syruptable");
-        if (!dir.exists()) {
-            dir.mkdirs();
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
+        String imageFileName = "IP" + timeStamp + "_";
+        File storageDir = new File(Environment.getExternalStorageDirectory() + "/test/"); //test라는 경로에 이미지를 저장하기 위함
+        if (!storageDir.exists()) {
+            storageDir.mkdirs();
         }
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        mImageCaptureName = timeStamp + ".png";
-
-        File storageDir = new File(Environment.getExternalStorageDirectory().getAbsoluteFile() + "/Pictures/syruptable"
-
-                + mImageCaptureName);
-        currentPhotoPath = storageDir.getAbsolutePath();
-        Log.d("HHH", currentPhotoPath);
-
-        return storageDir;
-
+        File image = File.createTempFile(
+                imageFileName,
+                ".jpg",
+                storageDir
+        );
+        return image;
     }
 
-    //카메라로 찍은 사진 적용
-    private void getPictureForPhoto() {
-        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath);
-        ExifInterface exif = null;
-        try {
-            exif = new ExifInterface(currentPhotoPath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        int exifOrientation;
-        int exifDegree;
-
-        if (exif != null) {
-            exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-            exifDegree = exifOrientationToDegrees(exifOrientation);
+    private ImageView creatImageView(boolean isVidio) {
+        ImageView newImageView = new ImageView(this);
+        newImageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        newImageView.getLayoutParams().width = displayWidth / 3;
+        newImageView.getLayoutParams().height = displayWidth / 3;
+        newImageView.requestLayout();
+        if (!isVidio) {
+            addImageArea.removeView(addImageView);
+            addImageArea.addView(newImageView);
         } else {
-            exifDegree = 0;
+            addVideoArea.removeView(addVideoView);
+            addVideoArea.addView(newImageView);
         }
 
-        ////////////////////////
-        imgView.setImageBitmap(rotate(bitmap, exifDegree));//이미지 뷰에 비트맵 넣기
+        return newImageView;
     }
 
-    // 사진의 회전값 가져오기
-    private int exifOrientationToDegrees(int exifOrientation) {
-        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
-            return 90;
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
-            return 180;
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
-            return 270;
-        }
-        return 0;
-    }
+//    private void goToAlbum() {
+//        Intent intent = new Intent(Intent.ACTION_PICK);
+//        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+//        startActivityForResult(intent, PICK_FROM_ALBUM);
+//    }
 
-    // 사진을 정방향대로 회전하기
-    private Bitmap rotate(Bitmap src, float degree) {
-
-        // Matrix 객체 생성
-        Matrix matrix = new Matrix();
-        // 회전 각도 셋팅
-        matrix.postRotate(degree);
-        // 이미지와 Matrix 를 셋팅해서 Bitmap 객체 생성
-        return Bitmap.createBitmap(src, 0, 0, src.getWidth(),
-                src.getHeight(), matrix, true);
-    }
-
-    // 사진의 절대경로 구하기
-    private String getRealPathFromURI(Uri contentUri) {
-        int column_index = 0;
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-        if (cursor.moveToFirst()) {
-            column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        }
-
-        return cursor.getString(column_index);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.store_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home: { //toolbar의 back키 눌렀을 때 동작
-                finish();
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }
 
 

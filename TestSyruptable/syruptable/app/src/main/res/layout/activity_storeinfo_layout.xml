@@ -170,6 +170,7 @@
 
 
             <LinearLayout
+                android:id="@+id/storeinfo_info_review"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical">

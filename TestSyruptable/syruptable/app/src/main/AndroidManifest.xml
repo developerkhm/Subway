@@ -58,9 +58,9 @@
         <activity android:name=".activity.main.review.more.RealReviewActivity"/>
         <activity android:name=".activity.main.coupon.more.CouponListActivity"/>
         <activity android:name=".activity.main.hotdeal.more.HotdealListActivity"/>
-        <activity android:name=".activity.review.ReviewWriteActivity"/>
-        <activity android:name=".activity.review.ReviewWriteActivity2"/>
+
         <activity android:name=".activity.review.ReviewWriteActivity3"/>
+        <activity android:name=".activity.review.ReviewWriteActivity"/>
         <activity android:name=".activity.review.multiple.activities.AlbumSelectActivity"/>
         <activity android:name=".activity.review.multiple.activities.HelperActivity"/>
         <activity android:name=".activity.review.multiple.activities.ImageSelectActivity"/>
@@ -73,6 +73,7 @@
         <activity android:name=".activity.search.SearchActivity" />
         <activity android:name=".activity.FoodAreaListActivity" />
         <activity android:name=".activity.blog.MyBlogActivity" />
+        <activity android:name=".activity.blog.MyBlogStoreReviewActivity" />
 
 
         <meta-data

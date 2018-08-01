@@ -1,4 +1,4 @@
-package com.skt.tmaphot.activity.review;
+package com.skt.tmaphot.temp;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ReviewWriteActivity3 extends AppCompatActivity {
+public class TempReviewWriteActivity extends AppCompatActivity {
     ImageView img;
     Uri photoUri;
     String mCurrentPhotoPath;
@@ -48,7 +48,6 @@ public class ReviewWriteActivity3 extends AppCompatActivity {
     private static final int PICK_FROM_ALBUM = 2; //앨범에서 사진 가져오기
     private static final int CROP_FROM_CAMERA = 3; //가져온 사진을 자르기 위한 변수
     private static final int PICTURE_REQUEST_CODE = -1; //가져온 사진을 자르기 위한 변수
-    private static final int VIDEO = 777; //가져온 사진을 자르기 위한 변수
     int PICK_IMAGE_MULTIPLE = 454545;
     int PICK_IMAGE_SAMSUNG = 454543335;
 
@@ -89,64 +88,10 @@ public class ReviewWriteActivity3 extends AppCompatActivity {
 //                goToAlbumMulti();
 //                imageMultiPick();
 
-                Intent intent = new Intent(ReviewWriteActivity3.this, AlbumSelectActivity.class);
+                Intent intent = new Intent(TempReviewWriteActivity.this, AlbumSelectActivity.class);
                 intent.putExtra(Constants.INTENT_EXTRA_LIMIT, 3);
                 startActivityForResult(intent, Constants.REQUEST_CODE);
 
-            }
-        });
-
-        Button btn3 = (Button) findViewById(R.id.btn3);
-        btn3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                goToAlbumMulti();
-//                imageMultiPick();
-
-//                Intent intent = new Intent(ReviewWriteActivity3.this, AlbumSelectActivity.class);
-//                intent.putExtra(Constants.INTENT_EXTRA_LIMIT, 3);
-//                startActivityForResult(intent, Constants.REQUEST_CODE);
-
-        //내장카메라 호출
-        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        //동영상 품질
-        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
-        //동영상 시간 제한
-//                intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 111);// 시간
-        //동영상 용량 제한
-        intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, (long) (1024 * 1024 * 4));// 용량
-        //동영상 저장 경로
-        String mImageMovieUri = "/sdcard/Download/exam/";
-//                intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,
-//                        mImageMovieUri);
-        startActivityForResult(intent, VIDEO);
-
-
-            }
-        });
-
-        Button btn4 = (Button) findViewById(R.id.btn4);
-        btn4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent intent = new Intent();
-//                intent.setAction(Intent.ACTION_GET_CONTENT);
-
-                Intent intent = new Intent(Intent.ACTION_PICK); //ACTION_PICK 즉 사진을 고르겠다!
-                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-
-                intent.setType("video/*");
-                startActivityForResult(intent, VIDEO);
-
-//                Uri uri = Uri.parse("file:///media/sdcard/DCIM/Camera");
-//                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-//                intent.setAction(Intent.ACTION_GET_CONTENT);
-//                intent.setType("video/*");
-//                startActivityForResult(intent, VIDEO);
-////
-//                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-//                i.setType("video/*");
-//                startActivityForResult(i, VIDEO);
             }
         });
 
@@ -161,23 +106,6 @@ public class ReviewWriteActivity3 extends AppCompatActivity {
 
         Log.d("UU", "ReviewActivity3 : onActivityResult requestCode :" + requestCode);
         switch (requestCode) {
-            case VIDEO:
-                Log.d("UUU", "VIDEO onActivityResult");
-
-                Uri videoUri = data.getData();
-                Log.d("UUU", "VIDEO :" + videoUri.getPath().toString());
-//                img.setImageURI(videoUri);
-
-                MainApplication.loadUriImage(this, videoUri, img);
-
-
-//                mVideoView.setVideoURI(videoUri);
-
-
-
-                break;
-
-
             case PICK_FROM_CAMERA:
 
                 try { //저는 bitmap 형태의 이미지로 가져오기 위해 아래와 같이 작업하였으며 Thumbnail을 추출하였습니다.
@@ -323,11 +251,11 @@ public class ReviewWriteActivity3 extends AppCompatActivity {
             mCurrentPhotoPath = photoFile.getAbsolutePath();
 
         } catch (IOException e) {
-            Toast.makeText(ReviewWriteActivity3.this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TempReviewWriteActivity.this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
             finish();
         }
         if (photoFile != null) {
-            photoUri = FileProvider.getUriForFile(ReviewWriteActivity3.this,
+            photoUri = FileProvider.getUriForFile(TempReviewWriteActivity.this,
                     "com.skt.tmaphot.provider", photoFile); //FileProvider의 경우 이전 포스트를 참고하세요.
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri); //사진을 찍어 해당 Content uri를 photoUri에 적용시키기 위함
             startActivityForResult(intent, PICK_FROM_CAMERA);
@@ -385,6 +313,34 @@ public class ReviewWriteActivity3 extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    //        Button btn4 = (Button) findViewById(R.id.btn4);
+//        btn4.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                Intent intent = new Intent();
+////                intent.setAction(Intent.ACTION_GET_CONTENT);
+//
+//                Intent intent = new Intent(Intent.ACTION_PICK); //ACTION_PICK 즉 사진을 고르겠다!
+//                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+//
+//                intent.setType("video/*");
+//                startActivityForResult(intent, VIDEO);
+//
+////                Uri uri = Uri.parse("file:///media/sdcard/DCIM/Camera");
+////                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+////                intent.setAction(Intent.ACTION_GET_CONTENT);
+////                intent.setType("video/*");
+////                startActivityForResult(intent, VIDEO);
+//////
+////                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+////                i.setType("video/*");
+////                startActivityForResult(i, VIDEO);
+//            }
+//        });
+//
+//        img = (ImageView) findViewById(R.id.img);
+//        tempLay = (LinearLayout) findViewById(R.id.temp_lay);
 }
 
 

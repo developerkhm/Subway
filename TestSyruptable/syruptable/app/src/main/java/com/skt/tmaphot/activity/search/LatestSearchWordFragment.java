@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.common.CommonUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,7 +131,7 @@ public class LatestSearchWordFragment extends Fragment {
     }
 
     public void saveSearchKeyword(String keyword){
-       // 여기서부터 해야됨
+
     }
 }
 
