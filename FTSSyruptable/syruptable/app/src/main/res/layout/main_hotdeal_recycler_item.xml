@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
+    <ImageView
+        android:id="@+id/main_hotdeal_recyler_item_image"
+        android:layout_width="@dimen/activity_main_hotdeal_recycler_item_width"
+        android:layout_height="@dimen/activity_main_hotdeal_recycler_item_height" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center">
+        <RatingBar
+            android:id="@+id/main_hotdeal_ratingBar"
+            style="?android:attr/ratingBarStyleIndicator"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/main_hotdeal_recyler_item_txt_title"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:text="스테이크불 강남점"
+            style="@style/main_hotdeal_item_name"/>
+
+        <TextView
+            android:id="@+id/main_hotdeal_recyler_item_txt_menu"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:text="강남에서 유명한 스테이크 맛집"
+            style="@style/main_hotdeal_item_menu"/>
+
+    </LinearLayout>
+</FrameLayout>
+
+
+
