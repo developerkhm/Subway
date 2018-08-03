@@ -64,7 +64,7 @@ public class MainMenuRecyclerViewDataAdapter extends RecyclerView.Adapter<MainMe
                 }
                 else{
                     holder.getImageView().setBackgroundResource(viewItem.getRes());
-//                    MainApplication.loadImage(context, viewItem.getRes(), holder.getImageView());
+//                    MainApplication.loadResImage(context, viewItem.getRes(), holder.getImageView());
                 }
             }
         }

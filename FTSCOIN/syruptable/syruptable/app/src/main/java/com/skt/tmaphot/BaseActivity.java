@@ -51,16 +51,33 @@ public class BaseActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.d("ABCDE", "BaseActivity onStart");
-        topAppbarText = (TextView) findViewById(R.id.appbar_location_txt);
 
         if (baceContext != null) {
-            if (baceContext instanceof MainActivity
-                    || baceContext instanceof CouponListActivity
+            if (toolbar != null) {
+                Log.d("GOOD", "good good good");
+
+                if(!(baceContext instanceof MainActivity))
+                {
+                    setSupportActionBar(toolbar);
+                    ActionBar actionBar = getSupportActionBar();
+                    actionBar.setDisplayHomeAsUpEnabled(true);
+                    actionBar.setHomeButtonEnabled(true);
+                    actionBar.setDisplayShowTitleEnabled(false);
+                }
+
+                toolbar.setOnClickListener(onClickListenerLocationAddres);
+
+            }
+
+            topAppbarText = (TextView) findViewById(R.id.appbar_location_txt);
+            if (baceContext instanceof CouponListActivity
                     || baceContext instanceof RealReviewActivity
                     || baceContext instanceof HotdealListActivity
-                    || baceContext instanceof StoreInfoActivity) {
+                    || baceContext instanceof StoreInfoActivity
+                    || baceContext instanceof SearchActivity ) {
+
                 topAppbarText.setText(GPSData.LOCATION_ADDRESS);
-                Log.d("LOCATION", "GPS : " + GPSData.LOCATION_ADDRESS);
+                Log.d("getgps", "BaseActivity onStart GPS: " + GPSData.LOCATION_ADDRESS);
             }
 
             if (baceContext instanceof SelectionAreaActivity) {
@@ -97,27 +114,12 @@ public class BaseActivity extends AppCompatActivity {
 //            }
         }
 
-        if (toolbar != null) {
-            Log.d("GOOD", "good good good");
 
-            if(!(baceContext instanceof MainActivity))
-            {
-                setSupportActionBar(toolbar);
-                ActionBar actionBar = getSupportActionBar();
-                actionBar.setDisplayHomeAsUpEnabled(true);
-                actionBar.setHomeButtonEnabled(true);
-                actionBar.setDisplayShowTitleEnabled(false);
-            }
-
-            toolbar.setOnClickListener(onClickListenerLocationAddres);
-        }
     }
 
     private View.OnClickListener onClickListenerLocationAddres = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Toast.makeText(baceContext, "클릭!!!!!!!!", Toast.LENGTH_SHORT).show();
-
             if (baceContext instanceof MainActivity) {
                     MainApplication.ActivityStart(new Intent(BaseActivity.this, SelectionAreaActivity.class), null);
             }

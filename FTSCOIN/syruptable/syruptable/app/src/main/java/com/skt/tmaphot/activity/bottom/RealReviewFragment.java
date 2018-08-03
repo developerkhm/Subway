@@ -1,26 +1,36 @@
-package com.skt.tmaphot.activity.main.review.more;
+package com.skt.tmaphot.activity.bottom;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.ActionBar;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.skt.tmaphot.MainActivity;
 import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
-import com.skt.tmaphot.BaseActivity;
+import com.skt.tmaphot.fragment.BaseFragment;
 
 import java.util.ArrayList;
 
-public class RealReviewActivity extends BaseActivity {
+public class RealReviewFragment extends BaseFragment {
 
     private GridView gridview;
     private Point size;
@@ -32,15 +42,14 @@ public class RealReviewActivity extends BaseActivity {
     protected ImageAdapter imageAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_realreview_layout);
-        baceContext = this;
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        gridview = (GridView) findViewById(R.id.simpleGridView);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.activity_realreview_layout, container, false);
+
+        gridview = (GridView)view.findViewById(R.id.simpleGridView);
 
         size = new Point();
-        getWindowManager().getDefaultDisplay().getSize(size);
+        getActivity().getWindowManager().getDefaultDisplay().getSize(size);
         width = size.x;
         height = size.y;
 
@@ -74,7 +83,7 @@ public class RealReviewActivity extends BaseActivity {
         mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
         mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
 
-        imageAdapter = new ImageAdapter(this);
+        imageAdapter = new ImageAdapter(getActivity());
         gridview.setAdapter(imageAdapter);
         gridview.setOnScrollListener(new AbsListView.OnScrollListener() {
 
@@ -103,8 +112,8 @@ public class RealReviewActivity extends BaseActivity {
 
             }
         });
-
-    }//END
+        return view;
+    }
 
     private void addItems(final int size) {
         // 아이템을 추가하는 동안 중복 요청을 방지하기 위해 락을 걸어둡니다.
@@ -149,7 +158,7 @@ public class RealReviewActivity extends BaseActivity {
         handler.post(run);
     }
 
-        public class ImageAdapter extends BaseAdapter {
+    public class ImageAdapter extends BaseAdapter {
 
         private Context mContext;
 
@@ -191,5 +200,3 @@ public class RealReviewActivity extends BaseActivity {
     }
 
 }
-
-

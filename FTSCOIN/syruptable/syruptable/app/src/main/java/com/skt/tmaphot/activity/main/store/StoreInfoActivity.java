@@ -64,7 +64,7 @@ public class StoreInfoActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         baceContext = this;
         setContentView(R.layout.activity_storeinfo_layout);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         // 임시 메인 이미지 큰거만 뽑음
         setData();

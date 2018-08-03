@@ -72,7 +72,9 @@
                             android:id="@+id/main_searchbar_icon"
                             android:layout_width="50.7dp"
                             android:layout_height="match_parent"
-                            android:background="@color/text_green_Select" />
+                            android:background="@color/text_green_Select"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/img_main_search"/>
 
                         <TextView
                             android:layout_marginLeft="3dp"

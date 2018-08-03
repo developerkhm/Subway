@@ -9,10 +9,45 @@
 
     <include layout="@layout/base_appbar_layout" />
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="현위치" />
+        android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/ttt_ttt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="내주변 보기" />
+
+            <TextView
+                android:layout_below="@+id/ttt_ttt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="강남구 삼성동" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GPS로 내위치 재설정" />
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="지도에서 위치 지정" />
+        </LinearLayout>
+    </LinearLayout>
+
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"

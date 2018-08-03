@@ -18,6 +18,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.skt.tmaphot.location.GPSData;
@@ -46,16 +47,18 @@ public class MainSplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);   //화면 꺼짐 방지
+
         mContext = this;
         mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                if (msg.what == RENEW_GPS) {
-                    makeNewGpsService();
-                }
-                if (msg.what == SEND_PRINT) {
-                    logPrint((GPSData) msg.obj);
-                }
+//                if (msg.what == RENEW_GPS) {
+//                    makeNewGpsService();
+//                }
+//                if (msg.what == SEND_PRINT) {
+//                    logPrint((GPSData) msg.obj);
+//                }
             }
         };
 
@@ -141,51 +144,65 @@ public class MainSplashActivity extends AppCompatActivity {
     public void makeNewGpsService() {
         Log.d("getgps", "makeNewGpsService");
         if (gpsTracker == null) {
-            gpsTracker = new GPSTracker(this, mHandler);
+            gpsTracker = GPSTracker.getInstance(this, mHandler);
+            gpsTracker.startGetLocation();
         } else {
             gpsTracker.Update();
         }
     }
 
     public void logPrint(GPSData gps) {
-        GPSData.LATITUDE = gps.getLatitude();
-        GPSData.LONGITUDE = gps.getLongitude();
+//        GPSData.setLATITUDE(gps.getLatitude());
+//        GPSData.LONGITUDE = gps.getLongitude();
     }
 
-
     public boolean checkAndRequestPermissions() {
-        int permissionLocation = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        int permissionFineLocation = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        int permissionCoarseLocation = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
         int permissionReadphone = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
-        int permissionReadphoneNumvers = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_NUMBERS);
-        int permissionCallPhone = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE);
-        int permissionReadSMS = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS);
-        int permissionReadExternalStorage = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        int permissionExternalStroage = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permissionWriteExternalStroage = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permissionReadExternalStroage = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        int permissionCamera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+//        int permissionReadphoneNumvers = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_NUMBERS);
+//        int permissionCallPhone = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE);
+//        int permissionReadSMS = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS);
+//        int permissionReadExternalStorage = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
 
 
         List<String> listPermissionsNeeded = new ArrayList<>();
 
-        if (permissionLocation != PackageManager.PERMISSION_GRANTED) {
+        if (permissionFineLocation != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        if (permissionCoarseLocation != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.ACCESS_COARSE_LOCATION);
         }
         if (permissionReadphone != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
         }
-        if (permissionReadphoneNumvers != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_PHONE_NUMBERS);
+        if (permissionWriteExternalStroage != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
-        if (permissionCallPhone != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.CALL_PHONE);
+        if (permissionReadExternalStroage != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         }
-        if (permissionReadSMS != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_SMS);
+        if(permissionCamera != PackageManager.PERMISSION_GRANTED)
+        {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
         }
+//        if (permissionReadphoneNumvers != PackageManager.PERMISSION_GRANTED) {
+//            listPermissionsNeeded.add(Manifest.permission.READ_PHONE_NUMBERS);
+//        }
+//        if (permissionCallPhone != PackageManager.PERMISSION_GRANTED) {
+//            listPermissionsNeeded.add(Manifest.permission.CALL_PHONE);
+//        }
+//        if (permissionReadSMS != PackageManager.PERMISSION_GRANTED) {
+//            listPermissionsNeeded.add(Manifest.permission.READ_SMS);
+//        }
 //        if (permissionReadExternalStorage != PackageManager.PERMISSION_GRANTED) {
 //            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
 //        }
-        if (permissionExternalStroage != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
+
 
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(this,
@@ -204,7 +221,7 @@ public class MainSplashActivity extends AppCompatActivity {
                     initStart(0);
                 } else {
                     //You did not accept the request can not use the functionality.
-                    Toast.makeText(this, "권한 정보 동의에 실패하여 3초 후에 앱을 종료합니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "권한 정보 동의에 실패하여 3초 후에 앱을 종료합니다.", Toast.LENGTH_LONG).show();
                     appKill();
                 }
                 break;
@@ -212,7 +229,7 @@ public class MainSplashActivity extends AppCompatActivity {
     }
 
     private void appKill() {
-        this.finish();
+        gpsTracker.stopUsingGPS();
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 }

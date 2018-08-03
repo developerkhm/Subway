@@ -66,8 +66,10 @@
     <string name="permission_package">package</string>
 
 
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="bottom_menu_home">Home</string>
+    <string name="bottom_menu_review">리얼후기</string>
+    <string name="bottom_menu_event">이벤트</string>
+    <string name="bottom_menu_shop">도시락</string>
+    <string name="bottom_menu_myblog">내블로그</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package com.skt.tmaphot.fragment;
+package com.skt.tmaphot.activity.bottom;
 
 import android.content.Intent;
 import android.location.Address;
@@ -49,6 +49,7 @@ import com.skt.tmaphot.activity.main.review.more.RealReviewActivity;
 import com.skt.tmaphot.activity.main.store.StoreInfoActivity;
 import com.skt.tmaphot.activity.search.SearchActivity;
 import com.skt.tmaphot.common.CommonUtil;
+import com.skt.tmaphot.fragment.BaseFragment;
 import com.skt.tmaphot.location.GPSData;
 
 import java.io.IOException;
@@ -57,13 +58,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainFragment extends BaseFragment {
-
-    public int MESSAGE_REVIEW_COUPON_NOTIFY = 1004;
-    public int MESSAGE_HOTPLACE_NOTIFY = 1004;
-    public int MESSAGE_RECYLER_NOTIFY = 1004;
-
-
-    private ViewGroup container;
 
     private NestedScrollingView nestedScrollView;
 
@@ -94,7 +88,7 @@ public class MainFragment extends BaseFragment {
     private ArrayList<MainMenuRecyclerViewItem> mainMenuRecyclerViewItems;
     private MainMenuRecyclerViewDataAdapter menuRecyclerViewDataAdapter;
 
-    ///////////////////배너/////////////////
+    //배너
     private RollingAdapter rollingAdapter;
     private RollingAutoManager rollingAutoManager;
     private ViewPager rollingViewPager;
@@ -102,7 +96,6 @@ public class MainFragment extends BaseFragment {
 
     //더보기
     private TextView reviewMoreTextView, couponMoreTextview, hotdealMoreTextview;
-
 
     //리스너
     private CustomRecyclerViewOnScrollListener onScrollListenerRecyclerView;
@@ -116,7 +109,6 @@ public class MainFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("ABCDE", "Fragment onCreateView");
-        this.container = container;
         rootView = inflater.inflate(R.layout.fragment_main_layout, container, false);
 
         //초기 View 세팅
@@ -513,18 +505,37 @@ public class MainFragment extends BaseFragment {
 
                 if (scrollY > oldScrollY) {
                     Log.i("TAAA", "Scroll DOWN");
+                    Log.d("TEST1234", "Scroll DOWN");
+                    ((MainActivity)getActivity()).navigation.setVisibility(View.GONE);
                 }
                 if (scrollY < oldScrollY) {
                     Log.i("TAAA", "Scroll UP");
+                    Log.d("TEST1234", "Scroll UP");
+                    ((MainActivity)getActivity()).navigation.setVisibility(View.GONE);
                 }
 
                 if (scrollY == 0) {
                     Log.i("TAAA", "TOP SCROLL");
+                    ((MainActivity)getActivity()).navigation.setVisibility(View.VISIBLE);
                 }
 
                 if (scrollY == ((v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()))) {
                     Log.i("TAAA", "BOTTOM SCROLL");
+//                    ((MainActivity)getActivity()).navigation.setVisibility(View.VISIBLE);
                     loadHotplaceItem(ishotplaceModeDistance);
+
+                }
+            }
+        });
+
+        nestedScrollView.setScrollListener(new NestedScrollingView.NestedScrollViewScrollStateListener() {
+            @Override
+            public void onNestedScrollViewStateChanged(int state) {
+                Log.d("TEST1234", "onNestedScrollViewStateChanged");
+                if(state == RecyclerView.SCROLL_STATE_IDLE)
+                {
+                    Log.d("TEST1234", "VISIBLE");
+//                    ((MainActivity)getActivity()).navigation.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -645,6 +656,14 @@ public class MainFragment extends BaseFragment {
                     hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
                             "황제짜장", "수제피자", "200m", "50%", "맛이어요"));
 
+                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                            "황제짜장", "수제피자", "200m", "50%", "맛이어요"));
+                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                            "황제짜장", "수제피자", "200m", "50%", "맛이어요"));
+                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                            "황제짜장", "수제피자", "200m", "50%", "맛이어요"));
+                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
+                            "황제짜장", "수제피자", "200m", "50%", "맛이어요"));
                     hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
                             "황제짜장", "수제피자", "200m", "50%", "맛이어요"));
                     hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://trendinsight.biz/wp-content/uploads/2014/05/file291298583404-1024x682.jpg",
