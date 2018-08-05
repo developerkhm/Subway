@@ -21,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.skt.tmaphot.BaseActivity;
-import com.skt.tmaphot.MainApplication;
+import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.ImageViewPagerActivity;
 import com.skt.tmaphot.activity.ImageViewPager;
@@ -66,7 +66,7 @@ public class MyBlogStoreReviewActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         imageProfile = (ImageView)findViewById(R.id.myblog_profile_image);
-        MainApplication.loadResRoundImage(baceContext,R.drawable.img_default_user, imageProfile);
+        loadImage(baceContext,R.drawable.img_default_user, imageProfile, true);
 
 
         // 임시 메인 이미지 큰거만 뽑음
@@ -217,7 +217,7 @@ public class MyBlogStoreReviewActivity extends BaseActivity {
 //            PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
 //            mAttacher.setScaleType(ImageView.ScaleType.FIT_CENTER);
 //            mAttacher.setMinimumScale(1f);
-            MainApplication.loadUrlImage(getActivity(), getArguments().getString(ARG_SECTION_URL), imageView);
+            BaseApplication.getInstance().loadImage(getActivity(), getArguments().getString(ARG_SECTION_URL), imageView, false);
 
             return rootView;
         }
@@ -339,7 +339,7 @@ public class MyBlogStoreReviewActivity extends BaseActivity {
 
                 if (viewItem != null) {
                     // Set car item title.
-                    MainApplication.loadUrlImage(mContext, viewItem, holder.getImageView());
+                    loadImage(mContext, viewItem, holder.getImageView(), false);
                 }
             }
         }
@@ -432,7 +432,7 @@ public class MyBlogStoreReviewActivity extends BaseActivity {
         @Override
         public void onBindViewHolder(ReviewRecyclerViewHolder holder, final int position) {
 
-            MainApplication.loadResRoundImage(mContext,R.drawable.img_default_user, holder.loginImageView);
+            loadImage(mContext,R.drawable.img_default_user, holder.loginImageView, true);
 //            MainApplication.loadUrlRoundImage(mContext, mItems.get(position).loginImageUrl,holder.loginImageView);
 
 

@@ -1,7 +1,9 @@
 package com.skt.tmaphot.location;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -9,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -89,6 +92,13 @@ public class GPSTracker implements LocationListener {
 
     @SuppressLint("MissingPermission")
     public boolean getLocation() {
+
+
+        if (ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+        }
+
         try {
             locationManager = (LocationManager) mContext.getSystemService(mContext.LOCATION_SERVICE);
             // getting GPS status
@@ -167,10 +177,9 @@ public class GPSTracker implements LocationListener {
                 } else {
                     locationFailCount++;
 
-                    if(locationFailCount < locationReCount )
-                    {
-                       Update();
-                       return;
+                    if (locationFailCount < locationReCount) {
+                        Update();
+                        return;
                     }
 
                     Log.d(LOG_TAG, "[FAIL]getGoogleClientLocation:default_GSP setting");
@@ -206,6 +215,7 @@ public class GPSTracker implements LocationListener {
     public void stopUsingGPS() {
         if (locationManager != null) {
             locationManager.removeUpdates(this);
+            Log.e(LOG_TAG, "[[[[[[[[[[[[[[[[[[[ ===========stopUsingGPS============= ]]]]]]]]]]]]]]");
         }
     }
 

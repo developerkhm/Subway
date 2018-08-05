@@ -1,6 +1,9 @@
 package com.skt.tmaphot.activity.area;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,9 +11,14 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
+import com.skt.tmaphot.MainActivity;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.BaseActivity;
+import com.skt.tmaphot.location.GPSData;
+import com.skt.tmaphot.location.GPSTracker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +27,25 @@ public class SelectionAreaActivity extends BaseActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-
     private ViewPager mViewPager;
-
     private List<Fragment> testList = new ArrayList<Fragment>();
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 900:
+                    progressOFF();
+                    ActivityStart(new Intent(baceContext, MainActivity.class), null);
+                    break;
 
+                default:
+                    break;
+            }
+        }
+    };
+
+    private GPSTracker gpsTracker;
+    private TextView hood, location, gps, map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +94,32 @@ public class SelectionAreaActivity extends BaseActivity {
 //            }
 //        });
 
+        hood = (TextView) findViewById(R.id.area_search_hood);
+        hood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        location = (TextView) findViewById(R.id.area_location);
+        location.setText(GPSData.LOCATION_ADDRESS);
+
+        gps = (TextView) findViewById(R.id.area_gps);
+        gps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gpsTracker = GPSTracker.getInstance(baceContext, handler);
+                gpsTracker.Update();
+                progressON("GPS갱신중");
+            }
+        });
+        map = (TextView) findViewById(R.id.area_map);
+        map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
 
         testList.add(PopularityAreaFragment.newInstance(1));

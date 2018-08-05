@@ -6,12 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.skt.tmaphot.MainApplication;
+import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
-import com.skt.tmaphot.activity.IRecyclerItem;
-import com.skt.tmaphot.activity.IRecyclerViewDataAdapter;
-import com.skt.tmaphot.activity.main.review.RealReviewRecyclerViewHolder;
-import com.skt.tmaphot.activity.main.review.RealReviewRecyclerViewItem;
 
 import java.util.ArrayList;
 
@@ -60,7 +56,7 @@ public class MainMenuRecyclerViewDataAdapter extends RecyclerView.Adapter<MainMe
                 // 아직 메뉴가 없어서 임시 구현
                 if(viewItem.getMenuImageUrl() != null && viewItem.getMenuImageUrl() != "")
                 {
-                    MainApplication.loadUrlImage(context , viewItem.getMenuImageUrl(), holder.getImageView());
+                    BaseApplication.getInstance().loadImage(context , viewItem.getMenuImageUrl(), holder.getImageView(), false);
                 }
                 else{
                     holder.getImageView().setBackgroundResource(viewItem.getRes());

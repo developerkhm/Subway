@@ -56,7 +56,7 @@ public class HotdealListActivity extends BaseActivity {
 
                     getLoadDate();
 
-                    adapter.notifyDataSetChanged();
+
 
                     mLoading = false;
                 }
@@ -88,6 +88,14 @@ public class HotdealListActivity extends BaseActivity {
         hotdealListRecyclerViewItemList.add(new HotdealListRecyclerViewItem(
                 "http://img.kormedi.com/news/article/__icsFiles/artimage/2015/05/23/c_km601/432212_540.jpg",
                 "황제짜장", "수제피자", "200m", "50%"));
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(adapter != null)
+                    adapter.notifyDataSetChanged();
+            }
+        });
 
     };
 }

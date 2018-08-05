@@ -1,6 +1,5 @@
 package com.skt.tmaphot.activity.review;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,15 +9,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -29,7 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.skt.tmaphot.BaseActivity;
-import com.skt.tmaphot.MainApplication;
+import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.review.multiple.activities.AlbumSelectActivity;
 import com.skt.tmaphot.activity.review.multiple.helpers.Constants;
@@ -216,7 +212,7 @@ public class ReviewWriteActivity extends BaseActivity {
                     String fileName = getFileName(path);
 
                     ImageView imageView = creatImageView(false, tagId);
-                    MainApplication.loadUriImage(this, takePhotoUri, imageView);
+                    loadImage(this, takePhotoUri, imageView, false);
 
                     uplaodImageItems.add(new UplaodItem(tagId, path, uri, fileName));
 
@@ -245,7 +241,7 @@ public class ReviewWriteActivity extends BaseActivity {
                     String fileName = getFileName(path);
 
                     ImageView imageView = creatImageView(false, tagId);
-                    MainApplication.loadUriImage(this, Uri.fromFile(new File(image.path)), imageView);
+                    loadImage(this, Uri.fromFile(new File(image.path)), imageView, false);
 
                     uplaodImageItems.add(new UplaodItem(tagId, path, uri, fileName));
 
@@ -266,7 +262,7 @@ public class ReviewWriteActivity extends BaseActivity {
                 String fileName = getFileName(path);
 
                 ImageView imageView = creatImageView(true, tagId);
-                MainApplication.loadUriImage(this, videoUri, imageView);
+                loadImage(this, videoUri, imageView, false);
 
                 uploadVideoItems.add(new UplaodItem(tagId, path, uri, fileName));
 
@@ -321,7 +317,7 @@ public class ReviewWriteActivity extends BaseActivity {
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("YYYYMMDD").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyymmdd").format(new Date());
         String imageFileName = timeStamp + "_";
 //        File storageDir = new File(Environment.getExternalStorageDirectory() + "/test/"); //test라는 경로에 이미지를 저장하기 위함
         File storageDir = new File(Environment.getExternalStorageDirectory() + "/DCIM/syruptable/"); //test라는 경로에 이미지를 저장하기 위함

@@ -4,14 +4,11 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -19,19 +16,37 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.skt.tmaphot.MainActivity;
+import com.skt.tmaphot.ObservableWebView;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.fragment.BaseFragment;
 
 public class EventFragment extends BaseFragment {
 
 
-    private WebView webview;
+    private ObservableWebView webView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("FFFA", "Fragment onCreateView");
         View view = inflater.inflate(R.layout.fragment_bottom_event_layout, container, false);
-        webview = (WebView) view.findViewById(R.id.bottom_event_webview);
+        view.findViewById(R.id.toolbar).setVisibility(View.GONE);
+        webView = (ObservableWebView) view.findViewById(R.id.bottom_event_webview);
+        webView.setOnScrollChangeListener(new ObservableWebView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(WebView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+
+                if(((MainActivity)getActivity()).navigation.getVisibility() == View.VISIBLE)
+                    ((MainActivity)getActivity()).navigation.setVisibility(View.GONE);
+
+                if(scrollY == 0 && oldScrollY >= 5)
+                    ((MainActivity)getActivity()).navigation.setVisibility(View.VISIBLE);
+
+                Log.d("WEBVIEW", "scrollX : " +  scrollX);
+                Log.d("WEBVIEW", "scrollY : " +  scrollY);
+                Log.d("WEBVIEW", "oldScrollX : " +  oldScrollX);
+                Log.d("WEBVIEW", "oldScrollY : " +  oldScrollY);
+            }
+        });
 
         initView();
 
@@ -43,7 +58,7 @@ public class EventFragment extends BaseFragment {
 //
 //
 //        // Force links and redirects to open in the WebView instead of in a browser
-        webview.setWebViewClient(new WebViewClient() {
+        webView.setWebViewClient(new WebViewClient() {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -71,7 +86,7 @@ public class EventFragment extends BaseFragment {
 
         });
 //        Log.d("FFFA", "Fragment loadUrl");
-        webview.loadUrl("http://m.naver.com");
+        webView.loadUrl("http://m.naver.com");
 
         return view;
     }
@@ -81,46 +96,46 @@ public class EventFragment extends BaseFragment {
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             // 웹뷰내 https 이미지 나오게 처리 ( 혼합 콘텐츠가 타사 쿠키를 차단할 때 생기는 오류 처리 )
-            webview.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+            webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
 
-        webview.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setJavaScriptEnabled(true);
 
         // 확대,축소 가능 여부
-        webview.getSettings().setSupportZoom(false);
-        webview.getSettings().setBuiltInZoomControls(false);
+        webView.getSettings().setSupportZoom(false);
+        webView.getSettings().setBuiltInZoomControls(false);
         // 확대,축소 아이콘 표시 유무
-        webview.getSettings().setDisplayZoomControls(false);
+        webView.getSettings().setDisplayZoomControls(false);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //평균적으로 킷캣 이상에서는 하드웨어 가속이 성능이 좋음.
-            webview.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
             //원격디버깅
-            webview.setWebContentsDebuggingEnabled(true);
+            webView.setWebContentsDebuggingEnabled(true);
         }
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             //최신 SDK 에서는 Deprecated 이나 아직 성능상에서는 유용하다
-            if (!webview.getSettings().getLayoutAlgorithm().equals(WebSettings.LayoutAlgorithm.SINGLE_COLUMN))
-                webview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+            if (!webView.getSettings().getLayoutAlgorithm().equals(WebSettings.LayoutAlgorithm.SINGLE_COLUMN))
+                webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         } else {
             //웹뷰가 html 컨텐츠가 웹뷰보다 클 경우 스크린 크기에 맞게 조정되도록 한다.
-            if (!webview.getSettings().getLoadWithOverviewMode())
-                webview.getSettings().setLoadWithOverviewMode(true);
+            if (!webView.getSettings().getLoadWithOverviewMode())
+                webView.getSettings().setLoadWithOverviewMode(true);
             //웹뷰가 html의 viewport 메타 태그를 지원하게 한다.
-            if (!webview.getSettings().getUseWideViewPort())
-                webview.getSettings().setUseWideViewPort(true);
+            if (!webView.getSettings().getUseWideViewPort())
+                webView.getSettings().setUseWideViewPort(true);
         }
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
             //기기에 따라서 동작할수도있는걸 확인
-            webview.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+            webView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
             //부드러운 전환 또한 아직 동작
-            webview.getSettings().setEnableSmoothTransition(true);
+            webView.getSettings().setEnableSmoothTransition(true);
         }
 
         //캐쉬 사용
-        webview.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+        webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
 //        webview.getSettings().setAppCacheEnabled(true);
 
 //        webview.setWebViewClient(new WebViewClient() {
@@ -156,7 +171,7 @@ public class EventFragment extends BaseFragment {
 //            }
 //        });
 
-        webview.setWebChromeClient(new WebChromeClient() {
+        webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
                 return super.onJsAlert(view, url, message, result);
@@ -167,7 +182,7 @@ public class EventFragment extends BaseFragment {
 //        httpHeader.put("cookie-test1", "header-insert-cookie");
 //        httpHeader.put("cookie-test2", cookie);
 
-        webview.setOnKeyListener(new View.OnKeyListener() {
+        webView.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
@@ -177,8 +192,8 @@ public class EventFragment extends BaseFragment {
 
 
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    if (webview.canGoBack()) {
-                        webview.goBack();
+                    if (webView.canGoBack()) {
+                        webView.goBack();
                     } else {
                         ((MainActivity)getActivity()).onBackPressed();
                     }
@@ -199,8 +214,8 @@ public class EventFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Log.d("FFFA", "onResume");
-        webview.reload();
-        webview.onResume();
+        webView.reload();
+        webView.onResume();
     }
 
     @Override

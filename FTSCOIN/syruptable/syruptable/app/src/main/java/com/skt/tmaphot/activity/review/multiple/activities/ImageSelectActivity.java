@@ -1,5 +1,6 @@
 package com.skt.tmaphot.activity.review.multiple.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -26,6 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.skt.tmaphot.BaseActivity;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.review.multiple.adapters.CustomImageSelectAdapter;
 import com.skt.tmaphot.activity.review.multiple.helpers.Constants;
@@ -48,9 +50,9 @@ public class ImageSelectActivity extends HelperActivity {
     private GridView gridView;
     private CustomImageSelectAdapter adapter;
 
-    private ActionBar actionBar;
-
-    private ActionMode actionMode;
+//    private ActionBar actionBar;
+//
+//    private ActionMode actionMode;
     private int countSelected;
 
     private ContentObserver observer;
@@ -63,20 +65,9 @@ public class ImageSelectActivity extends HelperActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_realreview_image_layout);
-        setView(findViewById(R.id.layout_image_select));
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        actionBar = getSupportActionBar();
-
-
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setDisplayShowTitleEnabled(true);
-            actionBar.setTitle(R.string.image_view);
-
-
+//        setView(findViewById(R.id.layout_image_select));
+        baceContext = this;
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
 
         Intent intent = getIntent();
@@ -93,15 +84,19 @@ public class ImageSelectActivity extends HelperActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (actionMode == null) {
-                    actionMode = ImageSelectActivity.this.startActionMode(callback);
-                }
-                toggleSelection(position);
-                actionMode.setTitle(countSelected + " " + getString(R.string.selected));
 
-                if (countSelected == 0) {
-                    actionMode.finish();
-                }
+
+                toggleSelection(position);
+
+//                if (actionMode == null) {
+//                    actionMode = ImageSelectActivity.this.startActionMode(callback);
+//                }
+//                toggleSelection(position);
+//                actionMode.setTitle(countSelected + " " + getString(R.string.spingferr));
+//
+//                if (countSelected == 0) {
+//                    actionMode.finish();
+//                }
             }
         });
     }
@@ -146,10 +141,10 @@ public class ImageSelectActivity extends HelperActivity {
                             Some selected images may have been deleted
                             hence update action mode title
                              */
-                            if (actionMode != null) {
-                                countSelected = msg.arg1;
-                                actionMode.setTitle(countSelected + " " + getString(R.string.selected));
-                            }
+//                            if (actionMode != null) {
+//                                countSelected = msg.arg1;
+////                                actionMode.setTitle(countSelected + " " + getString(R.string.spingferr));
+//                            }
                         }
                         break;
                     }
@@ -196,9 +191,9 @@ public class ImageSelectActivity extends HelperActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        if (actionBar != null) {
-            actionBar.setHomeAsUpIndicator(null);
-        }
+//        if (actionBar != null) {
+//            actionBar.setHomeAsUpIndicator(null);
+//        }
         images = null;
         if (adapter != null) {
             adapter.releaseResources();
@@ -224,54 +219,74 @@ public class ImageSelectActivity extends HelperActivity {
         gridView.setNumColumns(orientation == Configuration.ORIENTATION_PORTRAIT ? 3 : 5);
     }
 
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case android.R.id.home: {
+//                onBackPressed();
+//                return true;
+//            }
+//
+//            default: {
+//                return false;
+//            }
+//        }
+//    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home: {
-                onBackPressed();
-                return true;
-            }
 
-            default: {
-                return false;
-            }
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
-    }
 
-    private ActionMode.Callback callback = new ActionMode.Callback() {
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            MenuInflater menuInflater = mode.getMenuInflater();
-            menuInflater.inflate(R.menu.menu_contextual_action_bar, menu);
+        if (item.getItemId() == R.id.action_image_add) {
 
-            actionMode = mode;
-            countSelected = 0;
+            if(countSelected > 0){
+                sendIntent();
+            }
 
             return true;
         }
 
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false;
-        }
+        return super.onOptionsItemSelected(item);
+    }
 
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {int i = item.getItemId();
-            if (i == R.id.menu_item_add_image) {
-                sendIntent();
-                return true;
-            }
-            return false;
-        }
-
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            if (countSelected > 0) {
-                deselectAll();
-            }
-            actionMode = null;
-        }
-    };
+//    private ActionMode.Callback callback = new ActionMode.Callback() {
+//        @Override
+//        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+//            MenuInflater menuInflater = mode.getMenuInflater();
+//            menuInflater.inflate(R.menu.menu_contextual_action_bar, menu);
+//
+//            actionMode = mode;
+//            countSelected = 0;
+//
+//            return true;
+//        }
+//
+//        @Override
+//        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {int i = item.getItemId();
+//            if (i == R.id.menu_item_add_image) {
+//                sendIntent();
+//                return true;
+//            }
+//            return false;
+//        }
+//
+//        @Override
+//        public void onDestroyActionMode(ActionMode mode) {
+//            if (countSelected > 0) {
+//                deselectAll();
+//            }
+//            actionMode = null;
+//        }
+//    };
 
     private void toggleSelection(int position) {
         if (!images.get(position).isSelected && countSelected >= Constants.limit) {
@@ -436,9 +451,4 @@ public class ImageSelectActivity extends HelperActivity {
         sendMessage(Constants.PERMISSION_GRANTED);
     }
 
-    @Override
-    protected void hideViews() {
-        progressBar.setVisibility(View.INVISIBLE);
-        gridView.setVisibility(View.INVISIBLE);
-    }
 }

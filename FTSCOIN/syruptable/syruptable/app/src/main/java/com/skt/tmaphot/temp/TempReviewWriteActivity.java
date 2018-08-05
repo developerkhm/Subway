@@ -22,7 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.skt.tmaphot.MainApplication;
+import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.review.multiple.activities.AlbumSelectActivity;
 import com.skt.tmaphot.activity.review.multiple.helpers.Constants;
@@ -109,7 +109,7 @@ public class TempReviewWriteActivity extends AppCompatActivity {
             case PICK_FROM_CAMERA:
 
                 try { //저는 bitmap 형태의 이미지로 가져오기 위해 아래와 같이 작업하였으며 Thumbnail을 추출하였습니다.
-                    MainApplication.loadUriImage(this, photoUri, img);
+//                    BaseApplication.loadUriImage(this, photoUri, img);
 
                     return;
 

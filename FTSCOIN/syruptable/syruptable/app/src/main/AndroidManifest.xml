@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <!-- for API 21 under  -->
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+
     <!-- Dangerous Permmisions 6.0 up -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -23,7 +26,7 @@
     <uses-feature android:name="android.hardware.camera"/>
 
     <application
-        android:name=".MainApplication"
+        android:name=".BaseApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -65,6 +68,8 @@
         <activity android:name=".activity.review.multiple.activities.HelperActivity"/>
         <activity android:name=".activity.review.multiple.activities.ImageSelectActivity"/>
         <activity android:name=".activity.main.store.StoreInfoActivity"/>
+        <activity android:name=".activity.main.store.review.ReviewTotalActivity"/>
+        <activity android:name=".activity.main.store.review.SocialReviewTotalActivity"/>
         <activity android:name=".activity.ImageViewPagerActivity"/>
 
         <activity android:name=".temp.MapTest" />

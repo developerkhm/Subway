@@ -15,16 +15,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.skt.tmaphot.MainApplication;
+import com.skt.tmaphot.BaseApplication;
+import com.skt.tmaphot.MainActivity;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.FoodAreaListActivity;
+import com.skt.tmaphot.fragment.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
-public class PopularityAreaFragment extends Fragment {
+public class PopularityAreaFragment extends BaseFragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
@@ -178,7 +180,7 @@ public class PopularityAreaFragment extends Fragment {
 
                 }
 
-                MainApplication.ActivityStart(new Intent(getActivity(), FoodAreaListActivity.class), null);
+                ActivityStart(new Intent(getActivity(), FoodAreaListActivity.class), null);
 
             }
         });

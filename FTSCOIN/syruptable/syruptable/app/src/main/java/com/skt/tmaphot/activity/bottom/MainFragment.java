@@ -1,8 +1,6 @@
 package com.skt.tmaphot.activity.bottom;
 
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 
 import android.support.v4.view.ViewPager;
@@ -15,14 +13,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.skt.tmaphot.BaseActivity;
 import com.skt.tmaphot.MainActivity;
-import com.skt.tmaphot.MainApplication;
+import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.IRecyclerItem;
 import com.skt.tmaphot.activity.IRecyclerViewDataAdapter;
@@ -50,12 +47,9 @@ import com.skt.tmaphot.activity.main.store.StoreInfoActivity;
 import com.skt.tmaphot.activity.search.SearchActivity;
 import com.skt.tmaphot.common.CommonUtil;
 import com.skt.tmaphot.fragment.BaseFragment;
-import com.skt.tmaphot.location.GPSData;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class MainFragment extends BaseFragment {
 
@@ -110,6 +104,7 @@ public class MainFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("ABCDE", "Fragment onCreateView");
         rootView = inflater.inflate(R.layout.fragment_main_layout, container, false);
+        rootView.findViewById(R.id.toolbar).setVisibility(View.GONE);
 
         //초기 View 세팅
         initView();
@@ -506,12 +501,14 @@ public class MainFragment extends BaseFragment {
                 if (scrollY > oldScrollY) {
                     Log.i("TAAA", "Scroll DOWN");
                     Log.d("TEST1234", "Scroll DOWN");
-                    ((MainActivity)getActivity()).navigation.setVisibility(View.GONE);
+                    if(((MainActivity)getActivity()).navigation.getVisibility() == View.VISIBLE)
+                        ((MainActivity)getActivity()).navigation.setVisibility(View.GONE);
                 }
                 if (scrollY < oldScrollY) {
                     Log.i("TAAA", "Scroll UP");
                     Log.d("TEST1234", "Scroll UP");
-                    ((MainActivity)getActivity()).navigation.setVisibility(View.GONE);
+                    if(((MainActivity)getActivity()).navigation.getVisibility() == View.VISIBLE)
+                        ((MainActivity)getActivity()).navigation.setVisibility(View.GONE);
                 }
 
                 if (scrollY == 0) {
@@ -548,7 +545,7 @@ public class MainFragment extends BaseFragment {
         searchbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainApplication.ActivityStart(new Intent(getActivity(), SearchActivity.class), null);
+                ActivityStart(new Intent(getActivity(), SearchActivity.class), null);
             }
         });
 
@@ -588,32 +585,32 @@ public class MainFragment extends BaseFragment {
 
         hotplaceGridAdapter = new HotplaceGridAdapter(getContext(), hotplace_Pop_ItemList);
         hotplaceGridview.setAdapter(hotplaceGridAdapter);
-//        hotplaceGridview.setOnScrollListener(new AbsListView.OnScrollListener() {
-//
-//            @Override
-//            public void onScrollStateChanged(AbsListView view, int scrollState) {
-//                // TODO Auto-generated method stub
-//
-//                Log.e("GridView", "onScrollStateChanged : " + scrollState);
-//            }
-//
-//            @Override
-//            public void onScroll(AbsListView view, int firstVisibleItem,
-//                                 int visibleItemCount, int totalItemCount) {
-//                // TODO Auto-generated method stub
-//                Log.e("GridView", "firstVisibleItem: " + firstVisibleItem + "\nvisibleItemCount: " + visibleItemCount + "\ntotalItemCount: " + totalItemCount);
-//
-//                // 현재 가장 처음에 보이는 셀번호와 보여지는 셀번호를 더한값이
-//                // 전체의 숫자와 동일해지면 가장 아래로 스크롤 되었다고 가정합니다.
-//                int count = totalItemCount - visibleItemCount;
-//
-//
-//                if (firstVisibleItem >= count && totalItemCount != 0 && ishotplaceItemLoad == false) {
-//                    //loadGridItem();
-//                    Log.e("GridView", "XXXXXXXXX loadGridItem : ");
-//                }
-//            }
-//        });
+        hotplaceGridview.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                // TODO Auto-generated method stub
+
+                Log.e("GridView", "onScrollStateChanged : " + scrollState);
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                // TODO Auto-generated method stub
+                Log.e("GridView", "firstVisibleItem: " + firstVisibleItem + "\nvisibleItemCount: " + visibleItemCount + "\ntotalItemCount: " + totalItemCount);
+
+                // 현재 가장 처음에 보이는 셀번호와 보여지는 셀번호를 더한값이
+                // 전체의 숫자와 동일해지면 가장 아래로 스크롤 되었다고 가정합니다.
+                int count = totalItemCount - visibleItemCount;
+
+
+                if (firstVisibleItem >= count && totalItemCount != 0 && ishotplaceItemLoad == false) {
+                    //loadGridItem();
+                    Log.e("GridView", "XXXXXXXXX loadGridItem : ");
+                }
+            }
+        });
 
         //데이터 로드
         loadHotplaceItem(ishotplaceModeDistance);
@@ -762,13 +759,13 @@ public class MainFragment extends BaseFragment {
 
             switch (view.getId()) {
                 case R.id.main_txt_coupon_more:
-                    MainApplication.ActivityStart(new Intent(getActivity(), CouponListActivity.class), null);
+                    ActivityStart(new Intent(getActivity(), CouponListActivity.class), null);
                     break;
                 case R.id.main_txt_review_more:
-                    MainApplication.ActivityStart(new Intent(getActivity(), RealReviewActivity.class), null);
+                    ActivityStart(new Intent(getActivity(), RealReviewActivity.class), null);
                     break;
                 case R.id.main_txt_hotdeal_more:
-                    MainApplication.ActivityStart(new Intent(getActivity(), HotdealListActivity.class), null);
+                    ActivityStart(new Intent(getActivity(), HotdealListActivity.class), null);
                     break;
             }
         }
@@ -809,7 +806,7 @@ public class MainFragment extends BaseFragment {
     AdapterView.OnItemClickListener onItemClickListenerHotplace = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            MainApplication.ActivityStart(new Intent(getActivity(), StoreInfoActivity.class), null);
+            ActivityStart(new Intent(getActivity(), StoreInfoActivity.class), null);
         }
     };
 

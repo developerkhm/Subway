@@ -1,8 +1,6 @@
 package com.skt.tmaphot.activity.review;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
@@ -22,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.skt.tmaphot.MainApplication;
+import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.review.multiple.activities.AlbumSelectActivity;
 import com.skt.tmaphot.activity.review.multiple.helpers.Constants;
@@ -34,7 +32,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class ReviewWriteActivity3 extends AppCompatActivity {
     ImageView img;
@@ -168,7 +165,7 @@ public class ReviewWriteActivity3 extends AppCompatActivity {
                 Log.d("UUU", "VIDEO :" + videoUri.getPath().toString());
 //                img.setImageURI(videoUri);
 
-                MainApplication.loadUriImage(this, videoUri, img);
+//                BaseApplication.loadUriImage(this, videoUri, img);
 
 
 //                mVideoView.setVideoURI(videoUri);
@@ -181,7 +178,7 @@ public class ReviewWriteActivity3 extends AppCompatActivity {
             case PICK_FROM_CAMERA:
 
                 try { //저는 bitmap 형태의 이미지로 가져오기 위해 아래와 같이 작업하였으며 Thumbnail을 추출하였습니다.
-                    MainApplication.loadUriImage(this, photoUri, img);
+//                    BaseApplication.loadUriImage(this, photoUri, img);
 
                     return;
 

@@ -2,9 +2,11 @@
     <string name="app_name">Syrup 테이블</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
+    <string name="nav_header_title">게스트</string>
+    <string name="nav_header_subtitle">로그인/회원가입을 해주세요!</string>
+    <string name="nav_header_modify">정보수정</string>
+    <string name="nav_header_close">X</string>
+    <string name="nav_header_login">로그인/회원가입</string>
 
     <string name="nav_menu_home">HOME</string>
     <string name="nav_menu_login">로그인</string>
@@ -23,6 +25,7 @@
     <string name="search_tab1">추천 검색어</string>
     <string name="search_tab2">최근 검색어</string>
     <string name="search_tab3">검색</string>
+    <string name="search_text">검색어를 입력해주세요</string>
 
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_store_info">StoreInfoActivity</string>
@@ -53,10 +56,10 @@
     <string name="image_view">Tap to select images</string>
 
     <string name="add">ADD</string>
-    <string name="selected">selected</string>
+    <string name="spingferr">selected</string>
     <string name="limit_exceeded">Can select a maximum of %d images</string>
 
-    <string name="error_null_cursor">Oops, something went wrong!</string>
+    <string name="error_null_cursor">다시 시도해주세요.</string>
 
     <!--Request Permission-->
     <string name="permission_info">App requires permission to Storage to view images.</string>

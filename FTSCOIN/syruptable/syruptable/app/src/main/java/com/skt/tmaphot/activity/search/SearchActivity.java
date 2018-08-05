@@ -12,7 +12,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.BaseActivity;
@@ -26,7 +28,8 @@ public class SearchActivity extends BaseActivity {
     private ViewPager mViewPager;
     private List<Fragment> searchFragmentList = new ArrayList<Fragment>();
     private TabLayout tabLayout;
-    private EditText searchEdit;
+    //    private EditText searchEdit;
+    private SearchView searchView;
     public final static String SAVE_KEYWORD_NAME = "keyword";
 
 
@@ -62,22 +65,37 @@ public class SearchActivity extends BaseActivity {
             }
         });
 
-        searchEdit = (EditText) findViewById(R.id.search_edit);
-        searchEdit.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-        searchEdit.setInputType(InputType.TYPE_CLASS_TEXT);
-        searchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//        searchEdit = (EditText) findViewById(R.id.search_edit);
+//        searchEdit.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+//        searchEdit.setInputType(InputType.TYPE_CLASS_TEXT);
+//        searchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                switch (actionId) {
+//                    case EditorInfo.IME_ACTION_SEARCH:
+//                        // 검색 동작
+//                        searchAction(searchEdit.getText().toString());
+//                        break;
+//                    default:
+//                        // 기본 엔터키 동작
+//                        return false;
+//                }
+//                return true;
+//            }
+//        });
+
+        searchView = (SearchView) findViewById(R.id.search_search);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                switch (actionId) {
-                    case EditorInfo.IME_ACTION_SEARCH:
-                        // 검색 동작
-                        searchAction(searchEdit.getText().toString());
-                        break;
-                    default:
-                        // 기본 엔터키 동작
-                        return false;
-                }
-                return true;
+            public boolean onQueryTextSubmit(String s) {
+                // 검색 동작
+                searchAction(s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
             }
         });
 

@@ -4,17 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
     android:orientation="vertical"
     tools:context=".temp.MainActivityWebViewUp">
 
     <include layout="@layout/base_appbar_layout" />
 
-    <EditText
+    <!--EditText
         android:id="@+id/search_edit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content" /-->
+
+    <SearchView
+        android:id="@+id/search_search"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+
+        android:queryHint="@string/search_text"
+        style="@style/search_searchbar">
+    </SearchView>
 
 
     <android.support.design.widget.TabLayout

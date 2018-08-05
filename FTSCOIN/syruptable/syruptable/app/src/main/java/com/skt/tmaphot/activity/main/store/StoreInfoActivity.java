@@ -16,17 +16,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.skt.tmaphot.MainApplication;
+import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.BaseActivity;
 import com.skt.tmaphot.activity.ImageViewPager;
 import com.skt.tmaphot.activity.ImageViewPagerActivity;
-import com.skt.tmaphot.activity.blog.MyBlogActivity;
+import com.skt.tmaphot.activity.main.store.review.ReviewItem;
+import com.skt.tmaphot.activity.main.store.review.ReviewRecyclerViewAdapter;
+import com.skt.tmaphot.activity.main.store.review.ReviewTotalActivity;
+import com.skt.tmaphot.activity.main.store.review.SocialReviewItem;
+import com.skt.tmaphot.activity.main.store.review.SocialReviewRecyclerViewAdapter;
+import com.skt.tmaphot.activity.main.store.review.SocialReviewTotalActivity;
 import com.skt.tmaphot.activity.review.ReviewWriteActivity;
 import com.skt.tmaphot.common.CommonUtil;
 
@@ -69,12 +74,27 @@ public class StoreInfoActivity extends BaseActivity {
         // 임시 메인 이미지 큰거만 뽑음
         setData();
 
+        Button reviewMore = (Button)findViewById(R.id.review_more);
+        reviewMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityStart(new Intent(baceContext, ReviewTotalActivity.class), null);
+            }
+        });
+
+        Button socialReviewMore = (Button)findViewById(R.id.socialreview_more);
+        socialReviewMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityStart(new Intent(baceContext, SocialReviewTotalActivity.class), null);
+            }
+        });
 
         reviewLayout = (LinearLayout)findViewById(R.id.storeinfo_info_review);
         reviewLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainApplication.ActivityStart(new Intent(baceContext, ReviewWriteActivity.class), null);
+                ActivityStart(new Intent(baceContext, ReviewWriteActivity.class), null);
             }
         });
         mSectionsPagerAdapter = new StoreInfoActivity.SectionsPagerAdapter(getSupportFragmentManager());
@@ -184,7 +204,7 @@ public class StoreInfoActivity extends BaseActivity {
 //            PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
 //            mAttacher.setScaleType(ImageView.ScaleType.FIT_CENTER);
 //            mAttacher.setMinimumScale(1f);
-            MainApplication.loadUrlImage(getActivity(), getArguments().getString(ARG_SECTION_URL), imageView);
+            BaseApplication.getInstance().loadImage(getActivity(), getArguments().getString(ARG_SECTION_URL), imageView, false);
 
             return rootView;
         }
@@ -306,7 +326,7 @@ public class StoreInfoActivity extends BaseActivity {
 
                 if (viewItem != null) {
                     // Set car item title.
-                    MainApplication.loadUrlImage(mContext, viewItem, holder.getImageView());
+                    loadImage(mContext, viewItem, holder.getImageView(), false);
                 }
             }
         }
@@ -329,180 +349,180 @@ public class StoreInfoActivity extends BaseActivity {
         }
     }
 
-    private class ReviewItem {
-        private String loginImageUrl;
-        private String nickname;
-        private String content;
-        private String sympathyImage;
-        private String sympathy;
+//    private class ReviewItem {
+//        private String loginImageUrl;
+//        private String nickname;
+//        private String content;
+//        private String sympathyImage;
+//        private String sympathy;
+//
+//        public ReviewItem(String loginImageUrl, String nickname, String content, String sympathyImage, String sympathy) {
+//            this.loginImageUrl = loginImageUrl;
+//            this.nickname = nickname;
+//            this.content = content;
+//            this.sympathyImage = sympathyImage;
+//            this.sympathy = sympathy;
+//        }
+//
+//        public String getLoginImageUrl() {
+//            return loginImageUrl;
+//        }
+//
+//        public String getNickname() {
+//            return nickname;
+//        }
+//
+//        public String getContent() {
+//            return content;
+//        }
+//
+//        public String getSympathyImage() {
+//            return sympathyImage;
+//        }
+//
+//        public String getSympathy() {
+//            return sympathy;
+//        }
+//    }
+//
+//    private class ReviewRecyclerViewHolder extends RecyclerView.ViewHolder {
+//        public ImageView loginImageView;
+//        public TextView nicknameTextview;
+//        public TextView contentTextview;
+//        public ImageView sympathyImageView;
+//        public TextView sympathyTextView;
+//
+//        public ReviewRecyclerViewHolder(View itemView) {
+//            super(itemView);
+//            loginImageView = (ImageView) itemView.findViewById(R.id.review_my_image);
+//        }
+//    }
+//
+//    private class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecyclerViewHolder> {
+//
+//        private List<ReviewItem> mItems;
+//        Context mContext;
+//
+//        public ReviewRecyclerViewAdapter(List<ReviewItem> reviewItemList) {
+//            mItems = reviewItemList;
+//        }
+//
+//        @Override
+//        public ReviewRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//            mContext = parent.getContext();
+//            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+//            View itemView = layoutInflater.inflate(R.layout.storeinfo_review_recycler_item, parent, false);
+//            ReviewRecyclerViewHolder ret = new ReviewRecyclerViewHolder(itemView);
+//            return ret;
+//        }
+//
+//        @Override
+//        public void onBindViewHolder(ReviewRecyclerViewHolder holder, final int position) {
+//
+//            MainApplication.loadResRoundImage(mContext,R.drawable.img_default_user, holder.loginImageView);
+////            MainApplication.loadUrlRoundImage(mContext, mItems.get(position).loginImageUrl,holder.loginImageView);
+//
+//
+//            holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Toast.makeText(mContext, String.format("%d 선택", position + 1), Toast.LENGTH_SHORT).show();
+//                    //////////////////////////////////////////////// 임시 ////////////////////////////////////////////////
+//                    startActivity(new Intent(StoreInfoActivity.this, MyBlogActivity.class));
+//                    //////////////////////////////////////////////////// 임시 ///////////////////////////////////////////////
+//                }
+//            });
+//        }
+//
+//        @Override
+//        public int getItemCount() {
+//            return mItems.size();
+//        }
+//    }
 
-        public ReviewItem(String loginImageUrl, String nickname, String content, String sympathyImage, String sympathy) {
-            this.loginImageUrl = loginImageUrl;
-            this.nickname = nickname;
-            this.content = content;
-            this.sympathyImage = sympathyImage;
-            this.sympathy = sympathy;
-        }
-
-        public String getLoginImageUrl() {
-            return loginImageUrl;
-        }
-
-        public String getNickname() {
-            return nickname;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public String getSympathyImage() {
-            return sympathyImage;
-        }
-
-        public String getSympathy() {
-            return sympathy;
-        }
-    }
-
-    private class ReviewRecyclerViewHolder extends RecyclerView.ViewHolder {
-        public ImageView loginImageView;
-        public TextView nicknameTextview;
-        public TextView contentTextview;
-        public ImageView sympathyImageView;
-        public TextView sympathyTextView;
-
-        public ReviewRecyclerViewHolder(View itemView) {
-            super(itemView);
-            loginImageView = (ImageView) itemView.findViewById(R.id.review_my_image);
-        }
-    }
-
-    private class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecyclerViewHolder> {
-
-        private List<ReviewItem> mItems;
-        Context mContext;
-
-        public ReviewRecyclerViewAdapter(List<ReviewItem> reviewItemList) {
-            mItems = reviewItemList;
-        }
-
-        @Override
-        public ReviewRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            mContext = parent.getContext();
-            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View itemView = layoutInflater.inflate(R.layout.storeinfo_review_recycler_item, parent, false);
-            ReviewRecyclerViewHolder ret = new ReviewRecyclerViewHolder(itemView);
-            return ret;
-        }
-
-        @Override
-        public void onBindViewHolder(ReviewRecyclerViewHolder holder, final int position) {
-
-            MainApplication.loadResRoundImage(mContext,R.drawable.img_default_user, holder.loginImageView);
-//            MainApplication.loadUrlRoundImage(mContext, mItems.get(position).loginImageUrl,holder.loginImageView);
-
-
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext, String.format("%d 선택", position + 1), Toast.LENGTH_SHORT).show();
-                    //////////////////////////////////////////////// 임시 ////////////////////////////////////////////////
-                    startActivity(new Intent(StoreInfoActivity.this, MyBlogActivity.class));
-                    //////////////////////////////////////////////////// 임시 ///////////////////////////////////////////////
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return mItems.size();
-        }
-    }
-
-    private class SocialReviewItem {
-        private String loginImageUrl;
-        private String nickname;
-        private String content;
-        private String sympathyImage;
-        private String sympathy;
-
-        public SocialReviewItem(String loginImageUrl, String nickname, String content, String sympathyImage, String sympathy) {
-            this.loginImageUrl = loginImageUrl;
-            this.nickname = nickname;
-            this.content = content;
-            this.sympathyImage = sympathyImage;
-            this.sympathy = sympathy;
-        }
-
-        public String getLoginImageUrl() {
-            return loginImageUrl;
-        }
-
-        public String getNickname() {
-            return nickname;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public String getSympathyImage() {
-            return sympathyImage;
-        }
-
-        public String getSympathy() {
-            return sympathy;
-        }
-    }
-
-    private class SocialReviewRecyclerViewHolder extends RecyclerView.ViewHolder {
-        private ImageView loginImageView;
-        private TextView nicknameTextview;
-        private TextView contentTextview;
-        private ImageView sympathyImageView;
-        private TextView sympathyTextView;
-
-        public SocialReviewRecyclerViewHolder(View itemView) {
-            super(itemView);
-//            loginImageView = (ImageView) itemView.findViewById(R.id.coupon_recyler_item_image);
-        }
-    }
-
-    private class SocialReviewRecyclerViewAdapter extends RecyclerView.Adapter<SocialReviewRecyclerViewHolder> {
-
-        private List<SocialReviewItem> mItems;
-        Context mContext;
-
-        public SocialReviewRecyclerViewAdapter(List<SocialReviewItem> reviewItemList) {
-            mItems = reviewItemList;
-        }
-
-        @Override
-        public SocialReviewRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            mContext = parent.getContext();
-            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View itemView = layoutInflater.inflate(R.layout.storeinfo_socialreview_recycler_item, parent, false);
-            SocialReviewRecyclerViewHolder ret = new SocialReviewRecyclerViewHolder(itemView);
-            return ret;
-        }
-
-        @Override
-        public void onBindViewHolder(SocialReviewRecyclerViewHolder holder, final int position) {
-//            MainApplication.loadUrlImage(mContext, mItems.get(position).getLoginImageUrl(), holder.loginImageView);
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext, String.format("%d 선택", position + 1), Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return mItems.size();
-        }
-    }
+//    private class SocialReviewItem {
+//        private String loginImageUrl;
+//        private String nickname;
+//        private String content;
+//        private String sympathyImage;
+//        private String sympathy;
+//
+//        public SocialReviewItem(String loginImageUrl, String nickname, String content, String sympathyImage, String sympathy) {
+//            this.loginImageUrl = loginImageUrl;
+//            this.nickname = nickname;
+//            this.content = content;
+//            this.sympathyImage = sympathyImage;
+//            this.sympathy = sympathy;
+//        }
+//
+//        public String getLoginImageUrl() {
+//            return loginImageUrl;
+//        }
+//
+//        public String getNickname() {
+//            return nickname;
+//        }
+//
+//        public String getContent() {
+//            return content;
+//        }
+//
+//        public String getSympathyImage() {
+//            return sympathyImage;
+//        }
+//
+//        public String getSympathy() {
+//            return sympathy;
+//        }
+//    }
+//
+//    private class SocialReviewRecyclerViewHolder extends RecyclerView.ViewHolder {
+//        private ImageView loginImageView;
+//        private TextView nicknameTextview;
+//        private TextView contentTextview;
+//        private ImageView sympathyImageView;
+//        private TextView sympathyTextView;
+//
+//        public SocialReviewRecyclerViewHolder(View itemView) {
+//            super(itemView);
+////            loginImageView = (ImageView) itemView.findViewById(R.id.coupon_recyler_item_image);
+//        }
+//    }
+//
+//    private class SocialReviewRecyclerViewAdapter extends RecyclerView.Adapter<SocialReviewRecyclerViewHolder> {
+//
+//        private List<SocialReviewItem> mItems;
+//        Context mContext;
+//
+//        public SocialReviewRecyclerViewAdapter(List<SocialReviewItem> reviewItemList) {
+//            mItems = reviewItemList;
+//        }
+//
+//        @Override
+//        public SocialReviewRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//            mContext = parent.getContext();
+//            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+//            View itemView = layoutInflater.inflate(R.layout.storeinfo_socialreview_recycler_item, parent, false);
+//            SocialReviewRecyclerViewHolder ret = new SocialReviewRecyclerViewHolder(itemView);
+//            return ret;
+//        }
+//
+//        @Override
+//        public void onBindViewHolder(SocialReviewRecyclerViewHolder holder, final int position) {
+////            MainApplication.loadUrlImage(mContext, mItems.get(position).getLoginImageUrl(), holder.loginImageView);
+//            holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Toast.makeText(mContext, String.format("%d 선택", position + 1), Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        }
+//
+//        @Override
+//        public int getItemCount() {
+//            return mItems.size();
+//        }
+//    }
 
 
     private void setStoreInfo() {
@@ -597,7 +617,7 @@ public class StoreInfoActivity extends BaseActivity {
         socialReviewRecyclerView.setAdapter(socialReviewRecyclerViewAdapter);
         socialReviewRecyclerView.setFocusable(false);
         socialReviewRecyclerView.setHasFixedSize(true);
-        socialReviewRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 0, 1, 0));
+        socialReviewRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 0, 1, 0));socialReviewRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 0, 1, 0));
     }
 
     private void getIninData() {

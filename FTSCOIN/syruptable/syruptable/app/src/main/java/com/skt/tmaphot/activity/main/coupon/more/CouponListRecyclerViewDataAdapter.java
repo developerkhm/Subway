@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.skt.tmaphot.MainApplication;
+import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
 
 import java.util.List;
@@ -42,7 +42,7 @@ public class CouponListRecyclerViewDataAdapter extends RecyclerView.Adapter<Coup
 
             if(viewItem != null) {
                 // Set car item title.
-                MainApplication.loadUrlImage(context , viewItem.getUrl(), holder.imageview);
+                BaseApplication.getInstance().loadImage(context , viewItem.getUrl(), holder.imageview, false);
                 holder.nameText.setText(viewItem.getName());
                 holder.menuText.setText(viewItem.getMenu());
                 holder.priceText.setText(viewItem.getPrice());

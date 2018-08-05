@@ -12,39 +12,56 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <RelativeLayout
+        android:orientation="horizontal"
+        android:background="@color/text_gray_8f">
+        <LinearLayout
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content">
+            android:layout_height="80dp"
+            android:orientation="vertical"
+            android:layout_margin="1dp"
+            android:background="@color/colorWhite"
+            android:gravity="center">
             <TextView
-                android:id="@+id/ttt_ttt"
+                android:id="@+id/area_search_hood"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="내주변 보기" />
 
             <TextView
+                android:id="@+id/area_location"
+                android:layout_marginTop="2dp"
                 android:layout_below="@+id/ttt_ttt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="강남구 삼성동" />
-        </RelativeLayout>
+        </LinearLayout>
 
         <LinearLayout
+            android:layout_marginRight="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:orientation="vertical">
             <TextView
-
+                android:id="@+id/area_gps"
+                android:background="@color/colorWhite"
+                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="GPS로 내위치 재설정" />
+                android:layout_height="0dp"
+                android:text="GPS로 내위치 재설정"
+                android:layout_marginBottom="1dp"
+                android:gravity="center"/>
             <TextView
-
+                android:id="@+id/area_map"
+                android:background="@color/colorWhite"
+                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="지도에서 위치 지정" />
+                android:layout_height="0dp"
+                android:text="지도에서 위치 지정"
+                android:gravity="center"/>
         </LinearLayout>
     </LinearLayout>
 

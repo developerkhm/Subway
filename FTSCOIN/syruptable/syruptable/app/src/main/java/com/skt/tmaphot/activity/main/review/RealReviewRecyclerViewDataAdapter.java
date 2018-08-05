@@ -6,13 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.skt.tmaphot.MainApplication;
+import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.IRecyclerItem;
 import com.skt.tmaphot.activity.IRecyclerViewDataAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class RealReviewRecyclerViewDataAdapter extends RecyclerView.Adapter<RealReviewRecyclerViewHolder> implements IRecyclerViewDataAdapter {
 
@@ -45,7 +44,7 @@ public class RealReviewRecyclerViewDataAdapter extends RecyclerView.Adapter<Real
 
             if(viewItem != null) {
                 // Set car item title.
-                MainApplication.loadUrlImage(context , viewItem.getText(), holder.getImageView());
+                BaseApplication.getInstance().loadImage(context , viewItem.getText(), holder.getImageView(), false);
 
             }
         }

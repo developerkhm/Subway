@@ -1,20 +1,25 @@
 package com.skt.tmaphot;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.skt.tmaphot.activity.FoodAreaListActivity;
 import com.skt.tmaphot.activity.area.SelectionAreaActivity;
@@ -24,13 +29,18 @@ import com.skt.tmaphot.activity.main.coupon.more.CouponListActivity;
 import com.skt.tmaphot.activity.main.hotdeal.more.HotdealListActivity;
 import com.skt.tmaphot.activity.main.review.more.RealReviewActivity;
 import com.skt.tmaphot.activity.main.store.StoreInfoActivity;
+import com.skt.tmaphot.activity.main.store.review.ReviewTotalActivity;
+import com.skt.tmaphot.activity.main.store.review.SocialReviewTotalActivity;
 import com.skt.tmaphot.activity.review.ReviewWriteActivity;
+import com.skt.tmaphot.activity.review.multiple.activities.AlbumSelectActivity;
+import com.skt.tmaphot.activity.review.multiple.activities.ImageSelectActivity;
 import com.skt.tmaphot.activity.search.SearchActivity;
 import com.skt.tmaphot.location.GPSData;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
-public class BaseActivity extends AppCompatActivity {
+import java.util.List;
 
+public class BaseActivity extends AppCompatActivity {
     public Context baceContext;
     public TextView topAppbarText;
     protected Toolbar toolbar;
@@ -45,86 +55,95 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Log.d("ABCDE", "BaseActivity onCreate");
+        progressON("로딩...");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        progressOFF();
+        getTopActivity();
         Log.d("ABCDE", "BaseActivity onStart");
 
         if (baceContext != null) {
+
             if (toolbar != null) {
                 Log.d("GOOD", "good good good");
 
-                if(!(baceContext instanceof MainActivity))
-                {
+                if (!(baceContext instanceof MainActivity)) {
                     setSupportActionBar(toolbar);
                     ActionBar actionBar = getSupportActionBar();
                     actionBar.setDisplayHomeAsUpEnabled(true);
                     actionBar.setHomeButtonEnabled(true);
                     actionBar.setDisplayShowTitleEnabled(false);
+
+
+                    topAppbarText = (TextView) findViewById(R.id.appbar_location_txt);
+                    topAppbarText.setText(GPSData.LOCATION_ADDRESS);
+                    Log.d("getgps", "BaseActivity onStart GPS: " + GPSData.LOCATION_ADDRESS);
+
+                    if (baceContext instanceof SelectionAreaActivity) {
+                        topAppbarText.setText("지역검색");
+                    }
+
+                    if (baceContext instanceof ReviewWriteActivity) {
+                        topAppbarText.setText("리뷰작성");
+                    }
+
+                    if (baceContext instanceof FoodAreaListActivity) {
+                        topAppbarText.setText("검색결과");
+                    }
+
+                    if (baceContext instanceof SearchActivity) {
+                        topAppbarText.setText("검색");
+                    }
+
+                    if (baceContext instanceof MyBlogActivity) {
+                        topAppbarText.setText("마이홈");
+                    }
+
+                    if (baceContext instanceof MyBlogStoreReviewActivity) {
+                        topAppbarText.setText("리뷰보기");
+                    }
+                    if (baceContext instanceof ReviewWriteActivity) {
+                        topAppbarText.setText("리뷰작성");
+                    }
+
+                    if (baceContext instanceof AlbumSelectActivity) {
+                        topAppbarText.setText("앨범선택");
+                    }
+
+                    if (baceContext instanceof ImageSelectActivity) {
+                        topAppbarText.setText("사진선택");
+                    }
+
+                    if (baceContext instanceof ReviewTotalActivity) {
+                        topAppbarText.setText("리뷰");
+                    }
+
+                    if (baceContext instanceof SocialReviewTotalActivity) {
+                        topAppbarText.setText("소셜리뷰");
+                    }
+
+
                 }
-
                 toolbar.setOnClickListener(onClickListenerLocationAddres);
-
-            }
-
-            topAppbarText = (TextView) findViewById(R.id.appbar_location_txt);
-            if (baceContext instanceof CouponListActivity
-                    || baceContext instanceof RealReviewActivity
-                    || baceContext instanceof HotdealListActivity
-                    || baceContext instanceof StoreInfoActivity
-                    || baceContext instanceof SearchActivity ) {
-
-                topAppbarText.setText(GPSData.LOCATION_ADDRESS);
-                Log.d("getgps", "BaseActivity onStart GPS: " + GPSData.LOCATION_ADDRESS);
-            }
-
-            if (baceContext instanceof SelectionAreaActivity) {
-                topAppbarText.setText("지역검색");
-            }
-
-            if (baceContext instanceof ReviewWriteActivity) {
-                topAppbarText.setText("리뷰작성");
-            }
-
-            if (baceContext instanceof FoodAreaListActivity) {
-                topAppbarText.setText("검색결과");
-            }
-
-            if (baceContext instanceof SearchActivity) {
-                topAppbarText.setText("검색");
-            }
-
-            if (baceContext instanceof MyBlogActivity) {
-                topAppbarText.setText("마이홈");
-            }
-
-            if (baceContext instanceof MyBlogStoreReviewActivity) {
-                topAppbarText.setText("리뷰보기");
-            }
-            if (baceContext instanceof ReviewWriteActivity) {
-                topAppbarText.setText("리뷰작성");
             }
         } else {
 
-//            if (topAppbarText != null) {
-//                topAppbarText.setText(GPSData.LOCATION_ADDRESS);
-//                Log.d("BASE", "GPS : " + GPSData.LOCATION_ADDRESS);
-//            }
+
         }
-
-
     }
 
     private View.OnClickListener onClickListenerLocationAddres = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             if (baceContext instanceof MainActivity) {
-                    MainApplication.ActivityStart(new Intent(BaseActivity.this, SelectionAreaActivity.class), null);
+                ActivityStart(new Intent(BaseActivity.this, SelectionAreaActivity.class), null);
             }
         }
     };
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -144,6 +163,10 @@ public class BaseActivity extends AppCompatActivity {
                 getMenuInflater().inflate(R.menu.appbar_main_map_menu, menu);
             }
 
+            if (baceContext instanceof ImageSelectActivity) {
+                getMenuInflater().inflate(R.menu.appbar_review_select_menu, menu);
+            }
+
         } else {
 //            getMenuInflater().inflate(R.menu.appbar_main_menu, menu);
         }
@@ -154,10 +177,9 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(item.getItemId() == android.R.id.home)
-        {
-            if(baceContext instanceof Activity){
-                ((Activity)baceContext).finish();
+        if (item.getItemId() == android.R.id.home) {
+            if (baceContext instanceof Activity) {
+                ((Activity) baceContext).finish();
             }
             return true;
         }
@@ -181,6 +203,47 @@ public class BaseActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    public void getTopActivity() {
+        ActivityManager manager = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> list = manager.getRunningTasks(1);
+        ActivityManager.RunningTaskInfo info = list.get(0);
 
+        Log.d("aa", info.topActivity.getClassName());
+
+//        try {
+//            Class top_Class = Class.forName(info.topActivity.getClassName());
+//            Log.d("Top_Class", "" + top_Class);
+//
+//
+//
+//        } catch (ClassNotFoundException e) { e.printStackTrace(); }
+
+
+//        if(info.topActivity.getClassName().equals("com.example.test7_20.Lab4Activity")){
+//
+//        }else {
+//
+//        }
+    }
+
+    public void progressON() {
+        BaseApplication.getInstance().progressON(this, null);
+    }
+
+    public void progressON(String message) {
+        BaseApplication.getInstance().progressON(this, message);
+    }
+
+    public void progressOFF() {
+        BaseApplication.getInstance().progressOFF();
+    }
+
+    public void ActivityStart(Intent intent, Bundle bundle) {
+        BaseApplication.getInstance().ActivityStart(intent, bundle);
+    }
+
+    public void loadImage(Context context, Object res, ImageView view, boolean isRound) {
+        BaseApplication.getInstance().loadImage(context, res, view, isRound);
+    }
 }
 

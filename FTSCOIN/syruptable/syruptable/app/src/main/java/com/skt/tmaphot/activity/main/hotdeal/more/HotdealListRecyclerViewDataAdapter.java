@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.skt.tmaphot.MainApplication;
+import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class HotdealListRecyclerViewDataAdapter extends RecyclerView.Adapter<Hot
 
             if(viewItem != null) {
                 // Set car item title.
-                MainApplication.loadUrlImage(context , viewItem.getUrl(), holder.getImageView());
+                BaseApplication.getInstance().loadImage(context , viewItem.getUrl(), holder.getImageView(), false);
             }
         }
     }

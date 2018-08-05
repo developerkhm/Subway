@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.common.CommonUtil;
 import com.skt.tmaphot.temp.TempHotplaceFragment;
 
 import java.util.ArrayList;
@@ -136,6 +137,94 @@ public class SelectionAreaFragment extends Fragment {
         listItems[4].add(new ListAreaItem("1","중구/동구/남구/강화"));
         listItems[4].add(new ListAreaItem("1","남동/연수/옹진"));
 
+        listItems[5] = new ArrayList<ListAreaItem>();
+        listItems[5].add(new ListAreaItem("1","전체"));
+        listItems[5].add(new ListAreaItem("1","계룡(계룡대)/세종(조치원)"));
+        listItems[5].add(new ListAreaItem("1","공주(동학사,계룡산)"));
+        listItems[5].add(new ListAreaItem("1","금산/논산/부여"));
+        listItems[5].add(new ListAreaItem("1","당진/예산/홍성"));
+        listItems[5].add(new ListAreaItem("1","서산/태안(안면도)"));
+        listItems[5].add(new ListAreaItem("1","보령(대천)/서천/청양"));
+        listItems[5].add(new ListAreaItem("1","아산(아산온천)"));
+        listItems[5].add(new ListAreaItem("1","천안 동남구(천안역)"));
+        listItems[5].add(new ListAreaItem("1","천안 서북구(성정동)"));
+
+        listItems[6] = new ArrayList<ListAreaItem>();
+        listItems[6].add(new ListAreaItem("1","전체"));
+        listItems[6].add(new ListAreaItem("1","보은/옥천/영동"));
+        listItems[6].add(new ListAreaItem("1","제천/단양"));
+        listItems[6].add(new ListAreaItem("1","진천/괴산/증평/음성"));
+        listItems[6].add(new ListAreaItem("1","청주 상당/서원구"));
+        listItems[6].add(new ListAreaItem("1","청주 청원구"));
+        listItems[6].add(new ListAreaItem("1","청주 흥덕구(가경동)"));
+        listItems[6].add(new ListAreaItem("1","충주"));
+
+        listItems[7] = new ArrayList<ListAreaItem>();
+        listItems[7].add(new ListAreaItem("1","전체"));
+        listItems[7].add(new ListAreaItem("1","대덕구(신탄진)"));
+        listItems[7].add(new ListAreaItem("1","동구(용전동,복합터미널)"));
+        listItems[7].add(new ListAreaItem("1","서구(둔산동,대전청사)"));
+        listItems[7].add(new ListAreaItem("1","유성구(유성오천,충남대)"));
+        listItems[7].add(new ListAreaItem("1","중구(은행동,한밭구장)"));
+
+
+        listItems[8] = new ArrayList<ListAreaItem>();
+        listItems[8].add(new ListAreaItem("1","전체"));
+        listItems[8].add(new ListAreaItem("1","문경/상주/예천"));
+        listItems[8].add(new ListAreaItem("1","영주/봉화/울진"));
+        listItems[8].add(new ListAreaItem("1","김천/성주/고령/칠곡"));
+        listItems[8].add(new ListAreaItem("1","구미/안동/의성/군위"));
+        listItems[8].add(new ListAreaItem("1","포항/영양/영덕/청송"));
+        listItems[8].add(new ListAreaItem("1","영천/경산/경주/청도"));
+        listItems[8].add(new ListAreaItem("1","울릉"));
+
+
+        listItems[9] = new ArrayList<ListAreaItem>();
+        listItems[9].add(new ListAreaItem("1","전체"));
+        listItems[9].add(new ListAreaItem("1","하동/사천/진주"));
+        listItems[9].add(new ListAreaItem("1","창녕/함안/밀양/양산"));
+        listItems[9].add(new ListAreaItem("1","마산/창원/진해/김해"));
+        listItems[9].add(new ListAreaItem("1","통영/거제/남해/고성"));
+        listItems[9].add(new ListAreaItem("1","거창/함양/산청/합천/의령"));
+
+
+        listItems[10] = new ArrayList<ListAreaItem>();
+        listItems[10].add(new ListAreaItem("1","전체"));
+        listItems[10].add(new ListAreaItem("1","달서/서구/달성군"));
+        listItems[10].add(new ListAreaItem("1","수성/동구"));
+        listItems[10].add(new ListAreaItem("1","중구/북구/남구"));
+
+
+        listItems[11] = new ArrayList<ListAreaItem>();
+        listItems[11].add(new ListAreaItem("1","전체"));
+        listItems[11].add(new ListAreaItem("1","중구/동구/울주군"));
+        listItems[11].add(new ListAreaItem("1","남구/북구"));
+
+        listItems[12] = new ArrayList<ListAreaItem>();
+        listItems[12].add(new ListAreaItem("1","전체"));
+        listItems[12].add(new ListAreaItem("1","서구"));
+        listItems[12].add(new ListAreaItem("1","동구/북구"));
+        listItems[12].add(new ListAreaItem("1","광산구/남구"));
+
+        listItems[13] = new ArrayList<ListAreaItem>();
+        listItems[13].add(new ListAreaItem("1","전체"));
+        listItems[13].add(new ListAreaItem("1","무안/함평/영광/장성"));
+        listItems[13].add(new ListAreaItem("1","담양/곡성/구례"));
+        listItems[13].add(new ListAreaItem("1","목포/나주/영암"));
+        listItems[13].add(new ListAreaItem("1","순천/광양/화순/여수"));
+        listItems[13].add(new ListAreaItem("1","해남/강진/장흥/보성/고흥/완도"));
+
+        listItems[14] = new ArrayList<ListAreaItem>();
+        listItems[14].add(new ListAreaItem("1","전체"));
+        listItems[14].add(new ListAreaItem("1","전주/완주"));
+        listItems[14].add(new ListAreaItem("1","군산/익산"));
+        listItems[14].add(new ListAreaItem("1","김제/부안/정읍/고창/남원/무주/진안/임실"));
+
+        listItems[15] = new ArrayList<ListAreaItem>();
+        listItems[15].add(new ListAreaItem("1","전체"));
+        listItems[15].add(new ListAreaItem("1","제주"));
+        listItems[15].add(new ListAreaItem("1","서귀포"));
+
 
         areaRecyclerView = (RecyclerView)rootView.findViewById(R.id.selectionarea_selection_area_recyler);
         listRecyclerView = (RecyclerView)rootView.findViewById(R.id.selectionarea_selection_list_recycler);
@@ -150,6 +239,7 @@ public class SelectionAreaFragment extends Fragment {
         areaRecyclerViewAdapter = new AreaRecyclerViewAdapter(areaItems);
         areaRecyclerView.setAdapter(areaRecyclerViewAdapter);
         areaRecyclerView.setHasFixedSize(true);
+        areaRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(1, 1, 0, 0));
 
         //초기값
 
@@ -169,6 +259,7 @@ public class SelectionAreaFragment extends Fragment {
         listRecyclerView.setAdapter(listRecyclerViewAdapter);
         listRecyclerView.setHasFixedSize(true);
 //        areaReviewRecyclerView.setFocusable(false);
+        listRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 0, 1, 0));
 
 
 

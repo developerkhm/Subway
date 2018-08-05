@@ -7,10 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.skt.tmaphot.MainApplication;
+import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.common.CommonUtil;
 
 import java.util.List;
 
@@ -52,6 +54,8 @@ public class HotplaceGridAdapter extends BaseAdapter {
         TextView TitletextView = (TextView) convertView.findViewById(R.id.hotplace_grid_txt_title);
         TextView MenutextView = (TextView) convertView.findViewById(R.id.hotplace_review);
         TextView DistancetextView = (TextView) convertView.findViewById(R.id.hotplace_grid_txt_distance);
+        RatingBar ratingBar = (RatingBar)convertView.findViewById(R.id.hotplace_ratingBar);
+        CommonUtil.getInstance().setColorRatingBar(ratingBar);
 
 
         Drawable drawable= null;
@@ -61,7 +65,7 @@ public class HotplaceGridAdapter extends BaseAdapter {
             imageView.setClipToOutline(true);
         }
 
-        MainApplication.loadUrlImage(mContext,hotplaceGridViewItemsList.get(position).getUrl(), imageView);
+        BaseApplication.getInstance().loadImage(mContext,hotplaceGridViewItemsList.get(position).getUrl(), imageView, false);
 
 
         TitletextView.setText(hotplaceGridViewItemsList.get(position).getTitle());

@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.skt.tmaphot.MainApplication;
+import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.BaseActivity;
 import com.skt.tmaphot.activity.ImageViewPagerActivity;
@@ -191,7 +191,7 @@ public class StoreInfoActivity0727 extends BaseActivity {
 
                 if (viewItem != null) {
                     // Set car item title.
-                    MainApplication.loadUrlImage(mContext, viewItem, holder.getImageView());
+//                    BaseApplication.loadUrlImage(mContext, viewItem, holder.getImageView());
                 }
             }
         }

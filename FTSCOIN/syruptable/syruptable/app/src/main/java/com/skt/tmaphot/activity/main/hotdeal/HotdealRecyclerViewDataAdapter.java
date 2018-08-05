@@ -1,20 +1,17 @@
 package com.skt.tmaphot.activity.main.hotdeal;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.skt.tmaphot.MainApplication;
+import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.IRecyclerItem;
 import com.skt.tmaphot.activity.IRecyclerViewDataAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class HotdealRecyclerViewDataAdapter extends RecyclerView.Adapter<HotdealRecyclerViewHolder> implements IRecyclerViewDataAdapter {
 
@@ -47,7 +44,7 @@ public class HotdealRecyclerViewDataAdapter extends RecyclerView.Adapter<Hotdeal
 
             if(viewItem != null) {
                 // Set car item title.
-                MainApplication.loadUrlImage(context , viewItem.getUrl(), holder.getmImgReview());
+                BaseApplication.getInstance().loadImage(context , viewItem.getUrl(), holder.getmImgReview(), false);
                 holder.getmTitleText().setText(viewItem.getTitle());
                 holder.getmMenueText().setText(viewItem.getMenu());
             }

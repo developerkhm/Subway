@@ -360,6 +360,97 @@
         <item name="android:lineSpacingExtra">8.5dp</item>
     </style>
 
+    <style name="navi_nickname" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">14.8dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_gray_33</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">0.2dp</item>
+    </style>
+
+    <style name="navi_text" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">13.3dp</item>
+        <item name="android:textColor">@color/text_gray_8f</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">11.7dp</item>
+    </style>
+
+    <style name="navi_menu" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">13.3dp</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">11.7dp</item>
+    </style>
+
+    <style name="navi_login" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">13.3dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">11.7dp</item>
+    </style>
+
+    <style name="search_text" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">13.3dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_gray_33</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">11.7dp</item>
+    </style>
+
+    <style name="search_close" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">13.3dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_gray_d4</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">11.7dp</item>
+    </style>
+
+    <style name="search_searchbar" parent="@android:style/Widget.TextView">
+        <item name="android:background">@color/text_gray_d4</item>
+        <item name="android:textSize">13.3dp</item>
+        <item name="android:textColor">@color/text_gray_aa</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">11.7dp</item>
+    </style>
+
+    <style name="area_text" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">13.3dp</item>
+        <item name="android:textColor">@color/text_gray_33</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">11.7dp</item>
+    </style>
+
+
+
+    <!--style name="Widget.RatingBar">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@android:drawable/ratingbar_full</item>
+        <item name="android:indeterminateDrawable">@android:drawable/ratingbar_full</item>
+        <item name="android:minHeight">57dip</item>
+        <item name="android:maxHeight">57dip</item>
+        <item name="android:thumb">@null</item>
+    </style>
+
+    <style name="Widget.RatingBar.Indicator">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@android:drawable/ratingbar</item>
+        <item name="android:indeterminateDrawable">@android:drawable/ratingbar</item>
+        <item name="android:minHeight">38dip</item>
+        <item name="android:maxHeight">38dip</item>
+        <item name="android:thumb">@null</item>
+        <item name="android:isIndicator">true</item>
+    </style>
+
+    <style name="Widget.RatingBar.Small">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@android:drawable/ratingbar_small</item>
+        <item name="android:indeterminateDrawable">@android:drawable/ratingbar_small</item>
+        <item name="android:minHeight">14dip</item>
+        <item name="android:maxHeight">14dip</item>
+        <item name="android:thumb">@null</item>
+        <item name="android:isIndicator">true</item>
+    </style-->
+
 
 </resources>
 

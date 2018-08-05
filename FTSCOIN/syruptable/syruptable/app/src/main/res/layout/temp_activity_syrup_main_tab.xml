@@ -123,7 +123,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/main_nav_header_layout"
+        app:headerLayout="@layout/main_navi_layout"
         app:menu="@menu/drawer_main_menu" />
 
     <!--

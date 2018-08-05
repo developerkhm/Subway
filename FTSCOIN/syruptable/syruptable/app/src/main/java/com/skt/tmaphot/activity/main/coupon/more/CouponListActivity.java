@@ -59,7 +59,7 @@ public class CouponListActivity extends BaseActivity {
                     // Scrolled to bottom. Do something here.
                     getLoadDate();
 
-                    adapter.notifyDataSetChanged();
+
 
                     mLoading = false;
                 }
@@ -83,6 +83,15 @@ public class CouponListActivity extends BaseActivity {
                 "http://image.sportsseoul.com/2018/02/23/news/20180223095152_(7).jpg",
                 "id", "전주순대국", "뽁음순대", "한식","30","50,000원","30,000원"));
 
+
+
+       runOnUiThread(new Runnable() {
+           @Override
+           public void run() {
+               if(adapter != null)
+                    adapter.notifyDataSetChanged();
+           }
+       });
     }
 
 

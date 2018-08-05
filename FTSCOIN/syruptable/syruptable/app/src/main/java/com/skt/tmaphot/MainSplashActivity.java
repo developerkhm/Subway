@@ -94,7 +94,7 @@ public class MainSplashActivity extends AppCompatActivity {
                 intent.putExtra("latitude", GPSData.LATITUDE);
                 intent.putExtra("longitude",GPSData.LONGITUDE);
 
-                MainApplication.ActivityStart(intent, null);
+                BaseApplication.getInstance().ActivityStart(intent, null);
                 finish();
 
             }
@@ -123,7 +123,7 @@ public class MainSplashActivity extends AppCompatActivity {
                                     // Sent user to GPS settings screen
                                     Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                                     intent.addCategory(Intent.CATEGORY_DEFAULT);
-                                    MainApplication.ActivityStart(intent, null);
+                                    BaseApplication.getInstance().ActivityStart(intent, null);
                                 }
                             })
                     .setNegativeButton("No",

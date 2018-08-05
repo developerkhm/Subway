@@ -3,13 +3,17 @@ package com.skt.tmaphot.common;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -126,5 +130,14 @@ public class CommonUtil {
 //                outRect.top = space;
 //            }
         }
+    }
+
+
+    public void setColorRatingBar(RatingBar ratingbar)
+    {
+        LayerDrawable stars = (LayerDrawable) ratingbar.getProgressDrawable();
+        stars.getDrawable(1).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP); // for filled stars
+//		stars.getDrawable(1).setColorFilter(Color.parseColor("#FFFF00"), PorterDuff.Mode.SRC_ATOP); // for half filled stars
+        stars.getDrawable(0).setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP); // for empty stars
     }
 }

@@ -9,12 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.skt.tmaphot.MainApplication;
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.activity.search.db.DatabaseHelper;
+import com.skt.tmaphot.activity.search.db.SearchWord;
 import com.skt.tmaphot.common.CommonUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,7 +24,9 @@ public class LatestSearchWordFragment extends Fragment {
 
     private RecyclerView latestRecyclerView;
     private LatestRecyclerViewAdapter latestRecyclerViewAdapter;
-    private List<LatestItem> latestItems;
+    private List<SearchWord> searchWords;
+
+    private DatabaseHelper db;
 
 
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -44,62 +47,45 @@ public class LatestSearchWordFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_latest_searchword_layout, container, false);
 
-        latestItems = new ArrayList<LatestItem>();
-        latestItems.add(new LatestItem("1", "이태원 음식점"));
-        latestItems.add(new LatestItem("1", "삼국지 삼겹살"));
-        latestItems.add(new LatestItem("1", "선릉"));
-        latestItems.add(new LatestItem("1", "뽕나무쟁이 선릉"));
+        db = new DatabaseHelper(getActivity());
+        searchWords = db.getAll();
+
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         latestRecyclerView = (RecyclerView) rootView.findViewById(R.id.search_latest_recycler);
         latestRecyclerView.setLayoutManager(layoutManager);
-        latestRecyclerViewAdapter = new LatestRecyclerViewAdapter(latestItems);
+        latestRecyclerViewAdapter = new LatestRecyclerViewAdapter(searchWords);
         latestRecyclerView.setAdapter(latestRecyclerViewAdapter);
         latestRecyclerView.setHasFixedSize(true);
+        latestRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 0, 1, 0));
 
         return rootView;
     }
 
-    private class LatestItem {
-        private String id;
-        private String area;
-
-        public LatestItem(String id, String area) {
-            this.id = id;
-            this.area = area;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public String getArea() {
-            return area;
-        }
-    }
 
     private class RecommandRecyclerViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView areaTextView;
+        public TextView keywordTextView;
+        public TextView keywordDelete;
 
 
         public RecommandRecyclerViewHolder(View itemView) {
             super(itemView);
-
             if (itemView != null) {
-                areaTextView = (TextView) itemView.findViewById(R.id.search_latest_recycler_txt);
+                keywordTextView = (TextView) itemView.findViewById(R.id.search_latest_keyword);
+                keywordDelete = (TextView) itemView.findViewById(R.id.search_latest_keyword_delete);
             }
         }
     }
 
     private class LatestRecyclerViewAdapter extends RecyclerView.Adapter<RecommandRecyclerViewHolder> {
 
-        private List<LatestItem> mItems;
+        private List<SearchWord> mItems;
         Context mContext;
 
-        public LatestRecyclerViewAdapter(List<LatestItem> reviewItemList) {
+        public LatestRecyclerViewAdapter(List<SearchWord> reviewItemList) {
             mItems = reviewItemList;
         }
 
@@ -115,11 +101,13 @@ public class LatestSearchWordFragment extends Fragment {
         @Override
         public void onBindViewHolder(RecommandRecyclerViewHolder holder, final int position) {
 
-            holder.areaTextView.setText(mItems.get(position).getArea());
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+            holder.keywordTextView.setText(mItems.get(position).getKeyword());
+            holder.keywordDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    db.delete(mItems.get(position).getId());
+                    mItems.remove(position);
+                    latestRecyclerViewAdapter.notifyDataSetChanged();
                 }
             });
         }
@@ -131,7 +119,25 @@ public class LatestSearchWordFragment extends Fragment {
     }
 
     public void saveSearchKeyword(String keyword){
+        if(db != null)
+        {
+//            int totalCount = db.getTotalCount();
+            int deleteCount = db.delete(keyword);
 
+            if(deleteCount > 0){
+                db.add(new SearchWord(keyword));
+                searchWords.clear();
+                searchWords = db.getAll();
+                latestRecyclerViewAdapter = new LatestRecyclerViewAdapter(searchWords);
+                latestRecyclerView.setAdapter(latestRecyclerViewAdapter);
+            }
+            else{
+                db.add(new SearchWord(keyword));
+                searchWords.add(0, db.getLast());
+            }
+
+            latestRecyclerViewAdapter.notifyDataSetChanged();
+        }
     }
 }
 

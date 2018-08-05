@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.common.CommonUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,7 @@ public class RecommanSearchWordFragment extends Fragment {
         recommandRecyclerViewAdapter = new RecommandRecyclerViewAdapter(recommandItems);
         recommandRecyclerView.setAdapter(recommandRecyclerViewAdapter);
         recommandRecyclerView.setHasFixedSize(true);
+        recommandRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 0, 1, 0));
 
         return rootView;
     }

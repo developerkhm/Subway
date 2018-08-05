@@ -12,14 +12,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.skt.tmaphot.BaseActivity;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.review.multiple.helpers.Constants;
 
 
-/**
- * Created by darshan on 26/9/16.
- */
-public class HelperActivity extends AppCompatActivity {
+public class HelperActivity extends BaseActivity {
     protected View view;
 
     private final int maxLines = 4;

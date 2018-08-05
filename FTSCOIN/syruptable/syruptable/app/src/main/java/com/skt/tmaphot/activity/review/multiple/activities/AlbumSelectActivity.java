@@ -59,17 +59,17 @@ public class AlbumSelectActivity extends HelperActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_realreview_album_layout);
-//        setView(findViewById(R.id.layout_album_select));
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(R.string.album_view);
+        baceContext = this;
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//
+//        actionBar = getSupportActionBar();
+//        actionBar.setDisplayHomeAsUpEnabled(true);
+//        actionBar.setHomeButtonEnabled(true);
+//
+//        actionBar.setDisplayShowTitleEnabled(true);
+//        actionBar.setTitle(R.string.album_view);
 
 
         Intent intent = getIntent();
