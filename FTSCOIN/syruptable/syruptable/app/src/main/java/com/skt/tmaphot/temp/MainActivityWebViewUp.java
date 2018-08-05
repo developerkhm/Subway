@@ -28,7 +28,7 @@ public class MainActivityWebViewUp extends AppCompatActivity {
     public static final String ENTRY_URL = "https://shop.ordertable.co.kr/intro";
 
     public static final String HOTPLACE_URL = "https://shop.ordertable.co.kr/hotplace";
-//    public static final String HOTPLACE_URL = "http://dev.ordertable.co.kr/";
+    //    public static final String HOTPLACE_URL = "http://dev.ordertable.co.kr/";
     public static final String SHOP_URL = "https://shop.ordertable.co.kr/";
     public static final String SHARE_URL = "https://shop.ordertable.co.kr/share";
     public static final String DELIVERY_URL = "https://shop.ordertable.co.kr/delivery365";
@@ -56,7 +56,7 @@ public class MainActivityWebViewUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_layout_webview);
 
-        mWebView = (WebView)findViewById(R.id.activity_main_webview);
+        mWebView = (WebView) findViewById(R.id.activity_main_webview);
         mWebView.setWebViewClient(new SyrupWebViewClient(this, mWebView));
         mWebView.setWebChromeClient(new SyrupWebChromeClient(this, mWebView));
         mWebView.addJavascriptInterface(new AndroidBridge(), "MyApp");
@@ -155,7 +155,10 @@ public class MainActivityWebViewUp extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        CookieSyncManager.getInstance().startSync();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            //noinspection deprecation
+            CookieSyncManager.getInstance().stopSync();
+        }
     }
 
     @Override

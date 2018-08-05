@@ -38,7 +38,7 @@ public class SyrupWebViewClient extends WebViewClient {
         init();
     }
 
-    private void init(){
+    private void init() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //평균적으로 킷캣 이상에서는 하드웨어 가속이 성능이 좋음.
             target.setLayerType(View.LAYER_TYPE_HARDWARE, null);
@@ -90,14 +90,19 @@ public class SyrupWebViewClient extends WebViewClient {
         settings.setTextZoom(100);
 
         // 쿠키
-        CookieSyncManager.createInstance(activity);
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+//            CookieSyncManager.createInstance(activity);
+//        }
 
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // 웹뷰내 https 이미지 나오게 처리 ( 혼합 콘텐츠가 타사 쿠키를 차단할 때 생기는 오류 처리 )
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
             CookieManager cookieManager = CookieManager.getInstance();
             cookieManager.setAcceptCookie(true);
             cookieManager.setAcceptThirdPartyCookies(target, true);
+        }else{
+            CookieSyncManager.createInstance(activity);  //hak 내가보기엔 startSync도 있음
+//            CookieSyncManager.getInstance().startSync();
         }
 
         //자바스크립트의 window.open 허용
@@ -144,7 +149,7 @@ public class SyrupWebViewClient extends WebViewClient {
             }
 
             // 여기서 WebView의 데이터를 가져오는 작업을 한다.
-            if ( CommonUtil.getInstance().devicePhoneNumber == null ) {
+            if (CommonUtil.getInstance().devicePhoneNumber == null) {
 
                 CommonUtil.getInstance().devicePhoneNumber = CommonUtil.getInstance().getPhoneNumber();
                 String script = "javascript:function afterLoad() {"
@@ -152,7 +157,8 @@ public class SyrupWebViewClient extends WebViewClient {
 
                 view.loadUrl(script);
             }
-        }catch(Exception e){}
+        } catch (Exception e) {
+        }
     }
 
     // 오류가 났을 경우, 오류는 복수할 수 없음
@@ -224,13 +230,13 @@ public class SyrupWebViewClient extends WebViewClient {
             //Log.d("shouldOverrid2",url);
             Intent intent = null;
             //인텐트 정합성 체크`
-            try{
+            try {
 
                 intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
                 //Log.d(TAG, "intent.getScheme = " + intent.getScheme());
                 //Log.d(TAG, "intent.getDataString = " + intent.getDataString());
 
-            }catch(URISyntaxException ex){
+            } catch (URISyntaxException ex) {
 
                 //Log.e(TAG, "Bad URI " + url + ":" + ex.getMessage());
                 return false;
@@ -267,24 +273,25 @@ public class SyrupWebViewClient extends WebViewClient {
     }
 
     /**
-     *  KFTC앱(인터넷뱅킹)에서 callbackparam1,2,3를 돌려주지 않아서
-     *  callbackparam1, 2, 3을 저장함.
+     * KFTC앱(인터넷뱅킹)에서 callbackparam1,2,3를 돌려주지 않아서
+     * callbackparam1, 2, 3을 저장함.
+     *
      * @param reqParam
      */
-    private void getCallbackparam(String reqParam){
+    private void getCallbackparam(String reqParam) {
         String[] arry = reqParam.split("&");
 
-        for(int i=0; i<arry.length; i++){
+        for (int i = 0; i < arry.length; i++) {
 
-            if(arry[i].startsWith("callbackparam1=")){
+            if (arry[i].startsWith("callbackparam1=")) {
                 mCallbackparam1 = arry[i].substring("callbackparam1=".length());
                 //Log.d(TAG, "mCallbackparam1 == " + mCallbackparam1);
 
-            }else if(arry[i].startsWith("callbackparam2=")){
+            } else if (arry[i].startsWith("callbackparam2=")) {
                 mCallbackparam2 = arry[i].substring("callbackparam2=".length());
                 //Log.d(TAG, "mCallbackparam2 == " + mCallbackparam2);
 
-            }else if(arry[i].startsWith("callbackparam3=")){
+            } else if (arry[i].startsWith("callbackparam3=")) {
                 mCallbackparam3 = arry[i].substring("callbackparam3=".length());
                 //Log.d(TAG, "mCallbackparam3 == " + mCallbackparam3);
 
