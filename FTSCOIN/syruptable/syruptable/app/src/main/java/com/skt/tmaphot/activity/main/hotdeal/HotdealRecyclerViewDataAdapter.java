@@ -2,6 +2,7 @@ package com.skt.tmaphot.activity.main.hotdeal;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,5 +65,11 @@ public class HotdealRecyclerViewDataAdapter extends RecyclerView.Adapter<Hotdeal
     @Override
     public void notifyData() {
         this.notifyDataSetChanged();
+    }
+
+    @Override
+    public void notifyChanged(int start, int last) {
+        Log.d("FAB", "HotdealRecyclerViewDataAdapter [start] :" + start + " [last]" + last);
+        this.notifyItemRangeChanged(start, last);
     }
 }

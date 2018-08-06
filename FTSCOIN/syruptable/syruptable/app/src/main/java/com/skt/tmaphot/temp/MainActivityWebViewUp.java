@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.client.SyrupWebChromeClient;
-import com.skt.tmaphot.client.SyrupWebViewClient;
+import com.skt.tmaphot.client.ShopWebViewClient;
 import com.skt.tmaphot.common.AndroidBridge;
 
 public class MainActivityWebViewUp extends AppCompatActivity {
@@ -47,7 +47,7 @@ public class MainActivityWebViewUp extends AppCompatActivity {
 
     public ValueCallback<Uri> mUploadMessage = null;
     public ValueCallback<Uri[]> filePathCallbackLollipop;
-    public SyrupWebViewClient syrupWebViewClient;
+    public ShopWebViewClient syrupWebViewClient;
 
     private WebView mWebView;
 
@@ -57,8 +57,8 @@ public class MainActivityWebViewUp extends AppCompatActivity {
         setContentView(R.layout.activity_main_layout_webview);
 
         mWebView = (WebView) findViewById(R.id.activity_main_webview);
-        mWebView.setWebViewClient(new SyrupWebViewClient(this, mWebView));
-        mWebView.setWebChromeClient(new SyrupWebChromeClient(this, mWebView));
+//        mWebView.setWebViewClient(new ShopWebViewClient(this, mWebView));
+//        mWebView.setWebChromeClient(new SyrupWebChromeClient(this, mWebView));
         mWebView.addJavascriptInterface(new AndroidBridge(), "MyApp");
 
         mWebView.setOnKeyListener(new View.OnKeyListener() {
@@ -157,7 +157,7 @@ public class MainActivityWebViewUp extends AppCompatActivity {
         super.onResume();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             //noinspection deprecation
-            CookieSyncManager.getInstance().stopSync();
+            CookieSyncManager.getInstance().startSync();
         }
     }
 

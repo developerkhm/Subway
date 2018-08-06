@@ -2,6 +2,7 @@ package com.skt.tmaphot.activity.main.coupon;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,5 +70,12 @@ public class CouponRecyclerViewDataAdapter extends RecyclerView.Adapter<CouponRe
     @Override
     public void notifyData() {
         this.notifyDataSetChanged();
+    }
+
+    @Override
+    public void notifyChanged(int start, int last) {
+        Log.d("FAB", "CouponRecyclerViewHolder [start] :" + start + " [last]" + last);
+        this.notifyItemRangeChanged(start, last);
+//        this.notifyItemRangeInserted(start, last);
     }
 }

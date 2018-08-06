@@ -3,6 +3,7 @@ package com.skt.tmaphot;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -21,7 +22,6 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.skt.tmaphot.location.GPSData;
 import com.skt.tmaphot.location.GPSTracker;
 
 import java.util.ArrayList;
@@ -35,73 +35,67 @@ public class MainSplashActivity extends AppCompatActivity {
     //GPS
     private LocationManager locationManager;
     private boolean isGPSEnabled;
-    public Handler mHandler;
     GPSTracker gpsTracker;
-    public static int RENEW_GPS = 1;
-    public static int SEND_PRINT = 2;
-
-
     private String TAG = "gps";
+
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            int message = msg.what;
+
+            switch(message)
+            {
+                case GPSTracker.LOCATION_SUCCESS:
+                case GPSTracker.LOCATION_LASTKNOWN:
+                case GPSTracker.LOCATION_UPDATE:
+                    startMainActivity();
+                    break;
+                case GPSTracker.LOCATION_FAIL:
+                    BaseApplication.getInstance().failGps(mContext);
+                    break;
+            }
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);   //화면 꺼짐 방지
-
         mContext = this;
-        mHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-//                if (msg.what == RENEW_GPS) {
-//                    makeNewGpsService();
-//                }
-//                if (msg.what == SEND_PRINT) {
-//                    logPrint((GPSData) msg.obj);
-//                }
-            }
-        };
 
-        if (Build.VERSION.SDK_INT < 23) {
-            //Do not need to check the permission
-            initStart(2000);
-        } else {
-            if (checkAndRequestPermissions()) {
-                //If you have already permitted the permission
-                initStart(2000);
+        if(BaseApplication.getInstance().isNetworkConnected(this))  // 네트워크 확인
+        {
+            if (Build.VERSION.SDK_INT < 23) {
+                //Do not need to check the permission
+                initStart();
+            } else {
+                if (checkAndRequestPermissions()) {
+                    //If you have already permitted the permission
+                    initStart();
+                }
             }
         }
+    }
+
+    private void startMainActivity(){
+        BaseApplication.getInstance().ActivityStart(new Intent(this, MainActivity.class),null);
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        initStart(0);
+        initStart();
     }
 
-    public void startMainActivity(int delayTime) {
-        makeNewGpsService();
 
-
-        // 현재 스플래쉬가 view 방식으로 되어있어 임시 구현
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //Intent intent = new Intent(this, MainActivity.class);
-                //Intent intent = new Intent(SplashActivity.this, SyrupMainActivity.class);
-                //Intent intent = new Intent(SplashActivity.this, NewSyrupMainActivity.class);
-                Intent intent = new Intent(mContext, MainActivity.class);
-                intent.putExtra("latitude", GPSData.LATITUDE);
-                intent.putExtra("longitude",GPSData.LONGITUDE);
-
-                BaseApplication.getInstance().ActivityStart(intent, null);
-                finish();
-
-            }
-        }, delayTime);
-    }
-
-    public void initStart(int delayTime) {
+    public void initStart() {
         try {
             locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
             isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -110,7 +104,7 @@ public class MainSplashActivity extends AppCompatActivity {
         }
 
         if (isGPSEnabled) {
-            startMainActivity(delayTime);
+            initGpsService();
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(
@@ -131,7 +125,7 @@ public class MainSplashActivity extends AppCompatActivity {
 
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();
-                                    startMainActivity(0);
+                                    initGpsService();
                                     Toast.makeText(MainSplashActivity.this, "위치 정보를 가져오는데 실패 하였습니다.", Toast.LENGTH_SHORT).show();
 
                                 }
@@ -141,19 +135,12 @@ public class MainSplashActivity extends AppCompatActivity {
         }
     }
 
-    public void makeNewGpsService() {
+    public void initGpsService() {
         Log.d("getgps", "makeNewGpsService");
         if (gpsTracker == null) {
             gpsTracker = GPSTracker.getInstance(this, mHandler);
-            gpsTracker.startGetLocation();
-        } else {
-            gpsTracker.Update();
         }
-    }
-
-    public void logPrint(GPSData gps) {
-//        GPSData.setLATITUDE(gps.getLatitude());
-//        GPSData.LONGITUDE = gps.getLongitude();
+            gpsTracker.startGetLocation();
     }
 
     public boolean checkAndRequestPermissions() {
@@ -218,7 +205,7 @@ public class MainSplashActivity extends AppCompatActivity {
             case REQUEST_ID_MULTIPLE_PERMISSIONS:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //Permission Granted Successfully. Write working code here.
-                    initStart(0);
+                    initStart();
                 } else {
                     //You did not accept the request can not use the functionality.
                     Toast.makeText(this, "권한 정보 동의에 실패하여 3초 후에 앱을 종료합니다.", Toast.LENGTH_LONG).show();

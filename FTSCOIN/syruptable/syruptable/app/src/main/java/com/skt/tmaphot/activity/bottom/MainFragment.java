@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.skt.tmaphot.MainActivity;
-import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.IRecyclerItem;
 import com.skt.tmaphot.activity.IRecyclerViewDataAdapter;
@@ -50,6 +49,9 @@ import com.skt.tmaphot.fragment.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class MainFragment extends BaseFragment {
 
@@ -100,11 +102,16 @@ public class MainFragment extends BaseFragment {
     //임시
     private int food_type = 100;
 
+    private ExecutorService executorService;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("ABCDE", "Fragment onCreateView");
         rootView = inflater.inflate(R.layout.fragment_main_layout, container, false);
         rootView.findViewById(R.id.toolbar).setVisibility(View.GONE);
+
+
+        executorService = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
 
         //초기 View 세팅
         initView();
@@ -153,20 +160,39 @@ public class MainFragment extends BaseFragment {
                                 if (mainMenuRecyclerViewItems == null)
                                     mainMenuRecyclerViewItems = new ArrayList<MainMenuRecyclerViewItem>();
 
-                                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("55", "", R.drawable.img_main_menu_1));
-                                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("88", "", R.drawable.img_main_menu_2));
-                                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("22", "", R.drawable.img_main_menu_3));
-                                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("222", "", R.drawable.img_main_menu_4));
-                                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("545", "", R.drawable.img_main_menu_5));
-                                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("235235", "", R.drawable.img_main_menu_6));
-                                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("2355", "", R.drawable.img_main_menu_7));
-                                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("23525", "", R.drawable.img_main_menu_8));
+
+
 
                                 menuRecyclerViewDataAdapter = new MainMenuRecyclerViewDataAdapter(getActivity(), mainMenuRecyclerViewItems);
                                 menuRecyclerViewDataAdapter.setOnMenuCilckListener(onMenuCilckListener); // 메뉴 리스너 등록
                                 recyclerView.setAdapter(menuRecyclerViewDataAdapter);
                                 //                loadData(false, recyclerView);
                                 recyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0));
+
+
+                                executorService.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("55", "", R.drawable.img_main_menu_1));
+                                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("88", "", R.drawable.img_main_menu_2));
+                                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("22", "", R.drawable.img_main_menu_3));
+                                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("222", "", R.drawable.img_main_menu_4));
+                                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("545", "", R.drawable.img_main_menu_5));
+                                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("235235", "", R.drawable.img_main_menu_6));
+                                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("2355", "", R.drawable.img_main_menu_7));
+                                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("23525", "", R.drawable.img_main_menu_8));
+
+                                        menuRecyclerView.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                menuRecyclerViewDataAdapter.notifyDataSetChanged();
+                                            }
+                                        });
+                                    }
+                                });
+
+
+
                                 break;
 
                             case R.id.coupon_recycler_view:
@@ -308,6 +334,8 @@ public class MainFragment extends BaseFragment {
 
         ArrayList<IRecyclerItem> iRecyclerItems;
         IRecyclerViewDataAdapter iRecyclerViewDataAdapter;
+        int start;
+        int last;
 
         public CustomRunnable(ArrayList<IRecyclerItem> iRecyclerItems) {
             this.iRecyclerItems = iRecyclerItems;
@@ -315,6 +343,12 @@ public class MainFragment extends BaseFragment {
 
         public CustomRunnable(IRecyclerViewDataAdapter iRecyclerViewDataAdapter) {
             this.iRecyclerViewDataAdapter = iRecyclerViewDataAdapter;
+        }
+
+        public CustomRunnable(IRecyclerViewDataAdapter iRecyclerViewDataAdapter, int start, int last) {
+            this.iRecyclerViewDataAdapter = iRecyclerViewDataAdapter;
+            this.start = start;
+            this.last = last;
         }
 
         @Override
@@ -332,7 +366,8 @@ public class MainFragment extends BaseFragment {
             return;
         }
 
-        new Thread(new Runnable() {
+
+        executorService.execute(new Runnable() {
             @Override
             public void run() {
 
@@ -340,6 +375,7 @@ public class MainFragment extends BaseFragment {
 
                 ArrayList<IRecyclerItem> iRecyclerItems = null;
                 IRecyclerViewDataAdapter iRecyclerViewDataAdapter = null;
+
 
                 int currItemListSize = 0;   // 현재 리스트 사이즈
                 int newItemIndex = 0;       // 아이템 끝 index
@@ -439,19 +475,19 @@ public class MainFragment extends BaseFragment {
                 newItemIndex = iRecyclerItems.size() - 1;
                 Log.d("FAB", "newItemIndex size : " + "[" + newItemIndex + "]");
 
-                rootView.post(new CustomRunnable(iRecyclerViewDataAdapter) {
+
+                Log.d("FAB", "notifyData call post [start] :" + currItemListSize + " [last]" + newItemIndex);
+                rootView.post(new CustomRunnable(iRecyclerViewDataAdapter, 0, newItemIndex) {
 
                     @Override
                     public void run() {
-
-                        Log.d("FAB", "notifyData call ");
-                        this.iRecyclerViewDataAdapter.notifyData();
+                        this.iRecyclerViewDataAdapter.notifyChanged(this.start, this.last);
                     }
                 });
 
 
             }
-        }).start();
+        });
     }
 
 
@@ -468,7 +504,7 @@ public class MainFragment extends BaseFragment {
 //        });
 
 
-        rollingAdapter = new RollingAdapter(getActivity(), setEventBannerData(), new RollingAdapter.OnAdapterItemClickListener() {
+        rollingAdapter = new RollingAdapter(getActivity(), setEventDummyBannerData(), new RollingAdapter.OnAdapterItemClickListener() {
             @Override
             public void onItemClick(RollingModel object, int position) {
                 Toast.makeText(getActivity(), position + " items click!", Toast.LENGTH_SHORT).show();
@@ -481,7 +517,7 @@ public class MainFragment extends BaseFragment {
         rollingAutoManager.setRollingTime(5500);
     }
 
-    private List<RollingModel> setEventBannerData() {
+    private List<RollingModel> setEventDummyBannerData() {
 
         List<RollingModel> list = new ArrayList<>();
         list.add(new RollingModel("1", "https://media-cdn.tripadvisor.com/media/photo-s/0b/ef/52/df/caption.jpg"));
@@ -618,7 +654,7 @@ public class MainFragment extends BaseFragment {
 
     private void loadHotplaceItem(final boolean mode) {
 
-        new Thread(new Runnable() {
+        executorService.execute(new Runnable() {
             @Override
             public void run() {
 
@@ -718,7 +754,7 @@ public class MainFragment extends BaseFragment {
 
                 hotplaceGridview.setFocusable(false);
             }
-        }).start();
+        });
     }
 
     private void reloadHotPlace(boolean mode) {
@@ -945,6 +981,10 @@ public class MainFragment extends BaseFragment {
                 Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
             }
         }
+
+    }
+
+    private void inintSetDummyData(){
 
     }
 }

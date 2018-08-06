@@ -27,6 +27,12 @@ import java.util.Set;
 public class GPSTracker implements LocationListener {
 
     private final String LOG_TAG = "getgps";
+
+    public static final int LOCATION_SUCCESS = 900;
+    public static final int LOCATION_FAIL = 901;
+    public static final int LOCATION_LASTKNOWN = 902;
+    public static final int LOCATION_UPDATE = 903;
+
     private Context mContext;
     public int locationSendCount = 0;
     private int locationFailCount = 0;
@@ -68,7 +74,10 @@ public class GPSTracker implements LocationListener {
             instance.mContext = context;
             instance.mHandler = handler;
         }
+        return instance;
+    }
 
+    public static GPSTracker getInstance() {
         return instance;
     }
 
@@ -78,16 +87,29 @@ public class GPSTracker implements LocationListener {
         this.mHandler = handler;
     }
 
-
     public void Update() {
         Log.d(LOG_TAG, "update GPSTracker");
-        startGetLocation();
+        if (!getLocation()) {
+            getGoogleClientLocation();
+        }
     }
 
     public void startGetLocation() {
         if (!getLocation()) {
             getGoogleClientLocation();
         }
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(!canGetLocation)
+                {
+                    mHandler.sendEmptyMessage(LOCATION_FAIL);
+                    stopUsingGPS();
+                }
+            }
+        }, 5000);
+
     }
 
     @SuppressLint("MissingPermission")
@@ -172,11 +194,11 @@ public class GPSTracker implements LocationListener {
                     double latitude = locationData.getLatitude();
                     double longitude = locationData.getLongitude();
                     Log.d(LOG_TAG, "GoogleClient: " + latitude + "longitude: " + longitude);
-                    sendLocation(latitude, longitude);
+                    sendLocation(latitude, longitude, LOCATION_SUCCESS);
                     canGetLocation = true;
                 } else {
                     locationFailCount++;
-
+                    canGetLocation = false;
                     if (locationFailCount < locationReCount) {
                         Update();
                         return;
@@ -193,12 +215,14 @@ public class GPSTracker implements LocationListener {
                             Log.d(LOG_TAG, "[[[[ getLastKnownLocation ]]]] ");
                             latitude = locationData.getLatitude();
                             longitude = locationData.getLongitude();
-                            sendLocation(latitude, longitude);
+                            canGetLocation = true;
+                            sendLocation(latitude, longitude, LOCATION_LASTKNOWN);
                         } else { //이것 마저 실패하면 기본 값으로 세팅
                             Log.d(LOG_TAG, "[[[[ FAIL DEFAULT GPS VALUE SEND ]]]] ");
-                            sendLocation(default_latitude, default_longitude);    // 임시
+                            sendLocation(default_latitude, default_longitude, LOCATION_FAIL);    // 임시
                             Toast.makeText(mContext, "위치 정보에 실패 하였습니다.", Toast.LENGTH_SHORT).show();
                             canGetLocation = false;
+                            stopUsingGPS();
                         }
                     }
                 }
@@ -242,7 +266,7 @@ public class GPSTracker implements LocationListener {
         Log.d("LOG_TAG", "[onLocationChanged:] latitude: " + latitude + "longitude: " + longitude);
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
-        sendLocation(latitude, longitude);
+        sendLocation(latitude, longitude, LOCATION_UPDATE);
     }
 
     @Override
@@ -263,12 +287,12 @@ public class GPSTracker implements LocationListener {
 //        mHandler.sendEmptyMessage(MainSplashActivity.RENEW_GPS);
     }
 
-    private void sendLocation(double latitude, double longitude) {
+    private void sendLocation(double latitude, double longitude, int Result) {
         Log.d(LOG_TAG, "[sendLocation] latitude: " + latitude + " longitude: " + longitude);
         locationFailCount = 0;
         GPSData.LATITUDE = latitude;
         GPSData.LONGITUDE = longitude;
-        mHandler.sendEmptyMessage(GPSData.LOCATION_UPDATE);
+        mHandler.sendEmptyMessage(Result);
         locationSendCount++;
     }
 
@@ -294,6 +318,4 @@ public class GPSTracker implements LocationListener {
         }
         return sb.toString();
     }
-
-
 }

@@ -2,6 +2,7 @@ package com.skt.tmaphot.activity.main.review;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,5 +64,11 @@ public class RealReviewRecyclerViewDataAdapter extends RecyclerView.Adapter<Real
     @Override
     public void notifyData() {
         this.notifyDataSetChanged();
+    }
+
+    @Override
+    public void notifyChanged(int start, int last) {
+        Log.d("FAB", "RealReviewRecyclerViewDataAdapter [start] :" + start + " [last]" + last);
+        this.notifyItemRangeChanged(start, last);
     }
 }

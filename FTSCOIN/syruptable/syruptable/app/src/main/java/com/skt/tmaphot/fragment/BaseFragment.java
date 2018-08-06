@@ -12,7 +12,6 @@ import com.skt.tmaphot.BaseApplication;
 
 public class BaseFragment extends Fragment {
 
-    protected TextView locationAddress;
     protected View rootView;
 
     @Override

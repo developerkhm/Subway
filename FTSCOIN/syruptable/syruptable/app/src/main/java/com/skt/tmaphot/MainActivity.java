@@ -2,15 +2,18 @@ package com.skt.tmaphot;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -112,63 +115,7 @@ public class MainActivity extends BaseActivity {
         fragmentManager.beginTransaction().add(R.id.fragment_content, new MainFragment()).commit();
 
         setNavigation();
-
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.action_alarm:
-                return true;
-
-            case R.id.action_map:
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-//    @SuppressWarnings("StatementWithEmptyBody")
-//    @Override
-//    public boolean onNavigationItemSelected(MenuItem item) {
-//
-//        Log.d("navi", "onNavigationItemSelected");
-//
-//        int id = item.getItemId();
-//        switch (id) {
-//
-//            case R.id.nav_home:
-//
-//                drawer.closeDrawer(GravityCompat.START);
-//                break;
-//            case R.id.nav_login:
-//
-//                break;
-//            case R.id.nav_mypage:
-//
-//                break;
-//            case R.id.nav_cart:
-//
-//                break;
-//
-//            case R.id.nav_noti:
-//
-//                break;
-//            case R.id.nav_board:
-//
-//                break;
-//            case R.id.nav_review:
-//
-//                break;
-//
-//            default:
-//                break;
-//        }
-//
-////        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//
-//        return false;
-//    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -226,6 +173,11 @@ public class MainActivity extends BaseActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
     }
 
     @Override

@@ -1,12 +1,16 @@
 package com.skt.tmaphot;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +18,7 @@ import android.support.v7.app.AppCompatDialog;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -25,6 +30,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
+import com.skt.tmaphot.location.GPSTracker;
 import com.tsengvn.typekit.Typekit;
 
 import io.fabric.sdk.android.Fabric;
@@ -42,10 +48,9 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         baseApplication = this;
 
-        Fabric.with(this, new Crashlytics());
+//        Fabric.with(this, new Crashlytics());
         Stetho.initializeWithDefaults(this);
 
         Typekit.getInstance()
@@ -62,9 +67,9 @@ public class BaseApplication extends Application {
     public void loadImage(Context context, Object res, ImageView view, boolean isRound) {
 
         RequestOptions requestOptions = null;
-        if(isRound){
+        if (isRound) {
             requestOptions = new RequestOptions().transform(new RoundedCorners(100)).diskCacheStrategy(DiskCacheStrategy.NONE);
-        }else{
+        } else {
             requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop();
         }
 
@@ -219,5 +224,96 @@ public class BaseApplication extends Application {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
+    }
+
+//    public static boolean isNetworkConnected(Context context) {
+//        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+//        NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+//        NetworkInfo wimax = manager.getNetworkInfo(ConnectivityManager.TYPE_WIMAX);
+//        boolean bwimax = false;
+//        if (wimax != null)
+//            bwimax = wimax.isConnected(); // wimax 상태 체크
+//        if (mobile != null) {
+//            if (mobile.isConnected() || wifi.isConnected() || bwimax)
+//                // 모바일 네트워크 체크
+//                return true;
+//        } else {
+//            if (wifi.isConnected() || bwimax)
+//                // wifi 네트워크 체크
+//                return true;
+//        }
+//
+//        return false;
+//    }
+
+    public boolean isNetworkConnected(final Activity ctx) {
+
+        ConnectivityManager cm = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if (netInfo != null && netInfo.isConnected()) {
+            return true;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ctx, AlertDialog.THEME_HOLO_DARK);
+//        builder.setTitle("다이얼로그 제목임")
+        builder.setMessage("Network 연결을 확인해 주세요.")
+//                .setPositiveButton("긍정", null)
+//                .setNegativeButton("부정", null)
+                .setNeutralButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ctx.finish();
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                        System.exit(1);
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        return false;
+    }
+
+    public boolean failGps(final Context ctx) {
+
+        ConnectivityManager cm = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if (netInfo != null && netInfo.isConnected()) {
+            return true;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ctx, AlertDialog.THEME_HOLO_DARK);
+//        builder.setTitle("다이얼로그 제목임")
+        builder.setMessage("위치 정보가 정확하지 않습니다. 재 탐색 하시겠습니까?")
+                .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        GPSTracker.getInstance().startGetLocation();
+                    }
+                })
+                .setNegativeButton("아니요", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ((Activity)ctx).finish();
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                        System.exit(1);
+                    }
+                });
+//                .setNeutralButton("확인", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        ctx.finish();
+//                        android.os.Process.killProcess(android.os.Process.myPid());
+//                        System.exit(1);
+//                    }
+//                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        return false;
     }
 }

@@ -1,7 +1,7 @@
 package com.skt.tmaphot.location;
 
 public class GPSData {
-    public static int LOCATION_UPDATE = 900;
+
 
     public static String LOCATION_ADDRESS;
     public static double LATITUDE;

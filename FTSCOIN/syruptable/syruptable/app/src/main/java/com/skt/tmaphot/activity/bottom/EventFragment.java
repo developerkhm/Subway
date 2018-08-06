@@ -22,77 +22,35 @@ import com.skt.tmaphot.fragment.BaseFragment;
 
 public class EventFragment extends BaseFragment {
 
-
+    private String url = "http://m.naver.com";
     private ObservableWebView webView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d("FFFA", "Fragment onCreateView");
         View view = inflater.inflate(R.layout.fragment_bottom_event_layout, container, false);
         view.findViewById(R.id.toolbar).setVisibility(View.GONE);
-        webView = (ObservableWebView) view.findViewById(R.id.bottom_event_webview);
+
+        webView = (ObservableWebView) view.findViewById(R.id.base_webview);
         webView.setOnScrollChangeListener(new ObservableWebView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(WebView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
 
-                if(((MainActivity)getActivity()).navigation.getVisibility() == View.VISIBLE)
-                    ((MainActivity)getActivity()).navigation.setVisibility(View.GONE);
+                if (((MainActivity) getActivity()).navigation.getVisibility() == View.VISIBLE)
+                    ((MainActivity) getActivity()).navigation.setVisibility(View.GONE);
 
-                if(scrollY == 0 && oldScrollY >= 5)
-                    ((MainActivity)getActivity()).navigation.setVisibility(View.VISIBLE);
-
-                Log.d("WEBVIEW", "scrollX : " +  scrollX);
-                Log.d("WEBVIEW", "scrollY : " +  scrollY);
-                Log.d("WEBVIEW", "oldScrollX : " +  oldScrollX);
-                Log.d("WEBVIEW", "oldScrollY : " +  oldScrollY);
+                if (scrollY == 0 && oldScrollY >= 5)
+                    ((MainActivity) getActivity()).navigation.setVisibility(View.VISIBLE);
             }
         });
 
         initView();
 
-//        // Enable Javascript
-//        WebSettings webSettings = webview.getSettings();
-//        webSettings.setJavaScriptEnabled(true);
-//        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-//        webSettings.setSupportZoom(false);
-//
-//
-//        // Force links and redirects to open in the WebView instead of in a browser
-        webView.setWebViewClient(new WebViewClient() {
-
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Log.d("FFFA", "shouldOverrideUrlLoading");
-                return super.shouldOverrideUrlLoading(view, url);
-            }
-
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
-                Log.d("FFFA", "onPageStarted");
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                Log.d("FFFA", "onPageFinished");
-            }
-
-            @Override
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                super.onReceivedError(view, errorCode, description, failingUrl);
-                Log.d("FFFA", description);
-            }
-
-        });
-//        Log.d("FFFA", "Fragment loadUrl");
-        webView.loadUrl("http://m.naver.com");
+        webView.loadUrl(url);
 
         return view;
     }
 
     public void initView() {
-
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             // 웹뷰내 https 이미지 나오게 처리 ( 혼합 콘텐츠가 타사 쿠키를 차단할 때 생기는 오류 처리 )
@@ -136,40 +94,7 @@ public class EventFragment extends BaseFragment {
 
         //캐쉬 사용
         webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
-//        webview.getSettings().setAppCacheEnabled(true);
 
-//        webview.setWebViewClient(new WebViewClient() {
-//            @Override
-//            public void onPageFinished(WebView view, String url) {
-//
-//            }
-//
-//            @Override
-//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//
-//                Log.d("TEST", "shouldOverrideUrlLoading: " + url);
-//
-//                return super.shouldOverrideUrlLoading(view, url);
-//            }
-//        });
-//        webview.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//
-//                //This is the filter
-//                if (event.getAction() != KeyEvent.ACTION_DOWN)
-//                    return true;
-//
-//                if (keyCode == KeyEvent.KEYCODE_BACK) {
-//                    if (webview.canGoBack()) {
-//                        webview.goBack();
-//                    } else {
-//                        (MainActivity.this).onBackPressed();
-//                    }
-//                }
-//                return false;
-//            }
-//        });
 
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
@@ -178,16 +103,40 @@ public class EventFragment extends BaseFragment {
             }
         });
 
-//        Map<String, String> httpHeader = new HashMap<String, String>();
-//        httpHeader.put("cookie-test1", "header-insert-cookie");
-//        httpHeader.put("cookie-test2", cookie);
+        webView.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Log.d("FFFA", "shouldOverrideUrlLoading");
+                return super.shouldOverrideUrlLoading(view, url);
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                Log.d("FFFA", "onPageStarted");
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                Log.d("FFFA", "onPageFinished");
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                super.onReceivedError(view, errorCode, description, failingUrl);
+                Log.d("FFFA", description);
+            }
+
+        });
 
         webView.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
                 //This is the filter
-                if (event.getAction()!=KeyEvent.ACTION_DOWN)
+                if (event.getAction() != KeyEvent.ACTION_DOWN)
                     return true;
 
 
@@ -195,7 +144,7 @@ public class EventFragment extends BaseFragment {
                     if (webView.canGoBack()) {
                         webView.goBack();
                     } else {
-                        ((MainActivity)getActivity()).onBackPressed();
+                        ((MainActivity) getActivity()).onBackPressed();
                     }
 
                     return true;
@@ -204,36 +153,27 @@ public class EventFragment extends BaseFragment {
                 return false;
             }
         });
-
-
-
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("FFFA", "onResume");
-        webView.reload();
-        webView.onResume();
+//        webView.reload();
+//        webView.onResume();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Log.d("FFFA", "onStart");
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Log.d("FFFA", "onCreate");
     }
 
     @Override
     public void onPause() {
-        Log.d("FFFA", "onPause");
         super.onPause();
     }
 }

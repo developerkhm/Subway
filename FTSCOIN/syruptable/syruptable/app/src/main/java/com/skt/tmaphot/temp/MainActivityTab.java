@@ -30,8 +30,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.skt.tmaphot.R;
-import com.skt.tmaphot.client.SyrupWebChromeClient2;
-import com.skt.tmaphot.client.SyrupWebViewClient;
+import com.skt.tmaphot.client.ShopWebChromeClient;
+import com.skt.tmaphot.client.ShopWebViewClient;
+import com.skt.tmaphot.client.SyrupWebChromeClient;
 import com.skt.tmaphot.common.AndroidBridge;
 
 public class MainActivityTab extends AppCompatActivity
@@ -277,8 +278,8 @@ public class MainActivityTab extends AppCompatActivity
         public WebView mWebView;
         private Intent intent;
         private int mNumOfTabs;
-        public SyrupWebViewClient syrupWebViewClient;
-        public SyrupWebChromeClient2 syrupWebChromeClient;
+        public ShopWebViewClient syrupWebViewClient;
+        public ShopWebChromeClient syrupWebChromeClient;
 
         public PlaceholderFragment() {
         }
@@ -306,8 +307,8 @@ public class MainActivityTab extends AppCompatActivity
 
             mWebView = (WebView) rootView.findViewById(R.id.main_webview);
 
-            syrupWebViewClient = new SyrupWebViewClient(getActivity(), mWebView);
-            syrupWebChromeClient = new SyrupWebChromeClient2(getActivity(), mWebView);
+//            syrupWebViewClient = new ShopWebViewClient(getActivity(), mWebView);
+//            syrupWebChromeClient = new SyrupWebChromeClient(getActivity(), mWebView);
             mWebView.setWebViewClient(syrupWebViewClient);
             mWebView.setWebChromeClient(syrupWebChromeClient);
             mWebView.addJavascriptInterface(new AndroidBridge(), "MyApp");

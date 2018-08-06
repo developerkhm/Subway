@@ -184,6 +184,11 @@ public class BaseActivity extends AppCompatActivity {
             return true;
         }
 
+        if (item.getItemId() == R.id.action_map) {
+            ActivityStart(new Intent(baceContext, MapWebViewActivity.class), null);
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
