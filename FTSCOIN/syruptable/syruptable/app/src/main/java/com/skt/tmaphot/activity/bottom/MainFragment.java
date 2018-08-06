@@ -904,12 +904,14 @@ public class MainFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         rollingAutoManager.onRollingDestroy();
+
     }
 
     @Override
     public void onDestroy() {
-
         super.onDestroy();
+        //스레드풀 종료
+        executorService.shutdown();
     }
 
     private class CustomRecyclerViewOnScrollListener extends RecyclerView.OnScrollListener {
@@ -984,7 +986,4 @@ public class MainFragment extends BaseFragment {
 
     }
 
-    private void inintSetDummyData(){
-
-    }
 }

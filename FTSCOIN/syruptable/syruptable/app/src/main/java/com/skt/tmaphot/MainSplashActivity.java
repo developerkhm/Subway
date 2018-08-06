@@ -1,6 +1,7 @@
 package com.skt.tmaphot;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 
@@ -22,6 +23,7 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.skt.tmaphot.common.CommonUtil;
 import com.skt.tmaphot.location.GPSTracker;
 
 import java.util.ArrayList;
@@ -38,29 +40,11 @@ public class MainSplashActivity extends AppCompatActivity {
     GPSTracker gpsTracker;
     private String TAG = "gps";
 
-    private Handler mHandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            int message = msg.what;
-
-            switch(message)
-            {
-                case GPSTracker.LOCATION_SUCCESS:
-                case GPSTracker.LOCATION_LASTKNOWN:
-                case GPSTracker.LOCATION_UPDATE:
-                    startMainActivity();
-                    break;
-                case GPSTracker.LOCATION_FAIL:
-                    BaseApplication.getInstance().failGps(mContext);
-                    break;
-            }
-        }
-    };
+    private Handler mHandler;
 
     @Override
     protected void onStart() {
         super.onStart();
-
     }
 
     @Override
@@ -70,7 +54,35 @@ public class MainSplashActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);   //화면 꺼짐 방지
         mContext = this;
 
-        if(BaseApplication.getInstance().isNetworkConnected(this))  // 네트워크 확인
+        mHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                int message = msg.what;
+
+//            if (message == GPSTracker.getInstance().LOCATION_SUCCESS
+//                    || msg.what == GPSTracker.getInstance().LOCATION_LASTKNOWN
+//                    || msg.what == GPSTracker.getInstance().LOCATION_UPDATE)
+                if (message == GPSTracker.getInstance().LOCATION_SUCCESS) {
+                    Log.d("getgps", "handler LOCATION_SUCCESS");
+                    finish();
+                    startMainActivity();
+                }
+
+                if (message == GPSTracker.getInstance().LOCATION_UPDATE) {
+                    Log.d("getgps", "handler LOCATION_UPDATE");
+                    finish();
+                    startMainActivity();
+                }
+
+                if (message == GPSTracker.getInstance().LOCATION_FAIL) {
+                    Log.d("getgps", "handler LOCATION_FAIL");
+                    GPSTracker.getInstance().failGps(mContext);
+                }
+
+            }
+        };
+
+        if (BaseApplication.getInstance().isNetworkConnected(this))  // 네트워크 확인
         {
             if (Build.VERSION.SDK_INT < 23) {
                 //Do not need to check the permission
@@ -82,10 +94,12 @@ public class MainSplashActivity extends AppCompatActivity {
                 }
             }
         }
+
     }
 
-    private void startMainActivity(){
-        BaseApplication.getInstance().ActivityStart(new Intent(this, MainActivity.class),null);
+    private void startMainActivity() {
+        Log.d("getgps", "startMainActivity");
+        BaseApplication.getInstance().ActivityStart(new Intent(this, MainActivity.class), null);
     }
 
     @Override
@@ -140,7 +154,7 @@ public class MainSplashActivity extends AppCompatActivity {
         if (gpsTracker == null) {
             gpsTracker = GPSTracker.getInstance(this, mHandler);
         }
-            gpsTracker.startGetLocation();
+        gpsTracker.startGetLocation();
     }
 
     public boolean checkAndRequestPermissions() {
@@ -173,8 +187,7 @@ public class MainSplashActivity extends AppCompatActivity {
         if (permissionReadExternalStroage != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         }
-        if(permissionCamera != PackageManager.PERMISSION_GRANTED)
-        {
+        if (permissionCamera != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.CAMERA);
         }
 //        if (permissionReadphoneNumvers != PackageManager.PERMISSION_GRANTED) {

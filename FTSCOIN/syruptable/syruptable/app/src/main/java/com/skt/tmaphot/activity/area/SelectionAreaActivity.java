@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.MainActivity;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.BaseActivity;
@@ -29,22 +30,34 @@ public class SelectionAreaActivity extends BaseActivity {
 
     private ViewPager mViewPager;
     private List<Fragment> testList = new ArrayList<Fragment>();
-    private Handler handler = new Handler() {
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 900:
-                    progressOFF();
-                    ActivityStart(new Intent(baceContext, MainActivity.class), null);
-                    break;
+            int message = msg.what;
 
-                default:
-                    break;
+//            if (message == GPSTracker.getInstance().LOCATION_SUCCESS
+//                    || msg.what == GPSTracker.getInstance().LOCATION_LASTKNOWN
+//                    || msg.what == GPSTracker.getInstance().LOCATION_UPDATE)
+            if (message == GPSTracker.getInstance().LOCATION_SUCCESS) {
+                Log.d("getgps", "handler LOCATION_SUCCESS");
+                finish();
+                ActivityStart(new Intent(baceContext, MainActivity.class), null);
             }
+
+            if (message == GPSTracker.getInstance().LOCATION_UPDATE) {
+                Log.d("getgps", "handler LOCATION_UPDATE");
+                finish();
+                ActivityStart(new Intent(baceContext, MainActivity.class), null);
+            }
+
+            if (message == GPSTracker.getInstance().LOCATION_FAIL) {
+                Log.d("getgps", "handler LOCATION_FAIL");
+                GPSTracker.getInstance().failGps(baceContext);
+            }
+
         }
     };
 
-    private GPSTracker gpsTracker;
     private TextView hood, location, gps, map;
 
     @Override
@@ -102,14 +115,14 @@ public class SelectionAreaActivity extends BaseActivity {
             }
         });
         location = (TextView) findViewById(R.id.area_location);
-        location.setText(GPSData.LOCATION_ADDRESS);
+        location.setText(GPSData.getInstance().gpsTransferAddress(baceContext));
 
         gps = (TextView) findViewById(R.id.area_gps);
         gps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gpsTracker = GPSTracker.getInstance(baceContext, handler);
-                gpsTracker.Update();
+                GPSTracker.getInstance(baceContext, mHandler);
+                GPSTracker.getInstance().startGetLocation();
                 progressON("GPS갱신중");
             }
         });
@@ -120,7 +133,6 @@ public class SelectionAreaActivity extends BaseActivity {
 
             }
         });
-
 
         testList.add(PopularityAreaFragment.newInstance(1));
         testList.add(SelectionAreaFragment.newInstance(1));

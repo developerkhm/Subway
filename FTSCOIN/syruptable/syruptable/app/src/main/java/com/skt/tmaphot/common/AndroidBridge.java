@@ -10,21 +10,21 @@ import com.skt.tmaphot.location.GPSData;
 
 public class AndroidBridge {
 
-    public AndroidBridge() {
-    }
-
-    @JavascriptInterface
-    public double getLatitudeValue() {
-        return GPSData.LATITUDE;
-    }
-
-    @JavascriptInterface
-    public double getLongitudeValue() {
-        return GPSData.LONGITUDE;
-    }
-
-    @JavascriptInterface
-    public String getPhoneNumber() {
-        return CommonUtil.getInstance().getPhoneNumber();
-    }
+//    public AndroidBridge() {
+//    }
+//
+//    @JavascriptInterface
+//    public double getLatitudeValue() {
+//        return GPSData.LATITUDE;
+//    }
+//
+//    @JavascriptInterface
+//    public double getLongitudeValue() {
+//        return GPSData.LONGITUDE;
+//    }
+//
+//    @JavascriptInterface
+//    public String getPhoneNumber() {
+//        return CommonUtil.getInstance().getPhoneNumber();
+//    }
 }

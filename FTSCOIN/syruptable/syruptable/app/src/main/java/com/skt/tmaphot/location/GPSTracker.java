@@ -2,7 +2,10 @@ package com.skt.tmaphot.location;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -26,32 +29,30 @@ import java.util.Set;
 
 public class GPSTracker implements LocationListener {
 
+    private Context mContext;
     private final String LOG_TAG = "getgps";
 
-    public static final int LOCATION_SUCCESS = 900;
-    public static final int LOCATION_FAIL = 901;
-    public static final int LOCATION_LASTKNOWN = 902;
-    public static final int LOCATION_UPDATE = 903;
+    public final int LOCATION_SUCCESS = 900;
+    public final int LOCATION_FAIL = 901;
+    public final int LOCATION_LASTKNOWN = 902;
+    public final int LOCATION_UPDATE = 903;
 
-    private Context mContext;
-    public int locationSendCount = 0;
     private int locationFailCount = 0;
     private final int locationReCount = 3;
-    // flag for GPS status
-    boolean isGPSEnabled = false;
 
-    // flag for network status
-    boolean isNetworkEnabled = false;
+    private boolean isGPSEnabled = false;
+    private boolean isNetworkEnabled = false;
 
-    // flag for GPS status
-    boolean canGetLocation = false;
+    private boolean canGetLocation = false;
+    private boolean alreayGetLocation = false;
+
+    private int initDelayTime_ms = 9000;
+
 
     Location locationData; // location
-    double latitude; // latitude
-    double longitude; // longitude
 
     private final double default_latitude = 37.540705;
-    private double default_longitude = 126.956764;
+    private final double default_longitude = 126.956764;
 
 
     // The minimum distance to change Updates in meters
@@ -64,7 +65,7 @@ public class GPSTracker implements LocationListener {
     private FusedLocationProviderClient mFusedLocationClient;
     private Handler mHandler;
 
-    public static GPSTracker instance;
+    private static GPSTracker instance;
 
     public static GPSTracker getInstance(Context context, Handler handler) {
 
@@ -87,14 +88,15 @@ public class GPSTracker implements LocationListener {
         this.mHandler = handler;
     }
 
-    public void Update() {
-        Log.d(LOG_TAG, "update GPSTracker");
-        if (!getLocation()) {
-            getGoogleClientLocation();
-        }
-    }
+//    public void Update() {
+//        Log.d(LOG_TAG, "update GPSTracker");
+//        if (!getLocation()) {
+//            getGoogleClientLocation();
+//        }
+//    }
 
     public void startGetLocation() {
+        alreayGetLocation = false;
         if (!getLocation()) {
             getGoogleClientLocation();
         }
@@ -102,14 +104,22 @@ public class GPSTracker implements LocationListener {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(!canGetLocation)
+                if(!alreayGetLocation)
                 {
+                    Log.d("getgps", "alreayGetLocation");
                     mHandler.sendEmptyMessage(LOCATION_FAIL);
                     stopUsingGPS();
                 }
             }
-        }, 5000);
+        }, initDelayTime_ms);
 
+    }
+
+    public void reStartGetLocation() {
+        alreayGetLocation = false;
+        if (!getLocation()) {
+            getGoogleClientLocation();
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -200,12 +210,12 @@ public class GPSTracker implements LocationListener {
                     locationFailCount++;
                     canGetLocation = false;
                     if (locationFailCount < locationReCount) {
-                        Update();
+                        reStartGetLocation();
                         return;
                     }
 
                     Log.d(LOG_TAG, "[FAIL]getGoogleClientLocation:default_GSP setting");
-                    Log.e(LOG_TAG, "getGoogleClientLocation:exception ", task.getException());
+                    Log.d(LOG_TAG, "getGoogleClientLocation:exception ", task.getException());
                     // GSP, 네트워크, 구글 다 실패시, 최근에 잡았던 위치 가져오기(마지막 위치)
                     double latitude = 0;
                     double longitude = 0;
@@ -239,22 +249,8 @@ public class GPSTracker implements LocationListener {
     public void stopUsingGPS() {
         if (locationManager != null) {
             locationManager.removeUpdates(this);
-            Log.e(LOG_TAG, "[[[[[[[[[[[[[[[[[[[ ===========stopUsingGPS============= ]]]]]]]]]]]]]]");
+            Log.d(LOG_TAG, "[[[[[[[[[[[[[[[[[[[ ===========stopUsingGPS============= ]]]]]]]]]]]]]]");
         }
-    }
-
-    public double getLatitude() {
-        if (locationData != null) {
-            latitude = locationData.getLatitude();
-        }
-        return latitude;
-    }
-
-    public double getLongitude() {
-        if (locationData != null) {
-            longitude = locationData.getLongitude();
-        }
-        return longitude;
     }
 
     public boolean canGetLocation() {
@@ -263,7 +259,7 @@ public class GPSTracker implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.d("LOG_TAG", "[onLocationChanged:] latitude: " + latitude + "longitude: " + longitude);
+        Log.d("LOG_TAG", "[onLocationChanged UPDATE:]");
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         sendLocation(latitude, longitude, LOCATION_UPDATE);
@@ -289,11 +285,12 @@ public class GPSTracker implements LocationListener {
 
     private void sendLocation(double latitude, double longitude, int Result) {
         Log.d(LOG_TAG, "[sendLocation] latitude: " + latitude + " longitude: " + longitude);
+        alreayGetLocation = true;
         locationFailCount = 0;
-        GPSData.LATITUDE = latitude;
-        GPSData.LONGITUDE = longitude;
+        GPSData.getInstance().setLatitude(latitude);
+        GPSData.getInstance().setLongitude(longitude);
         mHandler.sendEmptyMessage(Result);
-        locationSendCount++;
+        stopUsingGPS();
     }
 
     public static String printBundle(Bundle extras) {
@@ -317,5 +314,43 @@ public class GPSTracker implements LocationListener {
 
         }
         return sb.toString();
+    }
+
+    public boolean failGps(final Context ctx) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ctx, AlertDialog.THEME_HOLO_DARK);
+//        builder.setTitle("다이얼로그 제목임")
+        builder.setMessage("위치 정보가 정확하지 않습니다. 재 탐색 하시겠습니까?")
+                .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        GPSTracker.getInstance().startGetLocation();
+                    }
+                })
+                .setNegativeButton("아니요", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        ((Activity)ctx).finish();
+                        if(ctx instanceof MainSplashActivity)
+                        {
+                            android.os.Process.killProcess(android.os.Process.myPid());
+                            System.exit(1);
+                        }
+                    }
+                });
+//                .setNeutralButton("확인", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        ctx.finish();
+//                        android.os.Process.killProcess(android.os.Process.myPid());
+//                        System.exit(1);
+//                    }
+//                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        return false;
     }
 }
