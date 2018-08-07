@@ -32,7 +32,7 @@ import java.util.List;
 public class MainSplashActivity extends AppCompatActivity {
 
     private Context mContext;
-    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
+    private final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
 
     //GPS
     private LocationManager locationManager;
@@ -45,6 +45,20 @@ public class MainSplashActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        if (BaseApplication.getInstance().isNetworkConnected(this))  // 네트워크 확인
+        {
+            if (Build.VERSION.SDK_INT < 23) {
+                //Do not need to check the permission
+                initStart();
+            } else {
+                if (checkAndRequestPermissions(0)) {
+                    //If you have already permitted the permission
+                    initStart();
+                }
+            }
+        }
+
     }
 
     @Override
@@ -64,13 +78,12 @@ public class MainSplashActivity extends AppCompatActivity {
 //                    || msg.what == GPSTracker.getInstance().LOCATION_UPDATE)
                 if (message == GPSTracker.getInstance().LOCATION_SUCCESS) {
                     Log.d("getgps", "handler LOCATION_SUCCESS");
-                    finish();
                     startMainActivity();
                 }
 
                 if (message == GPSTracker.getInstance().LOCATION_UPDATE) {
                     Log.d("getgps", "handler LOCATION_UPDATE");
-                    finish();
+
                     startMainActivity();
                 }
 
@@ -82,18 +95,6 @@ public class MainSplashActivity extends AppCompatActivity {
             }
         };
 
-        if (BaseApplication.getInstance().isNetworkConnected(this))  // 네트워크 확인
-        {
-            if (Build.VERSION.SDK_INT < 23) {
-                //Do not need to check the permission
-                initStart();
-            } else {
-                if (checkAndRequestPermissions()) {
-                    //If you have already permitted the permission
-                    initStart();
-                }
-            }
-        }
 
     }
 
@@ -101,6 +102,9 @@ public class MainSplashActivity extends AppCompatActivity {
         Log.d("getgps", "startMainActivity");
         BaseApplication.getInstance().ActivityStart(new Intent(this, MainActivity.class), null);
     }
+
+
+
 
     @Override
     protected void onRestart() {
@@ -157,7 +161,7 @@ public class MainSplashActivity extends AppCompatActivity {
         gpsTracker.startGetLocation();
     }
 
-    public boolean checkAndRequestPermissions() {
+    public boolean checkAndRequestPermissions(int requestCode) {
         int permissionFineLocation = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         int permissionCoarseLocation = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
         int permissionReadphone = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
@@ -172,24 +176,26 @@ public class MainSplashActivity extends AppCompatActivity {
 
         List<String> listPermissionsNeeded = new ArrayList<>();
 
-        if (permissionFineLocation != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        }
-        if (permissionCoarseLocation != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-        }
-        if (permissionReadphone != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
-        }
-        if (permissionWriteExternalStroage != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-        if (permissionReadExternalStroage != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-        }
-        if (permissionCamera != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.CAMERA);
-        }
+        if (requestCode == 0) {
+
+            if (permissionFineLocation != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            }
+            if (permissionCoarseLocation != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+            }
+            if (permissionReadphone != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE);
+            }
+            if (permissionWriteExternalStroage != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+            if (permissionReadExternalStroage != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+            if (permissionCamera != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.CAMERA);
+            }
 //        if (permissionReadphoneNumvers != PackageManager.PERMISSION_GRANTED) {
 //            listPermissionsNeeded.add(Manifest.permission.READ_PHONE_NUMBERS);
 //        }
@@ -202,6 +208,12 @@ public class MainSplashActivity extends AppCompatActivity {
 //        if (permissionReadExternalStorage != PackageManager.PERMISSION_GRANTED) {
 //            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
 //        }
+        }
+
+        if (requestCode == 1) {
+            listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            listPermissionsNeeded.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
 
 
         if (!listPermissionsNeeded.isEmpty()) {
@@ -216,20 +228,32 @@ public class MainSplashActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case REQUEST_ID_MULTIPLE_PERMISSIONS:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //Permission Granted Successfully. Write working code here.
-                    initStart();
-                } else {
-                    //You did not accept the request can not use the functionality.
-                    Toast.makeText(this, "권한 정보 동의에 실패하여 3초 후에 앱을 종료합니다.", Toast.LENGTH_LONG).show();
-                    appKill();
-                }
-                break;
-        }
-    }
 
-    private void appKill() {
-        gpsTracker.stopUsingGPS();
-        android.os.Process.killProcess(android.os.Process.myPid());
+                for (int i = 0; i < permissions.length; i++) {
+                    String permission = permissions[i];
+                    int grantResult = grantResults[i];
+
+                    if (permission.equals(Manifest.permission.ACCESS_FINE_LOCATION) || permission.equals(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                        if (grantResult == PackageManager.PERMISSION_GRANTED) {
+                            initStart();
+                            return;
+                        } else {
+                            checkAndRequestPermissions(1);
+                            return;
+                        }
+                    }
+                }
+
+                initStart();
+
+
+//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    //Permission Granted Successfully. Write working code here.
+//                    initStart();
+//                } else {
+//                    initStart();
+//                }
+//                break;
+        }
     }
 }

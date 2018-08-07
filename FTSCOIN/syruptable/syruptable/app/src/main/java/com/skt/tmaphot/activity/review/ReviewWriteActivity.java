@@ -1,20 +1,27 @@
 package com.skt.tmaphot.activity.review;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -26,6 +33,7 @@ import android.widget.Toast;
 
 import com.skt.tmaphot.BaseActivity;
 import com.skt.tmaphot.BaseApplication;
+import com.skt.tmaphot.MapWebViewActivity;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.review.multiple.activities.AlbumSelectActivity;
 import com.skt.tmaphot.activity.review.multiple.helpers.Constants;
@@ -40,9 +48,12 @@ import java.util.List;
 
 public class ReviewWriteActivity extends BaseActivity {
 
-    private static final int TAKE_FROM_CAMERA = 1000; //카메라 촬영으로 사진 가져오기
-    private static final int SELECT_FROM_ALBUM = 2000; //앨범에서 사진 가져오기
-    private static final int FROM_VIDEO = 3000; //가져온 사진을 자르기 위한 변수
+    private final int TAKE_FROM_CAMERA = 1000; //카메라 촬영으로 사진 가져오기
+    private final int SELECT_FROM_ALBUM = 2000; //앨범에서 사진 가져오기
+    private final int FROM_VIDEO = 3000; //가져온 사진을 자르기
+
+    private final int REQUEST_ID_MULTIPLE_PERMISSIONS = 777;    //권한체크
+    private final long MAX_VIDEO_SIZE = (long) (1024 * 1024 * 20);  // 20MB?
 
     private Uri takePhotoUri;
     private String mCurrentPhotoPath;
@@ -75,19 +86,20 @@ public class ReviewWriteActivity extends BaseActivity {
 //        addImageArea.getLayoutParams().width = displayWidth;
 
         addVideoArea = (LinearLayout) findViewById(R.id.activity_reviewwrite_upload_video_area);
-        Button takePhotoBtn = (Button) findViewById(R.id.activity_reviewwrite_take_capture);
+        LinearLayout takePhotoBtn = (LinearLayout) findViewById(R.id.activity_reviewwrite_take_capture);
         takePhotoBtn.setOnClickListener(onClickListener);
-        Button takeVideoBtn = (Button) findViewById(R.id.activity_reviewwrite_take_video);
+        LinearLayout takeVideoBtn = (LinearLayout) findViewById(R.id.activity_reviewwrite_take_video);
         takeVideoBtn.setOnClickListener(onClickListener);
 
         addImageView = new TextView(this);
-        addImageView.setBackgroundColor(getResources().getColor(R.color.text_gray_8f));
-        addImageView.setText("+");
+        addImageView.setBackgroundColor(getResources().getColor(R.color.text_gray_d4));
+        addImageView.setText("사진 + ");
+//        addImageView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         addImageView.setGravity(Gravity.CENTER);
         addImageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         addImageView.getLayoutParams().width = displayWidth / 3;
         addImageView.getLayoutParams().height = displayWidth / 3;
-        addImageView.setPadding(0,0,2,0);
+        addImageView.setPadding(0, 0, 2, 0);
 //        addImageView.requestLayout();
         addImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,13 +111,13 @@ public class ReviewWriteActivity extends BaseActivity {
         addImageArea.addView(addImageView);
 
         addVideoView = new TextView(this);
-        addVideoView.setBackgroundColor(getResources().getColor(R.color.text_gray_8f));
-        addVideoView.setText("+");
+        addVideoView.setBackgroundColor(getResources().getColor(R.color.text_gray_d4));
+        addVideoView.setText("동영상 + ");
         addVideoView.setGravity(Gravity.CENTER);
         addVideoView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         addVideoView.getLayoutParams().width = displayWidth / 3;
         addVideoView.getLayoutParams().height = displayWidth / 3;
-        addVideoView.setPadding(0,0,2,0);
+        addVideoView.setPadding(0, 0, 2, 0);
 //        addVideoView.requestLayout();
         addVideoView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,8 +128,10 @@ public class ReviewWriteActivity extends BaseActivity {
 
         addVideoArea.addView(addVideoView);
 
-    } //////////////////////////////////////////////////////////////////END
+        checkAndRequestPermissions();
 
+
+    } //////////////////////////////////////////////////////////////////END
 
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -301,7 +315,7 @@ public class ReviewWriteActivity extends BaseActivity {
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0); //동영상 품질
 //      intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 111); //동영상 시간 제한
-        intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, (long) (1024 * 1024 * 4)); //동영상 용량 제한
+        intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, MAX_VIDEO_SIZE); //동영상 용량 제한
         //동영상 저장 경로
 //      String mImageMovieUri = "/sdcard/Download/exam/";
 //      intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,mImageMovieUri);
@@ -366,76 +380,6 @@ public class ReviewWriteActivity extends BaseActivity {
         return newImageView;
     }
 
-//    private ImageView creatImageView(boolean isVidio) {
-//        ImageView newImageView = new ImageView(this);
-//        newImageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-//        newImageView.getLayoutParams().width = displayWidth / 3;
-//        newImageView.getLayoutParams().height = displayWidth / 3;
-//        newImageView.requestLayout();
-//        if (!isVidio) {
-//            addImageArea.removeView(addImageView);
-//            addImageArea.addView(newImageView);
-//        } else {
-//            addVideoArea.removeView(addVideoView);
-//            addVideoArea.addView(newImageView);
-//        }
-//
-//        return newImageView;
-//    }
-
-//    private void goToAlbum() {
-//        Intent intent = new Intent(Intent.ACTION_PICK);
-//        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-//        startActivityForResult(intent, PICK_FROM_ALBUM);
-//    }
-
-//    @SuppressLint("ObsoleteSdkInt")
-//    public String getPathFromURI(Uri uri){
-//        String realPath="";
-//// SDK < API11
-//        if (Build.VERSION.SDK_INT < 11) {
-//            String[] proj = { MediaStore.Images.Media.DATA };
-//            @SuppressLint("Recycle") Cursor cursor = getContentResolver().query(uri, proj, null, null, null);
-//            int column_index = 0;
-//            String result="";
-//            if (cursor != null) {
-//                column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//                realPath=cursor.getString(column_index);
-//            }
-//        }
-//        // SDK >= 11 && SDK < 19
-//        else if (Build.VERSION.SDK_INT < 19){
-//            String[] proj = { MediaStore.Images.Media.DATA };
-//            CursorLoader cursorLoader = new CursorLoader(this, uri, proj, null, null, null);
-//            Cursor cursor = cursorLoader.loadInBackground();
-//            if(cursor != null){
-//                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//                cursor.moveToFirst();
-//                realPath = cursor.getString(column_index);
-//            }
-//        }
-//        // SDK > 19 (Android 4.4)
-//        else{
-//            String wholeID = DocumentsContract.getDocumentId(uri);
-//            // Split at colon, use second item in the array
-//            String id = wholeID.split(":")[1];
-//            String[] column = { MediaStore.Images.Media.DATA };
-//            // where id is equal to
-//            String sel = MediaStore.Images.Media._ID + "=?";
-//            Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, column, sel, new String[]{ id }, null);
-//            int columnIndex = 0;
-//            if (cursor != null) {
-//                columnIndex = cursor.getColumnIndex(column[0]);
-//                if (cursor.moveToFirst()) {
-//                    realPath = cursor.getString(columnIndex);
-//                }
-//                cursor.close();
-//            }
-//        }
-//        return realPath;
-//    }
-
-
     private String getPathFromMediaUri(Context context, Uri uri) {
         String result = null;
 
@@ -483,6 +427,58 @@ public class ReviewWriteActivity extends BaseActivity {
         }).start();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            if (baceContext instanceof Activity) {
+                ((Activity) baceContext).finish();
+            }
+            return true;
+        }
+
+        if (item.getItemId() == R.id.action_review) {
+            // 서버에 저장 처리
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void checkAndRequestPermissions() {
+        int permissionWriteExternalStroage = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permissionReadExternalStroage = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        int permissionCamera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+
+        List<String> listPermissionsNeeded = new ArrayList<>();
+
+        if (permissionWriteExternalStroage != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (permissionReadExternalStroage != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+        if (permissionCamera != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this,
+                    listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_ID_MULTIPLE_PERMISSIONS);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+
+        for (int i = 0; i < permissions.length; i++) {
+            if (grantResults[i] != PackageManager.PERMISSION_GRANTED)
+            {
+                finish();
+                return;
+            }
+        }
+    }
 } //class End
 
 

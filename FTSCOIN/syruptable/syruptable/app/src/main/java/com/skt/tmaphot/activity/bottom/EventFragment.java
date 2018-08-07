@@ -36,10 +36,10 @@ public class EventFragment extends BaseFragment {
             public void onScrollChange(WebView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
 
                 if (((MainActivity) getActivity()).navigation.getVisibility() == View.VISIBLE)
-                    ((MainActivity) getActivity()).navigation.setVisibility(View.GONE);
+                    ((MainActivity) getActivity()).slideDown(((MainActivity) getActivity()).navigation);
 
                 if (scrollY == 0 && oldScrollY >= 5)
-                    ((MainActivity) getActivity()).navigation.setVisibility(View.VISIBLE);
+                    ((MainActivity) getActivity()).slideUp(((MainActivity) getActivity()).navigation);
             }
         });
 

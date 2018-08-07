@@ -35,24 +35,23 @@
         <activity
             android:name=".MainSplashActivity"
             android:theme="@style/AppTheme.SplashTheme"
-            android:clearTaskOnLaunch="true"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".temp.MainActivityWebViewUp">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data android:scheme="syruptable" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".MainActivity" />
 
         <!-- TEST ING -->
         <activity android:name=".temp.MainActivityTab" />
@@ -72,7 +71,6 @@
         <activity android:name=".activity.ImageViewPagerActivity"/>
 
         <activity android:name=".temp.MapTest" />
-        <activity android:name=".MainActivity" />
         <activity android:name=".activity.area.SelectionAreaActivity" />
         <activity android:name=".activity.search.SearchActivity" />
         <activity android:name=".activity.FoodAreaListActivity" />

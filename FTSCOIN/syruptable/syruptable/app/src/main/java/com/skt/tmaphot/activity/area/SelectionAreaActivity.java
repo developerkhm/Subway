@@ -40,13 +40,11 @@ public class SelectionAreaActivity extends BaseActivity {
 //                    || msg.what == GPSTracker.getInstance().LOCATION_UPDATE)
             if (message == GPSTracker.getInstance().LOCATION_SUCCESS) {
                 Log.d("getgps", "handler LOCATION_SUCCESS");
-                finish();
                 ActivityStart(new Intent(baceContext, MainActivity.class), null);
             }
 
             if (message == GPSTracker.getInstance().LOCATION_UPDATE) {
                 Log.d("getgps", "handler LOCATION_UPDATE");
-                finish();
                 ActivityStart(new Intent(baceContext, MainActivity.class), null);
             }
 

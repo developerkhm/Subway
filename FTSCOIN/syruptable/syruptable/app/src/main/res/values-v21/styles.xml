@@ -420,7 +420,14 @@
         <item name="android:lineSpacingExtra">11.7dp</item>
     </style>
 
-
+    <style name="area_select_button" parent="@android:style/Widget.Button">
+        <item name="android:textSize">14.8dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:lineSpacingExtra">11.7dp</item>
+        <item name="android:background">@color/colorGreen</item>
+    </style>
 
     <!--style name="Widget.RatingBar">
         <item name="android:indeterminateOnly">false</item>

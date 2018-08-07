@@ -19,20 +19,24 @@
         <TextView
             android:id="@+id/main_hotplace_distance"
             style="@style/main_hotplace"
-            android:padding="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/selector_hotplace_type"
             android:layout_alignParentRight="true"
+
             android:text="@string/main_content_menu_hotplace_distance"/>
 
         <TextView
             android:id="@+id/main_hotplace_divid"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
+            android:paddingVertical="5dp"
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" | "
+            android:text="|"
             android:textColor="@color/text_gray_aa"
             android:layout_toLeftOf="@+id/main_hotplace_distance"
             android:textStyle="bold" />
@@ -40,10 +44,13 @@
         <TextView
             android:id="@+id/main_hotplace_pop"
             style="@style/main_hotplace"
-            android:padding="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/main_hotplace_divid"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="5dp"
+            android:paddingLeft="10dp"
             android:text="@string/main_content_menu_hotplace_pop"
             android:textColor="@color/selector_hotplace_type" />
 

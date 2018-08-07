@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.skt.tmaphot.BaseApplication;
+import com.skt.tmaphot.MainActivity;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.common.CommonUtil;
 
@@ -35,6 +36,8 @@ public class MyBlog {
     public MyReviewRecyclerViewAdapter myReviewRecyclerViewAdapter;
     public List<MyReviewItem> myReviewItemList;
     public List<MyblogReviewImageItem> myblogReviewImageItemList;
+
+    private ImageView my_image;
 
 
     public MyBlog(Context mContext, android.os.Handler handler, View rootView) {
@@ -238,13 +241,19 @@ public class MyBlog {
         }
     }
 
-    private void init(){
-        nestedScrollView = (NestedScrollView)rootView.findViewById(R.id.scroll_view);
+    private void init() {
+        nestedScrollView = (NestedScrollView) rootView.findViewById(R.id.scroll_view);
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
 
                 if (scrollY > oldScrollY) {
+
+                    if (mContext instanceof MainActivity) {
+                        if (((MainActivity) mContext).navigation.getVisibility() == View.VISIBLE)
+                            ((MainActivity) mContext).slideDown(((MainActivity) mContext).navigation);
+                    }
+
                     Log.i("TAAA", "Scroll DOWN");
                 }
                 if (scrollY < oldScrollY) {
@@ -253,14 +262,22 @@ public class MyBlog {
 
                 if (scrollY == 0) {
                     Log.i("TAAA", "TOP SCROLL");
+
+                    if (mContext instanceof MainActivity) {
+                        if (((MainActivity) mContext).navigation.getVisibility() == View.GONE)
+                            ((MainActivity) mContext).slideUp(((MainActivity) mContext).navigation);
+                    }
                 }
 
-                if ( scrollY == ((v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()))) {
+                if (scrollY == ((v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()))) {
                     Log.i("TAAA", "BOTTOM SCROLL");
-                    setDummyData(); //review more
+                    setDummyData(); /////////////////////// review more
                 }
             }
         });
+
+        my_image =(ImageView)rootView.findViewById(R.id.myblog_image);
+        BaseApplication.getInstance().loadImage(mContext, R.drawable.img_default_login_user ,my_image, true);
 
         setDummyData();
         setRecyler();
@@ -400,33 +417,33 @@ public class MyBlog {
         myReviewRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 0, 30, 0));
     }
 
-    private void setDummyData(){
+    private void setDummyData() {
 
-        if(myReviewItemList == null)
+        if (myReviewItemList == null)
             myReviewItemList = new ArrayList<MyReviewItem>();
 
         myblogReviewImageItemList = new ArrayList<>();
 
-        myblogReviewImageItemList.add(new MyblogReviewImageItem("id","https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
-        myblogReviewImageItemList.add(new MyblogReviewImageItem("id","https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
-        myblogReviewImageItemList.add(new MyblogReviewImageItem("id","https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
-        myblogReviewImageItemList.add(new MyblogReviewImageItem("id","https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
-        myblogReviewImageItemList.add(new MyblogReviewImageItem("id","https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
-        myblogReviewImageItemList.add(new MyblogReviewImageItem("id","https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
-        myblogReviewImageItemList.add(new MyblogReviewImageItem("id","https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
-        myblogReviewImageItemList.add(new MyblogReviewImageItem("id","https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
+        myblogReviewImageItemList.add(new MyblogReviewImageItem("id", "https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
+        myblogReviewImageItemList.add(new MyblogReviewImageItem("id", "https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
+        myblogReviewImageItemList.add(new MyblogReviewImageItem("id", "https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
+        myblogReviewImageItemList.add(new MyblogReviewImageItem("id", "https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
+        myblogReviewImageItemList.add(new MyblogReviewImageItem("id", "https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
+        myblogReviewImageItemList.add(new MyblogReviewImageItem("id", "https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
+        myblogReviewImageItemList.add(new MyblogReviewImageItem("id", "https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
+        myblogReviewImageItemList.add(new MyblogReviewImageItem("id", "https://pbs.twimg.com/profile_images/794909411789574144/aabzetJx.jpg"));
         //
         myReviewItemList.add(new MyReviewItem("http://image.chosun.com/sitedata/image/201711/28/2017112802484_0.jpg", "", "", "", "", myblogReviewImageItemList));
 
 
         myblogReviewImageItemList = new ArrayList<>(); //새로 생성하는거 엄청 중요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        myblogReviewImageItemList.add(new MyblogReviewImageItem("id","http://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg"));
-        myblogReviewImageItemList.add(new MyblogReviewImageItem("id","http://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg"));
-        myblogReviewImageItemList.add(new MyblogReviewImageItem("id","http://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg"));
-        myblogReviewImageItemList.add(new MyblogReviewImageItem("id","http://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg"));
-        myblogReviewImageItemList.add(new MyblogReviewImageItem("id","http://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg"));
-        myblogReviewImageItemList.add(new MyblogReviewImageItem("id","http://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg"));
+        myblogReviewImageItemList.add(new MyblogReviewImageItem("id", "http://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg"));
+        myblogReviewImageItemList.add(new MyblogReviewImageItem("id", "http://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg"));
+        myblogReviewImageItemList.add(new MyblogReviewImageItem("id", "http://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg"));
+        myblogReviewImageItemList.add(new MyblogReviewImageItem("id", "http://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg"));
+        myblogReviewImageItemList.add(new MyblogReviewImageItem("id", "http://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg"));
+        myblogReviewImageItemList.add(new MyblogReviewImageItem("id", "http://img.sbs.co.kr/newimg/news/20170622/201061239_1280.jpg"));
         //
         myReviewItemList.add(new MyReviewItem("http://image.chosun.com/sitedata/image/201711/28/2017112802484_0.jpg", "", "", "", "", myblogReviewImageItemList));
 

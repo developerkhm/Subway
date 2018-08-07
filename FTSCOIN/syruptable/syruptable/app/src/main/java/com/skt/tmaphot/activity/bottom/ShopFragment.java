@@ -3,6 +3,7 @@ package com.skt.tmaphot.activity.bottom;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,15 +33,38 @@ public class ShopFragment extends BaseFragment {
             public void onScrollChange(WebView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
 
                 if (((MainActivity) getActivity()).navigation.getVisibility() == View.VISIBLE)
-                    ((MainActivity) getActivity()).navigation.setVisibility(View.GONE);
+                    ((MainActivity) getActivity()).slideDown(((MainActivity) getActivity()).navigation);
 
                 if (scrollY == 0 && oldScrollY >= 5)
-                    ((MainActivity) getActivity()).navigation.setVisibility(View.VISIBLE);
+                    ((MainActivity) getActivity()).slideUp(((MainActivity) getActivity()).navigation);
             }
         });
 
         webView.setWebViewClient(new ShopWebViewClient(getActivity(), webView));
         webView.setWebChromeClient(new ShopWebChromeClient(getActivity(), webView));
+
+        webView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                //This is the filter
+                if (event.getAction() != KeyEvent.ACTION_DOWN)
+                    return true;
+
+
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    if (webView.canGoBack()) {
+                        webView.goBack();
+                    } else {
+                        ((MainActivity) getActivity()).onBackPressed();
+                    }
+
+                    return true;
+                }
+
+                return false;
+            }
+        });
 
         webView.loadUrl(url);
         return view;

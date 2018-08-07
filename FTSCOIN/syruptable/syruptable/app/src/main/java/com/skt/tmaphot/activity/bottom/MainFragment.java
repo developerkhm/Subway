@@ -161,8 +161,6 @@ public class MainFragment extends BaseFragment {
                                     mainMenuRecyclerViewItems = new ArrayList<MainMenuRecyclerViewItem>();
 
 
-
-
                                 menuRecyclerViewDataAdapter = new MainMenuRecyclerViewDataAdapter(getActivity(), mainMenuRecyclerViewItems);
                                 menuRecyclerViewDataAdapter.setOnMenuCilckListener(onMenuCilckListener); // 메뉴 리스너 등록
                                 recyclerView.setAdapter(menuRecyclerViewDataAdapter);
@@ -190,7 +188,6 @@ public class MainFragment extends BaseFragment {
                                         });
                                     }
                                 });
-
 
 
                                 break;
@@ -537,26 +534,26 @@ public class MainFragment extends BaseFragment {
                 if (scrollY > oldScrollY) {
                     Log.i("TAAA", "Scroll DOWN");
                     Log.d("TEST1234", "Scroll DOWN");
-                    if(((MainActivity)getActivity()).navigation.getVisibility() == View.VISIBLE)
-                        ((MainActivity)getActivity()).navigation.setVisibility(View.GONE);
+                    if (((MainActivity) getActivity()).navigation.getVisibility() == View.VISIBLE)
+                        ((MainActivity) getActivity()).slideDown(((MainActivity) getActivity()).navigation);
                 }
                 if (scrollY < oldScrollY) {
                     Log.i("TAAA", "Scroll UP");
                     Log.d("TEST1234", "Scroll UP");
-                    if(((MainActivity)getActivity()).navigation.getVisibility() == View.VISIBLE)
-                        ((MainActivity)getActivity()).navigation.setVisibility(View.GONE);
+//                    if(((MainActivity)getActivity()).navigation.getVisibility() == View.VISIBLE)
+//                        ((MainActivity)getActivity()).navigation.setVisibility(View.GONE);
                 }
 
                 if (scrollY == 0) {
                     Log.i("TAAA", "TOP SCROLL");
-                    ((MainActivity)getActivity()).navigation.setVisibility(View.VISIBLE);
+                    if (((MainActivity) getActivity()).navigation.getVisibility() == View.GONE)
+                        ((MainActivity) getActivity()).slideUp(((MainActivity) getActivity()).navigation);
                 }
 
                 if (scrollY == ((v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()))) {
                     Log.i("TAAA", "BOTTOM SCROLL");
 //                    ((MainActivity)getActivity()).navigation.setVisibility(View.VISIBLE);
                     loadHotplaceItem(ishotplaceModeDistance);
-
                 }
             }
         });
@@ -565,8 +562,7 @@ public class MainFragment extends BaseFragment {
             @Override
             public void onNestedScrollViewStateChanged(int state) {
                 Log.d("TEST1234", "onNestedScrollViewStateChanged");
-                if(state == RecyclerView.SCROLL_STATE_IDLE)
-                {
+                if (state == RecyclerView.SCROLL_STATE_IDLE) {
                     Log.d("TEST1234", "VISIBLE");
 //                    ((MainActivity)getActivity()).navigation.setVisibility(View.VISIBLE);
                 }
@@ -577,7 +573,7 @@ public class MainFragment extends BaseFragment {
         rollingIndicatorView = (RollingIndicatorView) rootView.findViewById(R.id.indicator_view);
         rollingViewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
 
-        searchbar = (CardView)rootView.findViewById(R.id.main_searchbar);
+        searchbar = (CardView) rootView.findViewById(R.id.main_searchbar);
         searchbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -625,15 +621,12 @@ public class MainFragment extends BaseFragment {
 
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                // TODO Auto-generated method stub
-
                 Log.e("GridView", "onScrollStateChanged : " + scrollState);
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
-                // TODO Auto-generated method stub
                 Log.e("GridView", "firstVisibleItem: " + firstVisibleItem + "\nvisibleItemCount: " + visibleItemCount + "\ntotalItemCount: " + totalItemCount);
 
                 // 현재 가장 처음에 보이는 셀번호와 보여지는 셀번호를 더한값이

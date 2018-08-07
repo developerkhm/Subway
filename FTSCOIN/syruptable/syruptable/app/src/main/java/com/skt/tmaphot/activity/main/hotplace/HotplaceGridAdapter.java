@@ -57,7 +57,6 @@ public class HotplaceGridAdapter extends BaseAdapter {
         RatingBar ratingBar = (RatingBar)convertView.findViewById(R.id.hotplace_ratingBar);
         CommonUtil.getInstance().setColorRatingBar(ratingBar);
 
-
         Drawable drawable= null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             drawable = (Drawable)mContext.getDrawable(R.drawable.round_main_item);

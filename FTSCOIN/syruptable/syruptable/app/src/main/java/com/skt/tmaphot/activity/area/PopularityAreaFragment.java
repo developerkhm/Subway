@@ -30,8 +30,6 @@ public class PopularityAreaFragment extends BaseFragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-
-
     private RecyclerView popularityAreaRecyclerView;
     private PopularityAreaRecylerViewAdapter popularityAreaRecylerViewAdapter;
     private List<PopularityAreaRecylerItem> popularityAreaRecylerItems;
@@ -99,13 +97,9 @@ public class PopularityAreaFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
 
-
-
         super.onDestroyView();
         Log.d("sam","onDestroyView");
     }
-
-
 
     @Override
     public void onDestroy() {
@@ -150,38 +144,25 @@ public class PopularityAreaFragment extends BaseFragment {
         popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("기타","14"));
 
 
-
         selectValueMap = new HashMap<Integer, String>();
         selectButton = (Button)rootView.findViewById(R.id.popularity_area_select_btn);
         selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("TEST12", "클릭" );
 
 
-//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//
-//                /*
-//                 * When this container fragment is created, we fill it with our first
-//                 * "real" fragment
-//                 */
-//                transaction.replace(R.id.tttt, fagmenttt);
-//                transaction.addToBackStack(null);
-//                transaction.commit();
-
+                if(selectValueMap.size() == 0)
+                    return;
 
 
                 for( Integer key : selectValueMap.keySet() ){
 
                     Log.d("TEST12", String.format("키 : %s, 값 : %s", key, selectValueMap.get(key)) );
-//                    ((SelectionAreaActivity)getActivity()).testTab();
-
-
-
+//                    ((SelectionAreaActivity)getActivity()).testTab()
                 }
 
-                ActivityStart(new Intent(getActivity(), FoodAreaListActivity.class), null);
 
+                ActivityStart(new Intent(getActivity(), FoodAreaListActivity.class), null);
             }
         });
 

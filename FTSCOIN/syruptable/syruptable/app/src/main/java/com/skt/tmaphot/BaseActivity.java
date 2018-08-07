@@ -171,6 +171,10 @@ BaseActivity extends AppCompatActivity {
                 getMenuInflater().inflate(R.menu.appbar_review_select_menu, menu);
             }
 
+            if (baceContext instanceof ReviewWriteActivity) {
+                getMenuInflater().inflate(R.menu.appbar_main_review_write_menu, menu);
+            }
+
         } else {
 //            getMenuInflater().inflate(R.menu.appbar_main_menu, menu);
         }

@@ -22,8 +22,11 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.skt.tmaphot.BaseActivity;
 import com.skt.tmaphot.MainSplashActivity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -45,6 +48,7 @@ public class GPSTracker implements LocationListener {
 
     private boolean canGetLocation = false;
     private boolean alreayGetLocation = false;
+    private boolean isTimeOut = false;
 
     private int initDelayTime_ms = 9000;
 
@@ -100,12 +104,12 @@ public class GPSTracker implements LocationListener {
         if (!getLocation()) {
             getGoogleClientLocation();
         }
-
+        Log.d("getgps", ">>>>>startGetLocation");
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(!alreayGetLocation)
-                {
+                if (!alreayGetLocation && !isTimeOut) {
+                    isTimeOut = true;
                     Log.d("getgps", "alreayGetLocation");
                     mHandler.sendEmptyMessage(LOCATION_FAIL);
                     stopUsingGPS();
@@ -129,7 +133,13 @@ public class GPSTracker implements LocationListener {
         if (ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
+            List<String> listPermissionsNeeded = new ArrayList<>();
+            listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            listPermissionsNeeded.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+
         }
+
+        isTimeOut = false;
 
         try {
             locationManager = (LocationManager) mContext.getSystemService(mContext.LOCATION_SERVICE);
@@ -320,7 +330,7 @@ public class GPSTracker implements LocationListener {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx, AlertDialog.THEME_HOLO_DARK);
 //        builder.setTitle("다이얼로그 제목임")
-        builder.setMessage("위치 정보가 정확하지 않습니다. 재 탐색 하시겠습니까?")
+        builder.setMessage("위치 정보가 정확하지 않습니다.\n재탐색 하시겠습니까?")
                 .setPositiveButton("네", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -331,9 +341,13 @@ public class GPSTracker implements LocationListener {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        ((Activity)ctx).finish();
-                        if(ctx instanceof MainSplashActivity)
-                        {
+                        GPSTracker.getInstance().stopUsingGPS();
+                        if(ctx instanceof BaseActivity){
+                            ((BaseActivity)ctx).progressOFF();
+                        }
+
+                        if (ctx instanceof MainSplashActivity) {
+                            ((MainSplashActivity) ctx).finish();
                             android.os.Process.killProcess(android.os.Process.myPid());
                             System.exit(1);
                         }

@@ -26,11 +26,11 @@
                 android:id="@+id/area_search_hood"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="내주변 보기" />
+                android:text="현재 내 위치" />
 
             <TextView
                 android:id="@+id/area_location"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="5dp"
                 android:layout_below="@+id/ttt_ttt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:text="GPS로 내위치 재설정"
+                android:text="현재 내 위치 재설정"
                 android:layout_marginBottom="1dp"
                 android:gravity="center"/>
             <TextView
@@ -60,7 +60,7 @@
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:text="지도에서 위치 지정"
+                android:text="지도에서 위치 설정"
                 android:gravity="center"/>
         </LinearLayout>
     </LinearLayout>

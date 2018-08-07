@@ -63,7 +63,7 @@ public class MyBlogStoreReviewActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myblog_storereview_layout);
         baceContext = this;
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         imageProfile = (ImageView)findViewById(R.id.myblog_profile_image);
         loadImage(baceContext,R.drawable.img_default_user, imageProfile, true);

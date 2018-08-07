@@ -77,7 +77,8 @@ public class BaseApplication extends Application {
 
         RequestOptions requestOptions = null;
         if (isRound) {
-            requestOptions = new RequestOptions().transform(new RoundedCorners(100)).diskCacheStrategy(DiskCacheStrategy.NONE);
+//            requestOptions = new RequestOptions().transform(new RoundedCorners(100)).diskCacheStrategy(DiskCacheStrategy.NONE).circleCrop();
+            requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).circleCrop();
         } else {
             requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop();
         }
@@ -263,6 +264,4 @@ public class BaseApplication extends Application {
 
         return false;
     }
-
-
 }

@@ -1,6 +1,7 @@
 package com.skt.tmaphot.activity.main.review;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.IRecyclerItem;
 import com.skt.tmaphot.activity.IRecyclerViewDataAdapter;
+import com.skt.tmaphot.activity.main.store.StoreInfoActivity;
 
 import java.util.ArrayList;
 
@@ -46,7 +48,12 @@ public class RealReviewRecyclerViewDataAdapter extends RecyclerView.Adapter<Real
             if(viewItem != null) {
                 // Set car item title.
                 BaseApplication.getInstance().loadImage(context , viewItem.getText(), holder.getImageView(), false);
-
+                holder.getImageView().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        BaseApplication.getInstance().ActivityStart(new Intent(context, StoreInfoActivity.class),null);
+                    }
+                });
             }
         }
     }

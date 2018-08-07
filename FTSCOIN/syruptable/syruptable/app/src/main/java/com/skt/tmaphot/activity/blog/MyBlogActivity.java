@@ -29,5 +29,6 @@ public class MyBlogActivity extends BaseActivity {
 
         MyBlog blog = new MyBlog(baceContext, handler, linearLayout);
 
+
     } // onCreate End
 } // class End

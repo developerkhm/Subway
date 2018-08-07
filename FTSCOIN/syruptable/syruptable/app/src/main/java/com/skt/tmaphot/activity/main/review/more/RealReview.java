@@ -17,6 +17,7 @@ import android.widget.ImageView;
 
 import com.skt.tmaphot.BaseActivity;
 import com.skt.tmaphot.BaseApplication;
+import com.skt.tmaphot.MainActivity;
 import com.skt.tmaphot.R;
 
 import java.util.ArrayList;
@@ -62,16 +63,33 @@ public class RealReview {
 
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                // TODO Auto-generated method stub
-
-//                Log.e("GridView", "onScrollStateChanged : " + scrollState);
+                switch (scrollState) {
+                    case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
+                        Log.d("RRRT", "SCROLL_STATE_IDLE");
+                        break;
+                    case AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
+                        Log.d("RRRT", "SCROLL_STATE_TOUCH_SCROLL");
+                        break;
+                    case AbsListView.OnScrollListener.SCROLL_STATE_FLING:
+                        Log.d("RRRT", "SCROLL_STATE_FLING");
+                        break;
+                }
             }
 
             @Override
-            public void onScroll(AbsListView view, int firstVisibleItem,
-                                 int visibleItemCount, int totalItemCount) {
-                // TODO Auto-generated method stub
-                Log.e("GridView", "firstVisibleItem: " + firstVisibleItem + "\nLastVisibleItem: " + totalItemCount);
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+                if (firstVisibleItem == 0 && mContext instanceof MainActivity) {
+                    if (((MainActivity) mContext).navigation.getVisibility() == View.GONE)
+                        ((MainActivity) mContext).slideUp(((MainActivity) mContext).navigation);
+                }
+
+                if (firstVisibleItem != 0 && mContext instanceof MainActivity) {
+                    if (((MainActivity) mContext).navigation.getVisibility() == View.VISIBLE)
+                        ((MainActivity) mContext).slideDown(((MainActivity) mContext).navigation);
+                }
+
+                Log.e("RRRTT", "firstVisibleItem: " + firstVisibleItem + "\n visibleItemCount: " + visibleItemCount + "\n totalItemCount: " + totalItemCount);
 
                 // 현재 가장 처음에 보이는 셀번호와 보여지는 셀번호를 더한값이
                 // 전체의 숫자와 동일해지면 가장 아래로 스크롤 되었다고 가정합니다.

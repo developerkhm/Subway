@@ -80,19 +80,7 @@
 
             <TextView
                 style="@style/navi_menu"
-                android:layout_width="match_parent"
-                android:layout_height="39dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="20dp"
-                android:text="내쿠폰함" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/text_gray_8f" />
-
-            <TextView
-                style="@style/navi_menu"
+                android:id="@+id/main_navigation_shop"
                 android:layout_width="match_parent"
                 android:layout_height="39dp"
                 android:gravity="center_vertical"
@@ -110,7 +98,7 @@
                 android:layout_height="39dp"
                 android:gravity="center_vertical"
                 android:paddingLeft="20dp"
-                android:text="주문조회" />
+                android:text="내쿠폰함" />
 
             <View
                 android:layout_width="match_parent"
@@ -123,46 +111,7 @@
                 android:layout_height="39dp"
                 android:gravity="center_vertical"
                 android:paddingLeft="20dp"
-                android:text="주문취소" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/text_gray_8f" />
-
-            <TextView
-                style="@style/navi_menu"
-                android:layout_width="match_parent"
-                android:layout_height="39dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="20dp"
-                android:text="장바구니" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/text_gray_8f" />
-
-            <TextView
-                style="@style/navi_menu"
-                android:layout_width="match_parent"
-                android:layout_height="39dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="20dp"
-                android:text="상품후기" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/text_gray_8f" />
-
-            <TextView
-                style="@style/navi_menu"
-                android:layout_width="match_parent"
-                android:layout_height="39dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="20dp"
-                android:text="상품문의" />
+                android:text="공지사항" />
 
             <View
                 android:layout_width="match_parent"
@@ -176,6 +125,19 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="20dp"
                 android:text="1:1문의" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/text_gray_8f" />
+
+            <TextView
+                style="@style/navi_menu"
+                android:layout_width="match_parent"
+                android:layout_height="39dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:text="설정" />
 
             <View
                 android:layout_width="match_parent"

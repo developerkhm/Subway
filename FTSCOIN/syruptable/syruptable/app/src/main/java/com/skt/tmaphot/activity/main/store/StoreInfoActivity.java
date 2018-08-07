@@ -45,8 +45,8 @@ public class StoreInfoActivity extends BaseActivity {
     private ImageViewPager mViewPager;
     private List<String> imageUrlList;
     private TextView imageCounttxt;
-    private LinearLayout reviewLayout;
 
+    private LinearLayout info_bookmark, info_review, info_evaluation, list_review;
 
     // 상점 리뷰사진 모음 리스트
     private RecyclerView storeInfoReviewRecyclerView;
@@ -90,13 +90,26 @@ public class StoreInfoActivity extends BaseActivity {
             }
         });
 
-        reviewLayout = (LinearLayout)findViewById(R.id.storeinfo_info_review);
-        reviewLayout.setOnClickListener(new View.OnClickListener() {
+        info_bookmark = (LinearLayout)findViewById(R.id.storeinfo_info_bookmark);
+        info_evaluation = (LinearLayout)findViewById(R.id.storeinfo_info_evaluation);
+
+        info_review = (LinearLayout)findViewById(R.id.storeinfo_info_review);
+        info_review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ActivityStart(new Intent(baceContext, ReviewWriteActivity.class), null);
             }
         });
+
+        list_review = (LinearLayout)findViewById(R.id.review_list_write);
+        info_review.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityStart(new Intent(baceContext, ReviewWriteActivity.class), null);
+            }
+        });
+
+
         mSectionsPagerAdapter = new StoreInfoActivity.SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ImageViewPager) findViewById(R.id.viewpager_container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -128,16 +141,6 @@ public class StoreInfoActivity extends BaseActivity {
 
 
         imageCounttxt = (TextView)findViewById(R.id.viewpager_image_count_txt);
-
-//        int greenColor = getResources().getColor(R.color.black_40filter);
-//        String color = "#"+Integer.toHexString(greenColor);
-//
-//        ImageView tt= (ImageView)findViewById(R.id.storeinfo_image);
-//
-//
-//        tt.setColorFilter(Color.parseColor(color), PorterDuff.Mode.SRC_OVER);
-        /////////////////////////////////////////////////////////////////////////////
-
 
         getIninData();
 

@@ -1,5 +1,7 @@
 package com.skt.tmaphot;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -47,6 +49,8 @@ public class MainActivity extends BaseActivity {
     public BottomNavigationView navigation;
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
+
+    private TextView navi_shop;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -110,6 +114,7 @@ public class MainActivity extends BaseActivity {
                     fragmentManager.beginTransaction().replace(R.id.fragment_content, new EventFragment()).commit();
                     return true;
                 case R.id.navigation_shop:
+                    toolbar.setVisibility(View.GONE);
                     fragmentManager.beginTransaction().replace(R.id.fragment_content, new ShopFragment()).commit();
                     return true;
                 case R.id.navigation_myblog:
@@ -119,7 +124,6 @@ public class MainActivity extends BaseActivity {
             return false;
         }
     };
-
 
 
     @Override
@@ -142,6 +146,9 @@ public class MainActivity extends BaseActivity {
                 System.exit(-1);
             } else {
                 backPressedTime = tempTime;
+                if (navigation.getVisibility() == View.GONE) {
+                    slideUp(navigation);
+                }
                 Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
             }
         }
@@ -186,5 +193,68 @@ public class MainActivity extends BaseActivity {
                 on.setVisibility(View.VISIBLE);
             }
         });
+
+        navi_shop = (TextView) findViewById(R.id.main_navigation_shop);
+        navi_shop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                navigation.setSelectedItemId(R.id.navigation_shop);
+
+                if (drawer.isDrawerOpen(GravityCompat.START))
+                    drawer.closeDrawer(GravityCompat.START);
+            }
+        });
+
     }
+
+
+    public void slideDown(final View view) {
+        view.animate()
+                .translationY(view.getHeight())
+                .alpha(0.f)
+                .setDuration(300)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        // superfluous restoration
+                        view.setVisibility(View.GONE);
+                        view.setAlpha(1.f);
+                        view.setTranslationY(0.f);
+                    }
+                });
+    }
+
+    public void slideUp(final View view) {
+        view.setVisibility(View.VISIBLE);
+        view.setAlpha(0.f);
+
+        if (view.getHeight() > 0) {
+            slideUpNow(view);
+        } else {
+            // wait till height is measured
+            view.post(new Runnable() {
+                @Override
+                public void run() {
+                    slideUpNow(view);
+                }
+            });
+        }
+    }
+
+    private void slideUpNow(final View view) {
+        view.setTranslationY(view.getHeight());
+        view.animate()
+                .translationY(0)
+                .alpha(1.f)
+                .setDuration(500)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        view.setVisibility(View.VISIBLE);
+                        view.setAlpha(1.f);
+                    }
+                });
+    }
+
 }

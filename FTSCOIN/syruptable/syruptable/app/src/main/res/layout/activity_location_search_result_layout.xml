@@ -8,17 +8,18 @@
     android:background="@color/colorWhite"
     android:orientation="vertical">
 
-    <include layout="@layout/base_appbar_layout"/>
+    <include layout="@layout/base_appbar_layout" />
 
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/hotplace_gridview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/main_hotplace_pop"
+        android:layout_marginTop="15dp"
         android:layout_marginHorizontal="15dp"
-        android:horizontalSpacing="10dp"
         android:verticalSpacing="15dp"
-        android:scrollbars="none"
-        android:numColumns="2" />
+        android:horizontalSpacing="10dp"
+        android:numColumns="2"
+        android:scrollbars="none"/>
 
 </LinearLayout>
