@@ -23,12 +23,8 @@ public class HotdealListRecyclerViewDataAdapter extends RecyclerView.Adapter<Hot
 
     @Override
     public HotdealListRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // Get LayoutInflater object.
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        // Inflate the RecyclerView item layout xml.
         View itemView = layoutInflater.inflate(R.layout.hotdeal_recycler_item, parent, false);
-
-        // Create and return our customRecycler View Holder object.
         HotdealListRecyclerViewHolder ret = new HotdealListRecyclerViewHolder(itemView);
         return ret;
     }

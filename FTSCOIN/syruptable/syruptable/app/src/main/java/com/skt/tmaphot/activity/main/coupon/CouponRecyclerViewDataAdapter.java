@@ -78,4 +78,12 @@ public class CouponRecyclerViewDataAdapter extends RecyclerView.Adapter<CouponRe
         this.notifyItemRangeChanged(start, last);
 //        this.notifyItemRangeInserted(start, last);
     }
+
+    ///////////////////////////////////////////
+    @Override
+    public long getItemId(int position) {
+//        return viewItemList.get(position).getId();
+        return position;
+    }
+    //////////////////////////////////////////////////
 }

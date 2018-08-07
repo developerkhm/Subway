@@ -30,8 +30,6 @@ public class CouponListActivity extends BaseActivity {
         baceContext = this;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        //////////////////////////////////////////////////////////
-
         getLoadDate(); //dummy
 
         recyclerView = (RecyclerView) findViewById(R.id.main_coupon_list_recyclerview);
@@ -40,11 +38,8 @@ public class CouponListActivity extends BaseActivity {
         recyclerView.setLayoutManager(layoutManager);
         adapter = new CouponListRecyclerViewDataAdapter(this, couponListRecyclerViewItemList);
         recyclerView.setAdapter(adapter);
-
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new SpacesItemDecoration(20));
         recyclerView.setHasFixedSize(true);
-
         recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
@@ -59,13 +54,10 @@ public class CouponListActivity extends BaseActivity {
                     // Scrolled to bottom. Do something here.
                     getLoadDate();
 
-
-
                     mLoading = false;
                 }
             }
         });
-
 
     } //END
 
@@ -92,27 +84,6 @@ public class CouponListActivity extends BaseActivity {
                     adapter.notifyDataSetChanged();
            }
        });
-    }
-
-
-    public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
-        private int space;
-
-        public SpacesItemDecoration(int space) {
-            this.space = space;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-//            outRect.left = space;
-//            outRect.right = space;
-            outRect.bottom = space;
-
-            // Add top margin only for the first item to avoid double space between items
-//            if(parent.getChildAdapterPosition(view) == 0) {
-//                outRect.top = space;
-//            }
-        }
     }
 }
 

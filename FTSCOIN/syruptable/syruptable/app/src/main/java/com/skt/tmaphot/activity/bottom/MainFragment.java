@@ -152,6 +152,9 @@ public class MainFragment extends BaseFragment {
                         if (menuRecyclerViewDataAdapter == null)
                             recyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 15, 0, 0));
 
+                        /////////////////////////////////
+                        recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 10);
+                        ////////////////////////////////////////
 
                         switch (recyclerView.getId()) {
 
@@ -200,6 +203,9 @@ public class MainFragment extends BaseFragment {
                                 couponItemList = new ArrayList<IRecyclerItem>();
 
                                 couponRecyclerViewDataAdapter = new CouponRecyclerViewDataAdapter(getActivity(), couponItemList);
+                                /////////////////////////////////////////////////
+                                couponRecyclerViewDataAdapter.setHasStableIds(true);
+                                ///////////////////////////////////////////////////
                                 recyclerView.setAdapter(couponRecyclerViewDataAdapter);
                                 loadData(recyclerView);
                                 break;

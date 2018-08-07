@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.main.store.StoreInfoActivity;
 
-public class CouponRecyclerViewHolder extends RecyclerView.ViewHolder {
+public class CouponRecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
     private ImageView mImg;
     private TextView mTextSale;
@@ -46,29 +46,18 @@ public class CouponRecyclerViewHolder extends RecyclerView.ViewHolder {
             }
 
             // on item click
-            itemView.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    // get position
-                    int pos = getAdapterPosition();
-
-                    Intent intent = new Intent(v.getContext(), StoreInfoActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("key", getAdapterPosition());
-                    v.getContext().startActivity(intent);
-
-
-                    // 여기서 값을 가져갈수 있다 예를 들어서 id, mTextSale.setText
-//                    Toast.makeText(v.getContext(), "You clicked " + mTextSale.getText(),Toast.LENGTH_SHORT).show();
-
-//                    // check if item still exists
-//                    if(pos != RecyclerView.NO_POSITION){
-//                        RvDataItem clickedDataItem = dataItems.get(pos);
-//                        Toast.makeText(v.getContext(), "You clicked " + clickedDataItem.getName(), Toast.LENGTH_SHORT).show();
-//                    }
-                }
-            });
+            itemView.setOnClickListener(this);
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+        int pos = getAdapterPosition();
+
+        Intent intent = new Intent(view.getContext(), StoreInfoActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("key", getAdapterPosition());
+        view.getContext().startActivity(intent);
     }
 
     public ImageView getmImgReview() {
@@ -90,4 +79,6 @@ public class CouponRecyclerViewHolder extends RecyclerView.ViewHolder {
     public TextView getmDistanceText() {
         return mDistanceText;
     }
+
+
 }

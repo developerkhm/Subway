@@ -1,28 +1,25 @@
 package com.skt.tmaphot.activity.main.hotdeal.more;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
-import com.skt.tmaphot.R;
 import com.skt.tmaphot.BaseActivity;
+import com.skt.tmaphot.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HotdealListActivity extends BaseActivity {
 
-    private Handler handler = new Handler();
-
     private RecyclerView recyclerView;
     private HotdealListRecyclerViewDataAdapter adapter;
     private List<HotdealListRecyclerViewItem> hotdealListRecyclerViewItemList;
     private LinearLayoutManager layoutManager;
-
-    private boolean mLoading = false;
+    private boolean loading = true;
+    private int visibleItemCount, totalItemCount, pastVisiblesItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,34 +37,40 @@ public class HotdealListActivity extends BaseActivity {
         adapter = new HotdealListRecyclerViewDataAdapter(this, hotdealListRecyclerViewItemList);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
-
-        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
 
-                int totalItem = layoutManager.getItemCount();
-                int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+                if (loading) {
+                    if (dy > 0) //check for scroll down
+                    {
+                        visibleItemCount = layoutManager.getChildCount();
+                        totalItemCount = layoutManager.getItemCount();
+                        pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
 
-                if (!mLoading && lastVisibleItem == totalItem - 1) {
-                    mLoading = true;
-                    // Scrolled to bottom. Do something here.
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            loading = false;
+                            Log.v("...", " Reached Last Item");
+                            getLoadDate();
 
-                    getLoadDate();
+                            loading = true;
+                        }
 
-
-
-                    mLoading = false;
+                    }
                 }
             }
         });
 
-    } //END
+    }
 
-    private void getLoadDate(){
+    private void getLoadDate() {
 
-        if(hotdealListRecyclerViewItemList == null)
+        if (hotdealListRecyclerViewItemList == null)
             hotdealListRecyclerViewItemList = new ArrayList<HotdealListRecyclerViewItem>();
 
         hotdealListRecyclerViewItemList.add(new HotdealListRecyclerViewItem(
@@ -92,12 +95,12 @@ public class HotdealListActivity extends BaseActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(adapter != null)
+                if (adapter != null)
                     adapter.notifyDataSetChanged();
             }
         });
 
-    };
+    }
 }
 
 

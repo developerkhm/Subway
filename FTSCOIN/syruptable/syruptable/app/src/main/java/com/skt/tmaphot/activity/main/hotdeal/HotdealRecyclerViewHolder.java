@@ -23,7 +23,6 @@ public class HotdealRecyclerViewHolder extends RecyclerView.ViewHolder {
     private TextView mMenueText;
 
 
-
     public HotdealRecyclerViewHolder(View itemView) {
         super(itemView);
 
