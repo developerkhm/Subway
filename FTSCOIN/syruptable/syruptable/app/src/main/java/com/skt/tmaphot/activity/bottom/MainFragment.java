@@ -2,6 +2,8 @@ package com.skt.tmaphot.activity.bottom;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
@@ -11,9 +13,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
+import com.skt.tmaphot.BaseActivity;
 import com.skt.tmaphot.MainActivity;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.NestedScrollingView;
@@ -36,7 +38,6 @@ import com.skt.tmaphot.activity.main.menu.MainMenuRecyclerViewItem;
 import com.skt.tmaphot.activity.main.review.RealReviewRecyclerViewDataAdapter;
 import com.skt.tmaphot.activity.main.review.RealReviewRecyclerViewItem;
 import com.skt.tmaphot.activity.main.review.more.RealReviewActivity;
-import com.skt.tmaphot.activity.main.store.StoreInfoActivity;
 import com.skt.tmaphot.activity.search.SearchActivity;
 import com.skt.tmaphot.common.CommonUtil;
 import com.skt.tmaphot.fragment.BaseFragment;
@@ -51,15 +52,15 @@ public class MainFragment extends BaseFragment {
 
     private NestedScrollingView nestedScrollView;
 
-    // 리얼리뷰
-    private RecyclerView realReviewRecyclerView;
-    private List<RealReviewRecyclerViewItem> realReviewItemList;
-    private RealReviewRecyclerViewDataAdapter realReviewRecyclerViewDataAdapter;
-
     // 주변 할인 쿠폰
     private RecyclerView couponRecyclerView;
     private List<CouponRecyclerViewItem> couponItemList;
     private CouponRecyclerViewDataAdapter couponRecyclerViewDataAdapter;
+
+    // 리얼리뷰
+    private RecyclerView realReviewRecyclerView;
+    private List<RealReviewRecyclerViewItem> realReviewItemList;
+    private RealReviewRecyclerViewDataAdapter realReviewRecyclerViewDataAdapter;
 
     // 주변 할딧 맛집
     private RecyclerView hotdealRecyclerView;
@@ -67,11 +68,10 @@ public class MainFragment extends BaseFragment {
     private HotdealRecyclerViewDataAdapter hotdealRecyclerViewDataAdapter;
 
     // 핫플레이스
-    private List<HotplaceGridViewItem> hotplace_Pop_ItemList, hotplace_Distance_ItemList;
+    private List<HotplaceGridViewItem> hotplaceItemList;
     private ExpandableHeightGridView hotplaceGridview;
-    private boolean ishotplaceItemLoad;
     private HotplaceGridAdapter hotplaceGridAdapter;
-    private boolean ishotplaceModeDistance;
+    private int hotplaceLoadType = 0;
 
     // 메뉴
     private RecyclerView menuRecyclerView;
@@ -87,20 +87,16 @@ public class MainFragment extends BaseFragment {
     //더보기
     private TextView reviewMoreTextView, couponMoreTextview, hotdealMoreTextview;
 
-    //리스너
-    private HorizontalRecyclerViewOnScrollListener onScrollListenerRecyclerView;
-
     private CardView searchbar;
     private TextView hotplace_pop, hotplace_distance;
 
-    //임시
-    private int food_type = 100;
-
+    //메인 워커 쓰레드 풀
     private ExecutorService executorService;
+    private int foodType = 0;
+    private boolean hotplaceLoad = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d("ABCDE", "Fragment onCreateView");
         rootView = inflater.inflate(R.layout.fragment_main_layout, container, false);
         rootView.findViewById(R.id.toolbar).setVisibility(View.GONE);
 
@@ -153,21 +149,21 @@ public class MainFragment extends BaseFragment {
                 if (mainMenuRecyclerViewItems == null)
                     mainMenuRecyclerViewItems = new ArrayList<>();
 
-                menuRecyclerViewDataAdapter = new MainMenuRecyclerViewDataAdapter(getActivity(), mainMenuRecyclerViewItems);
-                menuRecyclerViewDataAdapter.setOnMenuCilckListener(onMenuCilckListener); // 메뉴 리스너 등록
+                menuRecyclerViewDataAdapter = new MainMenuRecyclerViewDataAdapter(mainMenuRecyclerViewItems);
+                menuRecyclerViewDataAdapter.setOnEventCilckListener(onEventCilckListener); // 메뉴 리스너 등록
                 recyclerView.setAdapter(menuRecyclerViewDataAdapter);
 
                 executorService.execute(new Runnable() {
                     @Override
                     public void run() {
-                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("55", "", R.drawable.img_main_menu_1));
-                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("88", "", R.drawable.img_main_menu_2));
-                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("22", "", R.drawable.img_main_menu_3));
-                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("222", "", R.drawable.img_main_menu_4));
-                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("545", "", R.drawable.img_main_menu_5));
-                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("235235", "", R.drawable.img_main_menu_6));
-                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("2355", "", R.drawable.img_main_menu_7));
-                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("23525", "", R.drawable.img_main_menu_8));
+                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("1", "", R.drawable.img_main_menu_1));
+                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("2", "", R.drawable.img_main_menu_2));
+                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("3", "", R.drawable.img_main_menu_3));
+                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("4", "", R.drawable.img_main_menu_4));
+                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("5", "", R.drawable.img_main_menu_5));
+                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("6", "", R.drawable.img_main_menu_6));
+                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("7", "", R.drawable.img_main_menu_7));
+                        mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("8", "", R.drawable.img_main_menu_8));
 
                         menuRecyclerViewDataAdapter.notifyDataSetChanged();
 
@@ -217,7 +213,7 @@ public class MainFragment extends BaseFragment {
     }
 
     private void loadData(final RecyclerView recyclerView) {
-
+        Log.d("BBT", "loadData");
         if (recyclerView.getId() == R.id.menu_recycler_view) {
             return;
         }
@@ -243,9 +239,17 @@ public class MainFragment extends BaseFragment {
 
                     case R.id.review_recycler_view:
                         currItemListSize = realReviewItemList.size();
+                        Log.d("BBT", "real loadData currItemListSize " + currItemListSize);
                         for (int i = currItemListSize; i < currItemListSize + loadMoreItemCount; i++) {
-                            String url = "http://cfile214.uf.daum.net/image/110EBE0E49A774D7AC1983";
-                            realReviewItemList.add(new RealReviewRecyclerViewItem(String.valueOf(i), url));
+                            if (foodType == 0) {
+                                String url = "http://cfile214.uf.daum.net/image/110EBE0E49A774D7AC1983";
+                                realReviewItemList.add(new RealReviewRecyclerViewItem(String.valueOf(i), url));
+                            } else {
+                                Log.d("BBT", "real loadData for int :" + i);
+                                String url = "http://philsalgi.com/xe/files/attach/images/145/414/008/2c89504033b3c1ce95755484e4dc5948.jpg";
+                                realReviewItemList.add(new RealReviewRecyclerViewItem(String.valueOf(i + 100), url));
+                                ///////////////////// 아이디 값이 달라야 한다, 메뉴 변경시 //////////////////////////////////
+                            }
                         }
                         newItemIndex = realReviewItemList.size() - 1;
                         realReviewRecyclerViewDataAdapter.reLoadData(realReviewItemList);
@@ -253,8 +257,15 @@ public class MainFragment extends BaseFragment {
                     case R.id.hotdeal_recycler_view:
                         currItemListSize = hotdealItemList.size();
                         for (int i = currItemListSize; i < currItemListSize + loadMoreItemCount; i++) {
-                            String url = "http://www.slist.kr/news/photo/201602/853_3916_1257.jpg";
-                            hotdealItemList.add(new HotdealRecyclerViewItem(String.valueOf(i), url, "3", "피자", "불고기피자","300","20"));
+                            if (foodType == 0) {
+                                String url = "http://www.slist.kr/news/photo/201602/853_3916_1257.jpg";
+                                hotdealItemList.add(new HotdealRecyclerViewItem(String.valueOf(i), url, "3", "피자", "불고기피자", "300", "20"));
+                            } else {
+                                Log.d("BBT", "hotdeal loadData foodType else");
+                                String url = "https://steptohealth.co.kr/wp-content/uploads/2017/03/foods-to-avoid-eating-for-breakfast-500x283.jpg";
+                                hotdealItemList.add(new HotdealRecyclerViewItem(String.valueOf(i + 100), url, "3", "피자", "불고기피자", "300", "20"));
+                                /////////////////////  아이디 값이 달라야 한다, 메뉴 변경시  //////////////////////////////////
+                            }
                         }
                         newItemIndex = hotdealItemList.size() - 1;
                         hotdealRecyclerViewDataAdapter.reLoadData(hotdealItemList);
@@ -316,10 +327,10 @@ public class MainFragment extends BaseFragment {
                         ((MainActivity) getActivity()).slideUp(((MainActivity) getActivity()).navigation);
                 }
 
-                if (scrollY == ((v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()))) {
+                if (scrollY == ((v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) && hotplaceLoad) {
                     Log.i("TAAA", "BOTTOM SCROLL");
 //                    ((MainActivity)getActivity()).navigation.setVisibility(View.VISIBLE);
-                    loadHotplaceItem(ishotplaceModeDistance);
+                    loadHotplaceItem(hotplaceLoadType);
                 }
             }
         });
@@ -347,14 +358,10 @@ public class MainFragment extends BaseFragment {
             }
         });
 
-        realReviewRecyclerView = (RecyclerView) rootView.findViewById(R.id.review_recycler_view);
-
         couponRecyclerView = (RecyclerView) rootView.findViewById(R.id.coupon_recycler_view);
-
+        realReviewRecyclerView = (RecyclerView) rootView.findViewById(R.id.review_recycler_view);
         hotdealRecyclerView = (RecyclerView) rootView.findViewById(R.id.hotdeal_recycler_view);
         menuRecyclerView = (RecyclerView) rootView.findViewById(R.id.menu_recycler_view);
-        hotplaceGridview = (ExpandableHeightGridView) rootView.findViewById(R.id.hotplace_gridview);
-
 
         reviewMoreTextView = (TextView) rootView.findViewById(R.id.main_txt_review_more);
         reviewMoreTextView.setOnClickListener(onClickListenerMore);
@@ -365,6 +372,7 @@ public class MainFragment extends BaseFragment {
         hotdealMoreTextview = (TextView) rootView.findViewById(R.id.main_txt_hotdeal_more);
         hotdealMoreTextview.setOnClickListener(onClickListenerMore);
 
+        hotplaceGridview = (ExpandableHeightGridView) rootView.findViewById(R.id.hotplace_gridview);
         hotplace_pop = (TextView) rootView.findViewById(R.id.main_hotplace_pop);
         hotplace_pop.setOnClickListener(onClickListenerHotplaceType);
         hotplace_pop.setSelected(true);
@@ -376,160 +384,159 @@ public class MainFragment extends BaseFragment {
     private void initHotplaceSet() {
 
         hotplaceGridview.setExpanded(true);
-        hotplaceGridview.setOnItemClickListener(onItemClickListenerHotplace);
 
-        if (hotplace_Pop_ItemList == null)
-            hotplace_Pop_ItemList = new ArrayList<>();
+        if (hotplaceItemList == null)
+            hotplaceItemList = new ArrayList<>();
 
-        hotplaceGridAdapter = new HotplaceGridAdapter(getContext(), hotplace_Pop_ItemList);
+        hotplaceGridAdapter = new HotplaceGridAdapter(getContext(), hotplaceItemList);
         hotplaceGridview.setAdapter(hotplaceGridAdapter);
 
         //데이터 로드
-        loadHotplaceItem(ishotplaceModeDistance);
+        loadHotplaceItem(hotplaceLoadType);
     }
 
-    private void loadHotplaceItem(final boolean mode) {
+    private void loadHotplaceItem(final int hotplaceLoadType) {
 
         executorService.execute(new Runnable() {
             @Override
             public void run() {
 
-//                BaseApplication.getInstance().progressON(getActivity(),"");
-                ishotplaceItemLoad = true;
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((BaseActivity) getActivity()).progressON();
+                    }
+                });
 
-                if (!mode) {
 
-                    Log.d("QQQ", "pop dataload");
+                hotplaceLoad = false;
 
-//                    if(hotplace_Pop_ItemList == null);
-//                        hotplace_Pop_ItemList = new ArrayList<HotplaceGridViewItem>();
+                if (hotplaceLoadType == 0) {
 
-                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
                             "몰라짜장", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
                             "몰라짜장", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
                             "몰라짜장", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
                             "몰라짜장", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
                             "몰라짜장", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
                             "몰라짜장", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
                             "몰라짜장", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
                             "몰라짜장", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
                             "몰라짜장", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
                             "몰라짜장", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
                             "몰라짜장", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
                             "몰라짜장", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
                             "몰라짜장", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
                             "몰라짜장", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
                             "몰라짜장", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
                             "몰라짜장", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
                             "몰라짜장", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Pop_ItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://static.hubzum.zumst.com/hubzum/2017/11/06/13/a0e8c70dba7248598e4ba30a390b487c_0x576c.jpg",
                             "몰라짜장", "수제피자", "200m", "50%", "맛이어요"));
 
 
                 } else {
 
-                    Log.d("QQQ", "distance dataload");
-
-//                    if(hotplace_Distance_ItemList == null);
-//                        hotplace_Distance_ItemList = new ArrayList<HotplaceGridViewItem>();
-
-
-                    hotplace_Distance_ItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
                             "distance", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Distance_ItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
                             "distance", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Distance_ItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
                             "distance", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Distance_ItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
                             "distance", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Distance_ItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
                             "distance", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Distance_ItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
                             "distance", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Distance_ItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
                             "distance", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Distance_ItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
                             "distance", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Distance_ItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
                             "distance", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Distance_ItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
                             "distance", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Distance_ItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
                             "distance", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Distance_ItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
                             "distance", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Distance_ItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
                             "distance", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Distance_ItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
                             "distance", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Distance_ItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
                             "distance", "수제피자", "200m", "50%", "맛이어요"));
-                    hotplace_Distance_ItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
+                    hotplaceItemList.add(new HotplaceGridViewItem("http://spnimage.edaily.co.kr/images/photo/files/NP/S/2016/10/PS16102100005.jpg",
                             "distance", "수제피자", "200m", "50%", "맛이어요"));
 
                 }
 
-                ishotplaceItemLoad = false;
                 rootView.post(new Runnable() {
                     @Override
                     public void run() {
                         hotplaceGridAdapter.notifyDataSetChanged();
-
-
                     }
                 });
 
+                hotplaceLoad = true;
                 hotplaceGridview.setFocusable(false);
-//                BaseApplication.getInstance().progressOFF();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((BaseActivity) getActivity()).progressOFF();
+                    }
+                });
             }
         });
     }
 
-        private void reloadHotPlace(boolean mode) {
-        if (mode) {
-            Log.d("GRID", "distnace mode");
-            if (hotplace_Distance_ItemList == null) {
-                hotplace_Distance_ItemList = new ArrayList<HotplaceGridViewItem>();
+    private void reloadHotPlace(int hotplaceLoadType) {
+        if (hotplaceLoadType == 0) {
+            if (hotplaceItemList == null) {
+                hotplaceItemList = new ArrayList<>();
             } else {
-                Log.d("GRID", "clear");
-                hotplace_Distance_ItemList.clear();
+                hotplaceItemList.clear();
             }
             hotplaceGridview.invalidateViews();
-            hotplaceGridAdapter = new HotplaceGridAdapter(getActivity(), hotplace_Distance_ItemList);
+            hotplaceGridAdapter = new HotplaceGridAdapter(getActivity(), hotplaceItemList);
             hotplaceGridview.setAdapter(hotplaceGridAdapter);
 
-            loadHotplaceItem(mode);
+            loadHotplaceItem(hotplaceLoadType);
         } else {
 
-            if (hotplace_Pop_ItemList == null) {
-                hotplace_Pop_ItemList = new ArrayList<HotplaceGridViewItem>();
+            if (hotplaceItemList == null) {
+                hotplaceItemList = new ArrayList<>();
             } else {
-                hotplace_Pop_ItemList.clear();
+                hotplaceItemList.clear();
             }
 
-            hotplace_Pop_ItemList = new ArrayList<HotplaceGridViewItem>();
             hotplaceGridview.invalidateViews();
-            hotplaceGridAdapter = new HotplaceGridAdapter(getActivity(), hotplace_Pop_ItemList);
+            hotplaceGridAdapter = new HotplaceGridAdapter(getActivity(), hotplaceItemList);
             hotplaceGridview.setAdapter(hotplaceGridAdapter);
 
-            loadHotplaceItem(mode);
+            loadHotplaceItem(hotplaceLoadType);
         }
+
+        hotplaceGridview.setFocusable(true);
     }
 
 
@@ -556,40 +563,27 @@ public class MainFragment extends BaseFragment {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.main_hotplace_pop:
-
                     hotplace_pop.setSelected(true);
                     hotplace_distance.setSelected(false);
-
-                    ishotplaceModeDistance = false;
-                    reloadHotPlace(ishotplaceModeDistance);
-                    hotplaceGridview.setFocusable(true);
+                    hotplaceLoadType = 0;
+                    reloadHotPlace(hotplaceLoadType);
                     break;
                 case R.id.main_hotplace_distance:
-
                     hotplace_pop.setSelected(false);
                     hotplace_distance.setSelected(true);
-
-                    ishotplaceModeDistance = true;
-                    reloadHotPlace(ishotplaceModeDistance);
-                    hotplaceGridview.setFocusable(true);
+                    hotplaceLoadType = 1;
+                    reloadHotPlace(hotplaceLoadType);
                     break;
             }
         }
     };
 
-
-    AdapterView.OnItemClickListener onItemClickListenerHotplace = new AdapterView.OnItemClickListener() {
+    MainMenuRecyclerViewDataAdapter.OnEventCilckListener onEventCilckListener = new MainMenuRecyclerViewDataAdapter.OnEventCilckListener() {
         @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            ActivityStart(new Intent(getActivity(), StoreInfoActivity.class), null);
-        }
-    };
-
-    MainMenuRecyclerViewHolder.OnMenuCilckListener onMenuCilckListener = new MainMenuRecyclerViewHolder.OnMenuCilckListener() {
-        @Override
-        public void menuOnClick(View v, int id, int position) {
-            // 임시구현
-            food_type = position;   // 음식 타입 파라미터 서버로 전송 데이터는 받아오기만 하면됨
+        public void menuOnClick(int position) {
+            Log.d("BBT", "click");
+            // 임시 포지션 값으로, 메뉴 특정 키값으로 변경 해야됨
+            foodType = position;
 
             realReviewItemList.clear();
             loadData(realReviewRecyclerView);
@@ -597,10 +591,9 @@ public class MainFragment extends BaseFragment {
             hotdealItemList.clear();
             loadData(hotdealRecyclerView);
 
-            reloadHotPlace(ishotplaceModeDistance);
+            reloadHotPlace(hotplaceLoadType);
         }
     };
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -638,7 +631,6 @@ public class MainFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         rollingAutoManager.onRollingDestroy();
-
     }
 
     @Override
@@ -650,7 +642,6 @@ public class MainFragment extends BaseFragment {
     private class HorizontalRecyclerViewOnScrollListener extends RecyclerView.OnScrollListener {
 
         public HorizontalRecyclerViewOnScrollListener() {
-
         }
 
         @Override

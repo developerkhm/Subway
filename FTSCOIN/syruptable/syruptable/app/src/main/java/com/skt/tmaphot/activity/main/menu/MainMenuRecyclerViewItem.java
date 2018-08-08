@@ -2,9 +2,9 @@ package com.skt.tmaphot.activity.main.menu;
 
 
 public class MainMenuRecyclerViewItem {
-    String menuType;
-    String menuImageUrl;
-    int res;
+    private String menuType;
+    private String menuImageUrl;
+    private int res;
 
     public MainMenuRecyclerViewItem(String menuType, String menuImageUrl, int res) {
         this.menuType = menuType;

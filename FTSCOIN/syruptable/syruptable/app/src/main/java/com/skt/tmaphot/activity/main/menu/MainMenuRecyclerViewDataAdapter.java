@@ -10,70 +10,52 @@ import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainMenuRecyclerViewDataAdapter extends RecyclerView.Adapter<MainMenuRecyclerViewHolder> {
 
     private Context context;
-    private ArrayList<MainMenuRecyclerViewItem> viewItemList;
-    private MainMenuRecyclerViewHolder.OnMenuCilckListener listner;
+    private List<MainMenuRecyclerViewItem> viewItemList;
+    private OnEventCilckListener onEventCilckListener;
 
-    public MainMenuRecyclerViewDataAdapter(Context context, ArrayList<MainMenuRecyclerViewItem> viewItemList) {
-        this.context = context;
-        this.viewItemList = viewItemList;
+    public interface OnEventCilckListener{
+        void menuOnClick(int position);
     }
 
-    public void setOnMenuCilckListener(MainMenuRecyclerViewHolder.OnMenuCilckListener listner){
-        this.listner = listner;
+    public void setOnEventCilckListener(OnEventCilckListener listener){
+        onEventCilckListener = listener;
+    }
+
+    private MainMenuRecyclerViewHolder.OnMenuCilckListener onMenuCilckListener = new MainMenuRecyclerViewHolder.OnMenuCilckListener() {
+        @Override
+        public void menuOnClick(int position) {
+            onEventCilckListener.menuOnClick(position);
+        }
+    };
+
+    public MainMenuRecyclerViewDataAdapter(List<MainMenuRecyclerViewItem> viewItemList) {
+        this.viewItemList = viewItemList;
     }
 
     @Override
     public MainMenuRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // Get LayoutInflater object.
+        context = parent.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        // Inflate the RecyclerView item layout xml.
         View itemView = layoutInflater.inflate(R.layout.main_menu_recycler_item, parent, false);
 
-        // Create and return our customRecycler View Holder object.
-        MainMenuRecyclerViewHolder ret = new MainMenuRecyclerViewHolder(itemView);
-        ret.setOnMenuCilckListener(listner);
-        return ret;
+        MainMenuRecyclerViewHolder holder = new MainMenuRecyclerViewHolder(itemView);
+        holder.setOnMenuCilckListener(onMenuCilckListener);
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(MainMenuRecyclerViewHolder holder, int position) {
-        if(viewItemList!=null) {
-            // Get car item dto in list.
-            MainMenuRecyclerViewItem viewItem = viewItemList.get(position);
-
-
-            if(viewItem != null) {
-                // Set car item title.
-
-                // 클릭리스너 전달용
-//                holder.setIdUrl(viewItem.getMenuType());
-
-                BaseApplication.getInstance().loadImage(context , viewItem.getRes(), holder.getImageView(), false);
-
-                // 아직 메뉴가 없어서 임시 구현
-//                if(viewItem.getMenuImageUrl() != null && viewItem.getMenuImageUrl() != "")
-//                {
-//                    BaseApplication.getInstance().loadImage(context , viewItem.getMenuImageUrl(), holder.getImageView(), false);
-//                }
-//                else{
-//                    holder.getImageView().setBackgroundResource(viewItem.getRes());
-////                    MainApplication.loadResImage(context, viewItem.getRes(), holder.getImageView());
-//                }
-            }
-        }
+        MainMenuRecyclerViewItem viewItem = viewItemList.get(position);
+        BaseApplication.getInstance().loadImage(context, viewItem.getRes(), holder.getImageView(), false);
     }
 
     @Override
     public int getItemCount() {
-        int ret = 0;
-        if(viewItemList!=null)
-        {
-            ret = viewItemList.size();
-        }
-        return ret;
+        return viewItemList.size();
     }
 }
