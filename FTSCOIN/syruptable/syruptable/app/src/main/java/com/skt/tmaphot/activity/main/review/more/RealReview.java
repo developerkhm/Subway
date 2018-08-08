@@ -2,11 +2,9 @@ package com.skt.tmaphot.activity.main.review.more;
 
 import android.content.Context;
 import android.graphics.Point;
-import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.util.DiffUtil;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -15,12 +13,16 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.skt.tmaphot.BaseActivity;
 import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.MainActivity;
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.activity.main.coupon.CouponRecyclerViewItem;
+import com.skt.tmaphot.activity.main.review.RealReviewDiffCallback;
+import com.skt.tmaphot.activity.main.review.RealReviewRecyclerViewItem;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 public class RealReview {
 
@@ -28,28 +30,30 @@ public class RealReview {
     private Point size;
     private int width;
     private int height;
-    private boolean mLockListView;
-    private ArrayList<String> mRowList;
-    protected ImageAdapter imageAdapter;
+    private boolean mLockListView = true;
+    private List<RealReviewRecyclerViewItem> mRowList;
+    protected RealReveiwGridAdapter imageAdapter;
+    private ExecutorService executorService;
 
     public Context mContext;
     public View rootView;
     public android.os.Handler handler;
 
 
-    public RealReview(Context mContext, View rootView, Handler handler) {
+    public RealReview(Context mContext, View rootView, Handler handler, ExecutorService executorService) {
         this.mContext = mContext;
         this.rootView = rootView;
         this.handler = handler;
+        this.executorService = executorService;
 
         init();
     }
 
     private void init() {
 
-        mRowList = new ArrayList<String>();
+        mRowList = new ArrayList<>();
 
-        setDummyData();
+
         gridview = (GridView) rootView.findViewById(R.id.simpleGridView);
         size = new Point();
         WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
@@ -57,7 +61,7 @@ public class RealReview {
         width = size.x;
         height = size.y;
 
-        imageAdapter = new ImageAdapter();
+        imageAdapter = new RealReveiwGridAdapter(mRowList);
         gridview.setAdapter(imageAdapter);
         gridview.setOnScrollListener(new AbsListView.OnScrollListener() {
 
@@ -95,88 +99,79 @@ public class RealReview {
                 // 전체의 숫자와 동일해지면 가장 아래로 스크롤 되었다고 가정합니다.
                 int count = totalItemCount - visibleItemCount;
 
-                if (firstVisibleItem >= count && totalItemCount != 0 && mLockListView == false) {
+                if (firstVisibleItem >= count && totalItemCount != 0 && mLockListView) {
                     setDummyData();
                 }
             }
         });
+
+        setDummyData();
     }
 
-    private class ImageAdapter extends BaseAdapter {
+    private class RealReveiwGridAdapter extends BaseAdapter {
 
-        public ImageAdapter() {
+        private Context mContext;
+        public List<RealReviewRecyclerViewItem> viewItemList = new ArrayList<>();
+
+        public RealReveiwGridAdapter(List<RealReviewRecyclerViewItem> viewItemList) {
+            this.viewItemList.addAll(viewItemList);
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            mContext = parent.getContext();
+            ImageView imageView = null;
+
+            if (convertView == null) {
+                imageView = new ImageView(parent.getContext());
+                imageView.setLayoutParams(new GridView.LayoutParams(width / 3, width / 3));
+            } else {
+
+                imageView = (ImageView) convertView;
+            }
+            BaseApplication.getInstance().loadImage(parent.getContext(), viewItemList.get(position).getImgUrl(), imageView, false);
+
+            return imageView;
         }
 
         public int getCount() {
-            return mRowList.size();
-        }
-
-        public Object getItem(int position) {
-            return mRowList.get(position);
+            return this.viewItemList.size();
         }
 
         public long getItemId(int position) {
             return position;
         }
 
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ImageView imageView = null;
-            if (convertView == null) {
-                imageView = new ImageView(parent.getContext());
-                imageView.setLayoutParams(new GridView.LayoutParams(
-                        width / 3, width / 3));
-//                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-//                imageView.setPadding(1, 1, 1, 1);
-            } else {
-
-                imageView = (ImageView) convertView;
-            }
-
-            BaseApplication.getInstance().loadImage(parent.getContext(), mRowList.get(position), imageView, false);
-            return imageView;
+        public Object getItem(int position) {
+            return viewItemList.get(position);
         }
+
     }
 
     private void setDummyData() {
-
-
-        new Thread(new Runnable() {
+        executorService.execute(new Runnable() {
             @Override
             public void run() {
-                mLockListView = true;
+                mLockListView = false;
 
                 if (mRowList == null)
-                    mRowList = new ArrayList<String>();
+                    mRowList = new ArrayList<>();
 
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
-                mRowList.add("https://picksell.co.kr/images/product/128719/f18a709b-069a-4a3a-b74d-9b36a3600204.jpg");
 
-                mLockListView = false;
+                int currItemListSize = 0;   // 현재 리스트 사이즈
+                int newItemIndex = 0;       // 아이템 끝 index
+                int loadMoreItemCount = 10;  // 로드할 아이템 개수
+
+                currItemListSize = mRowList.size();
+                for (int i = currItemListSize; i < currItemListSize + loadMoreItemCount; i++) {
+
+                    String url = "http://upload2.inven.co.kr/upload/2018/04/11/bbs/i15799604597.jpg";
+
+                    mRowList.add(new RealReviewRecyclerViewItem(String.valueOf(i), url));
+                }
+                newItemIndex = mRowList.size() - 1;
+                imageAdapter.viewItemList.addAll(mRowList);
+
+                mLockListView = true;
 
                 handler.post(new Runnable() {
                     @Override
@@ -185,7 +180,7 @@ public class RealReview {
                     }
                 });
             }
-        }).start();
+        });
     }
 }
 

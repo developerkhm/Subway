@@ -11,30 +11,25 @@ import com.skt.tmaphot.activity.main.store.StoreInfoActivity;
 
 public class RealReviewRecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    private ImageView mImgReview = null;
-
+    private ImageView mImgUrl;
 
     public RealReviewRecyclerViewHolder(View itemView) {
         super(itemView);
 
-        if (itemView != null) {
+        mImgUrl = (ImageView) itemView.findViewById(R.id.realreview_recyler_item_image);
 
-
-            mImgReview = (ImageView) itemView.findViewById(R.id.realreview_recyler_item_image);
-
-            Drawable drawable= null;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                drawable = (Drawable)itemView.getContext().getDrawable(R.drawable.round_main_item);
-                itemView.setBackground(drawable);
-                itemView.setClipToOutline(true);
-            }
-
-            itemView.setOnClickListener(this);
+        Drawable drawable = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            drawable = (Drawable) itemView.getContext().getDrawable(R.drawable.round_main_item);
+            itemView.setBackground(drawable);
+            itemView.setClipToOutline(true);
         }
+
+        itemView.setOnClickListener(this);
     }
 
     public ImageView getImageView() {
-        return mImgReview;
+        return mImgUrl;
     }
 
     @Override

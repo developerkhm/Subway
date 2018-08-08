@@ -1,21 +1,21 @@
 package com.skt.tmaphot.activity.main.review;
 
-import com.skt.tmaphot.activity.IRecyclerItem;
 
-public class RealReviewRecyclerViewItem implements IRecyclerItem {
+public class RealReviewRecyclerViewItem {
 
+    private String id;
+    private String imgUrl;
 
-    private String text;
-
-    public RealReviewRecyclerViewItem(String text) {
-        this.text = text;
+    public RealReviewRecyclerViewItem(String id, String imgUrl) {
+        this.id = id;
+        this.imgUrl = imgUrl;
     }
 
-    public String getText() {
-        return text;
+    public String getId() {
+        return id;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public String getImgUrl() {
+        return imgUrl;
     }
 }

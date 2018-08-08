@@ -10,10 +10,14 @@ import android.widget.LinearLayout;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.BaseActivity;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+
 public class RealReviewActivity extends BaseActivity {
 
     private Handler handler = new Handler();
-
+    private ExecutorService executorService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +29,15 @@ public class RealReviewActivity extends BaseActivity {
 
         baceContext = this;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        executorService = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
 
-        RealReview realReview = new RealReview(baceContext,linearLayout, handler);
+        RealReview realReview = new RealReview(baceContext,linearLayout, handler, executorService);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        executorService.shutdown(); //스레드풀 종료
     }
 }
 

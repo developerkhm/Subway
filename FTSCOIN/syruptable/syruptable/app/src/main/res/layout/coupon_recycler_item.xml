@@ -18,12 +18,12 @@
             android:layout_centerInParent="true"/>
 
         <ImageView
-            android:id="@+id/coupon_image"
+            android:id="@+id/coupon_recyler_item_image"
             android:layout_width="match_parent"
             android:layout_height="193.3dp" />
 
         <TextView
-            android:id="@+id/coupon_sale"
+            android:id="@+id/coupon_recyler_item_sale"
             android:layout_width="59dp"
             android:layout_height="32.7dp"
             android:layout_marginLeft="15dp"
@@ -36,10 +36,10 @@
             android:layout_margin="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/coupon_image">
+            android:layout_below="@+id/coupon_recyler_item_image">
 
             <TextView
-                android:id="@+id/coupon_name"
+                android:id="@+id/coupon_recyler_item_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -47,8 +47,8 @@
                 style="@style/coupon_item_name"/>
 
             <TextView
-                android:id="@+id/coupon_price"
-                android:layout_alignBaseline="@+id/coupon_name"
+                android:id="@+id/coupon_recyler_item_price"
+                android:layout_alignBaseline="@+id/coupon_recyler_item_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -57,29 +57,29 @@
                 style="@style/coupon_item_price"/>
 
             <TextView
-                android:id="@+id/coupon_menu"
+                android:id="@+id/coupon_recyler_item_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/coupon_name"
-                android:layout_toLeftOf="@+id/coupon_price"
+                android:layout_alignBaseline="@+id/coupon_recyler_item_name"
+                android:layout_toLeftOf="@+id/coupon_recyler_item_price"
                 android:layout_marginRight="5dp"
                 android:text="독도꽃새우"
                 style="@style/coupon_item_menu"/>
 
             <TextView
-                android:id="@+id/coupon_type"
+                android:id="@+id/coupon_recyler_item_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/coupon_name"
+                android:layout_below="@+id/coupon_recyler_item_name"
                 android:text="서울) 강남구,일식"
                 style="@style/coupon_item_type"/>
 
             <TextView
-                android:id="@+id/coupon_preprice"
+                android:id="@+id/coupon_recyler_item_preprice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/coupon_name"
+                android:layout_below="@+id/coupon_recyler_item_name"
                 android:text="80,000원"
                 style="@style/coupon_item_preprice"/>
 

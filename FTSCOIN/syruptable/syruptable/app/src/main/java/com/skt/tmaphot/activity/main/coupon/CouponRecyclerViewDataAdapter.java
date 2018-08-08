@@ -1,6 +1,7 @@
 package com.skt.tmaphot.activity.main.coupon;
 
 import android.content.Context;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,81 +10,81 @@ import android.view.ViewGroup;
 
 import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
-import com.skt.tmaphot.activity.IRecyclerItem;
 import com.skt.tmaphot.activity.IRecyclerViewDataAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class CouponRecyclerViewDataAdapter extends RecyclerView.Adapter<CouponRecyclerViewHolder> implements IRecyclerViewDataAdapter {
+public class CouponRecyclerViewDataAdapter extends RecyclerView.Adapter<CouponRecyclerViewHolder>{
 
-    private Context context;
-    private ArrayList<IRecyclerItem> viewItemList;
+    public static final int COUPON_ITEM_MAIN_LAYOUT = 0;
+    public static final int COUPON_ITEM_MORE_LAYOUT = 1;
+    private Context mContext;
 
+    private int layoutType;
+    private List<CouponRecyclerViewItem> viewItemList = new ArrayList<>();
 
-    public CouponRecyclerViewDataAdapter(Context context, ArrayList<IRecyclerItem> viewItemList) {
-        this.context = context;
-        this.viewItemList = viewItemList;
+    public CouponRecyclerViewDataAdapter(List<CouponRecyclerViewItem> viewItemList, int layoutType) {
+        this.viewItemList.addAll(viewItemList);
+        this.layoutType = layoutType;
     }
 
-
+    @Override
     public CouponRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // Get LayoutInflater object.
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        // Inflate the RecyclerView item layout xml.
-        View itemView = layoutInflater.inflate(R.layout.main_coupon_recycler_item, parent, false);
 
-        // Create and return our customRecycler View Holder object.
-        CouponRecyclerViewHolder ret = new CouponRecyclerViewHolder(itemView);
-        return ret;
+        View view = null;
+        mContext = parent.getContext();
+
+        if (layoutType == COUPON_ITEM_MAIN_LAYOUT) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_coupon_recycler_item, parent, false);
+        } else if (layoutType == COUPON_ITEM_MORE_LAYOUT) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.coupon_recycler_item, parent, false);
+        }
+
+        CouponRecyclerViewHolder holder = new CouponRecyclerViewHolder(view, layoutType);
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(CouponRecyclerViewHolder holder, int position) {
-        if(viewItemList!=null) {
-            // Get car item dto in list.
-            CouponRecyclerViewItem viewItem = (CouponRecyclerViewItem)viewItemList.get(position);
 
-            if(viewItem != null) {
-                // Set car item title.
-//                MainApplication.loadUrlRoundImage(context , viewItem.getUrl(), holder.getmImgReview());
-                BaseApplication.getInstance().loadImage(context , viewItem.getUrl(), holder.getmImgReview(), false);
-                holder.getmTextSale().setText(viewItem.getSale());
-                holder.getmTitleText().setText(viewItem.getTitle());
-                holder.getmMenueText().setText(viewItem.getMenu());
-                holder.getmDistanceText().setText(viewItem.getDistance());
-            }
+        CouponRecyclerViewItem viewItem = viewItemList.get(position);
+
+        if (layoutType == COUPON_ITEM_MAIN_LAYOUT) {
+            BaseApplication.getInstance().loadImage(mContext, viewItem.getUrl(), holder.getmImgUrl(), false);
+            holder.getmTitle().setText(viewItem.getTitle());
+            holder.getmMenu().setText(viewItem.getMenu());
+            holder.getmSale().setText(viewItem.getSale() +"%");
+            holder.getmDistance().setText(viewItem.getDistance());
+        } else if (layoutType == COUPON_ITEM_MORE_LAYOUT) {
+            BaseApplication.getInstance().loadImage(mContext, viewItem.getUrl(), holder.getmImgUrl(), false);
+            holder.getmTitle().setText(viewItem.getTitle());
+            holder.getmMenu().setText(viewItem.getMenu());
+            holder.getmSale().setText(viewItem.getSale() +"%");
+            holder.getmType().setText(viewItem.getType());
+            holder.getmPrePrice().setText(viewItem.getPreprice());
+            holder.getmPrice().setText(viewItem.getPrice());
         }
     }
 
+    public void reLoadData(List<CouponRecyclerViewItem> viewItemList) {
+        final CouponDiffCallback diffCallback = new CouponDiffCallback(this.viewItemList, viewItemList);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
+        this.viewItemList.clear();
+        this.viewItemList.addAll(viewItemList);
+        diffResult.dispatchUpdatesTo(this);
+    }
 
     @Override
     public int getItemCount() {
-        int ret = 0;
-        if(viewItemList!=null)
-        {
-            ret = viewItemList.size();
-        }
-        return ret;
+        return viewItemList.size();
     }
 
-    @Override
-    public void notifyData() {
-        this.notifyDataSetChanged();
-    }
-
-    @Override
-    public void notifyChanged(int start, int last) {
-        Log.d("FAB", "CouponRecyclerViewHolder [start] :" + start + " [last]" + last);
-        this.notifyItemRangeChanged(start, last);
-//        this.notifyItemRangeInserted(start, last);
-    }
-
-    ///////////////////////////////////////////
     @Override
     public long getItemId(int position) {
 //        return viewItemList.get(position).getId();
-        return position;
+        return Long.valueOf(viewItemList.get(position).getId());
     }
-    //////////////////////////////////////////////////
+
 }

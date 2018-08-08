@@ -25,7 +25,7 @@
                 android:layout_centerInParent="true" />
 
             <ImageView
-                android:id="@+id/hotdeal_image"
+                android:id="@+id/hotdeal_recyler_item_image"
                 android:layout_width="match_parent"
                 android:layout_height="193.3dp" />
         </RelativeLayout>
@@ -35,7 +35,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/hotdeal_image"
+        android:layout_below="@+id/hotdeal_recyler_item_image"
         android:layout_margin="10dp">
 
         <TextView

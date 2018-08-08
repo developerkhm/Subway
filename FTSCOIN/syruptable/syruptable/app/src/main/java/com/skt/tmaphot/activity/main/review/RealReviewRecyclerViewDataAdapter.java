@@ -1,81 +1,60 @@
 package com.skt.tmaphot.activity.main.review;
 
 import android.content.Context;
-import android.content.Intent;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
-import com.skt.tmaphot.activity.IRecyclerItem;
-import com.skt.tmaphot.activity.IRecyclerViewDataAdapter;
-import com.skt.tmaphot.activity.main.store.StoreInfoActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class RealReviewRecyclerViewDataAdapter extends RecyclerView.Adapter<RealReviewRecyclerViewHolder> implements IRecyclerViewDataAdapter {
+public class RealReviewRecyclerViewDataAdapter extends RecyclerView.Adapter<RealReviewRecyclerViewHolder> {
 
-    private Context context;
-    private ArrayList<IRecyclerItem> viewItemList;
+    private Context mContext;
+    private List<RealReviewRecyclerViewItem> viewItemList = new ArrayList<>();
 
-
-    public RealReviewRecyclerViewDataAdapter(Context context, ArrayList<IRecyclerItem> viewItemList) {
-        this.context = context;
-        this.viewItemList = viewItemList;
+    public RealReviewRecyclerViewDataAdapter(List<RealReviewRecyclerViewItem> viewItemList) {
+        this.viewItemList.addAll(viewItemList);
     }
 
     @Override
     public RealReviewRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // Get LayoutInflater object.
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        // Inflate the RecyclerView item layout xml.
-        View itemView = layoutInflater.inflate(R.layout.main_realreview_recycler_item, parent, false);
+        mContext = parent.getContext();
 
-        // Create and return our customRecycler View Holder object.
-        RealReviewRecyclerViewHolder ret = new RealReviewRecyclerViewHolder(itemView);
-        return ret;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_realreview_recycler_item, parent, false);
+        RealReviewRecyclerViewHolder holder = new RealReviewRecyclerViewHolder(view);
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(RealReviewRecyclerViewHolder holder, int position) {
-        if(viewItemList!=null) {
-            // Get car item dto in list.
-            RealReviewRecyclerViewItem viewItem = (RealReviewRecyclerViewItem)viewItemList.get(position);
 
-            if(viewItem != null) {
-                // Set car item title.
-                BaseApplication.getInstance().loadImage(context , viewItem.getText(), holder.getImageView(), false);
-                holder.getImageView().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        BaseApplication.getInstance().ActivityStart(new Intent(context, StoreInfoActivity.class),null);
-                    }
-                });
-            }
-        }
+        RealReviewRecyclerViewItem viewItem = viewItemList.get(position);
+        BaseApplication.getInstance().loadImage(mContext, viewItem.getImgUrl(), holder.getImageView(), false);
+    }
+
+    public void reLoadData(List<RealReviewRecyclerViewItem> viewItemList) {
+        final RealReviewDiffCallback diffCallback = new RealReviewDiffCallback(this.viewItemList, viewItemList);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+        this.viewItemList.clear();
+        this.viewItemList.addAll(viewItemList);
+
+        diffResult.dispatchUpdatesTo(this);
     }
 
     @Override
     public int getItemCount() {
-        int ret = 0;
-        if(viewItemList!=null)
-        {
-            ret = viewItemList.size();
-        }
-        return ret;
+        return viewItemList.size();
     }
 
     @Override
-    public void notifyData() {
-        this.notifyDataSetChanged();
-    }
-
-    @Override
-    public void notifyChanged(int start, int last) {
-        Log.d("FAB", "RealReviewRecyclerViewDataAdapter [start] :" + start + " [last]" + last);
-        this.notifyItemRangeChanged(start, last);
+    public long getItemId(int position) {
+//        return viewItemList.get(position).getId();
+        return Long.valueOf(viewItemList.get(position).getId());
     }
 }

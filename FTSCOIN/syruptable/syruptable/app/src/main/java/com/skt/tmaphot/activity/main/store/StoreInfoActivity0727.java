@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.BaseActivity;
 import com.skt.tmaphot.activity.ImageViewPagerActivity;
@@ -144,7 +143,7 @@ public class StoreInfoActivity0727 extends BaseActivity {
             super(itemView);
 
             if (itemView != null) {
-                mImgReview = (ImageView) itemView.findViewById(R.id.coupon_image);
+                mImgReview = (ImageView) itemView.findViewById(R.id.coupon_recyler_item_image);
                 itemView.setOnClickListener(this);
             }
         }

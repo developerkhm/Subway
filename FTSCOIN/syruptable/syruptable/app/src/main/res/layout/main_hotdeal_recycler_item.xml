@@ -28,7 +28,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/main_hotdeal_recyler_item_txt_title"
+            android:id="@+id/main_hotdeal_recyler_item_title"
             android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
             style="@style/main_hotdeal_item_name"/>
 
         <TextView
-            android:id="@+id/main_hotdeal_recyler_item_txt_menu"
+            android:id="@+id/main_hotdeal_recyler_item_menu"
             android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
