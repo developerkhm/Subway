@@ -3,9 +3,6 @@ package com.skt.tmaphot.activity.main.coupon;
 import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 
-import com.skt.tmaphot.activity.IRecyclerItem;
-import com.skt.tmaphot.activity.main.coupon.CouponRecyclerViewItem;
-
 import java.util.List;
 
 public class CouponDiffCallback extends DiffUtil.Callback{

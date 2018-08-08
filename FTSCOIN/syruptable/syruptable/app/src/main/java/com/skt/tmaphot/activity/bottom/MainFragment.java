@@ -14,11 +14,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
-import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.MainActivity;
 import com.skt.tmaphot.R;
-import com.skt.tmaphot.activity.IRecyclerItem;
-import com.skt.tmaphot.activity.IRecyclerViewDataAdapter;
 import com.skt.tmaphot.activity.NestedScrollingView;
 import com.skt.tmaphot.activity.main.banner.RollingAdapter;
 import com.skt.tmaphot.activity.main.banner.RollingAutoManager;
@@ -216,34 +213,6 @@ public class MainFragment extends BaseFragment {
         }
 
         recyclerView.scrollToPosition(0);
-
-    }
-
-
-    private class CustomRunnable implements Runnable {
-
-        ArrayList<IRecyclerItem> iRecyclerItems;
-        IRecyclerViewDataAdapter iRecyclerViewDataAdapter;
-        int start;
-        int last;
-
-        public CustomRunnable(ArrayList<IRecyclerItem> iRecyclerItems) {
-            this.iRecyclerItems = iRecyclerItems;
-        }
-
-        public CustomRunnable(IRecyclerViewDataAdapter iRecyclerViewDataAdapter) {
-            this.iRecyclerViewDataAdapter = iRecyclerViewDataAdapter;
-        }
-
-        public CustomRunnable(IRecyclerViewDataAdapter iRecyclerViewDataAdapter, int start, int last) {
-            this.iRecyclerViewDataAdapter = iRecyclerViewDataAdapter;
-            this.start = start;
-            this.last = last;
-        }
-
-        @Override
-        public void run() {
-        }
 
     }
 

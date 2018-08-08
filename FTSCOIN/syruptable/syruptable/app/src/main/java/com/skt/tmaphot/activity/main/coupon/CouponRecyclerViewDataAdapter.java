@@ -3,14 +3,13 @@ package com.skt.tmaphot.activity.main.coupon;
 import android.content.Context;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
-import com.skt.tmaphot.activity.IRecyclerViewDataAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +41,13 @@ public class CouponRecyclerViewDataAdapter extends RecyclerView.Adapter<CouponRe
         }
 
         CouponRecyclerViewHolder holder = new CouponRecyclerViewHolder(view, layoutType);
+        holder.setOnEventListener(new CouponRecyclerViewHolder.EventListener() {
+            @Override
+            public void onReceivedEvent(int postion) {
+                Toast.makeText(mContext, "전달 받은 포지션 : " + viewItemList.get(postion).getMenu(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return holder;
     }
 

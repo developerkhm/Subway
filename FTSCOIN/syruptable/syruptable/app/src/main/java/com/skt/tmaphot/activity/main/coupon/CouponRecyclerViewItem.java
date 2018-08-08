@@ -1,8 +1,6 @@
 package com.skt.tmaphot.activity.main.coupon;
 
-import com.skt.tmaphot.activity.IRecyclerItem;
-
-public class CouponRecyclerViewItem implements IRecyclerItem {
+public class CouponRecyclerViewItem  {
     private String id;
     private String url;
     private String title;

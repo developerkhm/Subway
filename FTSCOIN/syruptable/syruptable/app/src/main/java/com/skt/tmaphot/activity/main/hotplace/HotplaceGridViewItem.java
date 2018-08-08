@@ -1,8 +1,7 @@
 package com.skt.tmaphot.activity.main.hotplace;
 
-import com.skt.tmaphot.activity.IRecyclerItem;
 
-public class HotplaceGridViewItem implements IRecyclerItem {
+public class HotplaceGridViewItem {
     private String url;
     private String title;
     private String menu;

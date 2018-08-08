@@ -50,18 +50,19 @@ public class MainMenuRecyclerViewDataAdapter extends RecyclerView.Adapter<MainMe
                 // Set car item title.
 
                 // 클릭리스너 전달용
-                holder.setIdUrl(viewItem.getMenuType());
+//                holder.setIdUrl(viewItem.getMenuType());
 
+                BaseApplication.getInstance().loadImage(context , viewItem.getRes(), holder.getImageView(), false);
 
                 // 아직 메뉴가 없어서 임시 구현
-                if(viewItem.getMenuImageUrl() != null && viewItem.getMenuImageUrl() != "")
-                {
-                    BaseApplication.getInstance().loadImage(context , viewItem.getMenuImageUrl(), holder.getImageView(), false);
-                }
-                else{
-                    holder.getImageView().setBackgroundResource(viewItem.getRes());
-//                    MainApplication.loadResImage(context, viewItem.getRes(), holder.getImageView());
-                }
+//                if(viewItem.getMenuImageUrl() != null && viewItem.getMenuImageUrl() != "")
+//                {
+//                    BaseApplication.getInstance().loadImage(context , viewItem.getMenuImageUrl(), holder.getImageView(), false);
+//                }
+//                else{
+//                    holder.getImageView().setBackgroundResource(viewItem.getRes());
+////                    MainApplication.loadResImage(context, viewItem.getRes(), holder.getImageView());
+//                }
             }
         }
     }

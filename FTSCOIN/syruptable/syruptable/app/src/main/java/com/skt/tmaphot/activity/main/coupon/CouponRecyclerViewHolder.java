@@ -21,6 +21,16 @@ public class CouponRecyclerViewHolder extends RecyclerView.ViewHolder implements
     private TextView mPrePrice;
     private TextView mPrice;
 
+    private EventListener eventListener;
+
+    public interface EventListener{
+        void onReceivedEvent(int postion);
+    }
+
+    public void setOnEventListener(EventListener listener){
+        eventListener = listener;
+    }
+
     public CouponRecyclerViewHolder(View itemView, int layoutType) {
         super(itemView);
 
@@ -88,6 +98,9 @@ public class CouponRecyclerViewHolder extends RecyclerView.ViewHolder implements
 
     @Override
     public void onClick(View view) {
+
+        eventListener.onReceivedEvent(getAdapterPosition());
+
 //        int pos = getAdapterPosition();
 //
 //        Intent intent = new Intent(view.getContext(), StoreInfoActivity.class);
