@@ -1,7 +1,7 @@
 package com.skt.tmaphot.net;
 
 import com.skt.tmaphot.net.model.MultipleResource;
-import com.skt.tmaphot.net.model.User;
+import com.skt.tmaphot.net.model.UserTest;
 import com.skt.tmaphot.net.model.UserList;
 
 import retrofit2.Call;
@@ -18,7 +18,7 @@ public interface APIInterface {
     Call<MultipleResource> doGetListResources();
 
     @POST("api/users")
-    Call<User> createUser(@Body User user);
+    Call<UserTest> createUser(@Body UserTest user);
 
     @GET("api/users?")
     Call<UserList> doGetUserList(@Query("page") String page);

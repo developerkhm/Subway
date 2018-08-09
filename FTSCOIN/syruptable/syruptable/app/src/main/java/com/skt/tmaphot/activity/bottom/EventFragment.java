@@ -22,7 +22,8 @@ import com.skt.tmaphot.fragment.BaseFragment;
 
 public class EventFragment extends BaseFragment {
 
-    private String url = "http://m.naver.com";
+//    private String url = "http://m.naver.com";
+    private String url = "http://dev.ordertable.co.kr/member/login";
     private ObservableWebView webView;
 
     @Override

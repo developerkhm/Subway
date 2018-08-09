@@ -2,7 +2,7 @@ package com.skt.tmaphot.net.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+public class UserTest {
 
     @SerializedName("name")
     public String name;
@@ -13,7 +13,7 @@ public class User {
     @SerializedName("createdAt")
     public String createdAt;
 
-    public User(String name, String job) {
+    public UserTest(String name, String job) {
         this.name = name;
         this.job = job;
     }

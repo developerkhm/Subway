@@ -95,6 +95,8 @@ public class MainFragment extends BaseFragment {
     private int foodType = 0;
     private boolean hotplaceLoad = true;
 
+    public boolean loading = true;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_main_layout, container, false);
@@ -166,7 +168,6 @@ public class MainFragment extends BaseFragment {
                         mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("8", "", R.drawable.img_main_menu_8));
 
                         menuRecyclerViewDataAdapter.notifyDataSetChanged();
-
                     }
                 });
                 break;
@@ -234,7 +235,9 @@ public class MainFragment extends BaseFragment {
                             couponItemList.add(new CouponRecyclerViewItem(String.valueOf(i), url, "상점이름", "메뉴", "음식종류", "200m", "10", "80,000", "56,000"));
                         }
                         newItemIndex = couponItemList.size() - 1;
+
                         couponRecyclerViewDataAdapter.reLoadData(couponItemList);
+                        loading = true;
                         break;
 
                     case R.id.review_recycler_view:
@@ -253,6 +256,7 @@ public class MainFragment extends BaseFragment {
                         }
                         newItemIndex = realReviewItemList.size() - 1;
                         realReviewRecyclerViewDataAdapter.reLoadData(realReviewItemList);
+                        loading = true;
                         break;
                     case R.id.hotdeal_recycler_view:
                         currItemListSize = hotdealItemList.size();
@@ -269,6 +273,7 @@ public class MainFragment extends BaseFragment {
                         }
                         newItemIndex = hotdealItemList.size() - 1;
                         hotdealRecyclerViewDataAdapter.reLoadData(hotdealItemList);
+                        loading = true;
                         break;
                 }
             }
@@ -328,7 +333,10 @@ public class MainFragment extends BaseFragment {
                 }
 
                 if (scrollY == ((v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) && hotplaceLoad) {
-                    Log.i("TAAA", "BOTTOM SCROLL");
+                    Log.i("TAAA2", "scrollY  " +  scrollY);
+                    Log.i("TAAA2", "getChildAt   "  + v.getChildAt(0).getMeasuredHeight());
+                    Log.i("TAAA2", "getMeasuredHeight   "  + v.getMeasuredHeight());
+
 //                    ((MainActivity)getActivity()).navigation.setVisibility(View.VISIBLE);
                     loadHotplaceItem(hotplaceLoadType);
                 }
@@ -639,7 +647,10 @@ public class MainFragment extends BaseFragment {
         executorService.shutdown(); //스레드풀 종료
     }
 
+    int test = 0;
     private class HorizontalRecyclerViewOnScrollListener extends RecyclerView.OnScrollListener {
+
+
 
         public HorizontalRecyclerViewOnScrollListener() {
         }
@@ -660,8 +671,9 @@ public class MainFragment extends BaseFragment {
             lastCompleteVisibleItemPosition = linearLayoutManager.findLastCompletelyVisibleItemPosition();
 
 
-            if (lastCompleteVisibleItemPosition == (totalItemCount - 1 - 1)) {  // 미리 로드하기 위해서 꼼 수를 써보자 마지막이 아니라, 앞전에
-
+            if (loading && lastCompleteVisibleItemPosition == (totalItemCount - 1 -1)) {  // 미리 로드하기 위해서 꼼 수를 써보자 마지막이 아니라, 앞전에
+                Log.d("TEST12", "lastCompleteVisibleItemPosition : " + ++test);
+                loading = false;
                 // dy > 0 means scroll to up, dx > 0 means scroll to left at ending.
                 if (dy > 0 || dx > 0) {
 

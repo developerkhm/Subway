@@ -19,7 +19,8 @@ import com.skt.tmaphot.fragment.BaseFragment;
 
 public class ShopFragment extends BaseFragment {
 
-    private String url = "https://shop.ordertable.co.kr/";
+//    private String url = "https://shop.ordertable.co.kr/";
+    private String url = "http://dev.ordertable.co.kr/member/join_wk";
     private ObservableWebView webView;
 
     @Override
