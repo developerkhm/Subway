@@ -1,6 +1,8 @@
 package com.skt.tmaphot.activity.main.coupon;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -75,30 +77,46 @@ public class CouponRecyclerViewDataAdapter2 extends RecyclerView.Adapter<CouponR
     }
 
     public void reLoadData(List<Item> viewItemList) {
-        final CouponDiffCallback2 diffCallback = new CouponDiffCallback2(this.viewItemList, viewItemList);
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+//        final CouponDiffCallback2 diffCallback = new CouponDiffCallback2(this.viewItemList, viewItemList);
+//        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
-        this.viewItemList.clear();
+//        this.viewItemList.clear();
         this.viewItemList.addAll(viewItemList);
-        diffResult.dispatchUpdatesTo(this);
+//        Handler handler = new Handler(Looper.getMainLooper());
+//        handler.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                diffResult.dispatchUpdatesTo(CouponRecyclerViewDataAdapter2.this);
+//            }
+//        });
+        notifyDataSetChanged();
     }
 
 
     public void updateUsers(List<Item> items){
         Log.d("WHO1", "updateUsers size:" + items.size());
 //
-//        final CouponDiffCallback2 diffCallback = new CouponDiffCallback2(this.viewItemList, items);
-//        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+
+        Log.d("WHO1", "diffCallback oldcount:" + viewItemList.size() + "newcount :" + items.size());
+        final CouponDiffCallback2 diffCallback = new CouponDiffCallback2(this.viewItemList, items);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback, false);
 
         int oldcount = viewItemList.size();
-        viewItemList.clear();
-        viewItemList.addAll(items);
+        this.viewItemList.clear();
+        this.viewItemList.addAll(items);
         int newcount = viewItemList.size();
         Log.d("WHO1", "updateUsers oldcount:" + oldcount + "newcount :" + newcount);
-        notifyDataSetChanged();
+//        notifyDataSetChanged();
 //        notifyItemInserted(newcount -1);
 //        notifyDataSetChanged(oldcount, newcount);
-//        diffResult.dispatchUpdatesTo(this);
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                diffResult.dispatchUpdatesTo(CouponRecyclerViewDataAdapter2.this);
+            }
+        });
+
     }
 
     @Override

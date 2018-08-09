@@ -1,12 +1,15 @@
 package com.skt.tmaphot.activity.main.coupon;
 
-import android.support.annotation.Nullable;
+
 import android.support.v7.util.DiffUtil;
 import android.util.Log;
 
 import com.skt.tmaphot.net.service.Item;
 
 import java.util.List;
+
+import io.reactivex.annotations.NonNull;
+import io.reactivex.annotations.Nullable;
 
 public class CouponDiffCallback2 extends DiffUtil.Callback{
 
@@ -42,7 +45,7 @@ public class CouponDiffCallback2 extends DiffUtil.Callback{
         final Item oldItem = oldList.get(oldItemPosition);
         final Item newItem = newList.get(newItemPosition);
 
-        boolean result = oldItem.getAccountId().equals(newItem.getAccountId());
+        boolean result = oldItem.getAccountId() == (newItem.getAccountId());
 
         Log.d("WHO1", "[2]areItemsTheSame :" + String.valueOf(result));
 

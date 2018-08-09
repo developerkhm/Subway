@@ -7,21 +7,22 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
-import com.skt.tmaphot.R;
 import com.skt.tmaphot.BaseActivity;
-import com.skt.tmaphot.activity.main.coupon.CouponRecyclerViewDataAdapter;
+import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.main.coupon.CouponRecyclerViewDataAdapter2;
-import com.skt.tmaphot.activity.main.coupon.CouponRecyclerViewItem;
+import com.skt.tmaphot.net.model.MultipleResource;
 import com.skt.tmaphot.net.service.Item;
 import com.skt.tmaphot.net.service.StackExchangeManager;
+import com.skt.tmaphot.net.service.UsersResponse;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import io.reactivex.subscribers.DefaultSubscriber;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CouponListActivity extends BaseActivity {
 
@@ -159,8 +160,8 @@ public class CouponListActivity extends BaseActivity {
 //                newItemIndex = couponListRecyclerViewItemList.size() - 1;
 //                adapter.reLoadData(couponListRecyclerViewItemList);
         Log.d("TEST00", "refreshList !!!!!!!!!!!!!!!");
-                refreshList(loadCount);
-
+//                refreshList(loadCount);
+        test();
 
 //            }
 //        });
@@ -173,6 +174,29 @@ public class CouponListActivity extends BaseActivity {
     }
 
 
+    private void test(){
+
+        Call<UsersResponse> call = mManager.mStackExchangeService.doGetListResources(10);
+        call.enqueue(new Callback<UsersResponse>() {
+            @Override
+            public void onResponse(Call<UsersResponse> call, Response<UsersResponse> response) {
+
+                UsersResponse usersResponse = (UsersResponse)response.body();
+
+
+                Log.d("EEE", usersResponse.getItems().size() +"");
+                adapter.reLoadData(usersResponse.getItems());
+            }
+
+            @Override
+            public void onFailure(Call<UsersResponse> call, Throwable t) {
+                Log.d("EEE", "Error");
+            }
+        });
+
+    }
+
+
 
     private void refreshList(int count){
                     progressON();
@@ -182,8 +206,14 @@ public class CouponListActivity extends BaseActivity {
                     public void onNext(List<Item> items) {
 
                         Log.d("TEST00", "List size:" + items.size());
-                        couponListRecyclerViewItemList.addAll(items);
-                        adapter.updateUsers(couponListRecyclerViewItemList);
+//                        couponListRecyclerViewItemList.addAll(items);
+                        adapter.updateUsers(items);
+
+                        for (int i = 0; i < items.size(); i++)
+                        {
+                            Log.d("TEST12", "111111 : " + items.get(i).getAccountId());
+
+                        }
                     }
 
                     @Override

@@ -14,7 +14,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class StackExchangeManager {
-    private final StackExchangeService mStackExchangeService;
+    public final StackExchangeService mStackExchangeService;
 
     public StackExchangeManager() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -25,6 +25,7 @@ public class StackExchangeManager {
 
         mStackExchangeService = retrofit.create(StackExchangeService.class);
     }
+
 
     public Flowable<List<Item>> getMostPopularSQysers(int howmany){
         return mStackExchangeService
