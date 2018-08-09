@@ -57,7 +57,7 @@ public class CouponListActivity extends BaseActivity {
 //        adapter.setHasStableIds(true);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
-        recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 10);
+        recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 20);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -175,8 +175,9 @@ public class CouponListActivity extends BaseActivity {
 
 
     private void test(){
+        progressON();
 
-        Call<UsersResponse> call = mManager.mStackExchangeService.doGetListResources(10);
+        Call<UsersResponse> call = mManager.mStackExchangeService.doGetListResources(20);
         call.enqueue(new Callback<UsersResponse>() {
             @Override
             public void onResponse(Call<UsersResponse> call, Response<UsersResponse> response) {
@@ -186,6 +187,8 @@ public class CouponListActivity extends BaseActivity {
 
                 Log.d("EEE", usersResponse.getItems().size() +"");
                 adapter.reLoadData(usersResponse.getItems());
+                isScrolling = true;
+                progressOFF();
             }
 
             @Override
@@ -200,7 +203,7 @@ public class CouponListActivity extends BaseActivity {
 
     private void refreshList(int count){
                     progressON();
-        mManager.getMostPopularSQysers(10)
+        mManager.getMostPopularSQysers(20)
                 .subscribe(new DefaultSubscriber<List<Item>>() {
                     @Override
                     public void onNext(List<Item> items) {
@@ -229,6 +232,17 @@ public class CouponListActivity extends BaseActivity {
                     }
 
                 } );
+    }
+
+
+
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
     }
 }
 

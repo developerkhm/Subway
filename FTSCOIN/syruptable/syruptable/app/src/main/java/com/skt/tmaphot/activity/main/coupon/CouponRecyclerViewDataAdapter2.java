@@ -89,7 +89,10 @@ public class CouponRecyclerViewDataAdapter2 extends RecyclerView.Adapter<CouponR
 //                diffResult.dispatchUpdatesTo(CouponRecyclerViewDataAdapter2.this);
 //            }
 //        });
+//        notifyItemRangeChanged(0,this.viewItemList.size());
+//        notifyItemRangeInserted (0,this.viewItemList.size());
         notifyDataSetChanged();
+//        notifyItemChanged(10);
     }
 
 

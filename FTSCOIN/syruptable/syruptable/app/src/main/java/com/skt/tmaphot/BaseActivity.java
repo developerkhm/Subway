@@ -60,13 +60,11 @@ BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Log.d("ABCDE", "BaseActivity onCreate");
-        progressON("로딩...");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        progressOFF();
         getTopActivity();
         Log.d("ABCDE", "BaseActivity onStart");
 
