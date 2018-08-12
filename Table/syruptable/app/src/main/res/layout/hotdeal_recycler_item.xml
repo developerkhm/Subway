@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="10dp">
+
+        <ImageView
+            android:id="@+id/hotdeal_recyler_item_image"
+            android:layout_width="match_parent"
+            android:layout_height="193.3dp"
+            android:scaleType="fitXY" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_below="@+id/hotdeal_recyler_item_image"
+            android:layout_margin="10dp">
+
+            <TextView
+                android:id="@+id/hotdeal_name"
+                style="@style/hotdeal_item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="꽃새우 영번지" />
+
+            <TextView
+                android:id="@+id/hotdeal_location"
+                style="@style/hotdeal_item_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/hotdeal_name"
+                android:text="서울> 강남구" />
+
+            <TextView
+                android:id="@+id/hotdeal_type"
+                style="@style/hotdeal_item_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/hotdeal_location"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/hotdeal_location"
+                android:text="일식" />
+
+            <TextView
+                android:id="@+id/hotdeal_menu"
+                style="@style/hotdeal_item_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/hotdeal_name"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="8dp"
+                android:text="강남에서 유명한 스테이크 맛집" />
+
+            <TextView
+                android:id="@+id/hotdeal_grid_txt_distance"
+                style="@style/hotdeal_item_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/hotdeal_menu"
+                android:text="400m" />
+
+            <TextView
+                android:id="@+id/hotdeal_review_divid"
+                style="@style/hotdeal_item_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/hotdeal_grid_txt_distance"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/hotdeal_grid_txt_distance"
+                android:text=" | " />
+
+            <TextView
+                android:id="@+id/hotdeal_review_count_txt"
+                style="@style/hotdeal_item_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/hotdeal_grid_txt_distance"
+                android:layout_toLeftOf="@+id/hotdeal_review_divid"
+                android:text="10" />
+
+            <TextView
+                android:id="@+id/hotdeal_review_text"
+                style="@style/hotdeal_item_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/hotdeal_grid_txt_distance"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/hotdeal_review_count_txt"
+                android:text="리뷰" />
+
+            <RatingBar
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/hotdeal_menu"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/hotdeal_review_text"
+                android:isIndicator="true" />
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>
