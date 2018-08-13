@@ -169,7 +169,7 @@ public class ShopWebViewClient extends WebViewClient {
             for(int i = 0 ; i < temp1.length ; i++){
                 String[] temp2 = temp1[i].split("=");
                 for(int j = 0 ; j < temp2.length ; j++){
-                    Log.d("QQQ", "index : " +  j + "   " + temp2[j]);
+                    Log.d("MYCOOKIE", "index : " +  j + "   " + temp2[j]);
                 }
             }
 

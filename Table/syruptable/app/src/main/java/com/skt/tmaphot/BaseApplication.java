@@ -123,7 +123,9 @@ public class BaseApplication extends Application {
 //            requestOptions = new RequestOptions().transform(new RoundedCorners(100)).diskCacheStrategy(DiskCacheStrategy.NONE).circleCrop();
             requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).circleCrop().error(R.drawable.img_error);
         } else {
-            requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).error(R.drawable.img_error).centerCrop().override(Target.SIZE_ORIGINAL / 3, Target.SIZE_ORIGINAL / 3);
+//            Log.d("ABCD112", "  W : " + Target.SIZE_ORIGINAL  + "  H  :" + Target.SIZE_ORIGINAL );
+            requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).error(R.drawable.img_error).centerCrop().override(Target.SIZE_ORIGINAL / 1000, Target.SIZE_ORIGINAL / 1000);
+//            requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).error(R.drawable.img_error).centerCrop().override(400, 600);
         }
 
         Glide.with(context)
@@ -137,6 +139,7 @@ public class BaseApplication extends Application {
 
                     @Override
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        
                         return false;
                     }
                 })
