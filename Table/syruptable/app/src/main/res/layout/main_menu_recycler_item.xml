@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/activity_main_menu_image_width"
     android:layout_height="@dimen/activity_main_menu_image_height"
-    android:background="@drawable/selectior_menu_selection_item">
+    android:background="@drawable/selector_menu_selection_item">
 
     <ImageView
         android:id="@+id/main_menu_recyler_item_image"

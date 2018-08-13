@@ -35,6 +35,7 @@ public class HotPlaceResultActivity extends BaseActivity {
     private boolean isloading = false;  // 로딩 여부
     private int currentPage = 0;
     private int sortType = 1;   //1 인기순, 2 거리순
+    private final int per_page = 30;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,7 +85,7 @@ public class HotPlaceResultActivity extends BaseActivity {
         isloading = true;
         currentPage++;
 
-        ServiceGenerator.createService().getHotplaceList(currentPage, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), sortType)
+        ServiceGenerator.createService().getHotplaceList(currentPage, per_page, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), sortType)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<HotplaceModel>>() {

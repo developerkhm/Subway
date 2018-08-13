@@ -202,8 +202,11 @@ BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        Log.d("YUYU", "BaseWebViewActivity onDestroy");
         super.onDestroy();
     }
+
+
 
     public void getTopActivity() {
         ActivityManager manager = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);

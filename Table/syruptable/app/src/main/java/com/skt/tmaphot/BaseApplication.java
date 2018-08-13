@@ -79,6 +79,7 @@ public class BaseApplication extends Application {
     public void ActivityStart(Intent intent, Bundle bundle) {
         Log.d("getgps", "ActivityStart]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
         baseApplication.startActivity(intent, bundle);
     }
 
@@ -122,7 +123,7 @@ public class BaseApplication extends Application {
 //            requestOptions = new RequestOptions().transform(new RoundedCorners(100)).diskCacheStrategy(DiskCacheStrategy.NONE).circleCrop();
             requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).circleCrop().error(R.drawable.img_error);
         } else {
-            requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).error(R.drawable.img_error).fitCenter().override(Target.SIZE_ORIGINAL / 2, Target.SIZE_ORIGINAL / 2);
+            requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).error(R.drawable.img_error).centerCrop().override(Target.SIZE_ORIGINAL / 3, Target.SIZE_ORIGINAL / 3);
         }
 
         Glide.with(context)

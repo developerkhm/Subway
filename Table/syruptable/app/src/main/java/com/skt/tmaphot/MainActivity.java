@@ -21,6 +21,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +39,9 @@ import com.skt.tmaphot.activity.bottom.ShopFragment;
 import com.skt.tmaphot.common.CommonUtil;
 import com.skt.tmaphot.location.GPSData;
 import com.skt.tmaphot.location.GPSTracker;
+import com.skt.tmaphot.net.model.HotplaceModel;
+import com.skt.tmaphot.net.model.Users;
+import com.skt.tmaphot.net.service.ServiceGenerator;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.io.IOException;
@@ -47,6 +51,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Locale;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity {
 
@@ -68,6 +77,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main_layout);
+
         baceContext = this;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         topAppbarText = (TextView) findViewById(R.id.appbar_location_txt);
@@ -81,7 +91,29 @@ public class MainActivity extends BaseActivity {
         actionBar.setDisplayShowTitleEnabled(false);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        {
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                Log.d("TTUA1", "Drawer Close");
+//                getActionBar().setTitle(mTitle);
+//                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+//                getActionBar().setTitle(mDrawerTitle);
+//                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+
+
+            }
+
+        };
+
+
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -93,6 +125,16 @@ public class MainActivity extends BaseActivity {
 
         setNavigation();
     }
+
+    /* Called whenever we call invalidateOptionsMenu() */
+//    @Override
+//    public boolean onPrepareOptionsMenu(Menu menu) {
+//        // If the nav drawer is open, hide action items related to the content view
+////        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+////        menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
+//
+//        return false;
+//    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -188,6 +230,37 @@ public class MainActivity extends BaseActivity {
             public void onClick(View view) {
 //                off.setVisibility(View.GONE);
 //                on.setVisibility(View.VISIBLE);
+
+                Log.d("TTUA1", "Drawer Open");
+
+                ServiceGenerator.createService().getUserInfo()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<Users>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onNext(Users users) {
+                                Log.d("QQQ", "Mgs : "  + users.getMsg());
+                                Log.d("QQQ", "Result : "  + users.getResult());
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.d("TEST111", "error");
+                                e.printStackTrace();
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
+
+
                 ActivityStart(new Intent(baceContext, LoginWebViewActivity.class), null);
             }
         });

@@ -16,6 +16,9 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.skt.tmaphot.BaseApplication;
+import com.skt.tmaphot.LoginWebViewActivity;
+import com.skt.tmaphot.MainActivity;
 import com.skt.tmaphot.ObservableWebView;
 import com.skt.tmaphot.common.CommonUtil;
 import com.skt.tmaphot.pay.PaymentScheme;
@@ -158,7 +161,20 @@ public class ShopWebViewClient extends WebViewClient {
 
 //            view.loadUrl(script);
 //            }
+
+            CookieManager cookieManager = CookieManager.getInstance();
+            String cookies = cookieManager.getCookie(url);
+            String[] temp1 = cookies.split(";");
+
+            for(int i = 0 ; i < temp1.length ; i++){
+                String[] temp2 = temp1[i].split("=");
+                for(int j = 0 ; j < temp2.length ; j++){
+                    Log.d("QQQ", "index : " +  j + "   " + temp2[j]);
+                }
+            }
+
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -311,4 +327,6 @@ public class ShopWebViewClient extends WebViewClient {
         }
         return false;
     }
+
+
 }

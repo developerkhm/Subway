@@ -6,25 +6,13 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RatingBar;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
-import com.skt.tmaphot.MainActivity;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -149,7 +137,6 @@ public class CommonUtil {
 
     public String bin2hex(String data) throws UnsupportedEncodingException {
         String bas64Data = getBase64encode(data);
-        Log.d("TEST567","getBase64encode" + bas64Data);
         byte[] bas64DataArray = bas64Data.getBytes();
         return String.format("%0" + (bas64DataArray.length * 2) + 'x', new BigInteger(1, bas64DataArray));
     }

@@ -3,6 +3,7 @@ package com.skt.tmaphot;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.webkit.WebView;
 
 public class BaseWebViewActivity extends BaseActivity {
@@ -19,5 +20,11 @@ public class BaseWebViewActivity extends BaseActivity {
         baceContext = this;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         webView = (ObservableWebView)findViewById(R.id.base_webview);
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d("YUYU", "BaseWebViewActivity onDestroy");
+        super.onDestroy();
     }
 }

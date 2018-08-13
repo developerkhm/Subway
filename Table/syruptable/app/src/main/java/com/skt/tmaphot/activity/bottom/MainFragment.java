@@ -78,6 +78,7 @@ public class MainFragment extends BaseFragment {
     private int hotplace_sortType = 1;
     private int hotplace_curruntPage = 0;
     private TextView hotplace_pop, hotplace_distance;
+    private final int per_page = 20;
 
     // 메뉴
     private int menuType = 0;
@@ -380,7 +381,7 @@ public class MainFragment extends BaseFragment {
         hotplace_isLoading = true;
         hotplace_curruntPage++;
 
-        ServiceGenerator.createService().getHotplaceList(hotplace_curruntPage, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), hotplace_sortType)
+        ServiceGenerator.createService().getHotplaceList(hotplace_curruntPage, 20, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), hotplace_sortType)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<HotplaceModel>>() {

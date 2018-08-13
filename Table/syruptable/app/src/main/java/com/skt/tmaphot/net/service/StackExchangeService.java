@@ -1,6 +1,7 @@
 package com.skt.tmaphot.net.service;
 
 import com.skt.tmaphot.net.model.HotplaceModel;
+import com.skt.tmaphot.net.model.Users;
 
 import java.util.List;
 
@@ -23,8 +24,12 @@ public interface StackExchangeService {
     @FormUrlEncoded
     Observable <List<HotplaceModel>> getHotplaceList(
             @Field("page") int page,
+            @Field("per_page") int per_page,
             @Field("lat") double lat,
             @Field("lng") double lng,
             @Field("sort") int sort
     );
+
+    @GET("users/info")
+    Observable<Users> getUserInfo();
 }

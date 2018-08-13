@@ -6,7 +6,7 @@
     android:layout_height="40dp"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@drawable/selectior_selectionarea_selection_item">
+    android:background="@drawable/selector_selectionarea_selection_item">
 
    <TextView
        android:id="@+id/selectionarea_selection_area_txt"
