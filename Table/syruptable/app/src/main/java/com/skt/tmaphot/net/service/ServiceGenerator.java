@@ -1,6 +1,10 @@
 package com.skt.tmaphot.net.service;
 
+import java.io.IOException;
+
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -25,9 +29,23 @@ public class ServiceGenerator {
     public static StackExchangeService createService(){
 
         httpClientBuilder.addInterceptor(loggingInterceptor);
+        httpClientBuilder.addInterceptor(interceptor);
         builder = builder.client(httpClientBuilder.build());
         retrofit = builder.build();
 
         return retrofit.create(StackExchangeService.class);
     }
+
+    public static Interceptor interceptor = new Interceptor() {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+
+
+
+
+            return null;
+        }
+    };
+
+
 }
