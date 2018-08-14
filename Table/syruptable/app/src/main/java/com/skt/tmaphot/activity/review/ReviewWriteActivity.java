@@ -226,7 +226,7 @@ public class ReviewWriteActivity extends BaseActivity {
                     String fileName = getFileName(path);
 
                     ImageView imageView = creatImageView(false, tagId);
-                    loadImage(this, takePhotoUri, imageView, false);
+                    loadImage(this, takePhotoUri, imageView, false, BaseApplication.getInstance().LIST_HORIZONTAL);
 
                     uplaodImageItems.add(new UplaodItem(tagId, path, uri, fileName));
 
@@ -255,7 +255,7 @@ public class ReviewWriteActivity extends BaseActivity {
                     String fileName = getFileName(path);
 
                     ImageView imageView = creatImageView(false, tagId);
-                    loadImage(this, Uri.fromFile(new File(image.path)), imageView, false);
+                    loadImage(this, Uri.fromFile(new File(image.path)), imageView, false, BaseApplication.getInstance().LIST_HORIZONTAL);
 
                     uplaodImageItems.add(new UplaodItem(tagId, path, uri, fileName));
 
@@ -276,7 +276,7 @@ public class ReviewWriteActivity extends BaseActivity {
                 String fileName = getFileName(path);
 
                 ImageView imageView = creatImageView(true, tagId);
-                loadImage(this, videoUri, imageView, false);
+                loadImage(this, videoUri, imageView, false, BaseApplication.getInstance().LIST_HORIZONTAL);
 
                 uploadVideoItems.add(new UplaodItem(tagId, path, uri, fileName));
 

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.main.store.StoreInfoActivity;
-import com.skt.tmaphot.net.model.HotplaceModel;
+import com.skt.tmaphot.net.model.hotplace.HotplaceModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,27 +30,39 @@ public class HotPlaceRecyclerViewDataAdapter extends RecyclerView.Adapter<HotPla
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_hotplace_grid_item, parent, false);
         mContext = parent.getContext();
         HotPlaceRecyclerViewHolder holder = new HotPlaceRecyclerViewHolder(mContext, view);
-        holder.setOnEventListener(new HotPlaceRecyclerViewHolder.EventListener() {
-            @Override
-            public void onReceivedEvent(int postion) {
-                Intent intent = new Intent(mContext, StoreInfoActivity.class);
-                intent.putExtra("id", viewItemList.get(postion).getId());
-                BaseApplication.getInstance().ActivityStart(intent, null);
-            }
-        });
+
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(HotPlaceRecyclerViewHolder holder, int position) {
+    public void onBindViewHolder(HotPlaceRecyclerViewHolder holder, final int position) {
 
+        final int current_position = position;
 
-        BaseApplication.getInstance().loadImage(mContext, viewItemList.get(position).getRecentImage(), holder.mImgUrl, false);
+        BaseApplication.getInstance().loadImage(mContext, viewItemList.get(position).getRecentImage(), holder.mImgUrl, false, BaseApplication.getInstance().LIST_HORIZONTAL_HOTPLACE);
         holder.mTitle.setText(viewItemList.get(position).getNAME());
         holder.mReview.setText(viewItemList.get(position).getReviewStr());
         holder.mReviewCount.setText(viewItemList.get(position).getBlogReviewCount());
         holder.mDistance.setText(viewItemList.get(position).getDm() + "m");
         holder.ratingBar.setRating(Float.valueOf(viewItemList.get(position).getStarRating()));
+
+        holder.mImgUrl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, StoreInfoActivity.class);
+                intent.putExtra("id", viewItemList.get(current_position).getId());
+                BaseApplication.getInstance().ActivityStart(intent, null);
+            }
+        });
+
+//        holder.setOnEventListener(new HotPlaceRecyclerViewHolder.EventListener() {
+//            @Override
+//            public void onReceivedEvent(int postion) {
+//                Intent intent = new Intent(mContext, StoreInfoActivity.class);
+//                intent.putExtra("id", viewItemList.get(postion).getId());
+//                BaseApplication.getInstance().ActivityStart(intent, null);
+//            }
+//        });
     }
 
     public void loadData(List<HotplaceModel> viewItemList) {
@@ -58,7 +70,7 @@ public class HotPlaceRecyclerViewDataAdapter extends RecyclerView.Adapter<HotPla
         notifyDataSetChanged();
     }
 
-    public void clearData(){
+    public void clearData() {
         this.viewItemList.clear();
     }
 

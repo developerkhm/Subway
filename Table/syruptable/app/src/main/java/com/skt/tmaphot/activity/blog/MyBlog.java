@@ -221,7 +221,7 @@ public class MyBlog {
 
                 if (viewItem != null) {
                     // Set car item title.
-                    BaseApplication.getInstance().loadImage(mContext, viewItem.imageUrl, holder.getImageView(), false);
+                    BaseApplication.getInstance().loadImage(mContext, viewItem.imageUrl, holder.getImageView(), false, BaseApplication.getInstance().LIST_HORIZONTAL);
                 }
             }
         }
@@ -277,7 +277,7 @@ public class MyBlog {
         });
 
         my_image =(ImageView)rootView.findViewById(R.id.myblog_image);
-        BaseApplication.getInstance().loadImage(mContext, R.drawable.img_default_login_user ,my_image, true);
+        BaseApplication.getInstance().loadImage(mContext, R.drawable.img_default_login_user ,my_image, true, BaseApplication.getInstance().DEFAULT_ORIGINAL);
 
         setDummyData();
         setRecyler();

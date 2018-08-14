@@ -1,4 +1,4 @@
-package com.skt.tmaphot.activity;
+package com.skt.tmaphot;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,9 +14,6 @@ import android.widget.TextView;
 
 import com.github.chrisbanes.photoview.PhotoView;
 import com.github.chrisbanes.photoview.PhotoViewAttacher;
-import com.skt.tmaphot.BaseActivity;
-import com.skt.tmaphot.BaseApplication;
-import com.skt.tmaphot.R;
 
 
 import java.util.ArrayList;
@@ -110,7 +107,7 @@ public class ImageViewPagerActivity extends BaseActivity {
             PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
             mAttacher.setScaleType(ImageView.ScaleType.FIT_CENTER);
 //            mAttacher.setMinimumScale(1f);
-            BaseApplication.getInstance().loadImage(getActivity(), getArguments().getString(ARG_SECTION_URL), imageView, false);
+            BaseApplication.getInstance().loadImage(getActivity(), getArguments().getString(ARG_SECTION_URL), imageView, false, BaseApplication.getInstance().DEFAULT_ORIGINAL);
 
             return rootView;
         }

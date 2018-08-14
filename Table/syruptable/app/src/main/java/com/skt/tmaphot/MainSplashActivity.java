@@ -20,9 +20,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.skt.tmaphot.activity.review.multiple.models.Image;
 import com.skt.tmaphot.common.CommonUtil;
 import com.skt.tmaphot.location.GPSTracker;
 
@@ -64,9 +67,17 @@ public class MainSplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);   //화면 꺼짐 방지
-        mContext = this;
+
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT /* layout_width */, ViewGroup.LayoutParams.MATCH_PARENT );
+        ImageView imageView = new ImageView(mContext);
+        imageView.setLayoutParams(layoutParams);
+        imageView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+        imageView.setImageResource(R.drawable.img_splash_logo);
+        setContentView(imageView);
+
 
         mHandler = new Handler() {
             @Override

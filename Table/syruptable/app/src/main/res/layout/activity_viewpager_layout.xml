@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/colorBlack"
-    tools:context="com.skt.tmaphot.activity.ImageViewPagerActivity">
+    tools:context="com.skt.tmaphot.ImageViewPagerActivity">
 
     <include layout="@layout/base_appbar_layout" />
 
@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.skt.tmaphot.activity.ImageViewPager
+        <com.skt.tmaphot.ImageViewPager
             android:id="@+id/viewpager_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

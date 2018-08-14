@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.skt.tmaphot.R;
-import com.skt.tmaphot.activity.HotPlaceResultActivity;
+import com.skt.tmaphot.HotPlaceResultActivity;
 import com.skt.tmaphot.fragment.BaseFragment;
 
 import java.util.ArrayList;

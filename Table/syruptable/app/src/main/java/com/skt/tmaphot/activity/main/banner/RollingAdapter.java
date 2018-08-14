@@ -65,7 +65,7 @@ public class RollingAdapter extends PagerAdapter {
                 if(key != null && layout.getTag() != null && !object.getKey().equals(layout.getTag())){
                     ImageView imageView = (ImageView) layout.findViewById(R.id.image_view1);
                     imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                    BaseApplication.getInstance().loadImage(mContext, object.getResId(), imageView, false);
+                    BaseApplication.getInstance().loadImage(mContext, object.getResId(), imageView, false, BaseApplication.getInstance().MAIN_BANNER);
                 }
                 return layout;
             }
@@ -80,7 +80,7 @@ public class RollingAdapter extends PagerAdapter {
         layout.addView(imageView, params);
 
         startFadeAnimation(imageView);
-        BaseApplication.getInstance().loadImage(mContext, object.getResId(), imageView, false);
+        BaseApplication.getInstance().loadImage(mContext, object.getResId(), imageView, false, BaseApplication.getInstance().MAIN_BANNER);
 
         container.addView(layout);
         final int clickPosition = position;

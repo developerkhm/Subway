@@ -9,53 +9,41 @@ import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatDialog;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
-import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
-import com.skt.tmaphot.location.GPSData;
-import com.skt.tmaphot.location.GPSTracker;
 import com.tsengvn.typekit.Typekit;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-
-import io.fabric.sdk.android.Fabric;
 
 public class BaseApplication extends Application {
 
     private AppCompatDialog progressDialog;
     private static BaseApplication baseApplication;
 
-    public final int MAIN_BANNER = 0;
-    public final int MAIN_FOOD = 1;
-    public final int MAIN_FOOD_HOTDEAL = 2;
-    public final int MAIN_FOOD_HOTPLACE = 3;
-    public final int FOOD_LIST = 4;
-    public final int DEFAULT = 5;
-    public final int BASE = 6;
+    public final int BASE_DISPLAY = 0;
+    public final int LIST_HORIZONTAL = 1;
+    public final int LIST_HORIZONTAL_HOTDEAL = 2;
+    public final int LIST_HORIZONTAL_HOTPLACE = 3;
+    public final int LIST_HORIZONTAL_MORE = 4;
+    public final int MAIN_BANNER = 5;
+    public final int DEFAULT_ORIGINAL = 6;
+    public final int REAL_REVIEW = 7;
 
     public static BaseApplication getInstance() {
         return baseApplication;
@@ -83,39 +71,50 @@ public class BaseApplication extends Application {
         baseApplication.startActivity(intent, bundle);
     }
 
-    public void loadImage(Context context, Object res, ImageView view, boolean isRound) {
+    public void loadImage(Context context, Object res, ImageView view, boolean isRound, int sizeType) {
 
-//        int width = 0;
-//        int height = 0;
-//
-//        switch (imageType) {
-//            case MAIN_BANNER:
-//                width = 300;
-//                height = 350;
-//                break;
-//            case MAIN_FOOD:
-//                width = 100;
-//                height = 100;
-//                break;
-//            case MAIN_FOOD_HOTDEAL:
-//                width = 350;
-//                height = 160;
-//                break;
-//            case MAIN_FOOD_HOTPLACE:
-//                width = 159;
-//                height = 207;
-//                break;
-//            case FOOD_LIST:
-//                width = 480;
-//                height = 150;
-//                break;
-//            case DEFAULT:
-//                width = 500;
-//                height = 400;
-//                break;
-//            case BASE:
-//                break;
-//        }
+        final DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        final int displayWidth = displayMetrics.widthPixels;
+        final int displayHeight = displayMetrics.widthPixels  +  (int)(displayMetrics.widthPixels * 0.2);
+
+        int width = 0;
+        int height = 0;
+        // 임시 모든 사진이 가로길이가 길다고 판단, 세로길이 80% 감안하여 확장, 세로가 긴 사진이 왔을시, 대체 해야함
+
+        switch (sizeType) {
+            case BASE_DISPLAY:
+                width = displayWidth;
+                height = displayHeight;
+                break;
+            case LIST_HORIZONTAL:
+                width = 200;
+                height = 240;
+                break;
+            case LIST_HORIZONTAL_HOTDEAL:
+                width = 350;
+                height = 150;
+                break;
+            case LIST_HORIZONTAL_HOTPLACE:
+                width = 250;
+                height = 370;
+                break;
+            case LIST_HORIZONTAL_MORE:
+                width = 500;
+                height = 270;
+                break;
+            case MAIN_BANNER:
+                width = displayWidth;
+                height = displayHeight;
+                break;
+            case DEFAULT_ORIGINAL:
+                width = Target.SIZE_ORIGINAL;
+                height = Target.SIZE_ORIGINAL;
+                break;
+            case REAL_REVIEW:
+                width = displayWidth / 3;
+                height = displayWidth / 3 + (int)(displayWidth * 0.2);
+                break;
+        }
 
 
         RequestOptions requestOptions = null;
@@ -123,9 +122,7 @@ public class BaseApplication extends Application {
 //            requestOptions = new RequestOptions().transform(new RoundedCorners(100)).diskCacheStrategy(DiskCacheStrategy.NONE).circleCrop();
             requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).circleCrop().error(R.drawable.img_error);
         } else {
-//            Log.d("ABCD112", "  W : " + Target.SIZE_ORIGINAL  + "  H  :" + Target.SIZE_ORIGINAL );
-            requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).error(R.drawable.img_error).centerCrop().override(Target.SIZE_ORIGINAL / 1000, Target.SIZE_ORIGINAL / 1000);
-//            requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).error(R.drawable.img_error).centerCrop().override(400, 600);
+            requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).error(R.drawable.img_error).centerCrop().override(width, height);
         }
 
         Glide.with(context)
@@ -139,7 +136,7 @@ public class BaseApplication extends Application {
 
                     @Override
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        
+
                         return false;
                     }
                 })

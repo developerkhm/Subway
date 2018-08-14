@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.BaseActivity;
-import com.skt.tmaphot.activity.ImageViewPagerActivity;
+import com.skt.tmaphot.ImageViewPagerActivity;
 import com.skt.tmaphot.activity.main.banner.RollingAdapter;
 import com.skt.tmaphot.activity.main.banner.RollingAutoManager;
 import com.skt.tmaphot.activity.main.banner.RollingIndicatorView;

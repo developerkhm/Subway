@@ -2,7 +2,6 @@ package com.skt.tmaphot.activity.main.store;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,8 +23,8 @@ import android.widget.TextView;
 import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.BaseActivity;
-import com.skt.tmaphot.activity.ImageViewPager;
-import com.skt.tmaphot.activity.ImageViewPagerActivity;
+import com.skt.tmaphot.ImageViewPager;
+import com.skt.tmaphot.ImageViewPagerActivity;
 import com.skt.tmaphot.activity.main.store.review.ReviewItem;
 import com.skt.tmaphot.activity.main.store.review.ReviewRecyclerViewAdapter;
 import com.skt.tmaphot.activity.main.store.review.ReviewTotalActivity;
@@ -34,9 +33,16 @@ import com.skt.tmaphot.activity.main.store.review.SocialReviewRecyclerViewAdapte
 import com.skt.tmaphot.activity.main.store.review.SocialReviewTotalActivity;
 import com.skt.tmaphot.activity.review.ReviewWriteActivity;
 import com.skt.tmaphot.common.CommonUtil;
+import com.skt.tmaphot.net.model.store.StoreInfoModel;
+import com.skt.tmaphot.net.service.ServiceGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class StoreInfoActivity extends BaseActivity {
 
@@ -150,7 +156,47 @@ public class StoreInfoActivity extends BaseActivity {
 
         setSocialReview();
 
+        getService();
+
     } //END
+
+    private void getService() {
+
+    Intent intent = getIntent();
+    String id = intent.getStringExtra("id");
+
+        Log.d("YUQ", "storeInfoModel id : " +  id);
+
+        ServiceGenerator.getInstance().createService().getStoreInfo("hotplace",id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<StoreInfoModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(StoreInfoModel storeInfoModel) {
+                        Log.d("YUQ", "[storeInfoModel] : " +  storeInfoModel.getStore().getNAME());
+
+                        for(int i =0 ; i < storeInfoModel.getStore().getInsta().size() ; i++){
+                            Log.d("YUQ", "[insta] : " +  storeInfoModel.getStore().getInsta().get(i).getIMGURL());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("YUQ", "storeInfoModel : " +  "onError");
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
 
     @Override
     protected void onPause() {
@@ -207,7 +253,7 @@ public class StoreInfoActivity extends BaseActivity {
 //            PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
 //            mAttacher.setScaleType(ImageView.ScaleType.FIT_CENTER);
 //            mAttacher.setMinimumScale(1f);
-            BaseApplication.getInstance().loadImage(getActivity(), getArguments().getString(ARG_SECTION_URL), imageView, false);
+            BaseApplication.getInstance().loadImage(getActivity(), getArguments().getString(ARG_SECTION_URL), imageView, false, BaseApplication.getInstance().DEFAULT_ORIGINAL);
 
             return rootView;
         }
@@ -329,7 +375,7 @@ public class StoreInfoActivity extends BaseActivity {
 
                 if (viewItem != null) {
                     // Set car item title.
-                    loadImage(mContext, viewItem, holder.getImageView(), false);
+                    loadImage(mContext, viewItem, holder.getImageView(), false, BaseApplication.getInstance().LIST_HORIZONTAL);
                 }
             }
         }

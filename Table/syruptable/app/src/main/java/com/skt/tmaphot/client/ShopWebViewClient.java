@@ -17,10 +17,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.skt.tmaphot.BaseApplication;
-import com.skt.tmaphot.LoginWebViewActivity;
 import com.skt.tmaphot.MainActivity;
 import com.skt.tmaphot.ObservableWebView;
-import com.skt.tmaphot.common.CommonUtil;
+import com.skt.tmaphot.net.service.LoginInfo;
 import com.skt.tmaphot.pay.PaymentScheme;
 
 import java.net.URISyntaxException;
@@ -164,12 +163,20 @@ public class ShopWebViewClient extends WebViewClient {
 
             CookieManager cookieManager = CookieManager.getInstance();
             String cookies = cookieManager.getCookie(url);
-            String[] temp1 = cookies.split(";");
+            String[] cookieValues = cookies.split(";");
 
-            for(int i = 0 ; i < temp1.length ; i++){
-                String[] temp2 = temp1[i].split("=");
-                for(int j = 0 ; j < temp2.length ; j++){
-                    Log.d("MYCOOKIE", "index : " +  j + "   " + temp2[j]);
+            for(int v = 0; v < cookieValues.length ; v++){
+                String[] cookie = cookieValues[v].split("=");
+                for(int c = 0; c < cookie.length ; c++){
+                    if(cookie[c].trim().equals("SESSID"))
+                    {
+                        Log.d("D0909", "SESSID   :" + cookie[1]);
+                        LoginInfo.getInstance().setUserId(cookie[1]);
+                        BaseApplication.getInstance().ActivityStart(new Intent(activity, MainActivity.class),null);
+
+                    }
+
+//                    Log.d("D0909", "TEST :["+c+ "]" + cookie[c]);
                 }
             }
 

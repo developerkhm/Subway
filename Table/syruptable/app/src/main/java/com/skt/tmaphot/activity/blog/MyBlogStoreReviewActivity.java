@@ -23,8 +23,8 @@ import android.widget.Toast;
 import com.skt.tmaphot.BaseActivity;
 import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
-import com.skt.tmaphot.activity.ImageViewPagerActivity;
-import com.skt.tmaphot.activity.ImageViewPager;
+import com.skt.tmaphot.ImageViewPagerActivity;
+import com.skt.tmaphot.ImageViewPager;
 import com.skt.tmaphot.common.CommonUtil;
 
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ public class MyBlogStoreReviewActivity extends BaseActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         imageProfile = (ImageView)findViewById(R.id.myblog_profile_image);
-        loadImage(baceContext,R.drawable.img_default_user, imageProfile, true);
+        loadImage(baceContext,R.drawable.img_default_user, imageProfile, true, BaseApplication.getInstance().DEFAULT_ORIGINAL);
 
 
         // 임시 메인 이미지 큰거만 뽑음
@@ -217,7 +217,7 @@ public class MyBlogStoreReviewActivity extends BaseActivity {
 //            PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
 //            mAttacher.setScaleType(ImageView.ScaleType.FIT_CENTER);
 //            mAttacher.setMinimumScale(1f);
-            BaseApplication.getInstance().loadImage(getActivity(), getArguments().getString(ARG_SECTION_URL), imageView, false);
+            BaseApplication.getInstance().loadImage(getActivity(), getArguments().getString(ARG_SECTION_URL), imageView, false, BaseApplication.getInstance().LIST_HORIZONTAL);
 
             return rootView;
         }
@@ -339,7 +339,7 @@ public class MyBlogStoreReviewActivity extends BaseActivity {
 
                 if (viewItem != null) {
                     // Set car item title.
-                    loadImage(mContext, viewItem, holder.getImageView(), false);
+                    loadImage(mContext, viewItem, holder.getImageView(), false, BaseApplication.getInstance().LIST_HORIZONTAL);
                 }
             }
         }
@@ -432,7 +432,7 @@ public class MyBlogStoreReviewActivity extends BaseActivity {
         @Override
         public void onBindViewHolder(ReviewRecyclerViewHolder holder, final int position) {
 
-            loadImage(mContext,R.drawable.img_default_user, holder.loginImageView, true);
+            loadImage(mContext,R.drawable.img_default_user, holder.loginImageView, true, BaseApplication.getInstance().DEFAULT_ORIGINAL);
 //            MainApplication.loadUrlRoundImage(mContext, mItems.get(position).loginImageUrl,holder.loginImageView);
 
 

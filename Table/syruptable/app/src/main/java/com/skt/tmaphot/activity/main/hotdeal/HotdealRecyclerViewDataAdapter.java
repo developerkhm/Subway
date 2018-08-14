@@ -60,11 +60,11 @@ public class HotdealRecyclerViewDataAdapter extends RecyclerView.Adapter<Hotdeal
             HotdealRecyclerViewItem viewItem = viewItemList.get(position);
 
             if (layoutType == HOTDEAL_ITEM_MAIN_LAYOUT) {
-                BaseApplication.getInstance().loadImage(mContext, viewItem.getUrl(), holder.getmImgUrl(), false);
+                BaseApplication.getInstance().loadImage(mContext, viewItem.getUrl(), holder.getmImgUrl(), false, BaseApplication.getInstance().LIST_HORIZONTAL);
                 holder.getmTitle().setText(viewItem.getTitle());
                 holder.getmMenue().setText(viewItem.getMenu());
             } else if (layoutType == HOTDEAL_ITEM_MORE_LAYOUT) {
-                BaseApplication.getInstance().loadImage(mContext, viewItem.getUrl(), holder.getmImgUrl(), false);
+                BaseApplication.getInstance().loadImage(mContext, viewItem.getUrl(), holder.getmImgUrl(), false, BaseApplication.getInstance().LIST_HORIZONTAL_MORE);
             }
         }
     }

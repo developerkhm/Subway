@@ -46,7 +46,7 @@ public class RealReviewRecyclerViewDataAdapter extends RecyclerView.Adapter<Real
     public void onBindViewHolder(RealReviewRecyclerViewHolder holder, int position) {
 
         RealReviewRecyclerViewItem viewItem = viewItemList.get(position);
-        BaseApplication.getInstance().loadImage(mContext, viewItem.getImgUrl(), holder.getImageView(), false);
+        BaseApplication.getInstance().loadImage(mContext, viewItem.getImgUrl(), holder.getImageView(), false, BaseApplication.getInstance().LIST_HORIZONTAL);
     }
 
     public void reLoadData(List<RealReviewRecyclerViewItem> viewItemList) {

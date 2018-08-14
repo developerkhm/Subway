@@ -1,4 +1,4 @@
-package com.skt.tmaphot.activity;
+package com.skt.tmaphot;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;

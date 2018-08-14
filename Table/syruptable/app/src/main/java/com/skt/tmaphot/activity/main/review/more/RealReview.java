@@ -136,7 +136,7 @@ public class RealReview {
 
                 imageView = (ImageView) convertView;
             }
-            BaseApplication.getInstance().loadImage(parent.getContext(), viewItemList.get(position).getImgUrl(), imageView, false);
+            BaseApplication.getInstance().loadImage(parent.getContext(), viewItemList.get(position).getImgUrl(), imageView, false, BaseApplication.getInstance().REAL_REVIEW);
 
 //            imageView.setOnClickListener(this);
 

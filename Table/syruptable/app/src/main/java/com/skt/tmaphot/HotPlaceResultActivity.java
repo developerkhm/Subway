@@ -1,7 +1,6 @@
-package com.skt.tmaphot.activity;
+package com.skt.tmaphot;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,12 +10,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.skt.tmaphot.BaseActivity;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.location.GPSData;
-import com.skt.tmaphot.net.model.HotplaceModel;
+import com.skt.tmaphot.net.model.hotplace.HotplaceModel;
 import com.skt.tmaphot.net.service.ServiceGenerator;
 import com.skt.tmaphot.activity.main.hotplace.HotPlaceRecyclerViewDataAdapter;
 
@@ -115,7 +113,7 @@ public class HotPlaceResultActivity extends BaseActivity {
         isloading = true;
         currentPage++;
 
-        ServiceGenerator.createService().getHotplaceList(currentPage, per_page, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), sortType)
+        ServiceGenerator.getInstance().createService().getHotplaceList(currentPage, per_page, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), sortType)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<HotplaceModel>>() {

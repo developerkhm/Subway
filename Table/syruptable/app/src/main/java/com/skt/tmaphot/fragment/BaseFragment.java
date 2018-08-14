@@ -34,7 +34,7 @@ public class BaseFragment extends Fragment {
         BaseApplication.getInstance().ActivityStart(intent, bundle);
     }
 
-    public void loadImage(Context context, Object res, ImageView view, boolean isRound) {
-        BaseApplication.getInstance().loadImage(context, res, view, isRound);
+    public void loadImage(Context context, Object res, ImageView view, boolean isRound, int sizeType) {
+        BaseApplication.getInstance().loadImage(context, res, view, isRound, sizeType);
     }
 }

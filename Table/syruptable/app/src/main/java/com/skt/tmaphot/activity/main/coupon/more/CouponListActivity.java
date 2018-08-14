@@ -11,7 +11,7 @@ import com.skt.tmaphot.BaseActivity;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.main.coupon.CouponRecyclerViewDataAdapter;
 import com.skt.tmaphot.activity.main.coupon.CouponRecyclerViewItem;
-import com.skt.tmaphot.net.service.StackExchangeManager;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class CouponListActivity extends BaseActivity {
 
     private boolean isScrolling = true;
     int currentItems, totalItems, scrollOutItems;
-    private StackExchangeManager mManager;
+//    private StackExchangeManager mManager;
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -126,7 +126,7 @@ public class CouponListActivity extends BaseActivity {
 //            }
 //        });
 
-        mManager = new StackExchangeManager();
+//        mManager = new StackExchangeManager();
 
 //        getLoadDate(); //dummy
 

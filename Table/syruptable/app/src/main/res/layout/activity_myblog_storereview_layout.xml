@@ -103,7 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.skt.tmaphot.activity.ImageViewPager
+            <com.skt.tmaphot.ImageViewPager
                 android:id="@+id/viewpager_container"
                 android:layout_width="match_parent"
                 android:layout_height="243.3dp"

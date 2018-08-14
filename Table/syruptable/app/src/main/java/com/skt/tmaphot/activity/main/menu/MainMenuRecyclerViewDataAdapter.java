@@ -77,7 +77,7 @@ public class MainMenuRecyclerViewDataAdapter extends RecyclerView.Adapter<MainMe
     @Override
     public void onBindViewHolder(MainMenuRecyclerViewHolder holder, final int position) {
         final MainMenuRecyclerViewItem viewItem = viewItemList.get(position);
-        BaseApplication.getInstance().loadImage(context, viewItem.getRes(), holder.getImageView(), false);
+        BaseApplication.getInstance().loadImage(context, viewItem.getRes(), holder.getImageView(), false, BaseApplication.getInstance().DEFAULT_ORIGINAL);
 //        holder.itemView.setOnClickListener(this);
 
         if(selectedPosition==position)

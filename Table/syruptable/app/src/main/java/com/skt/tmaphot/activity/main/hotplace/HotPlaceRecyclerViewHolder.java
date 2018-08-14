@@ -16,7 +16,7 @@ import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.main.coupon.CouponRecyclerViewDataAdapter;
 import com.skt.tmaphot.common.CommonUtil;
 
-public class HotPlaceRecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class HotPlaceRecyclerViewHolder extends RecyclerView.ViewHolder {
 
     public Context mContext;
     public ImageView mImgUrl;
@@ -56,8 +56,8 @@ public class HotPlaceRecyclerViewHolder extends RecyclerView.ViewHolder implemen
 //        }
     }
 
-    @Override
-    public void onClick(View view) {
-        eventListener.onReceivedEvent(getAdapterPosition());
-    }
+//    @Override
+//    public void onClick(View view) {
+//        eventListener.onReceivedEvent(getAdapterPosition());
+//    }
 }

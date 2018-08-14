@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.skt.tmaphot.activity.HotPlaceResultActivity;
 import com.skt.tmaphot.activity.area.SelectionAreaActivity;
 import com.skt.tmaphot.activity.blog.MyBlogActivity;
 import com.skt.tmaphot.activity.blog.MyBlogStoreReviewActivity;
@@ -32,9 +31,16 @@ import com.skt.tmaphot.activity.review.multiple.activities.AlbumSelectActivity;
 import com.skt.tmaphot.activity.review.multiple.activities.ImageSelectActivity;
 import com.skt.tmaphot.activity.search.SearchActivity;
 import com.skt.tmaphot.location.GPSData;
+import com.skt.tmaphot.net.service.LoginInfo;
+import com.skt.tmaphot.net.service.ServiceGenerator;
+import com.skt.tmaphot.net.model.user.UserInfoModel;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class
 BaseActivity extends AppCompatActivity {
@@ -51,7 +57,34 @@ BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        Log.d("ABCDE", "BaseActivity onCreate");
+
+        Log.d("D0909", "getUserId : " + LoginInfo.getInstance().getUserId());
+
+        ServiceGenerator.getInstance().createService().getUserInfo(LoginInfo.getInstance().getUserId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(new Observer<UserInfoModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(UserInfoModel userInfo) {
+                        LoginInfo.getInstance().setUserInfo(userInfo);
+                        Log.d("D0909", "RESULT : " + userInfo.getResult());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override
@@ -247,8 +280,8 @@ BaseActivity extends AppCompatActivity {
         BaseApplication.getInstance().ActivityStart(intent, bundle);
     }
 
-    public void loadImage(Context context, Object res, ImageView view, boolean isRound) {
-        BaseApplication.getInstance().loadImage(context, res, view, isRound);
+    public void loadImage(Context context, Object res, ImageView view, boolean isRound, int sizeType) {
+        BaseApplication.getInstance().loadImage(context, res, view, isRound, sizeType);
     }
 }
 

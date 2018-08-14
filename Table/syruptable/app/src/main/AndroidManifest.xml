@@ -34,7 +34,6 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainSplashActivity"
-            android:theme="@style/AppTheme.SplashTheme"
             android:launchMode="singleTask"
             android:noHistory="true">
             <intent-filter>
@@ -74,11 +73,11 @@
         <activity android:name=".activity.main.store.StoreInfoActivity"/>
         <activity android:name=".activity.main.store.review.ReviewTotalActivity"/>
         <activity android:name=".activity.main.store.review.SocialReviewTotalActivity"/>
-        <activity android:name=".activity.ImageViewPagerActivity"/>
+        <activity android:name=".ImageViewPagerActivity"/>
 
         <activity android:name=".activity.area.SelectionAreaActivity" />
         <activity android:name=".activity.search.SearchActivity" />
-        <activity android:name=".activity.HotPlaceResultActivity" />
+        <activity android:name=".HotPlaceResultActivity" />
         <activity android:name=".activity.blog.MyBlogActivity" />
         <activity android:name=".activity.blog.MyBlogStoreReviewActivity" />
 

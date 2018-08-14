@@ -1,17 +1,17 @@
 
-package com.skt.tmaphot.net.model;
+package com.skt.tmaphot.net.model.user;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Users {
+public class UserInfoModel {
 
     @SerializedName("result")
     @Expose
     private String result;
-    @SerializedName("Msg")
+    @SerializedName("itemList")
     @Expose
-    private String msg;
+    private ItemList itemList;
 
     public String getResult() {
         return result;
@@ -21,12 +21,12 @@ public class Users {
         this.result = result;
     }
 
-    public String getMsg() {
-        return msg;
+    public ItemList getItemList() {
+        return itemList;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setItemList(ItemList itemList) {
+        this.itemList = itemList;
     }
 
 }

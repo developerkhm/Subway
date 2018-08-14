@@ -72,6 +72,7 @@ public class CommonUtil {
         SharedPreferences pref = context.getSharedPreferences(name, context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(key, vlaue);
+        Log.d("DFDFDFFD", "savePreferencesString vlaue : " +  vlaue);
         editor.commit();
     }
 
@@ -142,14 +143,20 @@ public class CommonUtil {
     }
 
 
-    public String pack(String hex) throws UnsupportedEncodingException {
-        String input = hex.length() % 2 == 0 ? hex : hex + "0";
-        StringBuilder output = new StringBuilder();
-        for (int i = 0; i < input.length(); i += 2) {
-            String str = input.substring(i, i + 2);
-            output.append((char) Integer.parseInt(str, 16));
+    public String pack(String hex){
+
+        try {
+            String input = hex.length() % 2 == 0 ? hex : hex + "0";
+            StringBuilder output = new StringBuilder();
+            for (int i = 0; i < input.length(); i += 2) {
+                String str = input.substring(i, i + 2);
+                output.append((char) Integer.parseInt(str, 16));
+            }
+            return getBase64decode(output.toString());
+        }catch(Exception e){
+         e.printStackTrace();
         }
-        return getBase64decode(output.toString());
+        return "";
     }
 
     /**

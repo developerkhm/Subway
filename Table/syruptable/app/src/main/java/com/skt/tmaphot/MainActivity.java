@@ -5,11 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
@@ -19,13 +15,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -37,25 +32,14 @@ import com.skt.tmaphot.activity.bottom.MyBlogFragment;
 import com.skt.tmaphot.activity.bottom.RealReviewFragment;
 import com.skt.tmaphot.activity.bottom.ShopFragment;
 import com.skt.tmaphot.common.CommonUtil;
-import com.skt.tmaphot.location.GPSData;
-import com.skt.tmaphot.location.GPSTracker;
-import com.skt.tmaphot.net.model.HotplaceModel;
-import com.skt.tmaphot.net.model.Users;
+import com.skt.tmaphot.net.service.LoginInfo;
 import com.skt.tmaphot.net.service.ServiceGenerator;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.List;
-import java.util.Locale;
-
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends BaseActivity {
 
@@ -91,8 +75,7 @@ public class MainActivity extends BaseActivity {
         actionBar.setDisplayShowTitleEnabled(false);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        {
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
@@ -105,12 +88,8 @@ public class MainActivity extends BaseActivity {
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-//                getActionBar().setTitle(mDrawerTitle);
-//                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-
-
+                setNavigation();
             }
-
         };
 
 
@@ -218,54 +197,79 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setNavigation() {
-        ImageView test = (ImageView) findViewById(R.id.nav_image_profile);
-        loadImage(baceContext, R.drawable.img_default_login_user, test, true);
-        Button button = (Button) findViewById(R.id.main_navigation_login);
+        LinearLayout linearLayout = (LinearLayout)findViewById(R.id.main_navigation_menu);
 
-        final RelativeLayout off = (RelativeLayout) findViewById(R.id.main_navigation_off);
-        final ScrollView on = (ScrollView) findViewById(R.id.main_navigation_on);
+        linearLayout.setVisibility(View.INVISIBLE);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                off.setVisibility(View.GONE);
-//                on.setVisibility(View.VISIBLE);
+        ImageView profileImage = (ImageView) findViewById(R.id.nav_profile_image);
+        TextView profileInfoModify = (TextView) findViewById(R.id.nav_profile_modify);
+        TextView profileName = (TextView) findViewById(R.id.nav_profile_name);
+        TextView profileEmail = (TextView) findViewById(R.id.nav_profile_email);
+        TextView navi_close = (TextView) findViewById(R.id.navi_close);
 
-                Log.d("TTUA1", "Drawer Open");
+        final RelativeLayout logout = (RelativeLayout) findViewById(R.id.main_navigation_logout);
+        final ScrollView login = (ScrollView) findViewById(R.id.main_navigation_login);
 
-                ServiceGenerator.createService().getUserInfo()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<Users>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-
-                            }
-
-                            @Override
-                            public void onNext(Users users) {
-                                Log.d("QQQ", "Mgs : "  + users.getMsg());
-                                Log.d("QQQ", "Result : "  + users.getResult());
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                Log.d("TEST111", "error");
-                                e.printStackTrace();
-                            }
-
-                            @Override
-                            public void onComplete() {
-
-                            }
-                        });
+        Log.d("KKD","LoginInfo.getInstance().isLogin() : " +LoginInfo.getInstance().isLogin());
 
 
-                ActivityStart(new Intent(baceContext, LoginWebViewActivity.class), null);
-            }
-        });
 
-        TextView navi_close = (TextView)findViewById(R.id.navi_close);
+
+        if (!LoginInfo.getInstance().isLogin()) //not
+        {
+            profileName.setText("게스트");
+            loadImage(baceContext, R.drawable.img_default_login_user, profileImage, true, BaseApplication.getInstance().DEFAULT_ORIGINAL);
+            profileEmail.setText("로그인/회원가입을 해주세요!");
+            profileInfoModify.setVisibility(View.GONE);
+
+            login.setVisibility(View.GONE);
+            logout.setVisibility(View.VISIBLE);
+
+            Button button = (Button) findViewById(R.id.main_navigation_login_btn);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    ActivityStart(new Intent(baceContext, LoginWebViewActivity.class), null);
+                }
+            });
+
+        } else {  //on
+
+            profileName.setText(LoginInfo.getInstance().getUserInfo().getItemList().getName());
+            loadImage(baceContext, LoginInfo.getInstance().getUserInfo().getItemList().getImg(), profileImage, true, BaseApplication.getInstance().DEFAULT_ORIGINAL);
+            profileEmail.setText(CommonUtil.getInstance().pack(LoginInfo.getInstance().getUserInfo().getItemList().getEmail()));
+            profileInfoModify.setVisibility(View.VISIBLE);
+
+            logout.setVisibility(View.GONE);
+            login.setVisibility(View.VISIBLE);
+
+            Button button = (Button) findViewById(R.id.main_navigation_logout_btn);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CommonUtil.getInstance().removePreferences(baceContext, "login","userid");
+
+                    Call<ResponseBody> logout = ServiceGenerator.getInstance().createService().logout(LoginInfo.getInstance().getUserId());
+                    logout.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                            Log.d("Logout")response.code()
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                        }
+                    });
+
+                    BaseApplication.getInstance().ActivityStart(new Intent(baceContext, MainActivity.class),null);
+                }
+            });
+        }
+
+        linearLayout.setVisibility(View.VISIBLE);
+
         navi_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -273,7 +277,6 @@ public class MainActivity extends BaseActivity {
                     drawer.closeDrawer(GravityCompat.START);
             }
         });
-
 
         navi_shop = (TextView) findViewById(R.id.main_navigation_shop);
         navi_shop.setOnClickListener(new View.OnClickListener() {

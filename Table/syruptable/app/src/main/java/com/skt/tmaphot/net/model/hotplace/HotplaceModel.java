@@ -1,5 +1,5 @@
 
-package com.skt.tmaphot.net.model;
+package com.skt.tmaphot.net.model.hotplace;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -34,7 +34,7 @@ public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecycl
     @Override
     public void onBindViewHolder(ReviewRecyclerViewHolder holder, final int position) {
 
-        BaseApplication.getInstance().loadImage(mContext, R.drawable.img_default_user, holder.loginImageView,true);
+        BaseApplication.getInstance().loadImage(mContext, R.drawable.img_default_user, holder.loginImageView,true, BaseApplication.getInstance().DEFAULT_ORIGINAL);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

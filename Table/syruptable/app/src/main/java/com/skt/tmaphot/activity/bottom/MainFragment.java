@@ -15,11 +15,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.skt.tmaphot.BaseActivity;
 import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.MainActivity;
 import com.skt.tmaphot.R;
-import com.skt.tmaphot.activity.NestedScrollingView;
+import com.skt.tmaphot.NestedScrollingView;
 import com.skt.tmaphot.activity.main.banner.RollingAdapter;
 import com.skt.tmaphot.activity.main.banner.RollingAutoManager;
 import com.skt.tmaphot.activity.main.banner.RollingIndicatorView;
@@ -40,7 +39,7 @@ import com.skt.tmaphot.activity.search.SearchActivity;
 import com.skt.tmaphot.common.CommonUtil;
 import com.skt.tmaphot.fragment.BaseFragment;
 import com.skt.tmaphot.location.GPSData;
-import com.skt.tmaphot.net.model.HotplaceModel;
+import com.skt.tmaphot.net.model.hotplace.HotplaceModel;
 import com.skt.tmaphot.net.service.ServiceGenerator;
 import com.skt.tmaphot.activity.main.hotplace.HotPlaceRecyclerViewDataAdapter;
 
@@ -78,7 +77,7 @@ public class MainFragment extends BaseFragment {
     private int hotplace_sortType = 1;
     private int hotplace_curruntPage = 0;
     private TextView hotplace_pop, hotplace_distance;
-    private final int per_page = 30;
+    private final int per_page = 20;
 
     // 메뉴
     private int menuType = 0;
@@ -381,7 +380,7 @@ public class MainFragment extends BaseFragment {
         hotplace_isLoading = true;
         hotplace_curruntPage++;
 
-        ServiceGenerator.createService().getHotplaceList(hotplace_curruntPage, per_page, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), hotplace_sortType)
+        ServiceGenerator.getInstance().createService().getHotplaceList(hotplace_curruntPage, per_page, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), hotplace_sortType)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<HotplaceModel>>() {
