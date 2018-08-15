@@ -24,9 +24,6 @@ import com.skt.tmaphot.pay.PaymentScheme;
 
 import java.net.URISyntaxException;
 
-/**
- * Created by home on 2018-05-26.
- */
 
 public class ShopWebViewClient extends WebViewClient {
     private Activity activity;
@@ -141,25 +138,14 @@ public class ShopWebViewClient extends WebViewClient {
     // 로딩이 완료됬을 때 한번 호출
     @Override
     public void onPageFinished(WebView view, String url) {
-        Log.d(LOG_TAG, "onPageFinished : " + url);
-
 
         try {
+
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                 CookieSyncManager.getInstance().sync();
             } else {
                 CookieManager.getInstance().flush();
             }
-
-            // 여기서 WebView의 데이터를 가져오는 작업을 한다.
-//            if (CommonUtil.getInstance().devicePhoneNumber == null) {
-//
-//                CommonUtil.getInstance().devicePhoneNumber = CommonUtil.getInstance().getPhoneNumber();
-//                String script = "javascript:function afterLoad() {"
-//                        + "document.getElementById('userPhone').value = '" + CommonUtil.getInstance().devicePhoneNumber + "';" + "};";
-
-//            view.loadUrl(script);
-//            }
 
             CookieManager cookieManager = CookieManager.getInstance();
             String cookies = cookieManager.getCookie(url);
@@ -170,13 +156,9 @@ public class ShopWebViewClient extends WebViewClient {
                 for(int c = 0; c < cookie.length ; c++){
                     if(cookie[c].trim().equals("SESSID"))
                     {
-                        Log.d("D0909", "SESSID   :" + cookie[1]);
                         LoginInfo.getInstance().setUserId(cookie[1]);
                         BaseApplication.getInstance().ActivityStart(new Intent(activity, MainActivity.class),null);
-
                     }
-
-//                    Log.d("D0909", "TEST :["+c+ "]" + cookie[c]);
                 }
             }
 
@@ -251,18 +233,11 @@ public class ShopWebViewClient extends WebViewClient {
 
         if (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("javascript:")) {
 
-            //Log.d("shouldOverrid2",url);
             Intent intent = null;
             //인텐트 정합성 체크`
             try {
-
                 intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
-                //Log.d(TAG, "intent.getScheme = " + intent.getScheme());
-                //Log.d(TAG, "intent.getDataString = " + intent.getDataString());
-
             } catch (URISyntaxException ex) {
-
-                //Log.e(TAG, "Bad URI " + url + ":" + ex.getMessage());
                 return false;
             }
 
@@ -334,6 +309,4 @@ public class ShopWebViewClient extends WebViewClient {
         }
         return false;
     }
-
-
 }
