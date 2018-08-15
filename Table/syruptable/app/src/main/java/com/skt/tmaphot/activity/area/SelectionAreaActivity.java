@@ -121,7 +121,7 @@ public class SelectionAreaActivity extends BaseActivity {
             public void onClick(View view) {
                 GPSTracker.getInstance(baceContext, mHandler);
                 GPSTracker.getInstance().startGetLocation();
-                progressON("GPS갱신중");
+                progressON();
             }
         });
         map = (TextView) findViewById(R.id.area_map);

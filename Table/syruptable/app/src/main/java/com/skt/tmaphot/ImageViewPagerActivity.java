@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.github.chrisbanes.photoview.PhotoView;
 import com.github.chrisbanes.photoview.PhotoViewAttacher;
+import com.skt.tmaphot.activity.main.store.StoreInfoActivity;
+import com.skt.tmaphot.net.model.store.Instum;
 
 
 import java.util.ArrayList;
@@ -26,18 +28,23 @@ public class ImageViewPagerActivity extends BaseActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ImageViewPager mViewPager;
     private List<String> imageUrlList;
-    private TextView imageCounttxt;
+    private TextView currentCount;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_viewpager_layout);
         baceContext = this;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        setData();
+
+        imageUrlList = new ArrayList<>();
+        List<Instum> instums = getIntent().getParcelableArrayListExtra(StoreInfoActivity.INTENT_REVIEW);
+
+        for(int i = 0; i<instums.size(); i++){
+            imageUrlList.add(instums.get(i).getIMGURL());
+        }
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ImageViewPager) findViewById(R.id.viewpager_container);
@@ -57,7 +64,7 @@ public class ImageViewPagerActivity extends BaseActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        imageCounttxt.setText( (mViewPager.getCurrentItem() + 1) +"/"+ imageUrlList.size());
+                        currentCount.setText( (mViewPager.getCurrentItem() + 1) +"/"+ imageUrlList.size());
                     }
                 });
             }
@@ -76,7 +83,7 @@ public class ImageViewPagerActivity extends BaseActivity {
         });
 
 
-        imageCounttxt = (TextView)findViewById(R.id.viewpager_image_count_txt);
+        currentCount = (TextView)findViewById(R.id.viewpager_image_count_txt);
 
     } //END
 

@@ -45,15 +45,26 @@ public class BaseApplication extends Application {
     public final int DEFAULT_ORIGINAL = 6;
     public final int REAL_REVIEW = 7;
 
+    private DisplayMetrics displayMetrics;
+    private int displayWidth;
+    private int displayHeight_custom;
+    private int gridWidth_custom;
+    private int gridHeight_custom;
+
     public static BaseApplication getInstance() {
         return baseApplication;
     }
-
 
     @Override
     public void onCreate() {
         super.onCreate();
         baseApplication = this;
+
+        displayMetrics = getResources().getDisplayMetrics();
+        displayWidth = displayMetrics.widthPixels;
+        displayHeight_custom = displayMetrics.widthPixels + (int) (displayMetrics.widthPixels * 0.2);
+        gridWidth_custom = displayWidth / 3;
+        gridHeight_custom = displayWidth / 3 + (int) (displayWidth * 0.2);
 
 //        Fabric.with(this, new Crashlytics());
         Stetho.initializeWithDefaults(this);
@@ -72,19 +83,14 @@ public class BaseApplication extends Application {
     }
 
     public void loadImage(Context context, Object res, ImageView view, boolean isRound, int sizeType) {
-
-        final DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        final int displayWidth = displayMetrics.widthPixels;
-        final int displayHeight = displayMetrics.widthPixels  +  (int)(displayMetrics.widthPixels * 0.2);
-
+        // 임시 모든 사진이 가로길이가 길다고 판단, 세로길이 80% 감안하여 확장, 세로가 긴 사진이 왔을시, 대체 해야함
         int width = 0;
         int height = 0;
-        // 임시 모든 사진이 가로길이가 길다고 판단, 세로길이 80% 감안하여 확장, 세로가 긴 사진이 왔을시, 대체 해야함
 
         switch (sizeType) {
             case BASE_DISPLAY:
                 width = displayWidth;
-                height = displayHeight;
+                height = displayHeight_custom;
                 break;
             case LIST_HORIZONTAL:
                 width = 200;
@@ -104,22 +110,20 @@ public class BaseApplication extends Application {
                 break;
             case MAIN_BANNER:
                 width = displayWidth;
-                height = displayHeight;
+                height = displayHeight_custom;
                 break;
             case DEFAULT_ORIGINAL:
                 width = Target.SIZE_ORIGINAL;
                 height = Target.SIZE_ORIGINAL;
                 break;
             case REAL_REVIEW:
-                width = displayWidth / 3;
-                height = displayWidth / 3 + (int)(displayWidth * 0.2);
+                width = gridWidth_custom;
+                height = gridHeight_custom;
                 break;
         }
 
-
         RequestOptions requestOptions = null;
         if (isRound) {
-//            requestOptions = new RequestOptions().transform(new RoundedCorners(100)).diskCacheStrategy(DiskCacheStrategy.NONE).circleCrop();
             requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).circleCrop().error(R.drawable.img_error);
         } else {
             requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).error(R.drawable.img_error).centerCrop().override(width, height);
@@ -136,7 +140,6 @@ public class BaseApplication extends Application {
 
                     @Override
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-
                         return false;
                     }
                 })
@@ -169,9 +172,6 @@ public class BaseApplication extends Application {
                 frameAnimation.start();
             }
         });
-//
-//        Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim_progressbar_loading);
-//        img_loading_frame.setAnimation(animation);
 
         TextView tv_progress_message = (TextView) progressDialog.findViewById(R.id.tv_progress_message);
         if (!TextUtils.isEmpty(message)) {
@@ -206,10 +206,8 @@ public class BaseApplication extends Application {
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx, AlertDialog.THEME_HOLO_DARK);
-//        builder.setTitle("다이얼로그 제목임")
+
         builder.setMessage("Network 연결을 확인해 주세요.")
-//                .setPositiveButton("긍정", null)
-//                .setNegativeButton("부정", null)
                 .setNeutralButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

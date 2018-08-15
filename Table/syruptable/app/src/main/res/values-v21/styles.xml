@@ -184,7 +184,7 @@
         <item name="android:lineSpacingExtra">4.8dp</item>
     </style>
 
-    <style name="storeinfo_info_type" parent="@android:style/Widget.TextView">
+    <style name="storeinfo_info_address" parent="@android:style/Widget.TextView">
         <item name="android:textSize">13.7dp</item>
         <item name="android:textColor">@color/text_gray_33</item>
         <item name="android:letterSpacing">-0.02</item>
@@ -214,7 +214,7 @@
         <item name="android:lineSpacingExtra">11.7dp</item>
     </style>
 
-    <style name="storeinfo_info_content_text" parent="@android:style/Widget.TextView">
+    <style name="storeinfo_info_content" parent="@android:style/Widget.TextView">
         <item name="android:textSize">13.2dp</item>
         <item name="android:textColor">@color/text_gray_33</item>
         <item name="android:letterSpacing">-0.02</item>

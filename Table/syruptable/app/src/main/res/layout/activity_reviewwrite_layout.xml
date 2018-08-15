@@ -93,7 +93,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:text="사진찰영"
-                            style="@style/storeinfo_info_content_text"/>
+                            style="@style/storeinfo_info_content"/>
                     </LinearLayout>
 
                     <View
@@ -121,7 +121,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:text="동영상찰영"
-                            style="@style/storeinfo_info_content_text"/>
+                            style="@style/storeinfo_info_content"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

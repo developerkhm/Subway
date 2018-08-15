@@ -18,13 +18,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceGenerator {
 
+    private final String VERSION = "v1/";
+    private final String DEFAULT_URL = "http://api.ordertable.co.kr/";
+    private final String BASE_URL = String.format("%s%s", DEFAULT_URL, VERSION);
+
     private static ServiceGenerator instance;
 
-    private final String VERSION = "v1";
-    private final String DEFAULT_URL = "http://api.ordertable.co.kr/";
-
-//    private static final String BASE_URL = String.format("%s%s", DEFAULT_URL, VERSION);
-    private String BASE_URL = "http://api.ordertable.co.kr/v1/";
     private Retrofit.Builder builder = new Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -35,7 +34,8 @@ public class ServiceGenerator {
     private OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
 
 
-    private ServiceGenerator() { }
+    private ServiceGenerator() {
+    }
 
     public static ServiceGenerator getInstance() {
         if (instance == null) {
@@ -44,9 +44,7 @@ public class ServiceGenerator {
         return instance;
     }
 
-
-    public APIService createService(){
-
+    public APIService createService() {
         httpClientBuilder.addInterceptor(loggingInterceptor);
         httpClientBuilder.addInterceptor(interceptor);
         builder = builder.client(httpClientBuilder.build());
@@ -61,12 +59,12 @@ public class ServiceGenerator {
 
             Request request = chain.request();
             HttpUrl url = request.url();
-            AddPostParamRequestBody newBody = new AddPostParamRequestBody(request.body(), "id",LoginInfo.getInstance().getUserId());
+            AddPostParamRequestBody newBody = new AddPostParamRequestBody(request.body(), "id", LoginInfo.getInstance().getUserId());
             Request newRequest = request.newBuilder().post(newBody).url(url).build();
 
             return chain.proceed(newRequest);
         }
-};
+    };
 
     class AddPostParamRequestBody extends RequestBody {
 

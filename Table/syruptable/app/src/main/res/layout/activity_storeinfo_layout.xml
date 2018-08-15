@@ -53,6 +53,7 @@
             </RelativeLayout>
 
             <LinearLayout
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
@@ -61,12 +62,14 @@
                 android:orientation="horizontal">
 
                 <RatingBar
+                    android:id="@+id/storeinfo_info_rating"
                     style="?android:attr/ratingBarStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp" />
 
                 <TextView
+                    android:id="@+id/storeinfo_info_evaluate_count"
                     style="@style/storeinfo_info_evaluate_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -85,16 +88,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
-                    style="@style/storeinfo_info_type"
+                    android:id="@+id/storeinfo_info_address"
+                    style="@style/storeinfo_info_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="서울)강남구" />
 
                 <TextView
-                    style="@style/storeinfo_info_type"
+                    android:id="@+id/storeinfo_info_type"
+                    style="@style/storeinfo_info_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="양식" />
@@ -116,6 +121,7 @@
                     android:src="@drawable/img_storeinfo_review_count" />
 
                 <TextView
+                    android:id="@+id/storeinfo_review_count"
                     style="@style/storeinfo_text_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -130,6 +136,7 @@
                     android:src="@drawable/img_storeinfo_bookmark_count" />
 
                 <TextView
+                    android:id="@+id/storeinfo_bookmark_count"
                     style="@style/storeinfo_text_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -238,13 +245,15 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        style="@style/storeinfo_info_content_text"
+                        android:id="@+id/storeinfo_detail_address"
+                        style="@style/storeinfo_info_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
                         android:text="서울시 강남구 테헤란로 606" />
 
                     <TextView
+                        android:visibility="invisible"
                         style="@style/storeinfo_info_distance_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -252,6 +261,7 @@
                 </LinearLayout>
 
                 <TextView
+
                     style="@style/storeinfo_info_title_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -265,7 +275,8 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        style="@style/storeinfo_info_content_text"
+                        android:id="@+id/storeinfo_phone_number"
+                        style="@style/storeinfo_info_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="02-2016-1234" />
@@ -282,10 +293,25 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
                     <TextView
-                        style="@style/storeinfo_info_content_text"
+                        android:id="@+id/storeinfo_business_hours"
+                        style="@style/storeinfo_info_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="예약가능, 주차가능" />
+
+                    <TextView
+                        android:id="@+id/storeinfo_day_off"
+                        style="@style/storeinfo_info_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="예약가능, 주차가능" />
+
+                    <TextView
+                        android:id="@+id/storeinfo_info_content"
+                        style="@style/storeinfo_info_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="예약가능, 주차가능" />
