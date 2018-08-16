@@ -40,6 +40,8 @@ import com.skt.tmaphot.common.CommonUtil;
 import com.skt.tmaphot.fragment.BaseFragment;
 import com.skt.tmaphot.location.GPSData;
 import com.skt.tmaphot.net.model.hotplace.HotplaceModel;
+import com.skt.tmaphot.net.service.APIClient;
+import com.skt.tmaphot.net.service.APIService;
 import com.skt.tmaphot.net.service.ServiceGenerator;
 import com.skt.tmaphot.activity.main.hotplace.HotPlaceRecyclerViewDataAdapter;
 
@@ -50,6 +52,9 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainFragment extends BaseFragment {
 
@@ -328,6 +333,7 @@ public class MainFragment extends BaseFragment {
                 }
 
                 if (scrollY == ((v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) && !hotplace_isLoading) {
+                    Log.d("TT14", "init nestedScrollView call");
                     loadData_Hotplace(hotplace_sortType);
                 }
             }
@@ -380,38 +386,71 @@ public class MainFragment extends BaseFragment {
         hotplace_isLoading = true;
         hotplace_curruntPage++;
 
-        ServiceGenerator.getInstance().createService().getHotplaceList(hotplace_curruntPage, per_page, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), hotplace_sortType)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<HotplaceModel>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+        APIService apiInterface = null;
 
-                    }
+        apiInterface = APIClient.getClient().create(APIService.class);
 
-                    @Override
-                    public void onNext(List<HotplaceModel> hotplaceModels) {
+        Call<List<HotplaceModel>> call = apiInterface.getHotplaceList(hotplace_curruntPage, per_page, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), hotplace_sortType);
+        call.enqueue(new Callback<List<HotplaceModel>>() {
+            @Override
+            public void onResponse(Call<List<HotplaceModel>> call, Response<List<HotplaceModel>> response) {
 
-                        hotPlaceRecyclerViewDataAdapter.loadData(hotplaceModels);
-                    }
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        hotplace_isLoading = false;
-                        bottomProgressBar.setVisibility(View.INVISIBLE);
-//                        ((BaseActivity) getActivity()).progressOFF();
-                        e.printStackTrace();
-                    }
+            @Override
+            public void onFailure(Call<List<HotplaceModel>> call, Throwable t) {
 
-                    @Override
-                    public void onComplete() {
-                        hotplace_isLoading = false;
-//                        ((BaseActivity) getActivity()).progressOFF();
-//                        hotplaceRecyclerView.requestFocus();
-//                        nestedScrollView.requestFocus();
-                        bottomProgressBar.setVisibility(View.INVISIBLE);
-                    }
-                });
+            }
+        });
+
+
+//        ServiceGenerator.getInstance().createService().create(APIService.class)
+//                .getHotplaceList(hotplace_curruntPage, per_page, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), hotplace_sortType).enqueue(new Callback<List<HotplaceModel>>() {
+//            @Override
+//            public void onResponse(Call<List<HotplaceModel>> call, Response<List<HotplaceModel>> response) {
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<HotplaceModel>> call, Throwable t) {
+//
+//            }
+//        });
+
+//        ServiceGenerator.getInstance().createService().create(APIService.class).getHotplaceList(hotplace_curruntPage, per_page, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), hotplace_sortType)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<List<HotplaceModel>>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//                        Log.d("ATR", "onSubscribe");
+//                    }
+//
+//                    @Override
+//                    public void onNext(List<HotplaceModel> hotplaceModels) {
+//                        Log.d("ATR", "onNext");
+//                        hotPlaceRecyclerViewDataAdapter.loadData(hotplaceModels);
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        hotplace_isLoading = false;
+//                        bottomProgressBar.setVisibility(View.INVISIBLE);
+////                        ((BaseActivity) getActivity()).progressOFF();
+//                        e.printStackTrace();
+//                        Log.d("ATR", "onError");
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//                        hotplace_isLoading = false;
+////                        ((BaseActivity) getActivity()).progressOFF();
+////                        hotplaceRecyclerView.requestFocus();
+////                        nestedScrollView.requestFocus();
+//                        Log.d("ATR", "onComplete");
+//                        bottomProgressBar.setVisibility(View.INVISIBLE);
+//                    }
+//                });
 
     }
 
@@ -428,6 +467,7 @@ public class MainFragment extends BaseFragment {
 //        hotplaceRecyclerView.getRecycledViewPool().setMaxRecycledViews(0, 40);
         hotplaceRecyclerView.setFocusableInTouchMode(true);
 
+        Log.d("TT14", "init loadData_Hotplace call");
         loadData_Hotplace(hotplace_sortType);
     }
 
@@ -438,7 +478,7 @@ public class MainFragment extends BaseFragment {
         hotPlaceRecyclerViewDataAdapter = new HotPlaceRecyclerViewDataAdapter(new ArrayList<HotplaceModel>());
         hotplaceRecyclerView.setAdapter(hotPlaceRecyclerViewDataAdapter);
 
-        loadData_Hotplace(hotplaceLoadType);
+//        loadData_Hotplace(hotplaceLoadType);
     }
 
     View.OnClickListener onClickListenerHotplaceType = new View.OnClickListener() {

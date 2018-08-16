@@ -32,6 +32,7 @@ import com.skt.tmaphot.activity.review.ReviewWriteActivity;
 import com.skt.tmaphot.common.CommonUtil;
 import com.skt.tmaphot.net.model.store.Instum;
 import com.skt.tmaphot.net.model.store.StoreInfoModel;
+import com.skt.tmaphot.net.service.APIService;
 import com.skt.tmaphot.net.service.ServiceGenerator;
 
 import java.util.ArrayList;
@@ -107,21 +108,18 @@ public class StoreInfoActivity extends BaseActivity {
 //        });
 //
 
-
-        initView();
-
-        getService();
-
-    }
-
-    private void getService() {
-        progressON();
-
-
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
+        String subpath = intent.getStringExtra("subpath");
 
-        ServiceGenerator.getInstance().createService().getStoreInfo("hotplace", id)
+        initView();
+        fetchData(id, subpath);
+    }
+
+    private void fetchData(String id, String subpath) {
+        progressON();
+
+        ServiceGenerator.getInstance().createService().create(APIService.class).getStoreInfo(subpath, id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<StoreInfoModel>() {

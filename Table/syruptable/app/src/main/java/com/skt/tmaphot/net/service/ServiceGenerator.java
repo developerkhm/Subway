@@ -2,6 +2,7 @@ package com.skt.tmaphot.net.service;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -29,9 +30,10 @@ public class ServiceGenerator {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create());
 
-    private Retrofit retrofit = builder.build();
-    private HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
+    private Retrofit retrofit;
+    private HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC);
     private OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
+
 
 
     private ServiceGenerator() {
@@ -44,52 +46,70 @@ public class ServiceGenerator {
         return instance;
     }
 
-    public APIService createService() {
+//    public APIService createService() {
+//        httpClientBuilder.addInterceptor(loggingInterceptor);
+//        httpClientBuilder.addInterceptor(interceptor);
+//        builder = builder.client(httpClientBuilder.build());
+//        retrofit = builder.build();
+//
+//        return retrofit.create(APIService.class);
+//    }
+
+    public Retrofit createService() {
+        httpClientBuilder.connectTimeout(1, TimeUnit.MINUTES).readTimeout(30, TimeUnit.SECONDS).writeTimeout(15, TimeUnit.SECONDS);
+
+
         httpClientBuilder.addInterceptor(loggingInterceptor);
-        httpClientBuilder.addInterceptor(interceptor);
+//        httpClientBuilder.addInterceptor(interceptor);
         builder = builder.client(httpClientBuilder.build());
         retrofit = builder.build();
 
-        return retrofit.create(APIService.class);
+        return retrofit;
     }
 
-    public Interceptor interceptor = new Interceptor() {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-
-            Request request = chain.request();
-            HttpUrl url = request.url();
-            AddPostParamRequestBody newBody = new AddPostParamRequestBody(request.body(), "id", LoginInfo.getInstance().getUserId());
-            Request newRequest = request.newBuilder().post(newBody).url(url).build();
-
-            return chain.proceed(newRequest);
-        }
-    };
-
-    class AddPostParamRequestBody extends RequestBody {
-
-        final RequestBody body;
-        final String parameter;
-
-        AddPostParamRequestBody(RequestBody body, String name, String value) {
-            this.body = body;
-            this.parameter = "&" + name + "=" + value;
-        }
-
-        @Override
-        public long contentLength() throws IOException {
-            return body.contentLength() + parameter.length();
-        }
-
-        @Override
-        public MediaType contentType() {
-            return body.contentType();
-        }
-
-        @Override
-        public void writeTo(BufferedSink bufferedSink) throws IOException {
-            body.writeTo(bufferedSink);
-            bufferedSink.writeString(parameter, Charset.forName("UTF-8"));
-        }
-    }
+//    public Interceptor interceptor = new Interceptor() {
+//        @Override
+//        public Response intercept(Chain chain) throws IOException {
+//
+////            Request request = chain.request();
+////            HttpUrl url = request.url();
+////            AddPostParamRequestBody newBody = new AddPostParamRequestBody(request.body(), "id", LoginInfo.getInstance().getUserId());
+////            Request newRequest = request.newBuilder().post(newBody).url(url).build();
+//
+//            Request request = chain.request();
+////            HttpUrl url = request.url();
+//            AddPostParamRequestBody newBody = new AddPostParamRequestBody(request.body(), "id", LoginInfo.getInstance().getUserId());
+//            Request newRequest = request.newBuilder().post(newBody).build();
+//
+////            return chain.proceed(newRequest);
+//            return chain.proceed(newRequest);
+//        }
+//    };
+//
+//    class AddPostParamRequestBody extends RequestBody {
+//
+//        final RequestBody body;
+//        final String parameter;
+//
+//        AddPostParamRequestBody(RequestBody body, String name, String value) {
+//            this.body = body;
+//            this.parameter = "&" + name + "=" + value;
+//        }
+//
+//        @Override
+//        public long contentLength() throws IOException {
+//            return body.contentLength() + parameter.length();
+//        }
+//
+//        @Override
+//        public MediaType contentType() {
+//            return body.contentType();
+//        }
+//
+//        @Override
+//        public void writeTo(BufferedSink bufferedSink) throws IOException {
+//            body.writeTo(bufferedSink);
+//            bufferedSink.writeString(parameter, Charset.forName("UTF-8"));
+//        }
+//    }
 }

@@ -150,6 +150,7 @@ public class ShopWebViewClient extends WebViewClient {
             CookieManager cookieManager = CookieManager.getInstance();
             String cookies = cookieManager.getCookie(url);
             String[] cookieValues = cookies.split(";");
+            Log.d("MY12", cookies.toString());
 
             for(int v = 0; v < cookieValues.length ; v++){
                 String[] cookie = cookieValues[v].split("=");

@@ -30,9 +30,19 @@ public class HotPlaceRecyclerViewDataAdapter extends RecyclerView.Adapter<HotPla
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_hotplace_grid_item, parent, false);
         mContext = parent.getContext();
         HotPlaceRecyclerViewHolder holder = new HotPlaceRecyclerViewHolder(mContext, view);
+        holder.setOnEventListener(new HotPlaceRecyclerViewHolder.EventListener() {
+            @Override
+            public void onReceivedEvent(int postion) {
+                Intent intent = new Intent(mContext, StoreInfoActivity.class);
+                intent.putExtra("id", viewItemList.get(postion).getId());
+                intent.putExtra("subpath", "hotplace");
+                BaseApplication.getInstance().ActivityStart(intent, null);
+            }
+        });
 
         return holder;
     }
+
 
     @Override
     public void onBindViewHolder(HotPlaceRecyclerViewHolder holder, final int position) {
@@ -40,20 +50,21 @@ public class HotPlaceRecyclerViewDataAdapter extends RecyclerView.Adapter<HotPla
         final int current_position = position;
 
         BaseApplication.getInstance().loadImage(mContext, viewItemList.get(position).getRecentImage(), holder.mImgUrl, false, BaseApplication.getInstance().LIST_HORIZONTAL_HOTPLACE);
-        holder.mTitle.setText(viewItemList.get(position).getNAME());
-        holder.mReview.setText(viewItemList.get(position).getReviewStr());
-        holder.mReviewCount.setText(viewItemList.get(position).getBlogReviewCount());
-        holder.mDistance.setText(viewItemList.get(position).getDm() + "m");
         holder.ratingBar.setRating(Float.valueOf(viewItemList.get(position).getStarRating()));
+        holder.mTitle.setText(viewItemList.get(position).getNAME());
+        holder.mStoreType.setText(viewItemList.get(position).getCategoryLName() + "·" + viewItemList.get(position).getCategoryName());
+//        holder.mReview.setText(viewItemList.get(position).getReviewStr());
+        holder.mReviewCount.setText(viewItemList.get(position).getBlogReviewCount());
+        holder.mDistance.setText(viewItemList.get(position).getDk()+"km"  +" "+ viewItemList.get(position).getDm());
 
-        holder.mImgUrl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, StoreInfoActivity.class);
-                intent.putExtra("id", viewItemList.get(current_position).getId());
-                BaseApplication.getInstance().ActivityStart(intent, null);
-            }
-        });
+//        holder.mImgUrl.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(mContext, StoreInfoActivity.class);
+//                intent.putExtra("id", viewItemList.get(current_position).getId());
+//                BaseApplication.getInstance().ActivityStart(intent, null);
+//            }
+//        });
 
 //        holder.setOnEventListener(new HotPlaceRecyclerViewHolder.EventListener() {
 //            @Override

@@ -106,7 +106,7 @@ public class BaseApplication extends Application {
                 break;
             case LIST_HORIZONTAL_MORE:
                 width = 500;
-                height = 270;
+                height = 250;
                 break;
             case MAIN_BANNER:
                 width = displayWidth;

@@ -22,9 +22,20 @@ public interface APIService {
 //    @GET("/2.2/users?order=desc&sort=reputation&site=stackoverflow")
 //    Observable<UsersResponse> getPosts(@Query("pagesize") int howmany);
 
+//    @POST("hotplace/getList")
+//    @FormUrlEncoded
+//    Observable<List<HotplaceModel>> getHotplaceList(
+//            @Field("page") int page,
+//            @Field("per_page") int per_page,
+//            @Field("lat") double lat,
+//            @Field("lng") double lng,
+//            @Field("sort") int sort
+//    );
+
+
     @POST("hotplace/getList")
     @FormUrlEncoded
-    Observable<List<HotplaceModel>> getHotplaceList(
+    Call<List<HotplaceModel>> getHotplaceList(
             @Field("page") int page,
             @Field("per_page") int per_page,
             @Field("lat") double lat,
@@ -47,4 +58,7 @@ public interface APIService {
     Call<ResponseBody> logout(
             @Field("id") String id
     );
+
+    @GET("logout")
+    Call<ResponseBody> dev_logout();
 }

@@ -46,8 +46,7 @@ public class MainActivity extends BaseActivity {
     private LinearLayout drawer_menu;
     private ImageView profileImage;
     private TextView profileInfoModify, profileName, profileEmail, navi_close;
-    private RelativeLayout logout_layout;
-    private ScrollView login_layout;
+    private RelativeLayout logout_layout, login_layout;
     private Button login, logout;
 
     private final long FINISH_INTERVAL_TIME = 2000;
@@ -67,8 +66,6 @@ public class MainActivity extends BaseActivity {
         actionBar.setHomeButtonEnabled(false);
         actionBar.setDisplayShowTitleEnabled(false);
 
-        //        topAppbarText = (TextView) findViewById(R.id.appbar_location_txt);
-
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.fragment_content, new MainFragment()).commit();
 
@@ -79,8 +76,8 @@ public class MainActivity extends BaseActivity {
             }
 
             public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
                 setNavigation();
+                super.onDrawerOpened(drawerView);
             }
         };
 
@@ -98,7 +95,7 @@ public class MainActivity extends BaseActivity {
         profileEmail = (TextView) findViewById(R.id.nav_profile_email);
         navi_close = (TextView) findViewById(R.id.navi_close);
         logout_layout = (RelativeLayout) findViewById(R.id.main_navigation_logout);
-        login_layout = (ScrollView) findViewById(R.id.main_navigation_login);
+        login_layout = (RelativeLayout) findViewById(R.id.main_navigation_login);
         login = (Button) findViewById(R.id.main_navigation_login_btn);
         logout = (Button) findViewById(R.id.main_navigation_logout_btn);
         navi_close.setOnClickListener(new View.OnClickListener() {
@@ -170,22 +167,26 @@ public class MainActivity extends BaseActivity {
             logout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    CommonUtil.getInstance().removePreferences(baceContext, "login", "userid");
 
-                    Call<ResponseBody> logout = ServiceGenerator.getInstance().createService().logout(LoginInfo.getInstance().getUserId());
-                    logout.enqueue(new Callback<ResponseBody>() {
-                        @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+
+//                    CommonUtil.getInstance().removePreferences(baceContext, "login", "userid");
 //
-                        }
-
-                        @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                        }
-                    });
-
-                    BaseApplication.getInstance().ActivityStart(new Intent(baceContext, MainActivity.class), null);
+//                    Call<ResponseBody> logout = ServiceGenerator.getInstance().createService().logout(LoginInfo.getInstance().getUserId());
+//                    logout.enqueue(new Callback<ResponseBody>() {
+//                        @Override
+//                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+////
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+//
+//                        }
+//                    });
+//                    DevServiceGenerator.getInstance().createService().dev_logout();
+                    CommonUtil.getInstance().removePreferences(baceContext, "login", "userid");
+//                    BaseApplication.getInstance().ActivityStart(new Intent(baceContext, MainActivity.class), null);
                 }
             });
         }

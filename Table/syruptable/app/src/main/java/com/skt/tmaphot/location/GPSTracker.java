@@ -328,7 +328,7 @@ public class GPSTracker implements LocationListener {
 
     public boolean failGps(final Context ctx) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(ctx, AlertDialog.THEME_HOLO_DARK);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
 //        builder.setTitle("다이얼로그 제목임")
         builder.setMessage("위치 정보가 정확하지 않습니다.\n재탐색 하시겠습니까?")
                 .setPositiveButton("네", new DialogInterface.OnClickListener() {
