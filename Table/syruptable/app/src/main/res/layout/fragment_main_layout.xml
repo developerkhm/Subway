@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <!--android.support.v7.widget.Toolbar
@@ -275,12 +275,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginRight="10dp" />
+
+            <Button
+                android:id="@+id/hotplace_bottom_more"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="더보기"/>
+
             <ProgressBar
                 android:visibility="invisible"
                 android:id="@+id/hotplace_bottom_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"/>
+
+
         </LinearLayout>
     </com.skt.tmaphot.NestedScrollingView>
 

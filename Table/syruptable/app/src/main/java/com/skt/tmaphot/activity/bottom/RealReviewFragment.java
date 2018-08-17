@@ -18,6 +18,7 @@ public class RealReviewFragment extends BaseFragment {
 
     private Handler handler = new Handler();
     private ExecutorService executorService;
+    RealReview realReview;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -26,7 +27,7 @@ public class RealReviewFragment extends BaseFragment {
         rootView.findViewById(R.id.toolbar).setVisibility(View.GONE);
 
         executorService = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
-        RealReview realReview = new RealReview(getContext(),rootView, handler, executorService);
+        realReview = new RealReview(getContext(),rootView, handler, executorService);
         return rootView;
     }
 
@@ -34,5 +35,10 @@ public class RealReviewFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         executorService.shutdown(); //스레드풀 종료
+    }
+
+    public void setScrollTopFocus(){
+        if(realReview != null)
+            realReview.setFocusTop();
     }
 }

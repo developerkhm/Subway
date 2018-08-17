@@ -2,6 +2,7 @@ package com.skt.tmaphot.activity.main.store;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -32,8 +33,8 @@ import com.skt.tmaphot.activity.review.ReviewWriteActivity;
 import com.skt.tmaphot.common.CommonUtil;
 import com.skt.tmaphot.net.model.store.Instum;
 import com.skt.tmaphot.net.model.store.StoreInfoModel;
+import com.skt.tmaphot.net.service.APIClient;
 import com.skt.tmaphot.net.service.APIService;
-import com.skt.tmaphot.net.service.ServiceGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,7 +120,7 @@ public class StoreInfoActivity extends BaseActivity {
     private void fetchData(String id, String subpath) {
         progressON();
 
-        ServiceGenerator.getInstance().createService().create(APIService.class).getStoreInfo(subpath, id)
+        APIClient.getInstance().getClient(null).getStoreInfo(subpath, id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<StoreInfoModel>() {
@@ -277,6 +278,15 @@ public class StoreInfoActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 ActivityStart(new Intent(baceContext, ReviewWriteActivity.class), null);
+            }
+        });
+
+        storePhoneNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData( Uri.parse( "tel:" + storePhoneNumber.getText()));
+                ActivityStart(intent, null);
             }
         });
     }

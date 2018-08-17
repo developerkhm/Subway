@@ -22,8 +22,7 @@ import com.skt.tmaphot.fragment.BaseFragment;
 
 public class EventFragment extends BaseFragment {
 
-    private String url = "http://m.naver.com";
-//    private String url = "http://dev.ordertable.co.kr/member/login";
+    private String url = "http://dev.ordertable.co.kr/event/";
     private ObservableWebView webView;
 
     @Override
@@ -135,8 +134,7 @@ public class EventFragment extends BaseFragment {
         webView.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                //This is the filter
+                
                 if (event.getAction() != KeyEvent.ACTION_DOWN)
                     return true;
 
@@ -159,8 +157,8 @@ public class EventFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-//        webView.reload();
-//        webView.onResume();
+        webView.reload();
+        webView.onResume();
     }
 
     @Override

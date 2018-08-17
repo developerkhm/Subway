@@ -11,13 +11,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.skt.tmaphot.BaseActivity;
-import com.skt.tmaphot.R;
+import com.skt.tmaphot.activity.main.hotplace.HotPlaceRecyclerViewDataAdapter;
 import com.skt.tmaphot.location.GPSData;
 import com.skt.tmaphot.net.model.hotplace.HotplaceModel;
-import com.skt.tmaphot.net.service.APIService;
-import com.skt.tmaphot.net.service.ServiceGenerator;
-import com.skt.tmaphot.activity.main.hotplace.HotPlaceRecyclerViewDataAdapter;
+import com.skt.tmaphot.net.service.APIClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +36,7 @@ public class HotPlaceResultActivity extends BaseActivity {
     private int currentPage = 0;
     private int sortType = 1;   //1 인기순, 2 거리순
     private final int per_page = 30;
+    private String menuType = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -114,35 +112,32 @@ public class HotPlaceResultActivity extends BaseActivity {
         isloading = true;
         currentPage++;
 
-//        ServiceGenerator.getInstance().createService().create(APIService.class).getHotplaceList(currentPage, per_page, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), sortType)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Observer<List<HotplaceModel>>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(List<HotplaceModel> hotplaceModels) {
-//
-//                        hotPlaceRecyclerViewDataAdapter.loadData(hotplaceModels);
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        isloading = false;
-////                        progressOFF();
-//                        bottomProgressBar.setVisibility(View.INVISIBLE);
-//                        e.printStackTrace();
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//                        isloading = false;
-//                        bottomProgressBar.setVisibility(View.INVISIBLE);
-//                    }
-//                });
+        APIClient.getInstance().getClient(null).getHotplaceList(currentPage, per_page, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), sortType, menuType)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<HotplaceModel>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(List<HotplaceModel> hotplaceModels) {
+                        hotPlaceRecyclerViewDataAdapter.loadData(hotplaceModels);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        isloading = false;
+                        bottomProgressBar.setVisibility(View.INVISIBLE);
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        isloading = false;
+                        bottomProgressBar.setVisibility(View.INVISIBLE);
+                    }
+                });
     }
 
     public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnScrollListener {

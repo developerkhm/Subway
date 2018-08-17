@@ -47,33 +47,12 @@ public class HotPlaceRecyclerViewDataAdapter extends RecyclerView.Adapter<HotPla
     @Override
     public void onBindViewHolder(HotPlaceRecyclerViewHolder holder, final int position) {
 
-        final int current_position = position;
-
         BaseApplication.getInstance().loadImage(mContext, viewItemList.get(position).getRecentImage(), holder.mImgUrl, false, BaseApplication.getInstance().LIST_HORIZONTAL_HOTPLACE);
         holder.ratingBar.setRating(Float.valueOf(viewItemList.get(position).getStarRating()));
         holder.mTitle.setText(viewItemList.get(position).getNAME());
         holder.mStoreType.setText(viewItemList.get(position).getCategoryLName() + "·" + viewItemList.get(position).getCategoryName());
-//        holder.mReview.setText(viewItemList.get(position).getReviewStr());
         holder.mReviewCount.setText(viewItemList.get(position).getBlogReviewCount());
         holder.mDistance.setText(viewItemList.get(position).getDk()+"km"  +" "+ viewItemList.get(position).getDm());
-
-//        holder.mImgUrl.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(mContext, StoreInfoActivity.class);
-//                intent.putExtra("id", viewItemList.get(current_position).getId());
-//                BaseApplication.getInstance().ActivityStart(intent, null);
-//            }
-//        });
-
-//        holder.setOnEventListener(new HotPlaceRecyclerViewHolder.EventListener() {
-//            @Override
-//            public void onReceivedEvent(int postion) {
-//                Intent intent = new Intent(mContext, StoreInfoActivity.class);
-//                intent.putExtra("id", viewItemList.get(postion).getId());
-//                BaseApplication.getInstance().ActivityStart(intent, null);
-//            }
-//        });
     }
 
     public void loadData(List<HotplaceModel> viewItemList) {
@@ -83,6 +62,15 @@ public class HotPlaceRecyclerViewDataAdapter extends RecyclerView.Adapter<HotPla
 
     public void clearData() {
         this.viewItemList.clear();
+    }
+
+    public String getDatatotalCount(){
+        String count = "0";
+        if(viewItemList != null)
+            if(viewItemList.size() > 0){
+                count = viewItemList.get(0).getTotalCount();
+            }
+            return count;
     }
 
     @Override

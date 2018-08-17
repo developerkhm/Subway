@@ -2,24 +2,29 @@ package com.skt.tmaphot;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,8 +34,12 @@ import com.skt.tmaphot.activity.bottom.MyBlogFragment;
 import com.skt.tmaphot.activity.bottom.RealReviewFragment;
 import com.skt.tmaphot.activity.bottom.ShopFragment;
 import com.skt.tmaphot.common.CommonUtil;
+import com.skt.tmaphot.fragment.BaseFragment;
+import com.skt.tmaphot.net.service.APIClient;
 import com.skt.tmaphot.net.service.LoginInfo;
-import com.skt.tmaphot.net.service.ServiceGenerator;
+
+import java.util.Iterator;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -42,17 +51,24 @@ public class MainActivity extends BaseActivity {
     private FragmentManager fragmentManager;
     private DrawerLayout drawer;
     public BottomNavigationView navigation;
+    public ImageButton fab;
 
     private LinearLayout drawer_menu;
     private ImageView profileImage;
     private TextView profileInfoModify, profileName, profileEmail, navi_close;
     private RelativeLayout logout_layout, login_layout;
     private Button login, logout;
+    private MainFragment mainFragment;
+    private RealReviewFragment realReviewFragment;
+    private EventFragment eventFragment;
+    private ShopFragment shopFragment;
+    private MyBlogFragment myBlogFragment;
 
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
 
     private TextView navi_shop;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +82,9 @@ public class MainActivity extends BaseActivity {
         actionBar.setHomeButtonEnabled(false);
         actionBar.setDisplayShowTitleEnabled(false);
 
+        mainFragment = new MainFragment();
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.fragment_content, new MainFragment()).commit();
+        fragmentManager.beginTransaction().add(R.id.fragment_content, mainFragment).commit();
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
@@ -105,6 +122,25 @@ public class MainActivity extends BaseActivity {
                     drawer.closeDrawer(GravityCompat.START);
             }
         });
+
+        fab = (ImageButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+                    if (fragment.isVisible()) {
+                        if (fragment instanceof MainFragment) {
+                            mainFragment.nestedScrollView.scrollTo(0, 0);
+                        }
+
+                        if (fragment instanceof RealReviewFragment) {
+                            realReviewFragment.setScrollTopFocus();
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -117,20 +153,30 @@ public class MainActivity extends BaseActivity {
 
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    fragmentManager.beginTransaction().replace(R.id.fragment_content, new MainFragment()).commit();
+                    fab.setVisibility(View.VISIBLE);
+                    mainFragment = new MainFragment();
+                    fragmentManager.beginTransaction().replace(R.id.fragment_content, mainFragment).commit();
                     return true;
                 case R.id.navigation_review:
-                    fragmentManager.beginTransaction().replace(R.id.fragment_content, new RealReviewFragment()).commit();
+                    fab.setVisibility(View.VISIBLE);
+                    realReviewFragment = new RealReviewFragment();
+                    fragmentManager.beginTransaction().replace(R.id.fragment_content, realReviewFragment).commit();
                     return true;
                 case R.id.navigation_event:
-                    fragmentManager.beginTransaction().replace(R.id.fragment_content, new EventFragment()).commit();
+                    fab.setVisibility(View.GONE);
+                    eventFragment = new EventFragment();
+                    fragmentManager.beginTransaction().replace(R.id.fragment_content, eventFragment).commit();
                     return true;
                 case R.id.navigation_shop:
+                    fab.setVisibility(View.GONE);
                     toolbar.setVisibility(View.GONE);
-                    fragmentManager.beginTransaction().replace(R.id.fragment_content, new ShopFragment()).commit();
+                    shopFragment = new ShopFragment();
+                    fragmentManager.beginTransaction().replace(R.id.fragment_content, shopFragment).commit();
                     return true;
                 case R.id.navigation_myblog:
-                    fragmentManager.beginTransaction().replace(R.id.fragment_content, new MyBlogFragment()).commit();
+                    fab.setVisibility(View.GONE);
+                    myBlogFragment = new MyBlogFragment();
+                    fragmentManager.beginTransaction().replace(R.id.fragment_content, myBlogFragment).commit();
                     return true;
             }
             return false;
@@ -167,26 +213,18 @@ public class MainActivity extends BaseActivity {
             logout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    APIClient.getInstance().getClient("http://dev.ordertable.co.kr/member/").logout().enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            CommonUtil.getInstance().removePreferences(baceContext, "login", "userid");
+                            BaseApplication.getInstance().ActivityStart(new Intent(baceContext, MainActivity.class), null);
+                        }
 
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-
-//                    CommonUtil.getInstance().removePreferences(baceContext, "login", "userid");
-//
-//                    Call<ResponseBody> logout = ServiceGenerator.getInstance().createService().logout(LoginInfo.getInstance().getUserId());
-//                    logout.enqueue(new Callback<ResponseBody>() {
-//                        @Override
-//                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-////
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-//
-//                        }
-//                    });
-//                    DevServiceGenerator.getInstance().createService().dev_logout();
-                    CommonUtil.getInstance().removePreferences(baceContext, "login", "userid");
-//                    BaseApplication.getInstance().ActivityStart(new Intent(baceContext, MainActivity.class), null);
+                        }
+                    });
                 }
             });
         }

@@ -69,10 +69,23 @@ public class RealReview {
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 switch (scrollState) {
                     case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
+
+                        if (mContext instanceof MainActivity) {
+
+                            if (((MainActivity) mContext).fab.getVisibility() == View.GONE && ((MainActivity) mContext).navigation.getVisibility() == View.GONE) {
+                                ((MainActivity) mContext).fab.setVisibility(View.VISIBLE);
+                            }
+                        }
                         break;
+
                     case AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
-                        break;
                     case AbsListView.OnScrollListener.SCROLL_STATE_FLING:
+
+                        if (mContext instanceof MainActivity) {
+                            if (((MainActivity) mContext).fab.getVisibility() == View.VISIBLE) {
+                                ((MainActivity) mContext).fab.setVisibility(View.GONE);
+                            }
+                        }
                         break;
                 }
             }
@@ -88,15 +101,22 @@ public class RealReview {
                 if (firstVisibleItem != 0 && mContext instanceof MainActivity) {
                     if (((MainActivity) mContext).navigation.getVisibility() == View.VISIBLE)
                         ((MainActivity) mContext).slideDown(((MainActivity) mContext).navigation);
+
+                    if (((MainActivity) mContext).fab.getVisibility() == View.VISIBLE) {
+                        ((MainActivity) mContext).fab.setVisibility(View.GONE);
+                    }
+
                 }
 
                 Log.e("RRRTT", "firstVisibleItem: " + firstVisibleItem + "\n visibleItemCount: " + visibleItemCount + "\n totalItemCount: " + totalItemCount);
 
-                // 현재 가장 처음에 보이는 셀번호와 보여지는 셀번호를 더한값이
-                // 전체의 숫자와 동일해지면 가장 아래로 스크롤 되었다고 가정합니다.
+
                 int count = totalItemCount - visibleItemCount;
 
                 if (firstVisibleItem >= count && totalItemCount != 0 && mLockListView) {
+                    // 현재 가장 처음에 보이는 셀번호와 보여지는 셀번호를 더한값이
+                    // 전체의 숫자와 동일해지면 가장 아래로 스크롤 되었다고 가정합니다.
+
                     setDummyData();
                 }
             }
@@ -180,7 +200,7 @@ public class RealReview {
 
                     String url = "http://upload2.inven.co.kr/upload/2018/04/11/bbs/i15799604597.jpg";
 
-                    mRowList.add(new RealReviewRecyclerViewItem(String.valueOf(i+ 101), url));
+                    mRowList.add(new RealReviewRecyclerViewItem(String.valueOf(i + 101), url));
                 }
                 newItemIndex = mRowList.size() - 1;
                 imageAdapter.viewItemList.addAll(mRowList);
@@ -195,6 +215,11 @@ public class RealReview {
                 });
             }
         });
+    }
+
+    public void setFocusTop() {
+//        int index = gridview.getFirstVisiblePosition();
+        gridview.smoothScrollToPosition(0);
     }
 }
 

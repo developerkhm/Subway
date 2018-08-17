@@ -18,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -25,10 +26,8 @@ public class CommonUtil {
 
     private static CommonUtil uniqueInstance;
     public Context mainContex;
-    public String devicePhoneNumber;
 
-    private CommonUtil() {
-    }
+    private CommonUtil() { }
 
     public static CommonUtil getInstance() {
         if (uniqueInstance == null) {
@@ -40,7 +39,6 @@ public class CommonUtil {
     public String getCurrenTime() {
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis()));
     }
-
 
     // 임시 mainContex 고쳐야됨
     @SuppressLint("MissingPermission")
@@ -92,7 +90,6 @@ public class CommonUtil {
         editor.commit();
     }
 
-
     public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
         private int top;
         private int right;
@@ -127,7 +124,6 @@ public class CommonUtil {
         }
     }
 
-
     public void setColorRatingBar(RatingBar ratingbar) {
         LayerDrawable stars = (LayerDrawable) ratingbar.getProgressDrawable();
         stars.getDrawable(1).setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_ATOP); // for filled stars
@@ -135,13 +131,11 @@ public class CommonUtil {
         stars.getDrawable(0).setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_ATOP); // for empty stars
     }
 
-
     public String bin2hex(String data) throws UnsupportedEncodingException {
         String bas64Data = getBase64encode(data);
         byte[] bas64DataArray = bas64Data.getBytes();
         return String.format("%0" + (bas64DataArray.length * 2) + 'x', new BigInteger(1, bas64DataArray));
     }
-
 
     public String pack(String hex){
 
@@ -199,5 +193,12 @@ public class CommonUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    public String decimalFormat(String value)
+    {
+        DecimalFormat dc = new DecimalFormat("###,###,###,###");
+        return  dc.format(Long.valueOf(value));
     }
 }

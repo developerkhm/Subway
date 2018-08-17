@@ -31,9 +31,9 @@ import com.skt.tmaphot.activity.review.multiple.activities.AlbumSelectActivity;
 import com.skt.tmaphot.activity.review.multiple.activities.ImageSelectActivity;
 import com.skt.tmaphot.activity.search.SearchActivity;
 import com.skt.tmaphot.location.GPSData;
+import com.skt.tmaphot.net.service.APIClient;
 import com.skt.tmaphot.net.service.APIService;
 import com.skt.tmaphot.net.service.LoginInfo;
-import com.skt.tmaphot.net.service.ServiceGenerator;
 import com.skt.tmaphot.net.model.user.UserInfoModel;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
@@ -61,7 +61,7 @@ BaseActivity extends AppCompatActivity {
 
         Log.d("D0909", "getUserId : " + LoginInfo.getInstance().getUserId());
 
-        ServiceGenerator.getInstance().createService().create(APIService.class).getUserInfo(LoginInfo.getInstance().getUserId())
+        APIClient.getInstance().getClient(null).getUserInfo(LoginInfo.getInstance().getUserId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(new Observer<UserInfoModel>() {
@@ -86,7 +86,6 @@ BaseActivity extends AppCompatActivity {
 
                     }
                 });
-
     }
 
     @Override
@@ -240,7 +239,6 @@ BaseActivity extends AppCompatActivity {
         Log.d("YUYU", "BaseWebViewActivity onDestroy");
         super.onDestroy();
     }
-
 
 
     public void getTopActivity() {

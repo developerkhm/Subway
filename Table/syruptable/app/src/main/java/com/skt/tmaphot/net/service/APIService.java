@@ -22,26 +22,27 @@ public interface APIService {
 //    @GET("/2.2/users?order=desc&sort=reputation&site=stackoverflow")
 //    Observable<UsersResponse> getPosts(@Query("pagesize") int howmany);
 
+    @POST("hotplace/getList")
+    @FormUrlEncoded
+    Observable<List<HotplaceModel>> getHotplaceList(
+            @Field("page") int page,
+            @Field("per_page") int per_page,
+            @Field("lat") double lat,
+            @Field("lng") double lng,
+            @Field("sort") int sort,
+            @Field("cate") String cate
+    );
+
+
 //    @POST("hotplace/getList")
 //    @FormUrlEncoded
-//    Observable<List<HotplaceModel>> getHotplaceList(
+//    Call<List<HotplaceModel>> getHotplaceList(
 //            @Field("page") int page,
 //            @Field("per_page") int per_page,
 //            @Field("lat") double lat,
 //            @Field("lng") double lng,
 //            @Field("sort") int sort
 //    );
-
-
-    @POST("hotplace/getList")
-    @FormUrlEncoded
-    Call<List<HotplaceModel>> getHotplaceList(
-            @Field("page") int page,
-            @Field("per_page") int per_page,
-            @Field("lat") double lat,
-            @Field("lng") double lng,
-            @Field("sort") int sort
-    );
 
     @POST("users/info")
     @FormUrlEncoded
@@ -53,12 +54,11 @@ public interface APIService {
             @Path("id") String id);
 
 
-    @POST("users/logout")
-    @FormUrlEncoded
-    Call<ResponseBody> logout(
-            @Field("id") String id
-    );
+//    @POST("users/logout")
+//    Call<ResponseBody> logout(
+//            @Field("id") String id
+//    );
 
-    @GET("logout")
-    Call<ResponseBody> dev_logout();
+    @POST("logout")
+    Call<ResponseBody> logout();
 }

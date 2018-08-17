@@ -2,6 +2,7 @@ package com.skt.tmaphot.activity.bottom;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
@@ -10,12 +11,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.skt.tmaphot.BaseApplication;
+import com.skt.tmaphot.HotPlaceResultActivity;
 import com.skt.tmaphot.MainActivity;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.NestedScrollingView;
@@ -41,8 +46,6 @@ import com.skt.tmaphot.fragment.BaseFragment;
 import com.skt.tmaphot.location.GPSData;
 import com.skt.tmaphot.net.model.hotplace.HotplaceModel;
 import com.skt.tmaphot.net.service.APIClient;
-import com.skt.tmaphot.net.service.APIService;
-import com.skt.tmaphot.net.service.ServiceGenerator;
 import com.skt.tmaphot.activity.main.hotplace.HotPlaceRecyclerViewDataAdapter;
 
 import java.util.ArrayList;
@@ -52,13 +55,10 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainFragment extends BaseFragment {
 
-    private NestedScrollingView nestedScrollView;
+    public NestedScrollingView nestedScrollView;
 
     // 주변 할인 쿠폰
     private RecyclerView couponRecyclerView;
@@ -83,9 +83,10 @@ public class MainFragment extends BaseFragment {
     private int hotplace_curruntPage = 0;
     private TextView hotplace_pop, hotplace_distance;
     private final int per_page = 20;
+    private Button hotplace_bottom_more;
 
     // 메뉴
-    private int menuType = 0;
+    private String menuType = "";
     private RecyclerView menuRecyclerView;
     private List<MainMenuRecyclerViewItem> mainMenuRecyclerViewItems;
     private MainMenuRecyclerViewDataAdapter menuRecyclerViewDataAdapter;
@@ -167,18 +168,17 @@ public class MainFragment extends BaseFragment {
                 recyclerView.setAdapter(menuRecyclerViewDataAdapter);
 
 
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("0", "", R.drawable.img_main_menu_0));
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("1", "", R.drawable.img_main_menu_1));
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("2", "", R.drawable.img_main_menu_2));
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("3", "", R.drawable.img_main_menu_3));
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("4", "", R.drawable.img_main_menu_4));
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("5", "", R.drawable.img_main_menu_5));
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("6", "", R.drawable.img_main_menu_6));
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("7", "", R.drawable.img_main_menu_7));
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("8", "", R.drawable.img_main_menu_8));
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("9", "", R.drawable.img_main_menu_9));
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("10", "", R.drawable.img_main_menu_10));
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("11", "", R.drawable.img_main_menu_11));
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("", "", R.drawable.img_main_menu_0));    //전체
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-01", "", R.drawable.img_main_menu_1));   //한식
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-04", "", R.drawable.img_main_menu_2));   //중식
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-03", "", R.drawable.img_main_menu_3));   //일식
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-02", "", R.drawable.img_main_menu_4));   //양식
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-09", "", R.drawable.img_main_menu_5));   //분식
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-10", "", R.drawable.img_main_menu_6));   //뷔페
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-13", "", R.drawable.img_main_menu_7));   //술집
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("02-01", "", R.drawable.img_main_menu_8));   //카페
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-07", "", R.drawable.img_main_menu_9));   //치킨, 피자, 햄버거=> 패스트 푸드
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-08", "", R.drawable.img_main_menu_10));  //세계음식
 
                 menuRecyclerViewDataAdapter.notifyDataSetChanged();
 
@@ -237,6 +237,7 @@ public class MainFragment extends BaseFragment {
         switch (recyclerView.getId()) {
 
             case R.id.coupon_recycler_view:
+
                 currItemListSize = couponItemList.size();
                 for (int i = currItemListSize; i < currItemListSize + loadMoreItemCount; i++) {
                     String url = "http://cfd.tourtips.com/@cms_1024x768/2016032550/gjf72o/%EB%A7%88%EB%8B%90%EB%9D%BC_%EC%95%84%EB%A6%AC%EC%8A%A4%ED%86%A0%ED%81%AC%EB%9E%98%ED%8A%B8_%EC%9D%8C%EC%8B%9D_TTB(3).JPG";
@@ -249,18 +250,19 @@ public class MainFragment extends BaseFragment {
                 break;
 
             case R.id.review_recycler_view:
+
+//                if(realReviewRecyclerViewDataAdapter.getItemCount() >= 20)
+//                {
+//                    realReviewItemList.add(new RealReviewRecyclerViewItem("99", ""));
+//                    realReviewRecyclerViewDataAdapter.reLoadData(realReviewItemList);
+//                    break;
+//                }
+
                 currItemListSize = realReviewItemList.size();
                 Log.d("BBT", "real loadData currItemListSize " + currItemListSize);
                 for (int i = currItemListSize; i < currItemListSize + loadMoreItemCount; i++) {
-                    if (menuType == 0) {
-                        String url = "http://cfile214.uf.daum.net/image/110EBE0E49A774D7AC1983";
-                        realReviewItemList.add(new RealReviewRecyclerViewItem(String.valueOf(i), url));
-                    } else {
-                        Log.d("BBT", "real loadData for int :" + i);
-                        String url = "http://philsalgi.com/xe/files/attach/images/145/414/008/2c89504033b3c1ce95755484e4dc5948.jpg";
-                        realReviewItemList.add(new RealReviewRecyclerViewItem(String.valueOf(i + 100), url));
-                        ///////////////////// 아이디 값이 달라야 한다, 메뉴 변경시 //////////////////////////////////
-                    }
+                    String url = "http://cfile214.uf.daum.net/image/110EBE0E49A774D7AC1983";
+                    realReviewItemList.add(new RealReviewRecyclerViewItem(String.valueOf(i), url));
                 }
                 newItemIndex = realReviewItemList.size() - 1;
                 realReviewRecyclerViewDataAdapter.reLoadData(realReviewItemList);
@@ -269,15 +271,8 @@ public class MainFragment extends BaseFragment {
             case R.id.hotdeal_recycler_view:
                 currItemListSize = hotdealItemList.size();
                 for (int i = currItemListSize; i < currItemListSize + loadMoreItemCount; i++) {
-                    if (menuType == 0) {
-                        String url = "http://www.slist.kr/news/photo/201602/853_3916_1257.jpg";
-                        hotdealItemList.add(new HotdealRecyclerViewItem(String.valueOf(i), url, "3", "피자", "불고기피자", "300", "20"));
-                    } else {
-                        Log.d("BBT", "hotdeal loadData foodType else");
-                        String url = "https://steptohealth.co.kr/wp-content/uploads/2017/03/foods-to-avoid-eating-for-breakfast-500x283.jpg";
-                        hotdealItemList.add(new HotdealRecyclerViewItem(String.valueOf(i + 100), url, "3", "피자", "불고기피자", "300", "20"));
-                        /////////////////////  아이디 값이 달라야 한다, 메뉴 변경시  //////////////////////////////////
-                    }
+                    String url = "http://www.slist.kr/news/photo/201602/853_3916_1257.jpg";
+                    hotdealItemList.add(new HotdealRecyclerViewItem(String.valueOf(i), url, "3", "피자", "불고기피자", "300", "20"));
                 }
                 newItemIndex = hotdealItemList.size() - 1;
                 hotdealRecyclerViewDataAdapter.reLoadData(hotdealItemList);
@@ -316,22 +311,35 @@ public class MainFragment extends BaseFragment {
     private void initView() {
         nestedScrollView = (NestedScrollingView) rootView.findViewById(R.id.main_nestedscrollview);
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
 
                 if (scrollY > oldScrollY) { //Scroll DOWN
                     if (((MainActivity) getActivity()).navigation.getVisibility() == View.VISIBLE)
                         ((MainActivity) getActivity()).slideDown(((MainActivity) getActivity()).navigation);
-                }
-                if (scrollY < oldScrollY) { //Scroll UP
 
+                    if (((MainActivity) getActivity()).fab.getVisibility() == View.GONE) {
+                        ((MainActivity) getActivity()).fab.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                if (scrollY < oldScrollY) { //Scroll UP
+                    if (((MainActivity) getActivity()).fab.getVisibility() == View.VISIBLE) {
+                        ((MainActivity) getActivity()).fab.setVisibility(View.GONE);
+                    }
                 }
 
                 if (scrollY == 0) { //TOP SCROLL
                     if (((MainActivity) getActivity()).navigation.getVisibility() == View.GONE)
                         ((MainActivity) getActivity()).slideUp(((MainActivity) getActivity()).navigation);
+
+                    if (((MainActivity) getActivity()).fab.getVisibility() == View.VISIBLE) {
+                        ((MainActivity) getActivity()).fab.setVisibility(View.GONE);
+                    }
                 }
 
+                //BOTTOM SCROLL
                 if (scrollY == ((v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) && !hotplace_isLoading) {
                     Log.d("TT14", "init nestedScrollView call");
                     loadData_Hotplace(hotplace_sortType);
@@ -344,6 +352,7 @@ public class MainFragment extends BaseFragment {
             public void onNestedScrollViewStateChanged(int state) {
             }
         });
+
 
         rollingIndicatorView = (RollingIndicatorView) rootView.findViewById(R.id.indicator_view);
         rollingViewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
@@ -377,81 +386,57 @@ public class MainFragment extends BaseFragment {
         hotplace_distance = (TextView) rootView.findViewById(R.id.main_hotplace_distance);
         hotplace_distance.setOnClickListener(onClickListenerHotplaceType);
 
-        bottomProgressBar = (ProgressBar)rootView.findViewById(R.id.hotplace_bottom_progress);
+        bottomProgressBar = (ProgressBar) rootView.findViewById(R.id.hotplace_bottom_progress);
+
+        hotplace_bottom_more = (Button) rootView.findViewById(R.id.hotplace_bottom_more);
     }
 
     private void loadData_Hotplace(int hotplace_sortType) {
-//        ((BaseActivity) getActivity()).progressON();
+
+        if (hotPlaceRecyclerViewDataAdapter.getItemCount() >= 60) {
+
+            hotplace_bottom_more.setText(CommonUtil.getInstance().decimalFormat(hotPlaceRecyclerViewDataAdapter.getDatatotalCount()) + " 개 더보기");
+            hotplace_bottom_more.setVisibility(View.VISIBLE);
+            hotplace_bottom_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    BaseApplication.getInstance().ActivityStart(new Intent(getActivity(), HotPlaceResultActivity.class), null);
+                }
+            });
+            bottomProgressBar.setVisibility(View.GONE);
+            return;
+        }
+
         bottomProgressBar.setVisibility(View.VISIBLE);
         hotplace_isLoading = true;
         hotplace_curruntPage++;
 
-        APIService apiInterface = null;
+        APIClient.getInstance().getClient(null).getHotplaceList(hotplace_curruntPage, per_page, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), hotplace_sortType, menuType)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<HotplaceModel>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
 
-        apiInterface = APIClient.getClient().create(APIService.class);
+                    @Override
+                    public void onNext(List<HotplaceModel> hotplaceModels) {
+                        hotPlaceRecyclerViewDataAdapter.loadData(hotplaceModels);
+                    }
 
-        Call<List<HotplaceModel>> call = apiInterface.getHotplaceList(hotplace_curruntPage, per_page, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), hotplace_sortType);
-        call.enqueue(new Callback<List<HotplaceModel>>() {
-            @Override
-            public void onResponse(Call<List<HotplaceModel>> call, Response<List<HotplaceModel>> response) {
+                    @Override
+                    public void onError(Throwable e) {
+                        hotplace_isLoading = false;
+                        bottomProgressBar.setVisibility(View.INVISIBLE);
+                        e.printStackTrace();
+                    }
 
-            }
-
-            @Override
-            public void onFailure(Call<List<HotplaceModel>> call, Throwable t) {
-
-            }
-        });
-
-
-//        ServiceGenerator.getInstance().createService().create(APIService.class)
-//                .getHotplaceList(hotplace_curruntPage, per_page, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), hotplace_sortType).enqueue(new Callback<List<HotplaceModel>>() {
-//            @Override
-//            public void onResponse(Call<List<HotplaceModel>> call, Response<List<HotplaceModel>> response) {
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<HotplaceModel>> call, Throwable t) {
-//
-//            }
-//        });
-
-//        ServiceGenerator.getInstance().createService().create(APIService.class).getHotplaceList(hotplace_curruntPage, per_page, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), hotplace_sortType)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Observer<List<HotplaceModel>>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//                        Log.d("ATR", "onSubscribe");
-//                    }
-//
-//                    @Override
-//                    public void onNext(List<HotplaceModel> hotplaceModels) {
-//                        Log.d("ATR", "onNext");
-//                        hotPlaceRecyclerViewDataAdapter.loadData(hotplaceModels);
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        hotplace_isLoading = false;
-//                        bottomProgressBar.setVisibility(View.INVISIBLE);
-////                        ((BaseActivity) getActivity()).progressOFF();
-//                        e.printStackTrace();
-//                        Log.d("ATR", "onError");
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//                        hotplace_isLoading = false;
-////                        ((BaseActivity) getActivity()).progressOFF();
-////                        hotplaceRecyclerView.requestFocus();
-////                        nestedScrollView.requestFocus();
-//                        Log.d("ATR", "onComplete");
-//                        bottomProgressBar.setVisibility(View.INVISIBLE);
-//                    }
-//                });
-
+                    @Override
+                    public void onComplete() {
+                        hotplace_isLoading = false;
+                        bottomProgressBar.setVisibility(View.INVISIBLE);
+                    }
+                });
     }
 
     public void hotplaceSet() {
@@ -467,18 +452,16 @@ public class MainFragment extends BaseFragment {
 //        hotplaceRecyclerView.getRecycledViewPool().setMaxRecycledViews(0, 40);
         hotplaceRecyclerView.setFocusableInTouchMode(true);
 
-        Log.d("TT14", "init loadData_Hotplace call");
         loadData_Hotplace(hotplace_sortType);
     }
 
     private void reLoadData_HotPlace(int hotplaceLoadType) {
-
         hotplace_curruntPage = 0;
         hotPlaceRecyclerViewDataAdapter.clearData();
         hotPlaceRecyclerViewDataAdapter = new HotPlaceRecyclerViewDataAdapter(new ArrayList<HotplaceModel>());
         hotplaceRecyclerView.setAdapter(hotPlaceRecyclerViewDataAdapter);
 
-//        loadData_Hotplace(hotplaceLoadType);
+        loadData_Hotplace(hotplaceLoadType);
     }
 
     View.OnClickListener onClickListenerHotplaceType = new View.OnClickListener() {
@@ -521,9 +504,9 @@ public class MainFragment extends BaseFragment {
 
     MainMenuRecyclerViewDataAdapter.OnEventCilckListener onEventCilckListener = new MainMenuRecyclerViewDataAdapter.OnEventCilckListener() {
         @Override
-        public void menuOnClick(int position) {
+        public void menuOnClick(String cate_id) {
 
-            menuType = position;
+            menuType = cate_id;
 
             realReviewItemList.clear();
             loadData(realReviewRecyclerView);
@@ -582,8 +565,7 @@ public class MainFragment extends BaseFragment {
     int test = 0;
 
     private class HorizontalRecyclerViewOnScrollListener extends RecyclerView.OnScrollListener {
-        public HorizontalRecyclerViewOnScrollListener() {
-        }
+        public HorizontalRecyclerViewOnScrollListener() {  }
 
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

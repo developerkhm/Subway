@@ -7,10 +7,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.main.hotdeal.HotdealRecyclerViewHolder;
+import com.skt.tmaphot.activity.main.review.more.RealReview;
+import com.skt.tmaphot.activity.main.review.more.RealReviewActivity;
 import com.skt.tmaphot.activity.main.store.StoreInfoActivity;
 
 import java.util.ArrayList;
@@ -45,7 +48,7 @@ public class RealReviewRecyclerViewDataAdapter extends RecyclerView.Adapter<Real
     @Override
     public void onBindViewHolder(RealReviewRecyclerViewHolder holder, int position) {
 
-        RealReviewRecyclerViewItem viewItem = viewItemList.get(position);
+        final RealReviewRecyclerViewItem viewItem = viewItemList.get(position);
         BaseApplication.getInstance().loadImage(mContext, viewItem.getImgUrl(), holder.getImageView(), false, BaseApplication.getInstance().LIST_HORIZONTAL);
     }
 

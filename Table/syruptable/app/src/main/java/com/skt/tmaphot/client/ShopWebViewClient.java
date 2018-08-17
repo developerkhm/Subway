@@ -158,7 +158,7 @@ public class ShopWebViewClient extends WebViewClient {
                     if(cookie[c].trim().equals("SESSID"))
                     {
                         LoginInfo.getInstance().setUserId(cookie[1]);
-                        BaseApplication.getInstance().ActivityStart(new Intent(activity, MainActivity.class),null);
+//                        BaseApplication.getInstance().ActivityStart(new Intent(activity, MainActivity.class),null);
                     }
                 }
             }

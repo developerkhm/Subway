@@ -30,6 +30,7 @@
                     android:id="@+id/viewpager_container"
                     android:layout_width="match_parent"
                     android:layout_height="243.3dp"
+                    android:background="@color/colorBlack"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
                 <LinearLayout
@@ -72,8 +73,7 @@
                     android:id="@+id/storeinfo_info_evaluate_count"
                     style="@style/storeinfo_info_evaluate_count"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="30명" />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <TextView
@@ -81,8 +81,7 @@
                 style="@style/storeinfo_info_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="14dp"
-                android:text="파크하얏트 서울" />
+                android:layout_marginBottom="14dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -94,15 +93,13 @@
                     android:id="@+id/storeinfo_info_address"
                     style="@style/storeinfo_info_address"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="서울)강남구" />
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/storeinfo_info_type"
                     style="@style/storeinfo_info_address"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="양식" />
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
@@ -125,8 +122,7 @@
                     style="@style/storeinfo_text_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:text="40" />
+                    android:layout_marginRight="15dp" />
 
                 <ImageButton
                     android:layout_width="wrap_content"
@@ -139,8 +135,7 @@
                     android:id="@+id/storeinfo_bookmark_count"
                     style="@style/storeinfo_text_count"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="376" />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <View
@@ -157,10 +152,10 @@
 
                 <LinearLayout
                     android:id="@+id/storeinfo_info_bookmark"
-                    android:padding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:padding="10dp">
 
                     <ImageButton
                         android:layout_width="wrap_content"
@@ -177,11 +172,11 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:padding="10dp"
                     android:id="@+id/storeinfo_info_review"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:padding="10dp">
 
                     <ImageButton
                         android:layout_width="wrap_content"
@@ -200,11 +195,11 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:padding="10dp"
                     android:id="@+id/storeinfo_info_evaluation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:padding="10dp">
 
                     <ImageButton
                         android:layout_width="wrap_content"
@@ -249,19 +244,16 @@
                         style="@style/storeinfo_info_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:text="서울시 강남구 테헤란로 606" />
+                        android:layout_marginRight="5dp" />
 
                     <TextView
-                        android:visibility="invisible"
                         style="@style/storeinfo_info_distance_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" 1.5km" />
+                        android:visibility="invisible" />
                 </LinearLayout>
 
                 <TextView
-
                     style="@style/storeinfo_info_title_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -278,8 +270,7 @@
                         android:id="@+id/storeinfo_phone_number"
                         style="@style/storeinfo_info_content"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="02-2016-1234" />
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <TextView
@@ -299,22 +290,19 @@
                         android:id="@+id/storeinfo_business_hours"
                         style="@style/storeinfo_info_content"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="예약가능, 주차가능" />
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         android:id="@+id/storeinfo_day_off"
                         style="@style/storeinfo_info_content"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="예약가능, 주차가능" />
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         android:id="@+id/storeinfo_info_content"
                         style="@style/storeinfo_info_content"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="예약가능, 주차가능" />
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
             </LinearLayout>
 

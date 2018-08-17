@@ -7,6 +7,6 @@
     <ImageView
         android:id="@+id/main_menu_recyler_item_image"
         android:layout_width="@dimen/activity_main_menu_image_width"
-        android:layout_height="@dimen/activity_main_menu_image_height"
-        />
+        android:layout_height="@dimen/activity_main_menu_image_height" />
+
 </LinearLayout>

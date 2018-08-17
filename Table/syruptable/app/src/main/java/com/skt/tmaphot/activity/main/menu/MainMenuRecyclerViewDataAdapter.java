@@ -27,7 +27,7 @@ public class MainMenuRecyclerViewDataAdapter extends RecyclerView.Adapter<MainMe
 
 
     public interface OnEventCilckListener {
-        void menuOnClick(int position);
+        void menuOnClick(String cate_id);
     }
 
     public void setOnEventCilckListener(OnEventCilckListener listener) {
@@ -60,16 +60,7 @@ public class MainMenuRecyclerViewDataAdapter extends RecyclerView.Adapter<MainMe
         context = parent.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View itemView = layoutInflater.inflate(R.layout.main_menu_recycler_item, parent, false);
-
         MainMenuRecyclerViewHolder holder = new MainMenuRecyclerViewHolder(itemView);
-//        itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-
-
 
         return holder;
     }
@@ -78,7 +69,6 @@ public class MainMenuRecyclerViewDataAdapter extends RecyclerView.Adapter<MainMe
     public void onBindViewHolder(MainMenuRecyclerViewHolder holder, final int position) {
         final MainMenuRecyclerViewItem viewItem = viewItemList.get(position);
         BaseApplication.getInstance().loadImage(context, viewItem.getRes(), holder.getImageView(), false, BaseApplication.getInstance().DEFAULT_ORIGINAL);
-//        holder.itemView.setOnClickListener(this);
 
         if(selectedPosition==position)
             holder.itemView.setSelected(true);
@@ -90,9 +80,17 @@ public class MainMenuRecyclerViewDataAdapter extends RecyclerView.Adapter<MainMe
             public void onClick(View v) {
                 selectedPosition=position;
                 notifyDataSetChanged();
-
+                onEventCilckListener.menuOnClick(viewItem.getMenuType());
             }
         });
+
+//        holder.getImageView().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                onEventCilckListener.menuOnClick(viewItem.getMenuType());
+//
+//            }
+//        });
 
     }
 
@@ -115,6 +113,6 @@ public class MainMenuRecyclerViewDataAdapter extends RecyclerView.Adapter<MainMe
 
     @Override
     public long getItemId(int position) {
-        return Long.valueOf(viewItemList.get(position).getMenuType());
+        return Long.valueOf(position);
     }
 }
