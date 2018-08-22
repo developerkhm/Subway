@@ -22,8 +22,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +33,6 @@ import com.skt.tmaphot.activity.bottom.ShopFragment;
 import com.skt.tmaphot.common.CommonUtil;
 import com.skt.tmaphot.navi.NaviMenuItem;
 import com.skt.tmaphot.navi.NaviMenuRecyclerViewAdapter;
-import com.skt.tmaphot.net.service.APIClient;
 import com.skt.tmaphot.net.service.LoginInfo;
 import com.skt.tmaphot.net.service.test.Album;
 import com.skt.tmaphot.net.service.test.DataTest;
@@ -50,10 +47,6 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends BaseActivity {
 
@@ -77,6 +70,7 @@ public class MainActivity extends BaseActivity {
     //navi
     private RecyclerView naviMenuRecyclerView;
     private NaviMenuRecyclerViewAdapter naviMenuRecyclerViewAdapter;
+    List<NaviMenuItem> naviMenuItems;
 
 
     @Override
@@ -113,6 +107,7 @@ public class MainActivity extends BaseActivity {
 
         naviMenuRecyclerView = (RecyclerView) findViewById(R.id.navi_menu_recyclerview);
 
+
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         profileImage = (ImageView) findViewById(R.id.nav_profile_image);
@@ -128,6 +123,45 @@ public class MainActivity extends BaseActivity {
                     drawer.closeDrawer(GravityCompat.START);
             }
         });
+
+        naviMenuItems = new ArrayList<>();
+        naviMenuItems.add(new NaviMenuItem("noti", "공지사항"));
+        naviMenuItems.add(new NaviMenuItem("shop", "SHOP"));
+        naviMenuItems.add(new NaviMenuItem("dining", "소셜다이닝"));
+        naviMenuItems.add(new NaviMenuItem("365", "배달365"));
+
+        naviMenuRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        naviMenuRecyclerView.setHasFixedSize(true);
+        naviMenuRecyclerViewAdapter = new NaviMenuRecyclerViewAdapter(naviMenuItems);
+        naviMenuRecyclerView.setAdapter(naviMenuRecyclerViewAdapter);
+        naviMenuRecyclerViewAdapter.setOnClickReceivedEvent(new NaviMenuRecyclerViewAdapter.ClickEventListener() {
+            @Override
+            public void onReceivedEvent(String menuId) {
+                Intent intent = new Intent(baceContext, WebViewActivity.class);
+
+                if (menuId.equals("noti")) {
+                    intent.putExtra("menuId", "noti");
+                }
+                if (menuId.equals("shop")) {
+                    intent.putExtra("menuId", "shop");
+                }
+                if (menuId.equals("dining")) {
+                    intent.putExtra("menuId", "dining");
+                }
+                if (menuId.equals("365")) {
+                    intent.putExtra("menuId", "365");
+                }
+                if (menuId.equals("내블로그")) {
+                    intent.putExtra("menuId", "내블로그");
+                }
+                if (menuId.equals("1:1문의")) {
+                    intent.putExtra("menuId", "1:1문의");
+                }
+
+                ActivityStart(intent, null);
+            }
+        });
+
 
         fab = (ImageButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -200,19 +234,6 @@ public class MainActivity extends BaseActivity {
     };
 
     private void setNavigation() {
-        List<NaviMenuItem> naviMenuItems = new ArrayList<>();
-        naviMenuItems.add(new NaviMenuItem("noti", "공지사항"));
-        naviMenuItems.add(new NaviMenuItem("shop", "SHOP"));
-        naviMenuItems.add(new NaviMenuItem("dining", "소셜다이닝"));
-        naviMenuItems.add(new NaviMenuItem("365", "배달365"));
-
-
-
-        naviMenuRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        naviMenuRecyclerView.setHasFixedSize(true);
-        naviMenuRecyclerViewAdapter = new NaviMenuRecyclerViewAdapter(naviMenuItems);
-        naviMenuRecyclerView.setAdapter(naviMenuRecyclerViewAdapter);
-
 
         if (!LoginInfo.getInstance().isLogin()) {   //logout state
 
@@ -222,8 +243,7 @@ public class MainActivity extends BaseActivity {
             profileInfoModify.setVisibility(View.INVISIBLE);
             login.setText("로그인/회원가입");
 
-            if(naviMenuItems.size() > 4)
-            {
+            if (naviMenuItems.size() > 4) {
                 naviMenuItems.remove(4);
                 naviMenuItems.remove(5);
                 naviMenuRecyclerViewAdapter.notifyDataSetChanged();

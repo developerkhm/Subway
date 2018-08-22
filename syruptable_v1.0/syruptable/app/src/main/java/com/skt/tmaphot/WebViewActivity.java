@@ -1,5 +1,7 @@
 package com.skt.tmaphot;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,16 +10,37 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.CookieSyncManager;
 
+import com.skt.tmaphot.activity.blog.MyBlogActivity;
 import com.skt.tmaphot.client.ShopWebChromeClient;
 import com.skt.tmaphot.client.ShopWebViewClient;
 
-public class SocialDiningWebViewActivity extends BaseWebViewActivity {
+public class WebViewActivity extends BaseWebViewActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        url = "https://shop.ordertable.co.kr/share";
+        Intent intent = getIntent();
+        String menuId = intent.getStringExtra("menuId");
+
+        if(menuId.equals("noti")){
+            finish();
+        }
+        if(menuId.equals("shop")){
+            url= "http://dev.ordertable.co.kr/";
+        }
+        if(menuId.equals("dining")){
+            url = "https://shop.ordertable.co.kr/share";
+        }
+        if(menuId.equals("365")){
+            url = "https://shop.ordertable.co.kr/delivery365";
+        }
+        if(menuId.equals("내블로그")){
+            ActivityStart(new Intent(baceContext, MyBlogActivity.class), null);
+        }
+        if(menuId.equals("1:1문의")){
+
+        }
 
         webView.setWebViewClient(new ShopWebViewClient(this, webView));
         webView.setWebChromeClient(new ShopWebChromeClient(this, webView));
@@ -62,12 +85,6 @@ public class SocialDiningWebViewActivity extends BaseWebViewActivity {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             CookieSyncManager.getInstance().stopSync();
         }
-    }
-
-    public void loginOk(){
-        Log.d("YUYU", "loginOk ");
-        finish();
-//        ActivityCompat.finishAffinity(this);
     }
 
     @Override

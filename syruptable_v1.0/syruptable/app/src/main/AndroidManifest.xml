@@ -87,7 +87,7 @@
         <activity android:name=".LoginWebViewActivity" />
         <activity android:name=".VideoActivity" />
         <activity android:name=".Delivery365WebViewActivity" />
-        <activity android:name=".SocialDiningWebViewActivity" />
+        <activity android:name=".WebViewActivity" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
