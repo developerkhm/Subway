@@ -69,6 +69,32 @@ public class APIClient {
         return retrofit.create(APIService.class);
     }
 
+    public APIService getClient2(String base_url) {
+
+        if(base_url != null && base_url.length() > 0){
+            BASE_URL = base_url;
+        }else{
+            BASE_URL = String.format("%s%s", DEFAULT_URL, VERSION);
+        }
+
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+//                .addInterceptor(interceptor)
+                .build();
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+//                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(LoganSquareConverterFactory.create())
+                .client(client)
+                .build();
+
+        return retrofit.create(APIService.class);
+    }
+
 //    private Interceptor interceptor = new Interceptor() {
 //        @Override
 //        public Response intercept(Chain chain) throws IOException {

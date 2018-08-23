@@ -125,7 +125,7 @@ public class StoreInfoActivity extends BaseActivity {
     private void fetchData(String id, String subpath) {
         progressON();
 
-        APIClient.getInstance().getClient(null).getStoreInfo(subpath, id)
+        APIClient.getInstance().getClient2(null).getStoreInfo(subpath, id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<StorePojo>() {
