@@ -1,6 +1,8 @@
 package com.skt.tmaphot.activity.main.hotplace;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -16,12 +18,12 @@ import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.main.coupon.CouponRecyclerViewDataAdapter;
 import com.skt.tmaphot.common.CommonUtil;
 
-public class HotPlaceRecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+public class HotPlaceRecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     public Context mContext;
     public ImageView mImgUrl;
     public TextView mTitle;
-//    public TextView mReview;
+    //    public TextView mReview;
     public TextView mStoreType;
     public TextView mReviewCount;
     public TextView mDistance;
@@ -44,7 +46,6 @@ public class HotPlaceRecyclerViewHolder extends RecyclerView.ViewHolder implemen
 
         ratingBar = (RatingBar) itemView.findViewById(R.id.hotplace_ratingBar);
         CommonUtil.getInstance().setColorRatingBar(ratingBar);
-        ratingBar.setStepSize(0.1f);
         mImgUrl = (ImageView) itemView.findViewById(R.id.hotplace_grid_item_image);
         mTitle = (TextView) itemView.findViewById(R.id.hotplace_grid_txt_title);
 //        mReview = (TextView) itemView.findViewById(R.id.hotplace_review);

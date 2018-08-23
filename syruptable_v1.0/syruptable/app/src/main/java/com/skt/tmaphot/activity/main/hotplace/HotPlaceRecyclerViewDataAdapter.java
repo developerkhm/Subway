@@ -20,6 +20,7 @@ public class HotPlaceRecyclerViewDataAdapter extends RecyclerView.Adapter<HotPla
     private Context mContext;
     private List<HotplaceModel> viewItemList = new ArrayList<>();
 
+
     public HotPlaceRecyclerViewDataAdapter(List<HotplaceModel> viewItemList) {
         this.viewItemList.addAll(viewItemList);
     }
@@ -43,10 +44,8 @@ public class HotPlaceRecyclerViewDataAdapter extends RecyclerView.Adapter<HotPla
         return holder;
     }
 
-
     @Override
     public void onBindViewHolder(HotPlaceRecyclerViewHolder holder, final int position) {
-
         BaseApplication.getInstance().loadImage(mContext, viewItemList.get(position).getRecentImage(), holder.mImgUrl, false, BaseApplication.getInstance().LIST_HORIZONTAL_HOTPLACE);
         holder.ratingBar.setRating(Float.valueOf(viewItemList.get(position).getStarRating()));
         holder.mTitle.setText(viewItemList.get(position).getNAME());

@@ -282,13 +282,17 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="10dp" />
 
-            <Button
+            <com.beardedhen.androidbootstrap.BootstrapButton
                 android:id="@+id/hotplace_bottom_more"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="더보기"
-                android:visibility="gone" />
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                app:bootstrapBrand="success"
+                app:bootstrapSize="lg"
+                app:buttonMode="regular"
+                app:showOutline="false"
+                app:roundedCorners="true"
+                android:visibility="gone"/>
 
             <ProgressBar
                 android:id="@+id/hotplace_bottom_progress"
@@ -296,7 +300,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:visibility="invisible" />
-
 
         </LinearLayout>
     </com.skt.tmaphot.NestedScrollingView>

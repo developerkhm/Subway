@@ -16,9 +16,9 @@
             android:id="@+id/hotplace_grid_item_image"
             android:layout_width="match_parent"
             android:layout_height="@dimen/activity_main_hotplace_grid_image_height"
-            android:scaleType="fitXY"
+            android:layout_gravity="center_horizontal"
             android:adjustViewBounds="true"
-            android:layout_gravity="center_horizontal" />
+            android:scaleType="fitXY" />
 
     </android.support.v7.widget.CardView>
 
@@ -33,7 +33,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:isIndicator="true" />
+            android:isIndicator="true"
+            android:stepSize="0.1" />
 
         <TextView
             android:id="@+id/hotplace_grid_txt_title"
@@ -103,7 +104,6 @@
             android:layout_toRightOf="@+id/hotplace_review_divid" />
     </RelativeLayout>
 </LinearLayout>
-
 
 
 

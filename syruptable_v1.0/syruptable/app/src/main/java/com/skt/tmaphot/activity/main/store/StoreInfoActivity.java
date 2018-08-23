@@ -35,6 +35,8 @@ import com.skt.tmaphot.net.model.store.Instum;
 import com.skt.tmaphot.net.model.store.StoreInfoModel;
 import com.skt.tmaphot.net.service.APIClient;
 import com.skt.tmaphot.net.service.APIService;
+import com.skt.tmaphot.net.service.test.pojo.InstaItem;
+import com.skt.tmaphot.net.service.test.pojo.StorePojo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,14 +128,14 @@ public class StoreInfoActivity extends BaseActivity {
         APIClient.getInstance().getClient(null).getStoreInfo(subpath, id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<StoreInfoModel>() {
+                .subscribe(new Observer<StorePojo>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(StoreInfoModel storeInfoModel) {
+                    public void onNext(StorePojo storeInfoModel) {
                         setStoreInfo(storeInfoModel);
                     }
 
@@ -218,7 +220,7 @@ public class StoreInfoActivity extends BaseActivity {
 
     public class ReviewImageRecyclerViewDataAdapter extends RecyclerView.Adapter<ReviewImageViewHolder> implements View.OnClickListener {
         private Context mContext;
-        private List<Instum> viewItemList = new ArrayList<>();
+        private List<InstaItem> viewItemList = new ArrayList<>();
 
         public ReviewImageRecyclerViewDataAdapter() {
 
@@ -252,7 +254,7 @@ public class StoreInfoActivity extends BaseActivity {
             ActivityStart(intent, null);
         }
 
-        public void fetchData(List<Instum> instums) {
+        public void fetchData(List<InstaItem> instums) {
             viewItemList.addAll(instums);
             this.notifyDataSetChanged();
         }
@@ -297,7 +299,7 @@ public class StoreInfoActivity extends BaseActivity {
         });
     }
 
-    private void setStoreInfo(StoreInfoModel storeInfo) {
+    private void setStoreInfo(StorePojo storeInfo) {
 
         // 임시 아직 List로 데이터 값 없음
         final List<String> stroeImageList = new ArrayList<>();

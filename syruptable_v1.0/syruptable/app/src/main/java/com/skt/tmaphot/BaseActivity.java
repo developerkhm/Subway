@@ -42,8 +42,7 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class
-BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity {
     public Context baceContext;
     public TextView topAppbarText;
     protected Toolbar toolbar;
@@ -58,7 +57,7 @@ BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        APIClient.getInstance().getClient(null).getUserInfo()
+        APIClient.getInstance().getClient(null).getUserInfo(LoginInfo.getInstance().getUserId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(new Observer<UserInfoModel>() {

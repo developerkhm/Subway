@@ -3,6 +3,7 @@ package com.skt.tmaphot;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,7 +24,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.skt.tmaphot.activity.bottom.EventFragment;
 import com.skt.tmaphot.activity.bottom.MainFragment;
@@ -33,6 +33,7 @@ import com.skt.tmaphot.activity.bottom.ShopFragment;
 import com.skt.tmaphot.common.CommonUtil;
 import com.skt.tmaphot.navi.NaviMenuItem;
 import com.skt.tmaphot.navi.NaviMenuRecyclerViewAdapter;
+import com.skt.tmaphot.net.service.APIClient;
 import com.skt.tmaphot.net.service.LoginInfo;
 import com.skt.tmaphot.net.service.test.Album;
 import com.skt.tmaphot.net.service.test.DataTest;
@@ -47,6 +48,10 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends BaseActivity {
 
@@ -71,7 +76,6 @@ public class MainActivity extends BaseActivity {
     private RecyclerView naviMenuRecyclerView;
     private NaviMenuRecyclerViewAdapter naviMenuRecyclerViewAdapter;
     List<NaviMenuItem> naviMenuItems;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -268,6 +272,25 @@ public class MainActivity extends BaseActivity {
             naviMenuRecyclerViewAdapter.notifyDataSetChanged();
 
             login.setText("로그아웃");
+            login.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Call<ResponseBody> call = APIClient.getInstance().getClient("").logout(LoginInfo.getInstance().getUserId());
+                    call.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            LoginInfo.getInstance().setUserId("");
+                            ActivityStart(new Intent(baceContext, MainActivity.class),null);
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                        }
+                    });
+
+                }
+            });
         }
     }
 
@@ -342,8 +365,6 @@ public class MainActivity extends BaseActivity {
                     backPressedTime = tempTime;
 
                     CommonUtil.getInstance().custom_toast(baceContext, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.");
-
-                    Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -376,9 +397,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onNext(DataTest dataTest) {
                 Log.d("Test", "onNext");
-
                 Log.d("Test", dataTest.getAlbums().get(0).getTitle());
-
 
             }
 

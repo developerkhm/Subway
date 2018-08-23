@@ -147,21 +147,21 @@ public class ShopWebViewClient extends WebViewClient {
                 CookieManager.getInstance().flush();
             }
 
-            CookieManager cookieManager = CookieManager.getInstance();
-            String cookies = cookieManager.getCookie(url);
-            String[] cookieValues = cookies.split(";");
-            Log.d("MY12", cookies.toString());
-
-            for(int v = 0; v < cookieValues.length ; v++){
-                String[] cookie = cookieValues[v].split("=");
-                for(int c = 0; c < cookie.length ; c++){
-                    if(cookie[c].trim().equals("ci_session"))
-                    {
-                        LoginInfo.getInstance().setUserId(cookie[1]);
-//                        BaseApplication.getInstance().ActivityStart(new Intent(activity, MainActivity.class),null);
-                    }
-                }
-            }
+//            CookieManager cookieManager = CookieManager.getInstance();
+//            String cookies = cookieManager.getCookie(url);
+//            String[] cookieValues = cookies.split(";");
+//            Log.d("MY12", cookies.toString());
+//
+//            for(int v = 0; v < cookieValues.length ; v++){
+//                String[] cookie = cookieValues[v].split("=");
+//                for(int c = 0; c < cookie.length ; c++){
+//                    if(cookie[c].trim().equals("ci_session"))
+//                    {
+//                        LoginInfo.getInstance().setUserId(cookie[1]);
+////                        BaseApplication.getInstance().ActivityStart(new Intent(activity, MainActivity.class),null);
+//                    }
+//                }
+//            }
 
         } catch (Exception e) {
             e.printStackTrace();

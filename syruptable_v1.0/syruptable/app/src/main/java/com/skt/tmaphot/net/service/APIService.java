@@ -3,6 +3,7 @@ package com.skt.tmaphot.net.service;
 import com.skt.tmaphot.net.model.hotplace.HotplaceModel;
 import com.skt.tmaphot.net.model.store.StoreInfoModel;
 import com.skt.tmaphot.net.model.user.UserInfoModel;
+import com.skt.tmaphot.net.service.test.pojo.StorePojo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,21 +52,32 @@ public interface APIService {
 //    );
 
     @POST("users/info")
-    Observable<UserInfoModel> getUserInfo();
+    @FormUrlEncoded
+    Observable<UserInfoModel> getUserInfo(
+            @Field("id") String id
+    );
+
+//    @POST("{subpath}/{id}")
+//    Observable<StoreInfoModel> getStoreInfo(
+//            @Path("subpath") String subpath,
+//            @Path("id") String id);
+
+    @POST("users/logout")
+    @FormUrlEncoded
+    Call<ResponseBody> logout(
+            @Field("id") String id
+    );
+
 
     @POST("{subpath}/{id}")
-    Observable<StoreInfoModel> getStoreInfo(
+    Observable<StorePojo> getStoreInfo(
             @Path("subpath") String subpath,
             @Path("id") String id);
 
 
-//    @POST("users/logout")
-//    Call<ResponseBody> logout(
-//            @Field("id") String id
-//    );
 
-    @POST("logout")
-    Call<ResponseBody> logout();
+//    @POST("logout")
+//    Call<ResponseBody> logout();
 
 
     // previous code for single file uploads

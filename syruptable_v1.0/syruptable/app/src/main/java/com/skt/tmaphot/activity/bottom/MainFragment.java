@@ -16,11 +16,12 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.HotPlaceResultActivity;
 import com.skt.tmaphot.MainActivity;
-import com.skt.tmaphot.R;
 import com.skt.tmaphot.NestedScrollingView;
+import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.main.banner.RollingAdapter;
 import com.skt.tmaphot.activity.main.banner.RollingAutoManager;
 import com.skt.tmaphot.activity.main.banner.RollingIndicatorView;
@@ -31,6 +32,7 @@ import com.skt.tmaphot.activity.main.coupon.more.CouponListActivity;
 import com.skt.tmaphot.activity.main.hotdeal.HotdealRecyclerViewDataAdapter;
 import com.skt.tmaphot.activity.main.hotdeal.HotdealRecyclerViewItem;
 import com.skt.tmaphot.activity.main.hotdeal.more.HotdealListActivity;
+import com.skt.tmaphot.activity.main.hotplace.HotPlaceRecyclerViewDataAdapter;
 import com.skt.tmaphot.activity.main.menu.MainMenuRecyclerViewDataAdapter;
 import com.skt.tmaphot.activity.main.menu.MainMenuRecyclerViewItem;
 import com.skt.tmaphot.activity.main.review.RealReviewRecyclerViewDataAdapter;
@@ -42,7 +44,6 @@ import com.skt.tmaphot.fragment.BaseFragment;
 import com.skt.tmaphot.location.GPSData;
 import com.skt.tmaphot.net.model.hotplace.HotplaceModel;
 import com.skt.tmaphot.net.service.APIClient;
-import com.skt.tmaphot.activity.main.hotplace.HotPlaceRecyclerViewDataAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +80,7 @@ public class MainFragment extends BaseFragment {
     private int hotplace_curruntPage = 0;
     private TextView hotplace_pop, hotplace_distance;
     private final int per_page = 20;
-    private Button hotplace_bottom_more;
+    private BootstrapButton hotplace_bottom_more;
 
     // 메뉴
     private String menuType = "";
@@ -167,17 +168,18 @@ public class MainFragment extends BaseFragment {
                 recyclerView.setAdapter(menuRecyclerViewDataAdapter);
 
 
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("", "", R.drawable.img_main_menu_0));    //전체
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-01", "", R.drawable.img_main_menu_1));   //한식
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-04", "", R.drawable.img_main_menu_2));   //중식
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-03", "", R.drawable.img_main_menu_3));   //일식
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-02", "", R.drawable.img_main_menu_4));   //양식
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-09", "", R.drawable.img_main_menu_5));   //분식
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-10", "", R.drawable.img_main_menu_6));   //뷔페
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-13", "", R.drawable.img_main_menu_7));   //술집
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("02-01", "", R.drawable.img_main_menu_8));   //카페
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-07", "", R.drawable.img_main_menu_9));   //치킨, 피자, 햄버거=> 패스트 푸드
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-08", "", R.drawable.img_main_menu_10));  //세계음식
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("", "", R.drawable.img_main_menu));           //전체
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-01", "", R.drawable.img_main_menu_01));   //한식
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-04", "", R.drawable.img_main_menu_02));   //중식
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-03", "", R.drawable.img_main_menu_03));   //일식
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-02", "", R.drawable.img_main_menu_04));   //양식
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-09", "", R.drawable.img_main_menu_05));   //분식
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-10", "", R.drawable.img_main_menu_06));   //뷔페
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-13", "", R.drawable.img_main_menu_07));   //술집
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("02-01", "", R.drawable.img_main_menu_08));   //카페
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-05", "", R.drawable.img_main_menu_09));   //치킨
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-07", "", R.drawable.img_main_menu_10));   //피자, 햄버거=> 패스트 푸드
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-08", "", R.drawable.img_main_menu_11));   //세계음식
 
                 menuRecyclerViewDataAdapter.notifyDataSetChanged();
 
@@ -392,12 +394,10 @@ public class MainFragment extends BaseFragment {
 
         bottomProgressBar = (ProgressBar) rootView.findViewById(R.id.hotplace_bottom_progress);
 
-        hotplace_bottom_more = (Button) rootView.findViewById(R.id.hotplace_bottom_more);
+        hotplace_bottom_more = (BootstrapButton) rootView.findViewById(R.id.hotplace_bottom_more);
     }
 
     private void loadData_Hotplace(int hotplace_sortType) {
-
-
 
         if (hotPlaceRecyclerViewDataAdapter.getItemCount() >= 60) {
 

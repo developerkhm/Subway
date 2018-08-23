@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -78,6 +79,9 @@ public class BaseApplication extends Application {
         Typekit.getInstance()
                 .addNormal(Typekit.createFromAsset(this, "fonts/NanumBarunGothic.otf"))
                 .addBold(Typekit.createFromAsset(this, "fonts/NanumBarunGothicBold.otf"));
+
+        TypefaceProvider.registerDefaultIconSets();
+
     }
 
 
