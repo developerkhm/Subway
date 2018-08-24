@@ -16,18 +16,14 @@ import java.util.List;
 
 public class MainMenuRecyclerViewDataAdapter extends RecyclerView.Adapter<MainMenuRecyclerViewHolder>{
 
-    int selectedPosition= 0;
+    private int selectedPosition= 0;
 
     private Context context;
     private List<MainMenuRecyclerViewItem> viewItemList;
     private OnEventCilckListener onEventCilckListener;
-    private View slectView;
-
-
-
 
     public interface OnEventCilckListener {
-        void menuOnClick(String cate_id);
+        void menuOnClick(MainMenuRecyclerViewItem mainMenuRecyclerViewItem);
     }
 
     public void setOnEventCilckListener(OnEventCilckListener listener) {
@@ -80,7 +76,7 @@ public class MainMenuRecyclerViewDataAdapter extends RecyclerView.Adapter<MainMe
             public void onClick(View v) {
                 selectedPosition=position;
                 notifyDataSetChanged();
-                onEventCilckListener.menuOnClick(viewItem.getMenuType());
+                onEventCilckListener.menuOnClick(viewItemList.get(position));
             }
         });
 

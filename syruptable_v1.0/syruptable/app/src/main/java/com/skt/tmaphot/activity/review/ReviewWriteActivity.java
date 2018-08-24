@@ -829,10 +829,12 @@ public class ReviewWriteActivity extends BaseActivity {
     private void alertPopup(int max_count) {
 
         new MaterialStyledDialog.Builder(this)
-                .setTitle(R.string.app_name)
+//                .setTitle(R.string.app_name)
                 .setDescription("최대 총 " + max_count + "개 까지 첨부 가능합니다.")
-                .setStyle(Style.HEADER_WITH_TITLE)
-                .setHeaderColor(R.color.colorBlack)
+//                .setStyle(Style.HEADER_WITH_TITLE)
+                .setHeaderColor(R.color.text_gray_d4)
+                .setHeaderDrawable(R.drawable.ic_sms_failed)
+                .setHeaderScaleType(ImageView.ScaleType.FIT_CENTER)
                 .setPositiveText("확인")
                 .withDialogAnimation(true)
                 .show();
@@ -858,10 +860,13 @@ public class ReviewWriteActivity extends BaseActivity {
     private void alertContentPopup(EditText editText) {
 
         new MaterialStyledDialog.Builder(this)
-                .setTitle(R.string.app_name)
+//                .setTitle(R.string.app_name)
                 .setDescription("내용을 입력해주세요.")
-                .setStyle(Style.HEADER_WITH_TITLE)
-                .setHeaderColor(R.color.colorBlack)
+//                .setStyle(Style.HEADER_WITH_TITLE)
+//                .setHeaderColor(R.color.colorBlack)
+                .setHeaderColor(R.color.text_gray_d4)
+                .setHeaderDrawable(R.drawable.ic_sms_failed)
+                .setHeaderScaleType(ImageView.ScaleType.FIT_CENTER)
                 .setPositiveText("확인")
                 .withDialogAnimation(true)
                 .show();

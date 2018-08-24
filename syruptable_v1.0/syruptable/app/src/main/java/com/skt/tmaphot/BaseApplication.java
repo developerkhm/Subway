@@ -111,8 +111,10 @@ public class BaseApplication extends Application {
                 height = 50;
                 break;
             case LIST_HORIZONTAL_HOTPLACE:
-                width = 160;
-                height = 200;
+//                width = 160;
+//                height = 200;
+                width = Target.SIZE_ORIGINAL;
+                height = Target.SIZE_ORIGINAL;
                 break;
             case LIST_HORIZONTAL_MORE:
                 width = 500;
@@ -134,9 +136,10 @@ public class BaseApplication extends Application {
 
         RequestOptions requestOptions = null;
         if (isRound) {
-            requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).circleCrop().error(R.drawable.img_error);
+            requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).error(R.drawable.img_error).circleCrop();
         } else {
             requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).error(R.drawable.img_error).centerCrop().override(width, height);
+//            requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).error(R.drawable.img_error);
         }
 
         Glide.with(context)
@@ -217,10 +220,13 @@ public class BaseApplication extends Application {
 
 
         new MaterialStyledDialog.Builder(this)
-                .setTitle(R.string.app_name)
-                .setDescription("위치 정보 권한이 필요합니다. \"아니요\" 선택시 앱을 종료합니다. \"동의\" 선택시 설정화면 이동합니다. 화면 하단에 \"권한\"을 터치하여 \"위치 정보\"를 활성화 해주세요.")
-                .setStyle(Style.HEADER_WITH_TITLE)
-                .setHeaderColor(R.color.colorBlack)
+//                .setTitle(R.string.app_name)
+                .setDescription("네트워크 상태를 확인해 주세요.\n 앱을 종료합니다.")
+//                .setStyle(Style.HEADER_WITH_TITLE)
+//                .setHeaderColor(R.color.colorBlack)
+                .setHeaderColor(R.color.text_gray_d4)
+                .setHeaderDrawable(R.drawable.ic_sms_failed)
+                .setHeaderScaleType(ImageView.ScaleType.FIT_CENTER)
                 .setPositiveText("확인")
                 .withDialogAnimation(true)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {

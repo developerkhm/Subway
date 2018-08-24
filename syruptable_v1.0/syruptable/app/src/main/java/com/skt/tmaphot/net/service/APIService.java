@@ -1,6 +1,6 @@
 package com.skt.tmaphot.net.service;
 
-import com.skt.tmaphot.net.model.hotplace.HotplaceModel;
+import com.skt.tmaphot.net.model.hotplace.HotplacePojo;
 import com.skt.tmaphot.net.model.store.StoreInfoModel;
 import com.skt.tmaphot.net.model.user.UserInfoModel;
 import com.skt.tmaphot.net.service.test.pojo.StorePojo;
@@ -31,19 +31,21 @@ public interface APIService {
 
     @POST("hotplace/getList")
     @FormUrlEncoded
-    Observable<List<HotplaceModel>> getHotplaceList(
+    Observable<HotplacePojo> getHotplaceList(
             @Field("page") int page,
             @Field("per_page") int per_page,
             @Field("lat") double lat,
             @Field("lng") double lng,
             @Field("sort") int sort,
-            @Field("cate") String cate
+            @Field("large_cd") String large_cd,
+            @Field("middle_cd") String middle_cd,
+            @Field("small_cd") String small_cd
     );
 
 
 //    @POST("hotplace/getList")
 //    @FormUrlEncoded
-//    Call<List<HotplaceModel>> getHotplaceList(
+//    Call<List<HotplacePojo>> getHotplaceList(
 //            @Field("page") int page,
 //            @Field("per_page") int per_page,
 //            @Field("lat") double lat,

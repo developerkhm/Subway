@@ -38,8 +38,10 @@ public class MyBlogFragment extends BaseFragment {
         new MaterialStyledDialog.Builder(getContext())
                 .setTitle(R.string.app_name)
                 .setDescription("로그인이 필요합니다.")
-                .setStyle(Style.HEADER_WITH_TITLE)
-                .setHeaderColor(R.color.colorBlack)
+//                .setStyle(Style.HEADER_WITH_TITLE)
+//                .setHeaderColor(R.color.colorBlack)
+                .setHeaderColor(R.color.text_gray_d4)
+                .setHeaderDrawable(R.drawable.ic_sms_failed)
                 .setPositiveText("네")
                 .withDialogAnimation(true)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {

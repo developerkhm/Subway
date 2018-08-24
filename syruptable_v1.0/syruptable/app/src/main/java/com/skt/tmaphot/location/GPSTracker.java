@@ -18,6 +18,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -337,10 +338,13 @@ public class GPSTracker implements LocationListener {
     public boolean failGps(final Context ctx) {
 
         new MaterialStyledDialog.Builder(ctx)
-                .setTitle(R.string.app_name)
-                .setDescription("위치 정보가 정확하지 않습니다.\n재탐색 하시겠습니까?")
-                .setStyle(Style.HEADER_WITH_TITLE)
-                .setHeaderColor(R.color.colorBlack)
+//                .setTitle(R.string.app_name)
+                .setDescription("현재 위치 정보가 정확하지 않습니다.\n\'재 탐색\'이 필요합니다.")
+//                .setStyle(Style.HEADER_WITH_TITLE)
+//                .setHeaderColor(R.color.colorBlack)
+                .setHeaderColor(R.color.text_gray_d4)
+                .setHeaderDrawable(R.drawable.ic_sms_failed)
+                .setHeaderScaleType(ImageView.ScaleType.FIT_CENTER)
                 .setPositiveText("네")
                 .withDialogAnimation(true)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {

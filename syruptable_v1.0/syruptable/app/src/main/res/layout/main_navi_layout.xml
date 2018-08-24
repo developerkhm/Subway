@@ -50,14 +50,14 @@
             android:layout_marginTop="13dp"
             android:text="@string/nav_header_subtitle" />
 
-        <TextView
+        <ImageView
             android:id="@+id/navi_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:padding="20dp"
-            style="@style/navi_nickname"
-            android:text="@string/nav_header_close" />
+            android:src="@drawable/ic_highlight_off"
+            style="@style/navi_nickname" />
 
     </RelativeLayout>
 

@@ -60,8 +60,8 @@ public class MainActivity extends BaseActivity {
     public BottomNavigationView navigation;
     public ImageButton fab;
 
-    private ImageView profileImage;
-    private TextView profileInfoModify, profileName, profileEmail, navi_close;
+    private ImageView profileImage, navi_close;
+    private TextView profileInfoModify, profileName, profileEmail;
     private Button login;
     private MainFragment mainFragment;
     private RealReviewFragment realReviewFragment;
@@ -90,6 +90,9 @@ public class MainActivity extends BaseActivity {
         actionBar.setDisplayShowTitleEnabled(false);
 
         mainFragment = new MainFragment();
+        realReviewFragment =  new RealReviewFragment();
+        eventFragment = new EventFragment();
+        myBlogFragment = new MyBlogFragment();
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.fragment_content, mainFragment).commit();
 
@@ -118,7 +121,7 @@ public class MainActivity extends BaseActivity {
         profileInfoModify = (TextView) findViewById(R.id.nav_profile_modify);
         profileName = (TextView) findViewById(R.id.nav_profile_name);
         profileEmail = (TextView) findViewById(R.id.nav_profile_email);
-        navi_close = (TextView) findViewById(R.id.navi_close);
+        navi_close = (ImageView) findViewById(R.id.navi_close);
         login = (Button) findViewById(R.id.main_navigation_login_btn);
         navi_close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,21 +201,27 @@ public class MainActivity extends BaseActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     fab.setVisibility(View.VISIBLE);
-                    mainFragment = new MainFragment();
+                    if(mainFragment == null)
+                        mainFragment = new MainFragment();
+
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                             .replace(R.id.fragment_content, mainFragment).commit();
                     return true;
                 case R.id.navigation_review:
                     fab.setVisibility(View.VISIBLE);
-                    realReviewFragment = new RealReviewFragment();
+                    if(realReviewFragment == null)
+                        realReviewFragment = new RealReviewFragment();
+
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                             .replace(R.id.fragment_content, realReviewFragment).commit();
                     return true;
                 case R.id.navigation_event:
                     fab.setVisibility(View.GONE);
-                    eventFragment = new EventFragment();
+                    if(eventFragment == null)
+                        eventFragment = new EventFragment();
+
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                             .replace(R.id.fragment_content, eventFragment).commit();
@@ -220,14 +229,18 @@ public class MainActivity extends BaseActivity {
                 case R.id.navigation_shop:
                     fab.setVisibility(View.GONE);
                     toolbar.setVisibility(View.GONE);
-                    shopFragment = new ShopFragment();
+                    if(shopFragment == null)
+                        shopFragment = new ShopFragment();
+
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                             .replace(R.id.fragment_content, shopFragment).commit();
                     return true;
                 case R.id.navigation_myblog:
                     fab.setVisibility(View.GONE);
-                    myBlogFragment = new MyBlogFragment();
+                    if(myBlogFragment == null)
+                        myBlogFragment = new MyBlogFragment();
+
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                             .replace(R.id.fragment_content, myBlogFragment).commit();
@@ -364,7 +377,7 @@ public class MainActivity extends BaseActivity {
                 } else {
                     backPressedTime = tempTime;
 
-                    CommonUtil.getInstance().custom_toast(baceContext, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.");
+                    CommonUtil.getInstance().custom_toast(baceContext, "\'뒤로\' 한번 더 누르면 종료됩니다.");
                 }
             }
         }

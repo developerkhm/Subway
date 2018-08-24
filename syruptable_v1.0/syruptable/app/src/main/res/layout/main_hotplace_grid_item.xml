@@ -10,6 +10,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         app:cardCornerRadius="10dp">
 
         <ImageView
@@ -17,8 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/activity_main_hotplace_grid_image_height"
             android:layout_gravity="center_horizontal"
+            android:background="@color/teal_100"
             android:adjustViewBounds="true"
-            android:scaleType="fitXY" />
+            android:scaleType="fitCenter" />
 
     </android.support.v7.widget.CardView>
 

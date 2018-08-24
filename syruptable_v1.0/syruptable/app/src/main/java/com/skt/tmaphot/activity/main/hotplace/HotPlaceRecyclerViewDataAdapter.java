@@ -10,7 +10,8 @@ import android.view.ViewGroup;
 import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.activity.main.store.StoreInfoActivity;
-import com.skt.tmaphot.net.model.hotplace.HotplaceModel;
+import com.skt.tmaphot.net.model.hotplace.StoreListItem;
+import com.skt.tmaphot.net.model.hotplace.StoreListItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +19,10 @@ import java.util.List;
 public class HotPlaceRecyclerViewDataAdapter extends RecyclerView.Adapter<HotPlaceRecyclerViewHolder> {
 
     private Context mContext;
-    private List<HotplaceModel> viewItemList = new ArrayList<>();
+    private List<StoreListItem> viewItemList = new ArrayList<>();
 
 
-    public HotPlaceRecyclerViewDataAdapter(List<HotplaceModel> viewItemList) {
+    public HotPlaceRecyclerViewDataAdapter(List<StoreListItem> viewItemList) {
         this.viewItemList.addAll(viewItemList);
     }
 
@@ -46,15 +47,15 @@ public class HotPlaceRecyclerViewDataAdapter extends RecyclerView.Adapter<HotPla
 
     @Override
     public void onBindViewHolder(HotPlaceRecyclerViewHolder holder, final int position) {
-        BaseApplication.getInstance().loadImage(mContext, viewItemList.get(position).getRecentImage(), holder.mImgUrl, false, BaseApplication.getInstance().LIST_HORIZONTAL_HOTPLACE);
+        BaseApplication.getInstance().loadImage(mContext, viewItemList.get(position).getthumbUrl(), holder.mImgUrl, false, BaseApplication.getInstance().LIST_HORIZONTAL_HOTPLACE);
         holder.ratingBar.setRating(Float.valueOf(viewItemList.get(position).getStarRating()));
         holder.mTitle.setText(viewItemList.get(position).getNAME());
-        holder.mStoreType.setText(viewItemList.get(position).getCategoryLName() + "·" + viewItemList.get(position).getCategoryName());
+        holder.mStoreType.setText(viewItemList.get(position).getCategoryName());
         holder.mReviewCount.setText(viewItemList.get(position).getBlogReviewCount());
         holder.mDistance.setText(viewItemList.get(position).getDk()+"km"  +" "+ viewItemList.get(position).getDm());
     }
 
-    public void loadData(List<HotplaceModel> viewItemList) {
+    public void loadData(List<StoreListItem> viewItemList) {
         this.viewItemList.addAll(viewItemList);
         notifyDataSetChanged();
     }
@@ -63,14 +64,14 @@ public class HotPlaceRecyclerViewDataAdapter extends RecyclerView.Adapter<HotPla
         this.viewItemList.clear();
     }
 
-    public String getDatatotalCount(){
-        String count = "0";
-        if(viewItemList != null)
-            if(viewItemList.size() > 0){
-                count = viewItemList.get(0).getTotalCount();
-            }
-            return count;
-    }
+//    public String getDatatotalCount(){
+//        String count = "0";
+//        if(viewItemList != null)
+//            if(viewItemList.size() > 0){
+//                count = viewItemList.get(0).getTotalCount();
+//            }
+//            return count;
+//    }
 
     @Override
     public int getItemCount() {

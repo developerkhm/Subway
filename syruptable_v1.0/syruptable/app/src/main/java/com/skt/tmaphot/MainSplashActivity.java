@@ -140,10 +140,13 @@ public class MainSplashActivity extends AppCompatActivity {
         if (!isGPSEnabled) {
 
             new MaterialStyledDialog.Builder(this)
-                    .setTitle(R.string.app_name)
-                    .setDescription("정확한 위치를 위해 GPS 활성화가 필요합니다.")
-                    .setStyle(Style.HEADER_WITH_TITLE)
-                    .setHeaderColor(R.color.colorBlack)
+//                    .setTitle(R.string.app_name)
+                    .setDescription("정확한 위치 정보를 위해 GPS 활성화가 필요합니다.")
+//                    .setStyle(Style.HEADER_WITH_TITLE)
+//                    .setHeaderColor(R.color.colorBlack)
+                    .setHeaderColor(R.color.text_gray_d4)
+                    .setHeaderDrawable(R.drawable.ic_sms_failed)
+                    .setHeaderScaleType(ImageView.ScaleType.FIT_CENTER)
                     .setPositiveText("네")
                     .withDialogAnimation(true)
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -204,10 +207,13 @@ public class MainSplashActivity extends AppCompatActivity {
     private void retryGpsEnablePopup() {
 
         new MaterialStyledDialog.Builder(this)
-                .setTitle(R.string.app_name)
-                .setDescription("종료 하시겠습니까? \"아니요\" 선택시 위치정보 설정 화면으로 이동, \"예\"를 선택하면 종료 됩니다.")
-                .setStyle(Style.HEADER_WITH_TITLE)
-                .setHeaderColor(R.color.colorBlack)
+//                .setTitle(R.string.app_name)
+                .setDescription("종료 하시겠습니까?  \n \"아니요\" 위치정보 설정 화면으로 이동 \n \"네\" 종료")
+//                .setStyle(Style.HEADER_WITH_TITLE)
+//                .setHeaderColor(R.color.colorBlack)
+                .setHeaderColor(R.color.text_gray_d4)
+                .setHeaderDrawable(R.drawable.ic_sms_failed)
+                .setHeaderScaleType(ImageView.ScaleType.FIT_CENTER)
                 .setPositiveText("네")
                 .withDialogAnimation(true)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -252,10 +258,13 @@ public class MainSplashActivity extends AppCompatActivity {
     private void retryGpsSettingPopup() {
 
         new MaterialStyledDialog.Builder(this)
-                .setTitle(R.string.app_name)
-                .setDescription("위치 정보 권한이 필요합니다. \"아니요\" 선택시 앱을 종료합니다. \"동의\" 선택시 설정화면 이동합니다. 화면 하단에 \"권한\"을 터치하여 \"위치 정보\"를 활성화 해주세요.")
-                .setStyle(Style.HEADER_WITH_TITLE)
-                .setHeaderColor(R.color.colorBlack)
+//                .setTitle(R.string.app_name)
+                .setDescription("위치 정보 권한이 필요합니다.\n \"아니요\" 앱을 종료\n \"동의\" 설정화면 이동\n (화면 하단 \'권한\'설정, \'위치 정보\'를 활성화)")
+//                .setStyle(Style.HEADER_WITH_TITLE)
+//                .setHeaderColor(R.color.colorBlack)
+                .setHeaderColor(R.color.text_gray_d4)
+                .setHeaderDrawable(R.drawable.ic_sms_failed)
+                .setHeaderScaleType(ImageView.ScaleType.FIT_CENTER)
                 .setPositiveText("네")
                 .withDialogAnimation(true)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {

@@ -42,7 +42,8 @@ import com.skt.tmaphot.activity.search.SearchActivity;
 import com.skt.tmaphot.common.CommonUtil;
 import com.skt.tmaphot.fragment.BaseFragment;
 import com.skt.tmaphot.location.GPSData;
-import com.skt.tmaphot.net.model.hotplace.HotplaceModel;
+import com.skt.tmaphot.net.model.hotplace.HotplacePojo;
+import com.skt.tmaphot.net.model.hotplace.StoreListItem;
 import com.skt.tmaphot.net.service.APIClient;
 
 import java.util.ArrayList;
@@ -83,7 +84,9 @@ public class MainFragment extends BaseFragment {
     private BootstrapButton hotplace_bottom_more;
 
     // 메뉴
-    private String menuType = "";
+    private String large_cd;
+    private String middle_cd;
+    private String small_cd;
     private RecyclerView menuRecyclerView;
     private List<MainMenuRecyclerViewItem> mainMenuRecyclerViewItems;
     private MainMenuRecyclerViewDataAdapter menuRecyclerViewDataAdapter;
@@ -167,19 +170,18 @@ public class MainFragment extends BaseFragment {
                 menuRecyclerViewDataAdapter.setHasStableIds(true);
                 recyclerView.setAdapter(menuRecyclerViewDataAdapter);
 
-
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("", "", R.drawable.img_main_menu));           //전체
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-01", "", R.drawable.img_main_menu_01));   //한식
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-04", "", R.drawable.img_main_menu_02));   //중식
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-03", "", R.drawable.img_main_menu_03));   //일식
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-02", "", R.drawable.img_main_menu_04));   //양식
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-09", "", R.drawable.img_main_menu_05));   //분식
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-10", "", R.drawable.img_main_menu_06));   //뷔페
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-13", "", R.drawable.img_main_menu_07));   //술집
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("02-01", "", R.drawable.img_main_menu_08));   //카페
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-05", "", R.drawable.img_main_menu_09));   //치킨
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-07", "", R.drawable.img_main_menu_10));   //피자, 햄버거=> 패스트 푸드
-                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("01-08", "", R.drawable.img_main_menu_11));   //세계음식
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("", "", "","",R.drawable.img_main_menu));           //전체
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("2", "1", "1","", R.drawable.img_main_menu_01));   //한식
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("2", "1", "3","", R.drawable.img_main_menu_02));   //중식
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("2", "1", "2","", R.drawable.img_main_menu_03));   //일식
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("2", "1", "6","", R.drawable.img_main_menu_04));   //양식
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("2", "1", "9","", R.drawable.img_main_menu_05));   //분식
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("2", "1", "5","", R.drawable.img_main_menu_06));   //뷔페
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("2", "3", "","", R.drawable.img_main_menu_07));   //술집
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("2", "2", "","", R.drawable.img_main_menu_08));   //카페
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("2", "1", "12","", R.drawable.img_main_menu_09));   //치킨
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("2", "1", "7","", R.drawable.img_main_menu_10));   //피자, 햄버거=> 패스트 푸드
+                mainMenuRecyclerViewItems.add(new MainMenuRecyclerViewItem("2", "1", "14","", R.drawable.img_main_menu_11));   //세계음식
 
                 menuRecyclerViewDataAdapter.notifyDataSetChanged();
 
@@ -401,7 +403,8 @@ public class MainFragment extends BaseFragment {
 
         if (hotPlaceRecyclerViewDataAdapter.getItemCount() >= 60) {
 
-            hotplace_bottom_more.setText(CommonUtil.getInstance().decimalFormat(hotPlaceRecyclerViewDataAdapter.getDatatotalCount()) + " 개 더보기");
+//            hotplace_bottom_more.setText(CommonUtil.getInstance().decimalFormat(hotPlaceRecyclerViewDataAdapter.getDatatotalCount()) + " 개 더보기");
+            hotplace_bottom_more.setText("더보기");
             hotplace_bottom_more.setVisibility(View.VISIBLE);
             hotplace_bottom_more.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -417,17 +420,17 @@ public class MainFragment extends BaseFragment {
         hotplace_isLoading = true;
         hotplace_curruntPage++;
 
-        APIClient.getInstance().getClient(null).getHotplaceList(hotplace_curruntPage, per_page, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), hotplace_sortType, menuType)
+        APIClient.getInstance().getClient2(null).getHotplaceList(hotplace_curruntPage, per_page, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), hotplace_sortType, large_cd, middle_cd, small_cd)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<HotplaceModel>>() {
+                .subscribe(new Observer<HotplacePojo>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                     }
 
                     @Override
-                    public void onNext(List<HotplaceModel> hotplaceModels) {
-                        hotPlaceRecyclerViewDataAdapter.loadData(hotplaceModels);
+                    public void onNext(HotplacePojo hotplaceModels) {
+                        hotPlaceRecyclerViewDataAdapter.loadData(hotplaceModels.getStoreList());
                     }
 
                     @Override
@@ -455,7 +458,7 @@ public class MainFragment extends BaseFragment {
         hotplaceRecyclerView.setNestedScrollingEnabled(false);
         hotplaceRecyclerView.setFocusable(false);
         hotplaceRecyclerView.setLayoutManager(mLayoutManager);
-        hotPlaceRecyclerViewDataAdapter = new HotPlaceRecyclerViewDataAdapter(new ArrayList<HotplaceModel>());
+        hotPlaceRecyclerViewDataAdapter = new HotPlaceRecyclerViewDataAdapter(new ArrayList<StoreListItem>());
         hotplaceRecyclerView.setAdapter(hotPlaceRecyclerViewDataAdapter);
 //        hotplaceRecyclerView.getRecycledViewPool().setMaxRecycledViews(0, 40);
         hotplaceRecyclerView.setFocusableInTouchMode(true);
@@ -466,7 +469,7 @@ public class MainFragment extends BaseFragment {
     private void reLoadData_HotPlace(int hotplaceLoadType) {
         hotplace_curruntPage = 0;
         hotPlaceRecyclerViewDataAdapter.clearData();
-        hotPlaceRecyclerViewDataAdapter = new HotPlaceRecyclerViewDataAdapter(new ArrayList<HotplaceModel>());
+        hotPlaceRecyclerViewDataAdapter = new HotPlaceRecyclerViewDataAdapter(new ArrayList<StoreListItem>());
         hotplaceRecyclerView.setAdapter(hotPlaceRecyclerViewDataAdapter);
 
         loadData_Hotplace(hotplaceLoadType);
@@ -512,9 +515,10 @@ public class MainFragment extends BaseFragment {
 
     MainMenuRecyclerViewDataAdapter.OnEventCilckListener onEventCilckListener = new MainMenuRecyclerViewDataAdapter.OnEventCilckListener() {
         @Override
-        public void menuOnClick(String cate_id) {
-
-            menuType = cate_id;
+        public void menuOnClick(MainMenuRecyclerViewItem mainMenuRecyclerViewItem) {
+            large_cd = mainMenuRecyclerViewItem.getLarge_cd();
+            middle_cd = mainMenuRecyclerViewItem.getMiddle_cd();
+            small_cd = mainMenuRecyclerViewItem.getSmall_cd();
 
             realReviewItemList.clear();
             loadData(realReviewRecyclerView);

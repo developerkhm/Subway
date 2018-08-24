@@ -1,20 +1,31 @@
 package com.skt.tmaphot.activity.area;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.skt.tmaphot.R;
+import com.skt.tmaphot.activity.area.db.DatabaseHelper;
 import com.skt.tmaphot.common.CommonUtil;
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +33,7 @@ import java.util.List;
 public class SelectionAreaFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-
+    private String TAG = "dbtest";
 
     //시,도
     private RecyclerView areaRecyclerView;
@@ -34,11 +45,10 @@ public class SelectionAreaFragment extends Fragment {
     private RecyclerView listRecyclerView;
     private ListAreaRecyclerViewAdapter listRecyclerViewAdapter;
     private List<ListAreaItem>[] listItems;
-
-
     private View slectView;
 
-
+    private DatabaseHelper mDBHelper;
+    private SQLiteDatabase mDb;
 
     public SelectionAreaFragment() {
     }
@@ -56,6 +66,42 @@ public class SelectionAreaFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_selectionarea_selection, container, false);
 
+
+
+        mDBHelper = new DatabaseHelper(getContext());
+
+        try {
+            mDBHelper.updateDataBase();
+        } catch (IOException mIOException) {
+            throw new Error("UnableToUpdateDatabase");
+        }
+
+        try {
+            mDb = mDBHelper.getWritableDatabase();
+        } catch (SQLException mSQLException) {
+            throw mSQLException;
+        }
+
+        Log.d(TAG, "result : " + mDBHelper.checkDataBase());
+
+        Log.d(TAG,"Database is there with version: "+mDBHelper.getReadableDatabase().getVersion());
+        String sql = "SELECT * FROM area limit 10";
+//
+//
+        SQLiteDatabase db = mDBHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Log.d(TAG,"Query Result:"+cursor.getString(0));
+                Log.d(TAG,"Query Result:"+cursor.getString(1));
+                Log.d(TAG,"Query Result:"+cursor.getString(2));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        mDBHelper.close();
 
         areaItems = new ArrayList<AreaItem>();
         areaItems.add(new AreaItem("1","서울"));

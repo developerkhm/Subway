@@ -13,7 +13,8 @@ import android.widget.ProgressBar;
 
 import com.skt.tmaphot.activity.main.hotplace.HotPlaceRecyclerViewDataAdapter;
 import com.skt.tmaphot.location.GPSData;
-import com.skt.tmaphot.net.model.hotplace.HotplaceModel;
+import com.skt.tmaphot.net.model.hotplace.HotplacePojo;
+import com.skt.tmaphot.net.model.hotplace.StoreListItem;
 import com.skt.tmaphot.net.service.APIClient;
 
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class HotPlaceResultActivity extends BaseActivity {
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setFocusable(false);
-        hotPlaceRecyclerViewDataAdapter = new HotPlaceRecyclerViewDataAdapter(new ArrayList<HotplaceModel>());
+        hotPlaceRecyclerViewDataAdapter = new HotPlaceRecyclerViewDataAdapter(new ArrayList<StoreListItem>());
         hotPlaceRecyclerViewDataAdapter.setHasStableIds(true);
         recyclerView.setAdapter(hotPlaceRecyclerViewDataAdapter);
 //        recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 200);
@@ -112,17 +113,17 @@ public class HotPlaceResultActivity extends BaseActivity {
         isloading = true;
         currentPage++;
 
-        APIClient.getInstance().getClient(null).getHotplaceList(currentPage, per_page, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), sortType, menuType)
+        APIClient.getInstance().getClient2(null).getHotplaceList(currentPage, per_page, GPSData.getInstance().getLatitude(), GPSData.getInstance().getLongitude(), sortType, "","","")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<HotplaceModel>>() {
+                .subscribe(new Observer<HotplacePojo>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                     }
 
                     @Override
-                    public void onNext(List<HotplaceModel> hotplaceModels) {
-                        hotPlaceRecyclerViewDataAdapter.loadData(hotplaceModels);
+                    public void onNext(HotplacePojo hotplaceModels) {
+                        hotPlaceRecyclerViewDataAdapter.loadData(hotplaceModels.getStoreList());
                     }
 
                     @Override
