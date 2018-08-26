@@ -14,10 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.skt.tmaphot.R;
 import com.skt.tmaphot.HotPlaceResultActivity;
+import com.skt.tmaphot.R;
 import com.skt.tmaphot.common.CommonUtil;
 import com.skt.tmaphot.fragment.BaseFragment;
 
@@ -119,29 +118,29 @@ public class PopularityAreaFragment extends BaseFragment {
         popularityAreaRecylerItems = new ArrayList<PopularityAreaRecylerItem>();
         popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("가로수길","11"));
         popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("선릉","12"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
-        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("기타","14"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("무슨길","13"));
+//        popularityAreaRecylerItems.add(new PopularityAreaRecylerItem("기타","14"));
 
 
         selectValueMap = new HashMap<Integer, String>();
@@ -160,8 +159,6 @@ public class PopularityAreaFragment extends BaseFragment {
                     Log.d("TEST12", String.format("키 : %s, 값 : %s", key, selectValueMap.get(key)) );
 //                    ((SelectionAreaActivity)getActivity()).testTab()
                 }
-
-
                 ActivityStart(new Intent(getActivity(), HotPlaceResultActivity.class), null);
             }
         });
@@ -172,14 +169,9 @@ public class PopularityAreaFragment extends BaseFragment {
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),new LinearLayoutManager(getContext()).getOrientation());
         popularityAreaRecyclerView.addItemDecoration(dividerItemDecoration);
-
-
-
         popularityAreaRecyclerView.setHasFixedSize(true);
-
         popularityAreaRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         popularityAreaRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
         popularityAreaRecylerViewAdapter = new PopularityAreaRecylerViewAdapter(popularityAreaRecylerItems, selectValueMap);
         popularityAreaRecyclerView.setAdapter(popularityAreaRecylerViewAdapter);
 //        popularityAreaRecyclerView.setFocusable(false);

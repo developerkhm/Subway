@@ -30,48 +30,41 @@ public class PopularityAreaRecylerViewHolder extends RecyclerView.ViewHolder {
             areaCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if(b){
+                    if (b) {
                         areaCheckbox.setChecked(true);
                         selectValueMap.put(getAdapterPosition(), (String) areaName.getText());
-                        Log.d("TEST12", "체크박스 에서만 체크" );
+                        Log.d("TEST12", "체크박스 에서만 체크");
                         selec_count++;
-                    }else{
+                    } else {
                         areaCheckbox.setChecked(false);
                         selectValueMap.remove(getAdapterPosition());
-                        Log.d("TEST12", "체크박스 에서만 체크 해제" );
+                        Log.d("TEST12", "체크박스 에서만 체크 해제");
                         selec_count--;
                     }
-
-
                 }
             });
-
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    Log.d("TEST12", "이이템 클릭" );
+                    Log.d("TEST12", "이이템 클릭");
 
-                    if(!areaCheckbox.isChecked()){  //체크
+                    if (!areaCheckbox.isChecked()) {  //체크
                         areaCheckbox.setChecked(true);
                         selectValueMap.put(getAdapterPosition(), (String) areaName.getText());
-                        Log.d("TEST12", "체크" );
+                        Log.d("TEST12", "체크");
                         selec_count++;
-                    }else{  //체크 해제
+                    } else {  //체크 해제
                         areaCheckbox.setChecked(false);
                         selectValueMap.remove(getAdapterPosition());
-                        Log.d("TEST12", "체크해제" );
+                        Log.d("TEST12", "체크해제");
                         selec_count--;
                     }
-
                     // 리스트에 값 추가 및 check 박스 선택 해제 등등등등..
 //                    areaCheckbox.setChecked(!areaCheckbox.isChecked());
-
-
                 }
             });
-
         }
     }
 

@@ -17,7 +17,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class RealReviewActivity extends BaseActivity {
 
     private Handler handler = new Handler();
-    private ExecutorService executorService;
+//    private ExecutorService executorService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,15 +29,15 @@ public class RealReviewActivity extends BaseActivity {
 
         baceContext = this;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        executorService = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+//        executorService = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
 
-        RealReview realReview = new RealReview(baceContext,linearLayout, handler, executorService);
+        RealReview realReview = new RealReview(baceContext,linearLayout, handler);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        executorService.shutdown(); //스레드풀 종료
+//        executorService.shutdown(); //스레드풀 종료
     }
 }
 

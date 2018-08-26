@@ -34,18 +34,18 @@ public class RealReview {
     private boolean mLockListView = true;
     private List<RealReviewRecyclerViewItem> mRowList;
     protected RealReveiwGridAdapter imageAdapter;
-    private ExecutorService executorService;
+//    private ExecutorService executorService;
 
     public Context mContext;
     public View rootView;
     public android.os.Handler handler;
 
 
-    public RealReview(Context mContext, View rootView, Handler handler, ExecutorService executorService) {
+    public RealReview(Context mContext, View rootView, Handler handler) {
         this.mContext = mContext;
         this.rootView = rootView;
         this.handler = handler;
-        this.executorService = executorService;
+//        this.executorService = executorService;
 
         init();
     }
@@ -102,9 +102,9 @@ public class RealReview {
                     if (((MainActivity) mContext).navigation.getVisibility() == View.VISIBLE)
                         ((MainActivity) mContext).slideDown(((MainActivity) mContext).navigation);
 
-                    if (((MainActivity) mContext).fab.getVisibility() == View.VISIBLE) {
-                        ((MainActivity) mContext).fab.setVisibility(View.GONE);
-                    }
+//                    if (((MainActivity) mContext).fab.getVisibility() == View.VISIBLE) {
+//                        ((MainActivity) mContext).fab.setVisibility(View.GONE);
+//                    }
 
                 }
 
@@ -182,9 +182,9 @@ public class RealReview {
     }
 
     private void setDummyData() {
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
+//        executorService.execute(new Runnable() {
+//            @Override
+//            public void run() {
                 mLockListView = false;
 
                 if (mRowList == null)
@@ -213,8 +213,8 @@ public class RealReview {
                         imageAdapter.notifyDataSetChanged();
                     }
                 });
-            }
-        });
+//            }
+//        });
     }
 
     public void setFocusTop() {

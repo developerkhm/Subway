@@ -20,7 +20,7 @@
             android:layout_gravity="center_horizontal"
             android:background="@color/teal_100"
             android:adjustViewBounds="true"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitXY" />
 
     </android.support.v7.widget.CardView>
 

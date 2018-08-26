@@ -17,6 +17,7 @@
             android:scaleType="fitXY" />
 
         <TextView
+            android:visibility="invisible"
             android:id="@+id/main_coupon_recyler_item_sale"
             style="@style/main_coupon_item_sale"
             android:layout_width="@dimen/activity_main_realreview_item_sale_width"
@@ -24,11 +25,11 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="@dimen/activity_main_default_recycler_item_padding"
             android:background="@drawable/round_main_coupon_item_sale"
-            android:gravity="center"
-            android:text="20%" />
+            android:gravity="center"/>
 
 
         <LinearLayout
+            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -40,24 +41,28 @@
                 style="@style/main_coupon_item_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:text="꽃새우 영번지" />
+                android:layout_marginBottom="5dp" />
 
             <TextView
                 android:id="@+id/main_coupon_recyler_item_menu"
                 style="@style/main_coupon_item_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:text="독도꽃새우" />
+                android:layout_marginBottom="5dp" />
 
             <TextView
                 android:id="@+id/main_coupon_recyler_item_distance"
                 style="@style/main_coupon_item_distance"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1.35Km" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/colorWhite"
+            android:text="준비중 입니다."/>
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

@@ -110,6 +110,7 @@
                     android:text="@string/main_content_menu_coupon" />
 
                 <TextView
+                    android:visibility="invisible"
                     android:id="@+id/main_txt_coupon_more"
                     style="@style/main_more"
                     android:layout_width="wrap_content"

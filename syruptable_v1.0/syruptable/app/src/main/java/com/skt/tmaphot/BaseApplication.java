@@ -75,11 +75,7 @@ public class BaseApplication extends Application {
 
 //        Fabric.with(this, new Crashlytics());
         Stetho.initializeWithDefaults(this);
-
-        Typekit.getInstance()
-                .addNormal(Typekit.createFromAsset(this, "fonts/NanumBarunGothic.otf"))
-                .addBold(Typekit.createFromAsset(this, "fonts/NanumBarunGothicBold.otf"));
-
+        Typekit.getInstance().addNormal(Typekit.createFromAsset(this, "fonts/NanumBarunGothic.otf")).addBold(Typekit.createFromAsset(this, "fonts/NanumBarunGothicBold.otf"));
         TypefaceProvider.registerDefaultIconSets();
 
     }
@@ -111,10 +107,10 @@ public class BaseApplication extends Application {
                 height = 50;
                 break;
             case LIST_HORIZONTAL_HOTPLACE:
-//                width = 160;
-//                height = 200;
-                width = Target.SIZE_ORIGINAL;
-                height = Target.SIZE_ORIGINAL;
+                width = 200;
+                height = 250;
+//                width = Target.SIZE_ORIGINAL;
+//                height = Target.SIZE_ORIGINAL;
                 break;
             case LIST_HORIZONTAL_MORE:
                 width = 500;
@@ -145,6 +141,7 @@ public class BaseApplication extends Application {
         Glide.with(context)
                 .load(res)
                 .transition(new DrawableTransitionOptions().crossFade())
+
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -156,6 +153,7 @@ public class BaseApplication extends Application {
                         return false;
                     }
                 })
+
                 .apply(requestOptions)
                 .into(view);
     }
@@ -218,7 +216,6 @@ public class BaseApplication extends Application {
             return true;
         }
 
-
         new MaterialStyledDialog.Builder(this)
 //                .setTitle(R.string.app_name)
                 .setDescription("네트워크 상태를 확인해 주세요.\n 앱을 종료합니다.")
@@ -257,13 +254,13 @@ public class BaseApplication extends Application {
         return false;
     }
 
-    public int getImageHeightFitXYSize(int original_height, int original_width){
-        int fit_height = Math.round((float)(displayWidth * original_height) / original_width);
+    public int getImageHeightFitXYSize(int original_height, int original_width) {
+        int fit_height = Math.round((float) (displayWidth * original_height) / original_width);
         return fit_height;
     }
 
-    public int getImageWidthFitXYSize(int original_height, int original_width){
-        int fit_width = Math.round((float)((getImageHeightFitXYSize(original_height, original_width) * original_width) / original_height));
+    public int getImageWidthFitXYSize(int original_height, int original_width) {
+        int fit_width = Math.round((float) ((getImageHeightFitXYSize(original_height, original_width) * original_width) / original_height));
         return fit_width;
     }
 }

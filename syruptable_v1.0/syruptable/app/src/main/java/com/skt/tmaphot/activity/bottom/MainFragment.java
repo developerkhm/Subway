@@ -2,6 +2,8 @@ package com.skt.tmaphot.activity.bottom;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
@@ -100,17 +102,41 @@ public class MainFragment extends BaseFragment {
     //더보기
     private TextView reviewMoreTextView, couponMoreTextview, hotdealMoreTextview;
     private CardView searchbar;
-
     private ProgressBar bottomProgressBar;
-
-
     public boolean loading = true;
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser)
+    {
+        Log.d("TestFg",getClass().getName() + "setUserVisibleHint : " + isVisibleToUser);
+
+        if (isVisibleToUser)
+        {
+            //화면에 실제로 보일때
+        }
+        else
+        {
+            //preload 될때(전페이지에 있을때)
+        }
+
+        super.setUserVisibleHint(isVisibleToUser);
+    }
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d("BCA", "onCreate call");
+    }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_main_layout, container, false);
         rootView.findViewById(R.id.toolbar).setVisibility(View.GONE);
+
+        Log.d("TestFg",getClass().getName() + "onCreateView");
 
         BaseApplication.getInstance().progressON(getActivity(), "");
 
@@ -153,9 +179,12 @@ public class MainFragment extends BaseFragment {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
 
-        if (recyclerView.getId() != R.id.menu_recycler_view) {
+        if (recyclerView.getId() != R.id.menu_recycler_view   ) {
             recyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 15, 0, 0));
-            recyclerView.addOnScrollListener(new HorizontalRecyclerViewOnScrollListener());
+
+            if(recyclerView.getId() != R.id.coupon_recycler_view){
+                recyclerView.addOnScrollListener(new HorizontalRecyclerViewOnScrollListener());
+            }
         }
 
         switch (recyclerView.getId()) {
@@ -229,7 +258,7 @@ public class MainFragment extends BaseFragment {
     }
 
     private void loadData(final RecyclerView recyclerView) {
-        if (recyclerView.getId() == R.id.menu_recycler_view) {
+        if (recyclerView.getId() == R.id.menu_recycler_view ) {
             return;
         }
 
@@ -242,10 +271,17 @@ public class MainFragment extends BaseFragment {
             case R.id.coupon_recycler_view:
 
                 currItemListSize = couponItemList.size();
-                for (int i = currItemListSize; i < currItemListSize + loadMoreItemCount; i++) {
-                    String url = "http://cfd.tourtips.com/@cms_1024x768/2016032550/gjf72o/%EB%A7%88%EB%8B%90%EB%9D%BC_%EC%95%84%EB%A6%AC%EC%8A%A4%ED%86%A0%ED%81%AC%EB%9E%98%ED%8A%B8_%EC%9D%8C%EC%8B%9D_TTB(3).JPG";
-                    couponItemList.add(new CouponRecyclerViewItem(String.valueOf(i), url, "상점이름", "메뉴", "음식종류", "200m", "10", "80,000", "56,000"));
-                }
+
+                couponItemList.add(new CouponRecyclerViewItem(String.valueOf(0), "http://file2.instiz.net/data/file/20141119/2/8/7/2876b369f0a064ff92588ef2572395c2.jpg", "", "", "", "", "", "", ""));
+                couponItemList.add(new CouponRecyclerViewItem(String.valueOf(1), "http://img.daily.co.kr/@files/www.daily.co.kr/content/life/2016/20160727/5da57a6173031df7810c3283f4d8e89b.jpg", "", "", "", "", "", "", ""));
+                couponItemList.add(new CouponRecyclerViewItem(String.valueOf(2), "https://i.pinimg.com/originals/6b/ff/e9/6bffe9ad2effc4b0ed3270bf75631cf2.jpg", "", "", "", "", "", "", ""));
+                couponItemList.add(new CouponRecyclerViewItem(String.valueOf(3), "http://www.kyushu-style.com/wp-content/uploads/2014/05/SHIBATA_07.jpg", "", "", "", "", "", "", ""));
+                couponItemList.add(new CouponRecyclerViewItem(String.valueOf(4), "https://uds.gnst.jp/rest/img/euhbyy5z0000/s_00ta.jpg?t=1510407084", "", "", "", "", "", "", ""));
+//
+//                for (int i = currItemListSize; i < currItemListSize + loadMoreItemCount; i++) {
+//                    String url = "http://file2.instiz.net/data/file/20141119/2/8/7/2876b369f0a064ff92588ef2572395c2.jpg";
+//                    couponItemList.add(new CouponRecyclerViewItem(String.valueOf(i), url, "", "", "", "", "", "", ""));
+//                }
                 newItemIndex = couponItemList.size() - 1;
 
                 couponRecyclerViewDataAdapter.updateUsers(couponItemList);
@@ -530,10 +566,6 @@ public class MainFragment extends BaseFragment {
         }
     };
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

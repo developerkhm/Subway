@@ -20,6 +20,8 @@ public class WebViewActivity extends BaseWebViewActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        toolbar.setVisibility(View.GONE);
+
         Intent intent = getIntent();
         String menuId = intent.getStringExtra("menuId");
 

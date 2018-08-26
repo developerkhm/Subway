@@ -10,7 +10,10 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -56,6 +59,7 @@ import retrofit2.Response;
 public class MainActivity extends BaseActivity {
 
     private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
     private DrawerLayout drawer;
     public BottomNavigationView navigation;
     public ImageButton fab;
@@ -63,11 +67,13 @@ public class MainActivity extends BaseActivity {
     private ImageView profileImage, navi_close;
     private TextView profileInfoModify, profileName, profileEmail;
     private Button login;
-    private MainFragment mainFragment;
-    private RealReviewFragment realReviewFragment;
-    private EventFragment eventFragment;
-    private ShopFragment shopFragment;
-    private MyBlogFragment myBlogFragment;
+
+    private MainFragment mainFragment = new MainFragment();
+    private RealReviewFragment realReviewFragment = new RealReviewFragment();
+    private EventFragment eventFragment = new EventFragment();
+    private ShopFragment shopFragment = new ShopFragment();
+    private MyBlogFragment myBlogFragment = new MyBlogFragment();
+    private ViewPager viewPager;
 
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
@@ -89,12 +95,18 @@ public class MainActivity extends BaseActivity {
         actionBar.setHomeButtonEnabled(false);
         actionBar.setDisplayShowTitleEnabled(false);
 
-        mainFragment = new MainFragment();
-        realReviewFragment =  new RealReviewFragment();
-        eventFragment = new EventFragment();
-        myBlogFragment = new MyBlogFragment();
-        fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.fragment_content, mainFragment).commit();
+//        realReviewFragment =  new RealReviewFragment();
+//        eventFragment = new EventFragment();
+//        myBlogFragment = new MyBlogFragment();
+
+//        mainFragment = new MainFragment();
+//
+//        fragmentManager = getSupportFragmentManager();
+//        fragmentTransaction = fragmentManager.beginTransaction();
+//
+//        fragmentTransaction.add(R.id.fragment_content, mainFragment,"main").commit();
+
+//        replaceFragment(new MainFragment(), null,true, true);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
@@ -111,9 +123,73 @@ public class MainActivity extends BaseActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        viewPager = (ViewPager) findViewById(R.id.main_viewpager);
+        viewPager.setOffscreenPageLimit(4);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+
+                switch (i) {
+                    case 0:    //메인
+                        toolbar.setVisibility(View.VISIBLE);
+                        fab.setVisibility(View.VISIBLE);
+                        break;
+                    case 1:    //리얼후기
+                        Log.d("tt01", "리얼후기");
+                        toolbar.setVisibility(View.VISIBLE);
+                        fab.setVisibility(View.VISIBLE);
+                        break;
+                    case 2:    //이벤트
+                        Log.d("tt01", "이벤트");
+                        fab.setVisibility(View.GONE);
+                        toolbar.setVisibility(View.GONE);
+                        break;
+                    case 3:    //샵
+                        fab.setVisibility(View.GONE);
+                        toolbar.setVisibility(View.GONE);
+                        break;
+                    case 4:    //내블로그
+                        toolbar.setVisibility(View.VISIBLE);
+                        fab.setVisibility(View.GONE);
+                        break;
+                }
+
+                navigation.getMenu().getItem(i).setChecked(true);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+            }
+        });
+        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                switch (position) {
+                    case 0:
+                        return mainFragment;
+                    case 1:
+                        return realReviewFragment;
+                    case 2:
+                        return eventFragment;
+                    case 3:
+                        return shopFragment;
+                    case 4:
+                        return myBlogFragment;
+                }
+                return null;
+            }
+
+            @Override
+            public int getCount() {
+                return 5;
+            }
+        });
 
         naviMenuRecyclerView = (RecyclerView) findViewById(R.id.navi_menu_recyclerview);
-
 
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -169,7 +245,6 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-
         fab = (ImageButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,11 +253,13 @@ public class MainActivity extends BaseActivity {
                 for (Fragment fragment : getSupportFragmentManager().getFragments()) {
                     if (fragment.isVisible()) {
                         if (fragment instanceof MainFragment) {
-                            mainFragment.nestedScrollView.scrollTo(0, 0);
+//                            mainFragment.nestedScrollView.scrollTo(0, 0);
+                            ((MainFragment) fragment).nestedScrollView.scrollTo(0, 0);
                         }
 
                         if (fragment instanceof RealReviewFragment) {
-                            realReviewFragment.setScrollTopFocus();
+//                            realReviewFragment.setScrollTopFocus();
+                            ((RealReviewFragment) fragment).setScrollTopFocus();
                         }
                     }
                 }
@@ -194,61 +271,126 @@ public class MainActivity extends BaseActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-            if (toolbar.getVisibility() == View.GONE) {
-                toolbar.setVisibility(View.VISIBLE);
-            }
+//            if (toolbar.getVisibility() == View.GONE) {
+//                toolbar.setVisibility(View.VISIBLE);
+//            }
+//
+//            Log.d("ddd", item.getOrder() + " ::");
+
+            viewPager.setCurrentItem(item.getOrder());
 
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    fab.setVisibility(View.VISIBLE);
-                    if(mainFragment == null)
-                        mainFragment = new MainFragment();
+                    viewPager.setCurrentItem(0);
+                    break;
+                case R.id.navigation_review:
+                    viewPager.setCurrentItem(1);
+                    break;
+                case R.id.navigation_event:
+                    viewPager.setCurrentItem(2);
+                    break;
+                case R.id.navigation_shop:
+                    viewPager.setCurrentItem(3);
+                    break;
+                case R.id.navigation_myblog:
+                    viewPager.setCurrentItem(4);
+                    break;
+            }
 
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                            .replace(R.id.fragment_content, mainFragment).commit();
+
+            /*
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    fab.setVisibility(View.VISIBLE);
+//                    if(mainFragment == null)
+//                        mainFragment = new MainFragment();
+//
+//                    Fragment fragment = fragmentManager.findFragmentByTag("main");
+//
+//                    if (fragment == null) {
+//                        fragmentTransaction.add(R.id.fragment_content, new MainFragment(), "main");
+//                    }
+//                    else { // re-use the old fragment
+//                        fragmentTransaction.replace(R.id.fragment_content, fragment, "main");
+//                    }
+//
+//                    fragmentManager.beginTransaction()
+//                            .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+//                            .replace(R.id.fragment_content, mainFragment).addToBackStack(null).commit();
+
+                    replaceFragment(new MainFragment(), null,true, true);
                     return true;
                 case R.id.navigation_review:
                     fab.setVisibility(View.VISIBLE);
-                    if(realReviewFragment == null)
-                        realReviewFragment = new RealReviewFragment();
-
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                            .replace(R.id.fragment_content, realReviewFragment).commit();
+//                    if(realReviewFragment == null)
+//                        realReviewFragment = new RealReviewFragment();
+//
+//                    fragmentManager.beginTransaction()
+//                            .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+//                            .replace(R.id.fragment_content, realReviewFragment).addToBackStack(null).commit();
+                    replaceFragment(new RealReviewFragment(), null,true, true);
                     return true;
                 case R.id.navigation_event:
                     fab.setVisibility(View.GONE);
-                    if(eventFragment == null)
-                        eventFragment = new EventFragment();
-
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                            .replace(R.id.fragment_content, eventFragment).commit();
+//                    if(eventFragment == null)
+//                        eventFragment = new EventFragment();
+//
+//                    fragmentManager.beginTransaction()
+//                            .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+//                            .replace(R.id.fragment_content, eventFragment).addToBackStack(null).commit();
+                    replaceFragment(new EventFragment(), null,true, true);
                     return true;
                 case R.id.navigation_shop:
                     fab.setVisibility(View.GONE);
                     toolbar.setVisibility(View.GONE);
-                    if(shopFragment == null)
-                        shopFragment = new ShopFragment();
-
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                            .replace(R.id.fragment_content, shopFragment).commit();
+//                    if(shopFragment == null)
+//                        shopFragment = new ShopFragment();
+//
+//                    fragmentManager.beginTransaction()
+//                            .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+//                            .replace(R.id.fragment_content, shopFragment).addToBackStack(null).commit();
+                    replaceFragment(new ShopFragment(), null,true, true);
                     return true;
                 case R.id.navigation_myblog:
                     fab.setVisibility(View.GONE);
-                    if(myBlogFragment == null)
-                        myBlogFragment = new MyBlogFragment();
-
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                            .replace(R.id.fragment_content, myBlogFragment).commit();
+//                    if(myBlogFragment == null)
+//                        myBlogFragment = new MyBlogFragment();
+//
+//                    fragmentManager.beginTransaction()
+//                            .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+//                            .replace(R.id.fragment_content, myBlogFragment).addToBackStack(null).commit();
+                    replaceFragment(new MyBlogFragment(), null,true, true);
                     return true;
             }
-            return false;
+            */
+            return true;
         }
     };
+
+//    public void replaceFragment(Fragment fragment, @Nullable Bundle bundle, boolean popBackStack, boolean findInStack) {
+//        FragmentManager fm = getSupportFragmentManager();
+//        FragmentTransaction ft = fm.beginTransaction();
+//        String tag = fragment.getClass().getName();
+//        Fragment parentFragment;
+//        if (findInStack && fm.findFragmentByTag(tag) != null) {
+//            parentFragment = fm.findFragmentByTag(tag);
+//        } else {
+//            parentFragment = fragment;
+//        }
+//        // if user passes the @bundle in not null, then can be added to the fragment
+//        if (bundle != null)
+//            parentFragment.setArguments(bundle);
+//        else parentFragment.setArguments(null);
+//        // this is for the very first fragment not to be added into the back stack.
+//        if (popBackStack) {
+//            fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//        } else {
+//            ft.addToBackStack(parentFragment.getClass().getName() + "");
+//        }
+//        ft.replace(R.id.fragment_content, parentFragment, tag);
+//        ft.commit();
+//        fm.executePendingTransactions();
+//    }
 
     private void setNavigation() {
 
@@ -293,7 +435,7 @@ public class MainActivity extends BaseActivity {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             LoginInfo.getInstance().setUserId("");
-                            ActivityStart(new Intent(baceContext, MainActivity.class),null);
+                            ActivityStart(new Intent(baceContext, MainActivity.class), null);
                         }
 
                         @Override
@@ -424,6 +566,5 @@ public class MainActivity extends BaseActivity {
 
             }
         });
-
     }
 }

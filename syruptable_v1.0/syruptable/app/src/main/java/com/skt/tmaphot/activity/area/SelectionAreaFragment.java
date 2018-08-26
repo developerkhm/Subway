@@ -1,9 +1,8 @@
 package com.skt.tmaphot.activity.area;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -15,40 +14,41 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.skt.tmaphot.R;
-import com.skt.tmaphot.activity.area.db.DatabaseHelper;
 import com.skt.tmaphot.common.CommonUtil;
 
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 
 public class SelectionAreaFragment extends Fragment {
-
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private String TAG = "dbtest";
 
-    //시,도
-    private RecyclerView areaRecyclerView;
-    private AreaRecyclerViewAdapter areaRecyclerViewAdapter;
-    private List<AreaItem> areaItems;
+    private Map<Integer, List<AreaModel>> xL_areaMap;
+    private Map<Integer, List<AreaModel>> l_areaMap;
 
+    //지역
+    private RecyclerView xL_areaRecyclerView;
+    private XLAreaRecyclerViewAdapter xL_areaRecyclerViewAdapter;
 
-    //구
-    private RecyclerView listRecyclerView;
-    private ListAreaRecyclerViewAdapter listRecyclerViewAdapter;
-    private List<ListAreaItem>[] listItems;
-    private View slectView;
+    //구,시
+    private RecyclerView l_areaRecyclerView;
+    private LAreaRecyclerViewAdapter l_areaRecyclerViewAdapter;
 
-    private DatabaseHelper mDBHelper;
-    private SQLiteDatabase mDb;
+    //동,읍,면
+    private RecyclerView m_areaRecyclerView;
+    private MAreaRecyclerViewAdapter m_areaRecyclerViewAdapter;
+
 
     public SelectionAreaFragment() {
     }
@@ -61,252 +61,68 @@ public class SelectionAreaFragment extends Fragment {
         return fragment;
     }
 
+    @SuppressLint("NewApi")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_selectionarea_selection, container, false);
 
+        xL_areaRecyclerView = (RecyclerView) rootView.findViewById(R.id.selectionarea_selection_xl_area_recyler);
+        l_areaRecyclerView = (RecyclerView) rootView.findViewById(R.id.selectionarea_selection_l_area_recycler);
+        m_areaRecyclerView = (RecyclerView) rootView.findViewById(R.id.selectionarea_selection_m_area_recycler);
 
+//        LinearLayoutManager xl_layoutManager = new LinearLayoutManager(getContext());
+//        xl_layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//
+//        LinearLayoutManager l_layoutManager = new LinearLayoutManager(getContext());
+//        l_layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//
+//        LinearLayoutManager m_layoutManager = new LinearLayoutManager(getContext());
+//        m_layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        mDBHelper = new DatabaseHelper(getContext());
+        xL_areaRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        xL_areaRecyclerViewAdapter = new XLAreaRecyclerViewAdapter(new ArrayList<>());
+        xL_areaRecyclerView.setAdapter(xL_areaRecyclerViewAdapter);
+        xL_areaRecyclerView.setHasFixedSize(true);
+        xL_areaRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(1, 1, 0, 0));
+
+        l_areaRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        l_areaRecyclerViewAdapter = new LAreaRecyclerViewAdapter(new ArrayList<>());
+        l_areaRecyclerView.setAdapter(l_areaRecyclerViewAdapter);
+        l_areaRecyclerView.setHasFixedSize(true);
+        l_areaRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 1, 1, 0));
+
+        m_areaRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        m_areaRecyclerViewAdapter = new MAreaRecyclerViewAdapter(new ArrayList<>());
+        m_areaRecyclerView.setAdapter(m_areaRecyclerViewAdapter);
+        m_areaRecyclerView.setHasFixedSize(true);
+        m_areaRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 0, 1, 0));
+
+        AssetManager assetManager = getResources().getAssets();
+        InputStream source = null;
 
         try {
-            mDBHelper.updateDataBase();
-        } catch (IOException mIOException) {
-            throw new Error("UnableToUpdateDatabase");
+            source = assetManager.open("area.json");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        try {
-            mDb = mDBHelper.getWritableDatabase();
-        } catch (SQLException mSQLException) {
-            throw mSQLException;
+        Gson gson = new Gson();
+        Reader reader = new InputStreamReader(source);
+        AreaModel[] dbDTOs = gson.fromJson(reader, AreaModel[].class);
+        List<AreaModel> xl_jsonList = Arrays.asList(dbDTOs);
+        xL_areaMap = xl_jsonList.stream().collect(Collectors.groupingBy(AreaModel::getDoCode));
+
+        List<XLAreaItem> xL_areaItems = new ArrayList<>();
+        TreeMap<Integer, List<AreaModel>> tm = new TreeMap<>(xL_areaMap);
+        Iterator<Integer> iteratorKey = tm.keySet().iterator();   //키값 오름차순 정렬(기본)
+
+        while (iteratorKey.hasNext()) {
+            Integer key = iteratorKey.next();
+            Log.d("TEST899 : ", key + " Count : " + tm.get(key).get(0).getDoTxt());
+            xL_areaItems.add(new XLAreaItem(key, tm.get(key).get(0).getDoTxt()));
         }
 
-        Log.d(TAG, "result : " + mDBHelper.checkDataBase());
-
-        Log.d(TAG,"Database is there with version: "+mDBHelper.getReadableDatabase().getVersion());
-        String sql = "SELECT * FROM area limit 10";
-//
-//
-        SQLiteDatabase db = mDBHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(sql, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                Log.d(TAG,"Query Result:"+cursor.getString(0));
-                Log.d(TAG,"Query Result:"+cursor.getString(1));
-                Log.d(TAG,"Query Result:"+cursor.getString(2));
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        db.close();
-        mDBHelper.close();
-
-        areaItems = new ArrayList<AreaItem>();
-        areaItems.add(new AreaItem("1","서울"));
-        areaItems.add(new AreaItem("1","경기"));
-        areaItems.add(new AreaItem("1","부산"));
-        areaItems.add(new AreaItem("1","강원"));
-        areaItems.add(new AreaItem("1","인천"));
-        areaItems.add(new AreaItem("1","충남"));
-        areaItems.add(new AreaItem("1","충북"));
-        areaItems.add(new AreaItem("1","대전"));
-        areaItems.add(new AreaItem("1","경북"));
-        areaItems.add(new AreaItem("1","경남"));
-        areaItems.add(new AreaItem("1","대구"));
-        areaItems.add(new AreaItem("1","울산"));
-        areaItems.add(new AreaItem("1","광주"));
-        areaItems.add(new AreaItem("1","전남"));
-        areaItems.add(new AreaItem("1","전북"));
-        areaItems.add(new AreaItem("1","제주"));
-
-
-        listItems = new List[areaItems.size()];
-
-        listItems[0] = new ArrayList<ListAreaItem>();
-        listItems[0].add(new ListAreaItem("1","전체"));
-        listItems[0].add(new ListAreaItem("1","송파/광진/강동"));
-        listItems[0].add(new ListAreaItem("1","강남/서초"));
-        listItems[0].add(new ListAreaItem("1","동작/관악"));
-        listItems[0].add(new ListAreaItem("1","영등포/구로/금천"));
-        listItems[0].add(new ListAreaItem("1","강서/양천"));
-        listItems[0].add(new ListAreaItem("1","강북/성북/도봉/노원"));
-        listItems[0].add(new ListAreaItem("1","종로/중구/용산"));
-        listItems[0].add(new ListAreaItem("1","동대문/성동/중량"));
-        listItems[0].add(new ListAreaItem("1","마포/서대문/은평"));
-
-        listItems[1] = new ArrayList<ListAreaItem>();
-        listItems[1].add(new ListAreaItem("1","전체"));
-        listItems[1].add(new ListAreaItem("1","성남/하남/광주/이천/여주"));
-        listItems[1].add(new ListAreaItem("1","과천/안양/군포/의왕"));
-        listItems[1].add(new ListAreaItem("1","화성/수원/용인"));
-        listItems[1].add(new ListAreaItem("1","오산/평택/안성"));
-        listItems[1].add(new ListAreaItem("1","부천/광명시/시흥/안산"));
-        listItems[1].add(new ListAreaItem("1","김포/고양/파주"));
-        listItems[1].add(new ListAreaItem("1","의정부/양주/동두천"));
-        listItems[1].add(new ListAreaItem("1","포천/연천"));
-        listItems[1].add(new ListAreaItem("1","구리/남양주"));
-        listItems[1].add(new ListAreaItem("1","가평/양평"));
-
-        listItems[2] = new ArrayList<ListAreaItem>();
-        listItems[2].add(new ListAreaItem("1","전체"));
-        listItems[2].add(new ListAreaItem("1","기장"));
-        listItems[2].add(new ListAreaItem("1","금정구(부산대)"));
-        listItems[2].add(new ListAreaItem("1","해운대,송정"));
-        listItems[2].add(new ListAreaItem("1","동래구(온천장,명륜,사직)"));
-        listItems[2].add(new ListAreaItem("1","연제구(연산R,토곡,시청)"));
-        listItems[2].add(new ListAreaItem("1","북구(덕천로타리,구포)"));
-        listItems[2].add(new ListAreaItem("1","남구(경성대,용호동)"));
-        listItems[2].add(new ListAreaItem("1","광안리(민락,수영로타리)"));
-        listItems[2].add(new ListAreaItem("1","부산진구(서면,부전,양정)"));
-        listItems[2].add(new ListAreaItem("1","동구(부산역)"));
-        listItems[2].add(new ListAreaItem("1","중구(남포동)"));
-        listItems[2].add(new ListAreaItem("1","영도"));
-        listItems[2].add(new ListAreaItem("1","서구(송도)"));
-        listItems[2].add(new ListAreaItem("1","사상구(사상역)"));
-        listItems[2].add(new ListAreaItem("1","사하구(괴정,하단오거리,동아대)"));
-        listItems[2].add(new ListAreaItem("1","강서구(명지)"));
-
-        listItems[3] = new ArrayList<ListAreaItem>();
-        listItems[3].add(new ListAreaItem("1","전체"));
-        listItems[3].add(new ListAreaItem("1","동해/삼척/태백"));
-        listItems[3].add(new ListAreaItem("1","강릉/평창/정선/영월"));
-        listItems[3].add(new ListAreaItem("1","원주/횡성/홍천"));
-        listItems[3].add(new ListAreaItem("1","속초/양양/고성"));
-        listItems[3].add(new ListAreaItem("1","춘천/인제/철원/화천/양구"));
-
-        listItems[4] = new ArrayList<ListAreaItem>();
-        listItems[4].add(new ListAreaItem("1","전체"));
-        listItems[4].add(new ListAreaItem("1","서구/계양/부평"));
-        listItems[4].add(new ListAreaItem("1","중구/동구/남구/강화"));
-        listItems[4].add(new ListAreaItem("1","남동/연수/옹진"));
-
-        listItems[5] = new ArrayList<ListAreaItem>();
-        listItems[5].add(new ListAreaItem("1","전체"));
-        listItems[5].add(new ListAreaItem("1","계룡(계룡대)/세종(조치원)"));
-        listItems[5].add(new ListAreaItem("1","공주(동학사,계룡산)"));
-        listItems[5].add(new ListAreaItem("1","금산/논산/부여"));
-        listItems[5].add(new ListAreaItem("1","당진/예산/홍성"));
-        listItems[5].add(new ListAreaItem("1","서산/태안(안면도)"));
-        listItems[5].add(new ListAreaItem("1","보령(대천)/서천/청양"));
-        listItems[5].add(new ListAreaItem("1","아산(아산온천)"));
-        listItems[5].add(new ListAreaItem("1","천안 동남구(천안역)"));
-        listItems[5].add(new ListAreaItem("1","천안 서북구(성정동)"));
-
-        listItems[6] = new ArrayList<ListAreaItem>();
-        listItems[6].add(new ListAreaItem("1","전체"));
-        listItems[6].add(new ListAreaItem("1","보은/옥천/영동"));
-        listItems[6].add(new ListAreaItem("1","제천/단양"));
-        listItems[6].add(new ListAreaItem("1","진천/괴산/증평/음성"));
-        listItems[6].add(new ListAreaItem("1","청주 상당/서원구"));
-        listItems[6].add(new ListAreaItem("1","청주 청원구"));
-        listItems[6].add(new ListAreaItem("1","청주 흥덕구(가경동)"));
-        listItems[6].add(new ListAreaItem("1","충주"));
-
-        listItems[7] = new ArrayList<ListAreaItem>();
-        listItems[7].add(new ListAreaItem("1","전체"));
-        listItems[7].add(new ListAreaItem("1","대덕구(신탄진)"));
-        listItems[7].add(new ListAreaItem("1","동구(용전동,복합터미널)"));
-        listItems[7].add(new ListAreaItem("1","서구(둔산동,대전청사)"));
-        listItems[7].add(new ListAreaItem("1","유성구(유성오천,충남대)"));
-        listItems[7].add(new ListAreaItem("1","중구(은행동,한밭구장)"));
-
-
-        listItems[8] = new ArrayList<ListAreaItem>();
-        listItems[8].add(new ListAreaItem("1","전체"));
-        listItems[8].add(new ListAreaItem("1","문경/상주/예천"));
-        listItems[8].add(new ListAreaItem("1","영주/봉화/울진"));
-        listItems[8].add(new ListAreaItem("1","김천/성주/고령/칠곡"));
-        listItems[8].add(new ListAreaItem("1","구미/안동/의성/군위"));
-        listItems[8].add(new ListAreaItem("1","포항/영양/영덕/청송"));
-        listItems[8].add(new ListAreaItem("1","영천/경산/경주/청도"));
-        listItems[8].add(new ListAreaItem("1","울릉"));
-
-
-        listItems[9] = new ArrayList<ListAreaItem>();
-        listItems[9].add(new ListAreaItem("1","전체"));
-        listItems[9].add(new ListAreaItem("1","하동/사천/진주"));
-        listItems[9].add(new ListAreaItem("1","창녕/함안/밀양/양산"));
-        listItems[9].add(new ListAreaItem("1","마산/창원/진해/김해"));
-        listItems[9].add(new ListAreaItem("1","통영/거제/남해/고성"));
-        listItems[9].add(new ListAreaItem("1","거창/함양/산청/합천/의령"));
-
-
-        listItems[10] = new ArrayList<ListAreaItem>();
-        listItems[10].add(new ListAreaItem("1","전체"));
-        listItems[10].add(new ListAreaItem("1","달서/서구/달성군"));
-        listItems[10].add(new ListAreaItem("1","수성/동구"));
-        listItems[10].add(new ListAreaItem("1","중구/북구/남구"));
-
-
-        listItems[11] = new ArrayList<ListAreaItem>();
-        listItems[11].add(new ListAreaItem("1","전체"));
-        listItems[11].add(new ListAreaItem("1","중구/동구/울주군"));
-        listItems[11].add(new ListAreaItem("1","남구/북구"));
-
-        listItems[12] = new ArrayList<ListAreaItem>();
-        listItems[12].add(new ListAreaItem("1","전체"));
-        listItems[12].add(new ListAreaItem("1","서구"));
-        listItems[12].add(new ListAreaItem("1","동구/북구"));
-        listItems[12].add(new ListAreaItem("1","광산구/남구"));
-
-        listItems[13] = new ArrayList<ListAreaItem>();
-        listItems[13].add(new ListAreaItem("1","전체"));
-        listItems[13].add(new ListAreaItem("1","무안/함평/영광/장성"));
-        listItems[13].add(new ListAreaItem("1","담양/곡성/구례"));
-        listItems[13].add(new ListAreaItem("1","목포/나주/영암"));
-        listItems[13].add(new ListAreaItem("1","순천/광양/화순/여수"));
-        listItems[13].add(new ListAreaItem("1","해남/강진/장흥/보성/고흥/완도"));
-
-        listItems[14] = new ArrayList<ListAreaItem>();
-        listItems[14].add(new ListAreaItem("1","전체"));
-        listItems[14].add(new ListAreaItem("1","전주/완주"));
-        listItems[14].add(new ListAreaItem("1","군산/익산"));
-        listItems[14].add(new ListAreaItem("1","김제/부안/정읍/고창/남원/무주/진안/임실"));
-
-        listItems[15] = new ArrayList<ListAreaItem>();
-        listItems[15].add(new ListAreaItem("1","전체"));
-        listItems[15].add(new ListAreaItem("1","제주"));
-        listItems[15].add(new ListAreaItem("1","서귀포"));
-
-
-        areaRecyclerView = (RecyclerView)rootView.findViewById(R.id.selectionarea_selection_area_recyler);
-        listRecyclerView = (RecyclerView)rootView.findViewById(R.id.selectionarea_selection_list_recycler);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
-        LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext());
-        layoutManager2.setOrientation(LinearLayoutManager.VERTICAL);
-
-        areaRecyclerView.setLayoutManager(layoutManager);
-        areaRecyclerViewAdapter = new AreaRecyclerViewAdapter(areaItems);
-        areaRecyclerView.setAdapter(areaRecyclerViewAdapter);
-        areaRecyclerView.setHasFixedSize(true);
-        areaRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(1, 1, 0, 0));
-
-        //초기값
-
-//        areaRecyclerView.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                if(areaRecyclerView.findViewHolderForAdapterPosition(0).itemView != null){
-//                    areaRecyclerView.findViewHolderForAdapterPosition(0).itemView.performClick();
-//                }
-//            }
-//        }, 1);
-//        areaReviewRecyclerView.findViewHolderForAdapterPosition(0).itemView.findViewById(R.id.selectionarea_selection_area_txt).performClick();
-
-
-        listRecyclerView.setLayoutManager(layoutManager2);
-        listRecyclerViewAdapter = new ListAreaRecyclerViewAdapter(listItems[0]);
-        listRecyclerView.setAdapter(listRecyclerViewAdapter);
-        listRecyclerView.setHasFixedSize(true);
-//        areaReviewRecyclerView.setFocusable(false);
-        listRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 0, 1, 0));
-
-
+        xL_areaRecyclerViewAdapter.fetchData(xL_areaItems);
 
         return rootView;
     }
@@ -317,21 +133,21 @@ public class SelectionAreaFragment extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                areaRecyclerView.findViewHolderForAdapterPosition(0).itemView.performClick();
+                xL_areaRecyclerView.findViewHolderForAdapterPosition(0).itemView.performClick();
             }
         }, 1);
     }
 
-    private class AreaItem {
-        private String id;
+    private class XLAreaItem {
+        private int id;
         private String area;
 
-        public AreaItem(String id, String area) {
+        public XLAreaItem(int id, String area) {
             this.id = id;
             this.area = area;
         }
 
-        public String getId() {
+        public int getId() {
             return id;
         }
 
@@ -341,64 +157,120 @@ public class SelectionAreaFragment extends Fragment {
     }
 
 
-    private class AreaRecyclerViewHolder extends RecyclerView.ViewHolder {
+    private class XLAreaRecyclerViewHolder extends RecyclerView.ViewHolder {
 
         public TextView areaTextView;
 
 
-        public AreaRecyclerViewHolder(View itemView) {
+        public XLAreaRecyclerViewHolder(View itemView) {
             super(itemView);
 
-            if(itemView != null)
-            {
-                areaTextView = (TextView)itemView.findViewById(R.id.selectionarea_selection_area_txt);
+            if (itemView != null) {
+                areaTextView = (TextView) itemView.findViewById(R.id.selectionarea_selection_area_txt);
             }
         }
     }
 
+    @SuppressLint("NewApi")
+    private class XLAreaRecyclerViewAdapter extends RecyclerView.Adapter<XLAreaRecyclerViewHolder> {
 
-    private class AreaRecyclerViewAdapter extends RecyclerView.Adapter<AreaRecyclerViewHolder> {
-
-        private List<AreaItem> mItems;
+        private List<XLAreaItem> mItems;
         Context mContext;
+        private int selectedPosition = 0;
 
-        public AreaRecyclerViewAdapter(List<AreaItem> reviewItemList) {
+        public XLAreaRecyclerViewAdapter(List<XLAreaItem> reviewItemList) {
             mItems = reviewItemList;
+
+        }
+
+        public void fetchData(List<XLAreaItem> reviewItemList) {
+            mItems.addAll(reviewItemList);
+            this.notifyDataSetChanged();
         }
 
         @Override
-        public AreaRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public XLAreaRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             mContext = parent.getContext();
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View itemView = layoutInflater.inflate(R.layout.selectionarea_selection_recycler_area_item, parent, false);
-            AreaRecyclerViewHolder ret = new AreaRecyclerViewHolder(itemView);
+            View itemView = layoutInflater.inflate(R.layout.selectionarea_selection_recycler_xl_area_item, parent, false);
+            XLAreaRecyclerViewHolder ret = new XLAreaRecyclerViewHolder(itemView);
             return ret;
         }
 
         @Override
-        public void onBindViewHolder(AreaRecyclerViewHolder holder, final int position) {
+        public void onBindViewHolder(XLAreaRecyclerViewHolder holder, final int position) {
 
             holder.areaTextView.setText(mItems.get(position).getArea());
 
+            if (selectedPosition == position)
+                holder.itemView.setSelected(true);
+            else
+                holder.itemView.setSelected(false);
 
-//            MainApplication.loadUrlImage(mContext, mItems.get(position).getLoginImageUrl(), holder.loginImageView);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    selectedPosition = position;
+                    notifyDataSetChanged();
 
-                    if(slectView != null && slectView != v) {
-                        slectView.setSelected(false);
+
+//                  List<Example> test2 = mcList.stream().filter(s -> s.getDoCode() == 11).collect(Collectors.toList());
+
+                    List<AreaModel> test = xL_areaMap.get(mItems.get(position).getId());
+                    Log.d("TEST899", "[size] :" + test.size());
+
+                    l_areaMap =
+//                          test.stream().collect(Collectors.groupingBy(Example::getSigunCode));
+                            test.stream().collect(Collectors.groupingBy(e -> e.getSigunCode()));
+
+                    TreeMap<Integer, List<AreaModel>> tm = new TreeMap<>(l_areaMap);
+                    Iterator<Integer> iteratorKey = tm.keySet().iterator();   //키값 오름차순 정렬(기본)
+                    //Iterator<String> iteratorKey = tm.descendingKeySet().iterator(); //키값 내림차순 정렬
+                    List<LAreaItem> l_areaItems = new ArrayList<>();
+
+                    while (iteratorKey.hasNext()) {
+                        Integer key = iteratorKey.next();
+//                        if(mItems.get(position).getId() != 36) {
+                            l_areaItems.add(new LAreaItem(mItems.get(position).getId(), key, tm.get(key).get(0).getSigunTxt(), tm.get(key).get(0).getLati(), tm.get(key).get(0).getLongti()));
+                            Log.d("TEST899 : ", "key:" + key + " value:" + tm.get(key).get(0).getSigunTxt() + " Lati:" + tm.get(key).get(0).getLati() + " Longti:" + tm.get(key).get(0).getLongti());
+//                        }else{
+//                            l_areaItems.add(new LAreaItem(mItems.get(position).getId(), key, tm.get(key).get(0).getDongTxt(), tm.get(key).get(0).getLati(), tm.get(key).get(0).getLongti()));
+//                            Log.d("TEST899 : ", "key:" + key + " value:" + tm.get(key).get(0).getDongTxt() + " Lati:" + tm.get(key).get(0).getLati() + " Longti:" + tm.get(key).get(0).getLongti());
+//                        }
                     }
-                    v.setSelected(true);
-                    slectView = v;
 
-                    listRecyclerViewAdapter = new ListAreaRecyclerViewAdapter(listItems[position]);
-                    listRecyclerView.setAdapter(listRecyclerViewAdapter);
-                    listRecyclerViewAdapter.notifyDataSetChanged();
+                    l_areaRecyclerViewAdapter.fetchData(l_areaItems);
+//                    l_areaRecyclerViewAdapter = new LAreaRecyclerViewAdapter(l_areaItems);
+//                    l_areaRecyclerView.setAdapter(l_areaRecyclerViewAdapter);
+//                    l_areaRecyclerViewAdapter.notifyDataSetChanged();
 
-//                    listRecyclerView.findViewHolderForAdapterPosition(position).itemView.performClick();
+                    // 초기화
+                    m_areaRecyclerViewAdapter.fetchData(new ArrayList<>());
+//                    m_areaRecyclerViewAdapter = new MAreaRecyclerViewAdapter(new ArrayList<>());
+//                    m_areaRecyclerView.setAdapter(m_areaRecyclerViewAdapter);
+//                    m_areaRecyclerViewAdapter.notifyDataSetChanged();
                 }
             });
+
+//            MainApplication.loadUrlImage(mContext, mItems.get(position).getLoginImageUrl(), holder.loginImageView);
+//            holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//
+////                    if(slectView != null && slectView != v) {
+////                        slectView.setSelected(false);
+////                    }
+////                    v.setSelected(true);
+////                    slectView = v;
+//
+////                    listRecyclerViewAdapter = new ListAreaRecyclerViewAdapter(listItems[position]);
+////                    listRecyclerView.setAdapter(listRecyclerViewAdapter);
+////                    listRecyclerViewAdapter.notifyDataSetChanged();
+//
+////                    listRecyclerView.findViewHolderForAdapterPosition(position).itemView.performClick();
+//                }
+//            });
+
         }
 
         @Override
@@ -408,75 +280,272 @@ public class SelectionAreaFragment extends Fragment {
     }
 
 
-    private class ListAreaItem {
-        private String id;
+    private class LAreaItem{
+        private int preid;
+        private int id;
         private String area;
+        private String lati;
+        private String longti;
 
-        public ListAreaItem(String id, String area) {
+        public LAreaItem(int preid, int id, String area, String lati, String longti) {
             this.id = id;
             this.area = area;
+            this.lati = lati;
+            this.longti = longti;
         }
 
-        public String getId() {
+        public int getPreid() {
+            return preid;
+        }
+
+        public int getId() {
             return id;
         }
 
         public String getArea() {
             return area;
         }
+
+        public String getLati() {
+            return lati;
+        }
+
+        public String getLongti() {
+            return longti;
+        }
     }
 
-    private class ListAreaRecyclerViewHolder extends RecyclerView.ViewHolder {
+    private class LAreaRecyclerViewHolder extends RecyclerView.ViewHolder {
 
         public TextView areaTextView;
 
 
-        public ListAreaRecyclerViewHolder(View itemView) {
+        public LAreaRecyclerViewHolder(View itemView) {
             super(itemView);
 
-            if(itemView != null)
-            {
-                areaTextView = (TextView)itemView.findViewById(R.id.selectionarea_selection_area_list_txt);
+            if (itemView != null) {
+                areaTextView = (TextView) itemView.findViewById(R.id.selectionarea_selection_area_list_txt);
             }
         }
     }
 
-    private class ListAreaRecyclerViewAdapter extends RecyclerView.Adapter<ListAreaRecyclerViewHolder> {
+    private class LAreaRecyclerViewAdapter extends RecyclerView.Adapter<LAreaRecyclerViewHolder> {
 
-        private List<ListAreaItem> mItems;
+        private List<LAreaItem> mItems;
         Context mContext;
+        private int selectedPosition = -1;
 
-        public ListAreaRecyclerViewAdapter(List<ListAreaItem> reviewItemList) {
+        public LAreaRecyclerViewAdapter(List<LAreaItem> reviewItemList) {
             mItems = reviewItemList;
         }
 
+        public void fetchData(List<LAreaItem> reviewItemList) {
+            mItems.clear();
+            mItems.addAll(reviewItemList);
+            selectedPosition = -1;
+            this.notifyDataSetChanged();
+        }
+
         @Override
-        public ListAreaRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public LAreaRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             mContext = parent.getContext();
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View itemView = layoutInflater.inflate(R.layout.selectionarea_selection_recycler_list_item, parent, false);
-            ListAreaRecyclerViewHolder ret = new ListAreaRecyclerViewHolder(itemView);
+            View itemView = layoutInflater.inflate(R.layout.selectionarea_selection_recycler_l_area_item, parent, false);
+            LAreaRecyclerViewHolder ret = new LAreaRecyclerViewHolder(itemView);
             return ret;
         }
 
         @Override
-        public void onBindViewHolder(ListAreaRecyclerViewHolder holder, final int position) {
+        @SuppressLint("NewApi")
+        public void onBindViewHolder(LAreaRecyclerViewHolder holder, final int position) {
 
-            holder.areaTextView.setText(mItems.get(position).getArea());
+            String txt = mItems.get(position).getArea();
 
+            if (position == 0)
+                txt = "전체";
 
-//            MainApplication.loadUrlImage(mContext, mItems.get(position).getLoginImageUrl(), holder.loginImageView);
+            holder.areaTextView.setText(txt);
+
+            if (selectedPosition == position)
+                holder.itemView.setSelected(true);
+            else
+                holder.itemView.setSelected(false);
+
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    if(slectView != null && slectView != v){
-                        slectView.setSelected(false);
+                    selectedPosition = position;
+                    notifyDataSetChanged();
+
+//                    Toast.makeText(mContext, "Position: " +  position, Toast.LENGTH_SHORT).show();
+
+                    List<AreaModel> test = l_areaMap.get(mItems.get(position).getId());
+                    Log.d("TEST899", "[=============size============] :" + test.size());
+
+//                    for(Example ex : test){
+//                        Log.d("TEST899", "[ " + ex.getDongTxt() + ex.getDoCode()+" ]");
+//                    }
+
+                    Map<Integer, List<AreaModel>> liteMap =
+//                          test.stream().collect(Collectors.groupingBy(Example::getSigunCode));
+                            test.stream().collect(Collectors.groupingBy(e -> e.getDongCode()));
+
+                    TreeMap<Integer, List<AreaModel>> tm = new TreeMap<>(liteMap);
+                    Iterator<Integer> iteratorKey = tm.keySet().iterator();   //키값 오름차순 정렬(기본)
+                    //Iterator<String> iteratorKey = tm.descendingKeySet().iterator(); //키값 내림차순 정렬
+                    List<MAreaItem> m_areaItems = new ArrayList<>();
+
+                    while (iteratorKey.hasNext()) {
+                        Integer key = iteratorKey.next();
+                        if(mItems.get(position).getPreid() != 36){
+                            m_areaItems.add(new MAreaItem(key, tm.get(key).get(0).getDongTxt(), tm.get(key).get(0).getLati(), tm.get(key).get(0).getLongti()));
+                            Log.d("TEST899 : ", "key:" + key + " value:" + tm.get(key).get(0).getDongTxt() + " Lati:" + tm.get(key).get(0).getLati() + " Longti:" + tm.get(key).get(0).getLongti());
+                        }else{
+                            m_areaItems.add(new MAreaItem(key, tm.get(key).get(0).getRiTxt(), tm.get(key).get(0).getLati(), tm.get(key).get(0).getLongti()));
+                            Log.d("TEST899 : ", "key:" + key + " value:" + tm.get(key).get(0).getRiTxt() + " Lati:" + tm.get(key).get(0).getLati() + " Longti:" + tm.get(key).get(0).getLongti());
+                        }
                     }
-                    v.setSelected(true);
-                    slectView = v;
+
+                    m_areaRecyclerViewAdapter.fetchData(m_areaItems);
+//                    m_areaRecyclerViewAdapter = new MAreaRecyclerViewAdapter(m_areaItems);
+//                    m_areaRecyclerView.setAdapter(m_areaRecyclerViewAdapter);
+//                    m_areaRecyclerViewAdapter.notifyDataSetChanged();
                 }
             });
+
+
+//            MainApplication.loadUrlImage(mContext, mItems.get(position).getLoginImageUrl(), holder.loginImageView);
+//            holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//
+//                    if(slectView != null && slectView != v){
+//                        slectView.setSelected(false);
+//                    }
+//                    v.setSelected(true);
+//                    slectView = v;
+//                }
+//            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return mItems.size();
+        }
+    }
+
+
+    private class MAreaItem {
+        private int id;
+        private String area;
+        private String lati;
+        private String longti;
+
+        public MAreaItem(int id, String area, String lati, String longti) {
+            this.id = id;
+            this.area = area;
+            this.lati = lati;
+            this.longti = longti;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getArea() {
+            return area;
+        }
+
+        public String getLati() {
+            return lati;
+        }
+
+        public String getLongti() {
+            return longti;
+        }
+    }
+
+    private class MAreaRecyclerViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView areaTextView;
+
+
+        public MAreaRecyclerViewHolder(View itemView) {
+            super(itemView);
+
+            if (itemView != null) {
+                areaTextView = (TextView) itemView.findViewById(R.id.selectionarea_selection_area_list_txt);
+            }
+        }
+    }
+
+    private class MAreaRecyclerViewAdapter extends RecyclerView.Adapter<MAreaRecyclerViewHolder> {
+
+        private List<MAreaItem> mItems;
+        Context mContext;
+        private int selectedPosition = -1;
+
+        public MAreaRecyclerViewAdapter(List<MAreaItem> reviewItemList) {
+            mItems = reviewItemList;
+        }
+
+        public void fetchData(List<MAreaItem> reviewItemList) {
+            mItems.clear();
+            mItems.addAll(reviewItemList);
+            selectedPosition = -1;
+            this.notifyDataSetChanged();
+        }
+
+        @Override
+        public MAreaRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            mContext = parent.getContext();
+            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+            View itemView = layoutInflater.inflate(R.layout.selectionarea_selection_recycler_m_area_item, parent, false);
+            MAreaRecyclerViewHolder ret = new MAreaRecyclerViewHolder(itemView);
+            return ret;
+        }
+
+        @SuppressLint("NewApi")
+        @Override
+        public void onBindViewHolder(MAreaRecyclerViewHolder holder, final int position) {
+
+            String txt = mItems.get(position).getArea();
+
+            if (position == 0)
+                txt = "전체";
+
+            holder.areaTextView.setText(txt);
+
+
+            if (selectedPosition == position)
+                holder.itemView.setSelected(true);
+            else
+                holder.itemView.setSelected(false);
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    selectedPosition = position;
+                    notifyDataSetChanged();
+
+                }
+            });
+
+
+//            MainApplication.loadUrlImage(mContext, mItems.get(position).getLoginImageUrl(), holder.loginImageView);
+//            holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//
+//                    if(slectView != null && slectView != v){
+//                        slectView.setSelected(false);
+//                    }
+//                    v.setSelected(true);
+//                    slectView = v;
+//                }
+//            });
         }
 
         @Override

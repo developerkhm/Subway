@@ -47,7 +47,7 @@ public class HotPlaceRecyclerViewDataAdapter extends RecyclerView.Adapter<HotPla
 
     @Override
     public void onBindViewHolder(HotPlaceRecyclerViewHolder holder, final int position) {
-        BaseApplication.getInstance().loadImage(mContext, viewItemList.get(position).getthumbUrl(), holder.mImgUrl, false, BaseApplication.getInstance().LIST_HORIZONTAL_HOTPLACE);
+        BaseApplication.getInstance().loadImage(mContext, viewItemList.get(position).getImageUrl(), holder.mImgUrl, false, BaseApplication.getInstance().LIST_HORIZONTAL_HOTPLACE);
         holder.ratingBar.setRating(Float.valueOf(viewItemList.get(position).getStarRating()));
         holder.mTitle.setText(viewItemList.get(position).getNAME());
         holder.mStoreType.setText(viewItemList.get(position).getCategoryName());

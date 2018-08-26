@@ -26,7 +26,27 @@ public class EventFragment extends BaseFragment {
     private ObservableWebView webView;
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser)
+    {
+        Log.d("TestFg",getClass().getName() + "setUserVisibleHint : " + isVisibleToUser);
+
+        if (isVisibleToUser)
+        {
+            //화면에 실제로 보일때
+        }
+        else
+        {
+            //preload 될때(전페이지에 있을때)
+        }
+
+        super.setUserVisibleHint(isVisibleToUser);
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        Log.d("TestFg",getClass().getName() + "onCreateView");
         View view = inflater.inflate(R.layout.fragment_bottom_event_layout, container, false);
         view.findViewById(R.id.toolbar).setVisibility(View.GONE);
 

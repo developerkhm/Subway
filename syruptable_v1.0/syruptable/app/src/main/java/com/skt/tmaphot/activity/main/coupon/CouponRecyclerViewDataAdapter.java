@@ -69,13 +69,13 @@ public class CouponRecyclerViewDataAdapter extends RecyclerView.Adapter<CouponRe
             BaseApplication.getInstance().loadImage(mContext, viewItem.getUrl(), holder.getmImgUrl(), false, BaseApplication.getInstance().LIST_HORIZONTAL);
             holder.getmTitle().setText(viewItem.getTitle());
             holder.getmMenu().setText(viewItem.getMenu());
-            holder.getmSale().setText(viewItem.getSale() + "%");
+//            holder.getmSale().setText(viewItem.getSale() + "%");
             holder.getmDistance().setText(viewItem.getDistance());
         } else if (layoutType == COUPON_ITEM_MORE_LAYOUT) {
             BaseApplication.getInstance().loadImage(mContext, viewItem.getUrl(), holder.getmImgUrl(), false, BaseApplication.getInstance().LIST_HORIZONTAL_MORE);
             holder.getmTitle().setText(viewItem.getTitle());
             holder.getmMenu().setText(viewItem.getMenu());
-            holder.getmSale().setText(viewItem.getSale() + "%");
+//            holder.getmSale().setText(viewItem.getSale() + "%");
             holder.getmType().setText(viewItem.getType());
             holder.getmPrePrice().setText(viewItem.getPreprice());
             holder.getmPrice().setText(viewItem.getPrice());
