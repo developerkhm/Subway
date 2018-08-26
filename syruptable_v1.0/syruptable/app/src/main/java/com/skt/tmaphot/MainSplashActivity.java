@@ -122,9 +122,12 @@ public class MainSplashActivity extends AppCompatActivity {
 
     private void startMainActivity() {
         Log.d("getgps", "startMainActivity");
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        BaseApplication.getInstance().ActivityStart(intent, null);
+//        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(getBaseContext(), LoadingActivity.class);
+        intent.putExtra(BaseApplication.ACTIVITY_KEY, LoadingActivity.MAINACTIVITY);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);   // no history
+        startActivity(intent);
+//        BaseApplication.getInstance().ActivityStart(intent, null);
     }
 
     public boolean checkGpsEnable() {

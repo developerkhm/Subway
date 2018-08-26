@@ -4,12 +4,12 @@ import android.util.Log;
 
 import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.common.CommonUtil;
-import com.skt.tmaphot.net.model.user.UserInfoModel;
+import com.skt.tmaphot.net.model.user.UserInfoPojo;
 
 public class LoginInfo {
 
     private static LoginInfo instance;
-    private UserInfoModel userInfo;
+    private UserInfoPojo userInfo;
 
 
     public static LoginInfo getInstance(){
@@ -41,11 +41,11 @@ public class LoginInfo {
         CommonUtil.getInstance().savePreferencesString(BaseApplication.getInstance(),"login","userid", userId);
     }
 
-    public UserInfoModel getUserInfo() {
+    public UserInfoPojo getUserInfo() {
         return userInfo;
     }
 
-    public void setUserInfo(UserInfoModel userInfo) {
+    public void setUserInfo(UserInfoPojo userInfo) {
         this.userInfo = userInfo;
     }
 }

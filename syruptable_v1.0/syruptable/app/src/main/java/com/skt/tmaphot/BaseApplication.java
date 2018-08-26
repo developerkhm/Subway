@@ -40,6 +40,8 @@ import com.tsengvn.typekit.Typekit;
 
 public class BaseApplication extends Application {
 
+    public final static String ACTIVITY_KEY = "akey";
+
     private AppCompatDialog progressDialog;
     private static BaseApplication baseApplication;
 
@@ -61,6 +63,10 @@ public class BaseApplication extends Application {
     public static BaseApplication getInstance() {
         return baseApplication;
     }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(newBase);}
 
     @Override
     public void onCreate() {

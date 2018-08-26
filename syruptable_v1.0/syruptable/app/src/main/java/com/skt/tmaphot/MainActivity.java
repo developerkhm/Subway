@@ -3,7 +3,6 @@ package com.skt.tmaphot;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -38,19 +37,11 @@ import com.skt.tmaphot.navi.NaviMenuItem;
 import com.skt.tmaphot.navi.NaviMenuRecyclerViewAdapter;
 import com.skt.tmaphot.net.service.APIClient;
 import com.skt.tmaphot.net.service.LoginInfo;
-import com.skt.tmaphot.net.service.test.Album;
-import com.skt.tmaphot.net.service.test.DataTest;
-import com.skt.tmaphot.net.service.test.PostDatum;
-import com.skt.tmaphot.net.service.test.TESTAPIClient;
+import com.skt.tmaphot.net.service.test.MainData;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -88,6 +79,14 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_layout);
         baceContext = this;
+
+        MainData mainData = getIntent().getParcelableExtra(LoadingActivity.MAINACTIVITY);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(LoadingActivity.MAINACTIVITY, mainData);
+        mainFragment.setArguments(bundle);
+
+
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -527,44 +526,5 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-    }
-
-    public void setTest() {
-
-        //        List<Observable<?>> requests = new ArrayList<>();
-
-        Observable<List<PostDatum>> postsObservable = TESTAPIClient.getInstance().getClient("").getPosts()
-                .subscribeOn(Schedulers.io());
-
-        Observable<List<Album>> albumObservable = TESTAPIClient.getInstance().getClient("").getAlbums()
-                .subscribeOn(Schedulers.io());
-
-
-        Observable.zip(postsObservable, albumObservable, (v, v2) -> {
-            // if there is any need to modify the two response or combined response object.
-            return new DataTest(v, v2);
-        }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<DataTest>() {
-            @Override
-            public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(DataTest dataTest) {
-                Log.d("Test", "onNext");
-                Log.d("Test", dataTest.getAlbums().get(0).getTitle());
-
-            }
-
-            @Override
-            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
     }
 }

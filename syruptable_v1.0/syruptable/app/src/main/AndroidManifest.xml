@@ -86,7 +86,6 @@
         <activity android:name=".MapWebViewActivity" />
         <activity android:name=".LoginWebViewActivity" />
         <activity android:name=".VideoActivity" />
-        <activity android:name=".Delivery365WebViewActivity" />
         <activity android:name=".WebViewActivity" />
 
         <meta-data
@@ -103,7 +102,10 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".OpenLicense"></activity>
+        <activity android:name=".OpenLicense" />
+        <activity
+            android:name=".LoadingActivity">
+        </activity>
     </application>
 
 </manifest>

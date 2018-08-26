@@ -1,82 +1,87 @@
 
 package com.skt.tmaphot.net.model.user;
 
-import com.google.gson.annotations.Expose;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.bluelinelabs.logansquare.annotation.JsonField;
+import com.bluelinelabs.logansquare.annotation.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
-public class ItemList {
+@JsonObject
+public class ItemList implements Parcelable {
 
     @SerializedName("idx")
-    @Expose
+    @JsonField(name ="idx")
     private String idx;
     @SerializedName("email")
-    @Expose
+    @JsonField(name ="email")
     private String email;
     @SerializedName("name")
-    @Expose
+    @JsonField(name ="name")
     private String name;
     @SerializedName("phone")
-    @Expose
+    @JsonField(name ="phone")
     private String phone;
     @SerializedName("tel")
-    @Expose
-    private Object tel;
+    @JsonField(name ="tel")
+    private String tel;
     @SerializedName("point")
-    @Expose
+    @JsonField(name ="point")
     private String point;
     @SerializedName("regdate")
-    @Expose
+    @JsonField(name ="regdate")
     private String regdate;
     @SerializedName("nameCheck_ci")
-    @Expose
+    @JsonField(name ="nameCheck_ci")
     private String nameCheckCi;
     @SerializedName("nameCheck_di")
-    @Expose
+    @JsonField(name ="nameCheck_di")
     private String nameCheckDi;
     @SerializedName("birth")
-    @Expose
+    @JsonField(name ="birth")
     private String birth;
     @SerializedName("gender")
-    @Expose
+    @JsonField(name ="gender")
     private String gender;
     @SerializedName("smsAgree")
-    @Expose
+    @JsonField(name ="smsAgree")
     private String smsAgree;
     @SerializedName("postcode")
-    @Expose
+    @JsonField(name ="postcode")
     private String postcode;
     @SerializedName("addr1")
-    @Expose
+    @JsonField(name ="addr1")
     private String addr1;
     @SerializedName("addr2")
-    @Expose
+    @JsonField(name ="addr2")
     private String addr2;
     @SerializedName("addr_island")
-    @Expose
+    @JsonField(name ="addr_island")
     private String addrIsland;
     @SerializedName("memo")
-    @Expose
+    @JsonField(name ="memo")
     private String memo;
     @SerializedName("level")
-    @Expose
+    @JsonField(name ="level")
     private String level;
     @SerializedName("fail_count")
-    @Expose
+    @JsonField(name ="fail_count")
     private String failCount;
     @SerializedName("lock_yn")
-    @Expose
+    @JsonField(name ="lock_yn")
     private String lockYn;
     @SerializedName("last_try_time")
-    @Expose
+    @JsonField(name ="last_try_time")
     private String lastTryTime;
     @SerializedName("lock_time")
-    @Expose
+    @JsonField(name ="lock_time")
     private String lockTime;
     @SerializedName("nickname")
-    @Expose
+    @JsonField(name ="nickname")
     private String nickname;
     @SerializedName("img")
-    @Expose
+    @JsonField(name ="img")
     private String img;
 
     public String getIdx() {
@@ -111,11 +116,11 @@ public class ItemList {
         this.phone = phone;
     }
 
-    public Object getTel() {
+    public String getTel() {
         return tel;
     }
 
-    public void setTel(Object tel) {
+    public void setTel(String tel) {
         this.tel = tel;
     }
 
@@ -271,4 +276,79 @@ public class ItemList {
         this.img = img;
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.idx);
+        dest.writeString(this.email);
+        dest.writeString(this.name);
+        dest.writeString(this.phone);
+        dest.writeString(this.tel);
+        dest.writeString(this.point);
+        dest.writeString(this.regdate);
+        dest.writeString(this.nameCheckCi);
+        dest.writeString(this.nameCheckDi);
+        dest.writeString(this.birth);
+        dest.writeString(this.gender);
+        dest.writeString(this.smsAgree);
+        dest.writeString(this.postcode);
+        dest.writeString(this.addr1);
+        dest.writeString(this.addr2);
+        dest.writeString(this.addrIsland);
+        dest.writeString(this.memo);
+        dest.writeString(this.level);
+        dest.writeString(this.failCount);
+        dest.writeString(this.lockYn);
+        dest.writeString(this.lastTryTime);
+        dest.writeString(this.lockTime);
+        dest.writeString(this.nickname);
+        dest.writeString(this.img);
+    }
+
+    public ItemList() {
+    }
+
+    protected ItemList(Parcel in) {
+        this.idx = in.readString();
+        this.email = in.readString();
+        this.name = in.readString();
+        this.phone = in.readString();
+        this.tel = in.readString();
+        this.point = in.readString();
+        this.regdate = in.readString();
+        this.nameCheckCi = in.readString();
+        this.nameCheckDi = in.readString();
+        this.birth = in.readString();
+        this.gender = in.readString();
+        this.smsAgree = in.readString();
+        this.postcode = in.readString();
+        this.addr1 = in.readString();
+        this.addr2 = in.readString();
+        this.addrIsland = in.readString();
+        this.memo = in.readString();
+        this.level = in.readString();
+        this.failCount = in.readString();
+        this.lockYn = in.readString();
+        this.lastTryTime = in.readString();
+        this.lockTime = in.readString();
+        this.nickname = in.readString();
+        this.img = in.readString();
+    }
+
+    public static final Parcelable.Creator<ItemList> CREATOR = new Parcelable.Creator<ItemList>() {
+        @Override
+        public ItemList createFromParcel(Parcel source) {
+            return new ItemList(source);
+        }
+
+        @Override
+        public ItemList[] newArray(int size) {
+            return new ItemList[size];
+        }
+    };
 }

@@ -31,7 +31,7 @@ import com.skt.tmaphot.activity.review.multiple.activities.AlbumSelectActivity;
 import com.skt.tmaphot.activity.review.multiple.activities.ImageSelectActivity;
 import com.skt.tmaphot.activity.search.SearchActivity;
 import com.skt.tmaphot.location.GPSData;
-import com.skt.tmaphot.net.model.user.UserInfoModel;
+import com.skt.tmaphot.net.model.user.UserInfoPojo;
 import com.skt.tmaphot.net.service.APIClient;
 import com.skt.tmaphot.net.service.LoginInfo;
 import com.tsengvn.typekit.TypekitContextWrapper;
@@ -57,31 +57,31 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        APIClient.getInstance().getClient(null).getUserInfo(LoginInfo.getInstance().getUserId())
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe(new Observer<UserInfoModel>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(UserInfoModel userInfo) {
-                        LoginInfo.getInstance().setUserInfo(userInfo);
-                        Log.d("D0909", "RESULT : " + userInfo.getResult());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+//        APIClient.getInstance().getClient(null).getUserInfo(LoginInfo.getInstance().getUserId())
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(Schedulers.io())
+//                .subscribe(new Observer<UserInfoPojo>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(UserInfoPojo userInfo) {
+//                        LoginInfo.getInstance().setUserInfo(userInfo);
+//                        Log.d("D0909", "RESULT : " + userInfo.getResult());
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
     }
 
     @Override

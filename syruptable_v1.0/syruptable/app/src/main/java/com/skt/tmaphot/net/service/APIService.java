@@ -1,22 +1,18 @@
 package com.skt.tmaphot.net.service;
 
 import com.skt.tmaphot.net.model.hotplace.HotplacePojo;
-import com.skt.tmaphot.net.model.store.StoreInfoModel;
-import com.skt.tmaphot.net.model.user.UserInfoModel;
+import com.skt.tmaphot.net.model.user.UserInfoPojo;
 import com.skt.tmaphot.net.service.test.pojo.StorePojo;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Retrofit;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -55,7 +51,7 @@ public interface APIService {
 
     @POST("users/info")
     @FormUrlEncoded
-    Observable<UserInfoModel> getUserInfo(
+    Observable<UserInfoPojo> getUserInfo(
             @Field("id") String id
     );
 

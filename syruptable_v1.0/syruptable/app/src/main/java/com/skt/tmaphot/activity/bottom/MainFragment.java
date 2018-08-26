@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.skt.tmaphot.BaseApplication;
 import com.skt.tmaphot.HotPlaceResultActivity;
+import com.skt.tmaphot.LoadingActivity;
 import com.skt.tmaphot.MainActivity;
 import com.skt.tmaphot.NestedScrollingView;
 import com.skt.tmaphot.R;
@@ -47,6 +48,7 @@ import com.skt.tmaphot.location.GPSData;
 import com.skt.tmaphot.net.model.hotplace.HotplacePojo;
 import com.skt.tmaphot.net.model.hotplace.StoreListItem;
 import com.skt.tmaphot.net.service.APIClient;
+import com.skt.tmaphot.net.service.test.MainData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,7 +140,11 @@ public class MainFragment extends BaseFragment {
 
         Log.d("TestFg",getClass().getName() + "onCreateView");
 
-        BaseApplication.getInstance().progressON(getActivity(), "");
+//        BaseApplication.getInstance().progressON(getActivity(), "");
+
+        Bundle bundle = this.getArguments();
+        MainData mainData = bundle.getParcelable(LoadingActivity.MAINACTIVITY);
+
 
         //초기 View 세팅
         initView();
@@ -159,7 +165,7 @@ public class MainFragment extends BaseFragment {
         recylerSet(menuRecyclerView);
 
         // 핫플레이스
-        hotplaceSet();
+        hotplaceSet(mainData);
 
 
         return rootView;
@@ -486,7 +492,7 @@ public class MainFragment extends BaseFragment {
                 });
     }
 
-    public void hotplaceSet() {
+    public void hotplaceSet(MainData mainData) {
         hotplaceRecyclerView = (RecyclerView) rootView.findViewById(R.id.hotplace_recycler_view);
         final StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
@@ -499,7 +505,9 @@ public class MainFragment extends BaseFragment {
 //        hotplaceRecyclerView.getRecycledViewPool().setMaxRecycledViews(0, 40);
         hotplaceRecyclerView.setFocusableInTouchMode(true);
 
-        loadData_Hotplace(hotplace_sortType);
+//        loadData_Hotplace(hotplace_sortType);
+
+        hotPlaceRecyclerViewDataAdapter.loadData(mainData.getHotplacePojo().getStoreList());
     }
 
     private void reLoadData_HotPlace(int hotplaceLoadType) {
