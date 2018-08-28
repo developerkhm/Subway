@@ -1,0 +1,77 @@
+<resources>
+    <string name="app_name">Syrup 테이블</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">게스트</string>
+    <string name="nav_header_subtitle">로그인/회원가입을 해주세요!</string>
+    <string name="nav_header_modify">정보수정</string>
+    <string name="nav_header_close">X</string>
+    <string name="nav_header_login">로그인/회원가입</string>
+
+    <string name="nav_menu_home">HOME</string>
+    <string name="nav_menu_login">로그인</string>
+    <string name="nav_menu_mypage">마이페이지</string>
+    <string name="nav_menu_order">주문/배송조회</string>
+    <string name="nav_menu_cart">장바구니</string>
+    <string name="nav_menu_noti">공지사항</string>
+    <string name="nav_menu_board">고객게시판</string>
+    <string name="nav_menu_review">리뷰게시판</string>
+
+
+    <string name="action_settings">Settings</string>
+    <string name="selectionarea_tab1">인기지역</string>
+    <string name="selectionarea_tab2">지역선택</string>
+
+    <string name="search_tab1">추천 검색어</string>
+    <string name="search_tab2">최근 검색어</string>
+    <string name="search_tab3">검색</string>
+    <string name="search_text">검색어를 입력해주세요</string>
+
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_store_info">StoreInfoActivity</string>
+
+    <string name="main_content_menu_coupon">주변 할인쿠폰</string>
+    <string name="main_more_txt">+ 더보기</string>
+
+
+    <string name="main_content_menu_food">음식테마</string>
+
+    <string name="main_searchbar">상호·메뉴·지역명 검색</string>
+
+
+    <string name="main_content_menu_review">리얼후기</string>
+    <string name="main_content_menu_review_more">+ 더보기</string>
+
+    <string name="main_content_menu_hotdeal">주변 추천 맛집</string>
+    <string name="main_content_menu_hotdeal_more">+ 더보기</string>
+
+    <string name="main_content_menu_hotplace">핫플레이스 추천</string>
+
+    <string name="main_content_menu_hotplace_pop">인기순</string>
+    <string name="main_content_menu_hotplace_distance">거리순</string>
+
+
+    <string name="album_view">Select photo album</string>
+    <string name="image_view">Tap to select images</string>
+
+    <string name="add">ADD</string>
+    <string name="spingferr">selected</string>
+    <string name="limit_exceeded">최대 총 %d개 까지 첨부 가능 합니다.</string>
+
+    <string name="error_null_cursor">다시 시도해주세요.</string>
+
+    <!--Request Permission-->
+    <string name="permission_info">App requires permission to Storage to view images.</string>
+    <string name="permission_force">App requires permission to Storage to view images. Tap Settings and go to Permissions to grant permission.</string>
+    <string name="permission_ok">OK</string>
+    <string name="permission_settings">Settings</string>
+    <string name="permission_package">package</string>
+
+
+    <string name="bottom_menu_home">Home</string>
+    <string name="bottom_menu_review">리얼후기</string>
+    <string name="bottom_menu_event">이벤트</string>
+    <string name="bottom_menu_shop">SHOP</string>
+    <string name="bottom_menu_myblog">내블로그</string>
+
+</resources>

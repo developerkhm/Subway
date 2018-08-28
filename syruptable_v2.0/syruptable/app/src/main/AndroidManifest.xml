@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.skt.tmaphot">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+
+    <!-- for API 21 under -->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
+    <!-- Dangerous Permmisions 6.0 up -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature android:name="android.hardware.location.gps" />
+    <uses-feature android:name="android.hardware.camera" />
+
+    <application
+        android:name=".BaseApplication"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainSplashActivity"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".temp.MainActivityWebViewUp">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="test" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="main"
+                    android:scheme="syruptable" />
+            </intent-filter>
+        </activity>
+
+        <!-- TEST ING -->
+        <activity android:name=".temp.MainActivityTab" />
+        <activity android:name=".activity.main.review.more.RealReviewActivity" />
+        <activity android:name=".activity.main.coupon.more.CouponListActivity" />
+        <activity android:name=".activity.main.hotdeal.more.HotdealListActivity" />
+        <activity android:name=".activity.review.ReviewWriteActivity" />
+        <activity android:name=".activity.review.multiple.activities.AlbumSelectActivity" />
+        <activity android:name=".activity.review.multiple.activities.HelperActivity" />
+        <activity android:name=".activity.review.multiple.activities.ImageSelectActivity" />
+        <activity android:name=".activity.main.store.StoreInfoActivity" />
+        <activity android:name=".activity.main.store.review.ReviewTotalActivity" />
+        <activity android:name=".activity.main.store.review.SocialReviewTotalActivity" />
+        <activity android:name=".ImageViewPagerActivity" />
+        <activity android:name=".activity.area.SelectionAreaActivity" />
+        <activity android:name=".activity.search.SearchActivity" />
+        <activity android:name=".HotPlaceResultActivity" />
+        <activity android:name=".activity.blog.MyBlogActivity" />
+        <activity android:name=".activity.blog.MyBlogStoreReviewActivity" />
+        <activity android:name=".BaseWebViewActivity" />
+        <activity android:name=".MapWebViewActivity" />
+        <activity android:name=".LoginWebViewActivity" />
+        <activity android:name=".VideoActivity" />
+        <activity android:name=".WebViewActivity" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="762f7f379ff2a9d0c204987f64d582adb4d197b7" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.skt.tmaphot.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <activity android:name=".OpenLicense" />
+        <activity android:name=".LoadingActivity"
+            android:noHistory="false"></activity>
+    </application>
+
+</manifest>
