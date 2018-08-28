@@ -21,6 +21,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     private final static String TAG = "DatabaseHelper";
     private SQLiteDatabase myDataBase;
     private String myPath;
+    private String mDatapath;
     private Context myContext;
 
     public DatabaseOpenHelper(Context context) {
@@ -30,7 +31,9 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     public DatabaseOpenHelper(Context context, String filePath) {
         super(context, DATABASE_NAME, null, VERSION_NAME);
         this.myContext = context;
+        mDatapath = filePath;
         myPath = String.valueOf(filePath + "/" + DATABASE_NAME);
+        Log.d(TAG,"filepath : " +  myPath);
     }
 
     @Override
@@ -75,30 +78,81 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     }
 
     private void copyDataBase() throws IOException {
-        OutputStream myOutput = new FileOutputStream(myPath);
-        InputStream myInput = myContext.getAssets().open("database/" + DATABASE_NAME);
-        byte[] buffer = new byte[1024 * 1024 * 5];
-        int length;
-        while ((length = myInput.read(buffer)) > 0) {
-            myOutput.write(buffer, 0, length);
+
+        try {
+            File file = new File(mDatapath);
+            if( !file.exists() ) {
+                file.mkdirs();
+            }
+
+            OutputStream myOutput = new FileOutputStream(myPath);
+            InputStream myInput = myContext.getAssets().open("database/" + DATABASE_NAME);
+            byte[] buffer = new byte[1024 * 1024 * 5];
+            int length;
+            while ((length = myInput.read(buffer)) > 0) {
+                myOutput.write(buffer, 0, length);
+            }
+            Log.d(TAG, "copyDataBase complete.");
+            myOutput.flush();
+            myOutput.close();
+            myInput.close();
+        }catch(Exception e){
+            e.printStackTrace();
+            Log.d(TAG, "copyDataBase error : " + e.getMessage());
         }
-        myOutput.flush();
-        myOutput.close();
-        myInput.close();
     }
 
 
     //Opening DB and Getting Category DATA from DB
-    public ArrayList<AreaModel> getCategoryName() {
+    public ArrayList<XLAreaItem> getXLarea() {
         myDataBase = SQLiteDatabase.openDatabase(myPath,
                 null, SQLiteDatabase.OPEN_READONLY);
-        String query = "SELECT * from area where do_code= '36'";
+        String query = "select do_code, do_txt  from area GROUP BY do_code";
         Cursor cursor = myDataBase.rawQuery(query, null);
-        ArrayList<AreaModel> categoryArrayList = new ArrayList<>();
+        ArrayList<XLAreaItem> categoryArrayList = new ArrayList<>();
         while (cursor.moveToNext()) {
-            AreaModel category = new AreaModel();
-            category.setDoCode(cursor.getInt(cursor.getColumnIndex("do_code")));
-            category.setDoTxt(cursor.getString(cursor.getColumnIndex("do_txt")));
+            XLAreaItem category = new XLAreaItem();
+            category.setId(cursor.getInt(cursor.getColumnIndex("do_code")));
+            category.setArea(cursor.getString(cursor.getColumnIndex("do_txt")));
+            categoryArrayList.add(category);
+        }
+        myDataBase.close();
+        cursor.close();
+        return categoryArrayList;
+    }
+
+    public ArrayList<LAreaItem> getLarea(int id) {
+        myDataBase = SQLiteDatabase.openDatabase(myPath,
+                null, SQLiteDatabase.OPEN_READONLY);
+        String query = "select sigun_code, sigun_txt, lati, longti from area Where do_code = \'"+ id + "\' GROUP BY sigun_code";
+        Cursor cursor = myDataBase.rawQuery(query, null);
+        ArrayList<LAreaItem> categoryArrayList = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            LAreaItem category = new LAreaItem();
+            category.setPreid(id);
+            category.setId(cursor.getInt(cursor.getColumnIndex("sigun_code")));
+            category.setArea(cursor.getString(cursor.getColumnIndex("sigun_txt")));
+            category.setLati(cursor.getString(cursor.getColumnIndex("lati")));
+            category.setLongti(cursor.getString(cursor.getColumnIndex("longti")));
+            categoryArrayList.add(category);
+        }
+        myDataBase.close();
+        cursor.close();
+        return categoryArrayList;
+    }
+
+    public ArrayList<MAreaItem> getMarea(int preid, int id) {
+        myDataBase = SQLiteDatabase.openDatabase(myPath,
+                null, SQLiteDatabase.OPEN_READONLY);
+        String query = "select dong_code, dong_txt, lati, longti from area Where do_code = \'"+ preid + "\' and sigun_code = \'" + id + "\' GROUP BY dong_code";
+        Cursor cursor = myDataBase.rawQuery(query, null);
+        ArrayList<MAreaItem> categoryArrayList = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            MAreaItem category = new MAreaItem();
+            category.setId(cursor.getInt(cursor.getColumnIndex("dong_code")));
+            category.setArea(cursor.getString(cursor.getColumnIndex("dong_txt")));
+            category.setLati(cursor.getString(cursor.getColumnIndex("lati")));
+            category.setLongti(cursor.getString(cursor.getColumnIndex("longti")));
             categoryArrayList.add(category);
         }
         myDataBase.close();

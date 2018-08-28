@@ -2,7 +2,6 @@ package com.skt.tmaphot.activity.area;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -14,17 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.skt.tmaphot.MainActivity;
 import com.skt.tmaphot.R;
 import com.skt.tmaphot.common.CommonUtil;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -34,9 +27,6 @@ import java.util.stream.Collectors;
 
 public class SelectionAreaFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
-
-    private Map<Integer, List<AreaModel>> xL_areaMap;
-    private Map<Integer, List<AreaModel>> l_areaMap;
 
     //지역
     private RecyclerView xL_areaRecyclerView;
@@ -50,9 +40,9 @@ public class SelectionAreaFragment extends Fragment {
     private RecyclerView m_areaRecyclerView;
     private MAreaRecyclerViewAdapter m_areaRecyclerViewAdapter;
 
+    private DatabaseOpenHelper databaseOpenHelper;
 
-    public SelectionAreaFragment() {
-    }
+    public SelectionAreaFragment() { }
 
     public static Fragment newInstance(int sectionNumber) {
         SelectionAreaFragment fragment = new SelectionAreaFragment();
@@ -62,7 +52,6 @@ public class SelectionAreaFragment extends Fragment {
         return fragment;
     }
 
-    @SuppressLint("NewApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_selectionarea_selection, container, false);
@@ -88,87 +77,25 @@ public class SelectionAreaFragment extends Fragment {
         m_areaRecyclerView.setAdapter(m_areaRecyclerViewAdapter);
         m_areaRecyclerView.setHasFixedSize(true);
         m_areaRecyclerView.addItemDecoration(CommonUtil.getInstance().new SpacesItemDecoration(0, 0, 1, 0));
-//
-
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Log.d("TEST899 : ", "Thread Init");
-                AssetManager assetManager = getResources().getAssets();
-                InputStream source = null;
-
-                try {
-                    source = assetManager.open("area.json");
-                    Log.d("TEST899 : ", "Thread area.json");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Log.d("TEST899 : ", "Error");
-                }
-
-                Gson gson = new Gson();
-//                InputStreamReader inputStreamReader = new InputStreamReader(source);
-                BufferedReader br = new BufferedReader(new InputStreamReader(source), 1024 * 1024 * 5);
-                AreaModel[] dbDTOs = gson.fromJson(br, AreaModel[].class);
-                List<AreaModel> xl_jsonList = Arrays.asList(dbDTOs);
-                Log.d("TEST899 : ", "xl_jsonList");
 
                 //Preparing DB
-
-
-//                DatabaseOpenHelper databaseOpenHelper = new DatabaseOpenHelper(getActivity(), getActivity().getFilesDir().getAbsolutePath());
-                DatabaseOpenHelper databaseOpenHelper = new DatabaseOpenHelper(getActivity(),getContext().getApplicationInfo().dataDir + "/databases");
+                databaseOpenHelper = new DatabaseOpenHelper(getActivity(), "/data/data/com.skt.tmaphot/databases");
                 try {
                     databaseOpenHelper.prepareDataBase();
                 } catch (IOException io) {
                     throw new Error("Unable to create Database");
                 }
 
-                 List<AreaModel> areaModels = databaseOpenHelper.getCategoryName();
-                Log.d("TEst123", "sdfsdf :" + areaModels.size());
-                for(AreaModel areaModel : areaModels)
-                {
-                    Log.d("TEst123", areaModel.getDoTxt());
-                }
-
-                xL_areaMap = xl_jsonList.stream().collect(Collectors.groupingBy(AreaModel::getDoCode));
-
-
-//                Stream<Map<Integer, List<AreaModel>>> steam = Stream.of(xl_jsonList).groupBy(a->a.getDongCode()).map(e->e.getKey());
-//
-//                Map<Integer, List<AreaModel>> test = null;
-//
-//                Stream.of(xl_jsonList).groupBy(a->a.getDongCode()).map(new Function<Map.Entry<Integer,List<AreaModel>>, Object>() {
-//                });
-
-//                for(AreaModel areaModel : xl_jsonList){
-//                    Log.d("test789", "vlaue :" + areaModel.getDongCode());
-//                }
-
-
-//                stream = stream.groupBy(w -> w.getWord().charAt(0))
-//                        .flatMap(entry -> Stream.of(entry.getValue())
-//                                .map(w -> new Word(String.valueOf(entry.getKey()), w.getWord())))
-//                        .sortBy(Word::getWord);
-
-
-                Log.d("TEST899 : ", "xL_areaMap");
-
-                List<XLAreaItem> xL_areaItems = new ArrayList<>();
-                TreeMap<Integer, List<AreaModel>> tm = new TreeMap<>(xL_areaMap);
-                Iterator<Integer> iteratorKey = tm.keySet().iterator();   //키값 오름차순 정렬(기본)
-                Log.d("TEST899 : ", "iteratorKey");
-
-                while (iteratorKey.hasNext()) {
-                    Integer key = iteratorKey.next();
-                    Log.d("TEST899 : ", key + " Count : " + tm.get(key).get(0).getDoTxt());
-                    xL_areaItems.add(new XLAreaItem(key, tm.get(key).get(0).getDoTxt()));
-                }
+                List<XLAreaItem> xl_areaList = databaseOpenHelper.getXLarea();
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        xL_areaRecyclerViewAdapter.fetchData(xL_areaItems);
+                        xL_areaRecyclerViewAdapter.fetchData(xl_areaList);
                     }
                 });
 
@@ -189,29 +116,9 @@ public class SelectionAreaFragment extends Fragment {
         }, 1);
     }
 
-    private class XLAreaItem {
-        private int id;
-        private String area;
-
-        public XLAreaItem(int id, String area) {
-            this.id = id;
-            this.area = area;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public String getArea() {
-            return area;
-        }
-    }
-
-
     private class XLAreaRecyclerViewHolder extends RecyclerView.ViewHolder {
 
         public TextView areaTextView;
-
 
         public XLAreaRecyclerViewHolder(View itemView) {
             super(itemView);
@@ -222,16 +129,14 @@ public class SelectionAreaFragment extends Fragment {
         }
     }
 
-    @SuppressLint("NewApi")
     private class XLAreaRecyclerViewAdapter extends RecyclerView.Adapter<XLAreaRecyclerViewHolder> {
 
         private List<XLAreaItem> mItems;
         Context mContext;
-        private int selectedPosition = 0;
+        private int selectedPosition = -1;
 
         public XLAreaRecyclerViewAdapter(List<XLAreaItem> reviewItemList) {
             mItems = reviewItemList;
-
         }
 
         public void fetchData(List<XLAreaItem> reviewItemList) {
@@ -263,65 +168,13 @@ public class SelectionAreaFragment extends Fragment {
                 public void onClick(View v) {
                     selectedPosition = position;
                     notifyDataSetChanged();
+                    List<LAreaItem> lAreaItems = databaseOpenHelper.getLarea(mItems.get(position).getId());
 
-
-//                  List<Example> test2 = mcList.stream().filter(s -> s.getDoCode() == 11).collect(Collectors.toList());
-
-                    List<AreaModel> test = xL_areaMap.get(mItems.get(position).getId());
-                    Log.d("TEST899", "[size] :" + test.size());
-
-                    l_areaMap =
-//                          test.stream().collect(Collectors.groupingBy(Example::getSigunCode));
-                            test.stream().collect(Collectors.groupingBy(e -> e.getSigunCode()));
-
-                    TreeMap<Integer, List<AreaModel>> tm = new TreeMap<>(l_areaMap);
-                    Iterator<Integer> iteratorKey = tm.keySet().iterator();   //키값 오름차순 정렬(기본)
-                    //Iterator<String> iteratorKey = tm.descendingKeySet().iterator(); //키값 내림차순 정렬
-                    List<LAreaItem> l_areaItems = new ArrayList<>();
-
-                    while (iteratorKey.hasNext()) {
-                        Integer key = iteratorKey.next();
-//                        if(mItems.get(position).getId() != 36) {
-                        l_areaItems.add(new LAreaItem(mItems.get(position).getId(), key, tm.get(key).get(0).getSigunTxt(), tm.get(key).get(0).getLati(), tm.get(key).get(0).getLongti()));
-                        Log.d("TEST899 : ", "key:" + key + " value:" + tm.get(key).get(0).getSigunTxt() + " Lati:" + tm.get(key).get(0).getLati() + " Longti:" + tm.get(key).get(0).getLongti());
-//                        }else{
-//                            l_areaItems.add(new LAreaItem(mItems.get(position).getId(), key, tm.get(key).get(0).getDongTxt(), tm.get(key).get(0).getLati(), tm.get(key).get(0).getLongti()));
-//                            Log.d("TEST899 : ", "key:" + key + " value:" + tm.get(key).get(0).getDongTxt() + " Lati:" + tm.get(key).get(0).getLati() + " Longti:" + tm.get(key).get(0).getLongti());
-//                        }
-                    }
-
-                    l_areaRecyclerViewAdapter.fetchData(l_areaItems);
-//                    l_areaRecyclerViewAdapter = new LAreaRecyclerViewAdapter(l_areaItems);
-//                    l_areaRecyclerView.setAdapter(l_areaRecyclerViewAdapter);
-//                    l_areaRecyclerViewAdapter.notifyDataSetChanged();
-
+                    l_areaRecyclerViewAdapter.fetchData(lAreaItems);
                     // 초기화
                     m_areaRecyclerViewAdapter.fetchData(new ArrayList<>());
-//                    m_areaRecyclerViewAdapter = new MAreaRecyclerViewAdapter(new ArrayList<>());
-//                    m_areaRecyclerView.setAdapter(m_areaRecyclerViewAdapter);
-//                    m_areaRecyclerViewAdapter.notifyDataSetChanged();
                 }
             });
-
-//            MainApplication.loadUrlImage(mContext, mItems.get(position).getLoginImageUrl(), holder.loginImageView);
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-////                    if(slectView != null && slectView != v) {
-////                        slectView.setSelected(false);
-////                    }
-////                    v.setSelected(true);
-////                    slectView = v;
-//
-////                    listRecyclerViewAdapter = new ListAreaRecyclerViewAdapter(listItems[position]);
-////                    listRecyclerView.setAdapter(listRecyclerViewAdapter);
-////                    listRecyclerViewAdapter.notifyDataSetChanged();
-//
-////                    listRecyclerView.findViewHolderForAdapterPosition(position).itemView.performClick();
-//                }
-//            });
-
         }
 
         @Override
@@ -330,50 +183,11 @@ public class SelectionAreaFragment extends Fragment {
         }
     }
 
-
-    private class LAreaItem {
-        private int preid;
-        private int id;
-        private String area;
-        private String lati;
-        private String longti;
-
-        public LAreaItem(int preid, int id, String area, String lati, String longti) {
-            this.id = id;
-            this.area = area;
-            this.lati = lati;
-            this.longti = longti;
-        }
-
-        public int getPreid() {
-            return preid;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public String getArea() {
-            return area;
-        }
-
-        public String getLati() {
-            return lati;
-        }
-
-        public String getLongti() {
-            return longti;
-        }
-    }
-
     private class LAreaRecyclerViewHolder extends RecyclerView.ViewHolder {
-
         public TextView areaTextView;
-
 
         public LAreaRecyclerViewHolder(View itemView) {
             super(itemView);
-
             if (itemView != null) {
                 areaTextView = (TextView) itemView.findViewById(R.id.selectionarea_selection_area_list_txt);
             }
@@ -407,7 +221,6 @@ public class SelectionAreaFragment extends Fragment {
         }
 
         @Override
-        @SuppressLint("NewApi")
         public void onBindViewHolder(LAreaRecyclerViewHolder holder, final int position) {
 
             String txt = mItems.get(position).getArea();
@@ -428,56 +241,11 @@ public class SelectionAreaFragment extends Fragment {
 
                     selectedPosition = position;
                     notifyDataSetChanged();
+                    List<MAreaItem> mAreaItemList = databaseOpenHelper.getMarea(mItems.get(position).getPreid(), mItems.get(position).getId());
 
-//                    Toast.makeText(mContext, "Position: " +  position, Toast.LENGTH_SHORT).show();
-
-                    List<AreaModel> test = l_areaMap.get(mItems.get(position).getId());
-                    Log.d("TEST899", "[=============size============] :" + test.size());
-
-//                    for(Example ex : test){
-//                        Log.d("TEST899", "[ " + ex.getDongTxt() + ex.getDoCode()+" ]");
-//                    }
-
-                    Map<Integer, List<AreaModel>> liteMap =
-//                          test.stream().collect(Collectors.groupingBy(Example::getSigunCode));
-                            test.stream().collect(Collectors.groupingBy(e -> e.getDongCode()));
-
-                    TreeMap<Integer, List<AreaModel>> tm = new TreeMap<>(liteMap);
-                    Iterator<Integer> iteratorKey = tm.keySet().iterator();   //키값 오름차순 정렬(기본)
-                    //Iterator<String> iteratorKey = tm.descendingKeySet().iterator(); //키값 내림차순 정렬
-                    List<MAreaItem> m_areaItems = new ArrayList<>();
-
-                    while (iteratorKey.hasNext()) {
-                        Integer key = iteratorKey.next();
-                        if (mItems.get(position).getPreid() != 36) {
-                            m_areaItems.add(new MAreaItem(key, tm.get(key).get(0).getDongTxt(), tm.get(key).get(0).getLati(), tm.get(key).get(0).getLongti()));
-                            Log.d("TEST899 : ", "key:" + key + " value:" + tm.get(key).get(0).getDongTxt() + " Lati:" + tm.get(key).get(0).getLati() + " Longti:" + tm.get(key).get(0).getLongti());
-                        } else {
-                            m_areaItems.add(new MAreaItem(key, tm.get(key).get(0).getRiTxt(), tm.get(key).get(0).getLati(), tm.get(key).get(0).getLongti()));
-                            Log.d("TEST899 : ", "key:" + key + " value:" + tm.get(key).get(0).getRiTxt() + " Lati:" + tm.get(key).get(0).getLati() + " Longti:" + tm.get(key).get(0).getLongti());
-                        }
-                    }
-
-                    m_areaRecyclerViewAdapter.fetchData(m_areaItems);
-//                    m_areaRecyclerViewAdapter = new MAreaRecyclerViewAdapter(m_areaItems);
-//                    m_areaRecyclerView.setAdapter(m_areaRecyclerViewAdapter);
-//                    m_areaRecyclerViewAdapter.notifyDataSetChanged();
+                    m_areaRecyclerViewAdapter.fetchData(mAreaItemList);
                 }
             });
-
-
-//            MainApplication.loadUrlImage(mContext, mItems.get(position).getLoginImageUrl(), holder.loginImageView);
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                    if(slectView != null && slectView != v){
-//                        slectView.setSelected(false);
-//                    }
-//                    v.setSelected(true);
-//                    slectView = v;
-//                }
-//            });
         }
 
         @Override
@@ -486,41 +254,8 @@ public class SelectionAreaFragment extends Fragment {
         }
     }
 
-
-    private class MAreaItem {
-        private int id;
-        private String area;
-        private String lati;
-        private String longti;
-
-        public MAreaItem(int id, String area, String lati, String longti) {
-            this.id = id;
-            this.area = area;
-            this.lati = lati;
-            this.longti = longti;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public String getArea() {
-            return area;
-        }
-
-        public String getLati() {
-            return lati;
-        }
-
-        public String getLongti() {
-            return longti;
-        }
-    }
-
     private class MAreaRecyclerViewHolder extends RecyclerView.ViewHolder {
-
         public TextView areaTextView;
-
 
         public MAreaRecyclerViewHolder(View itemView) {
             super(itemView);
@@ -568,7 +303,6 @@ public class SelectionAreaFragment extends Fragment {
 
             holder.areaTextView.setText(txt);
 
-
             if (selectedPosition == position)
                 holder.itemView.setSelected(true);
             else
@@ -580,23 +314,8 @@ public class SelectionAreaFragment extends Fragment {
 
                     selectedPosition = position;
                     notifyDataSetChanged();
-
                 }
             });
-
-
-//            MainApplication.loadUrlImage(mContext, mItems.get(position).getLoginImageUrl(), holder.loginImageView);
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                    if(slectView != null && slectView != v){
-//                        slectView.setSelected(false);
-//                    }
-//                    v.setSelected(true);
-//                    slectView = v;
-//                }
-//            });
         }
 
         @Override
