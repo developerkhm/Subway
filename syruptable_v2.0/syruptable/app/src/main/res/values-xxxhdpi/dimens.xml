@@ -1,4 +1,0 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <dimen name="activity_main_hotplace_grid_image_height">190dp</dimen>
-    <dimen name="storeinfo_viewpager_height" >260dp</dimen>
-</resources>
